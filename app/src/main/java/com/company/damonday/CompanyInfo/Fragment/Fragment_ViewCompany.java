@@ -24,18 +24,30 @@ public class Fragment_ViewCompany extends Fragment {
     private ListView listView;
     private SimpleAdapter simpleAdapter;
     private int[] image = {
-            R.drawable.map_icon,
-            R.drawable.map_icon,
-            R.drawable.map_icon,
-            R.drawable.map_icon,
-            R.drawable.map_icon
+            R.drawable.tree1,
+            R.drawable.tree1,
+            R.drawable.tree1,
+            R.drawable.tree1,
+            R.drawable.tree1,
+            R.drawable.tree1,
+            R.drawable.tree1,
+            R.drawable.tree1,
+            R.drawable.tree1,
+            R.drawable.tree1
+
     };
     private String[] CompanyInfo = {
             "XXXXXXXXXXX",
             "22222222",
             "多人射擊",
             "$200 - $300",
-            "星期一: 10:00 - 23:00"
+            "星期一: 10:00 - 23:00",
+            "XXXXXXX",
+            "XXXXXXX",
+            "XXXXXXX",
+            "XXXXXXX",
+            "XXXXXXX"
+
     };
 
     @Override

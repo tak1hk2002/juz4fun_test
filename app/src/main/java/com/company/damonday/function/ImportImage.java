@@ -1,4 +1,4 @@
-package com.company.damonday.Ranking.function;
+package com.company.damonday.function;
 
 import android.content.Context;
 import android.util.AttributeSet;
