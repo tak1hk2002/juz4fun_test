@@ -6,27 +6,64 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import com.bumptech.glide.Glide;
 
+import com.company.damonday.Login.FragmentTabs;
 import com.company.damonday.Ranking.Ranking;
 import com.company.damonday.function.getJson;
 import com.company.damonday.function.parsonJson;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends Activity {
     String JsonText = null;
+    CallbackManager callbackManager;
+    private AccessToken accessToken;
+    private TextView info;
+    private ImageView profileImgView;
+    private Button btn;
+    private Button btn_map;
+    private Button btn_login;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FacebookSdk.sdkInitialize(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button btn = (Button) findViewById(R.id.button);
+        btn = (Button) findViewById(R.id.button);
+        btn_map = (Button) findViewById(R.id.testmap);
+        btn_login = (Button) findViewById(R.id.login);
+        info = (TextView) findViewById(R.id.info);
+        profileImgView = (ImageView) findViewById(R.id.profile_img);
 
 
+        //宣告callback Manager
+        callbackManager = CallbackManager.Factory.create();
+
+        //找到login button
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+
+        Log.v("context", getApplicationContext().toString());
 
         btn.setOnClickListener(new Button.OnClickListener() {
 
@@ -37,20 +74,125 @@ public class MainActivity extends Activity {
             }
         });
 
+        btn_map.setOnClickListener(new Button.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // 啟動地圖元件用的Intent物件
+                Intent intentMap = new Intent(MainActivity.this, MapsActivity.class);
+                // 啟動地圖元件
+                startActivityForResult(intentMap, 2);
+            }
+        });
+
+        btn_login.setOnClickListener(new Button.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // 啟動地圖元件用的Intent物件
+                Intent i = new Intent(MainActivity.this, FragmentTabs.class);
+                startActivity(i);
+            }
+        });
+
+        //幫loginButton增加callback function
+
+        //這邊為了方便 直接寫成inner class
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
+            //登入成功
+
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+                //get FB user profile
+                Profile profile = Profile.getCurrentProfile();
+                info.setText(message(profile));
+
+
+                //get user ID and display his profile pic
+                String userId = loginResult.getAccessToken().getUserId();
+                String profileImgUrl = "https://graph.facebook.com/" + userId + "/picture?type=large";
+
+                Glide.with(MainActivity.this)
+                        .load(profileImgUrl)
+                        .into(profileImgView);
 
 
 
-        getJson abc = new getJson();
-        abc.execute("http://www.damonday.tk/api/entertainment/get_entertainment_details/?ent_id=9");
-        try {
-            JsonText = abc.get().toString();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        Log.d("alan1", JsonText);
-        parseJson();
+
+
+
+
+                Log.d("FB", "access token got.");
+
+
+                //accessToken之後或許還會用到 先存起來
+                accessToken = loginResult.getAccessToken();
+                Log.d("accessToken", accessToken.toString());
+
+                //send request and call graph api
+
+                GraphRequest request = GraphRequest.newMeRequest(
+                        accessToken,
+                        new GraphRequest.GraphJSONObjectCallback() {
+
+                            //當RESPONSE回來的時候
+
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+
+                                //讀出姓名 ID FB個人頁面連結
+
+                                Log.d("FB", "complete");
+                                Log.d("FB", object.optString("name"));
+                                Log.d("FB", object.optString("link"));
+                                Log.d("FB", object.optString("id"));
+
+                            }
+                        });
+
+                //包入你想要得到的資料 送出request
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,link");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            //登入取消
+
+            @Override
+            public void onCancel() {
+                // App code
+
+                Log.d("FB", "CANCEL");
+            }
+
+            //登入失敗
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+
+                Log.d("FB", exception.toString());
+            }
+        });
+
+
+
+//        getJson abc = new getJson();
+//        abc.execute("");
+//        try {
+//            JsonText = abc.get().toString();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
+//        Log.d("alan1", JsonText);
+        //parseJson();
 
     }
 
@@ -130,6 +272,47 @@ public class MainActivity extends Activity {
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Logs 'install' and 'app activate' App Events.
+        Profile profile = Profile.getCurrentProfile();
+        info.setText(message(profile));
+        try {
+            String profileImgUrl = "https://graph.facebook.com/" + profile.getId() + "/picture?type=large";
+
+            Glide.with(MainActivity.this)
+                    .load(profileImgUrl)
+                    .into(profileImgView);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        AppEventsLogger.activateApp(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private String message(Profile profile) {
+        StringBuilder stringBuffer = new StringBuilder();
+        if (profile != null) {
+            stringBuffer.append("Welcome ").append(profile.getName());
+        }
+        return stringBuffer.toString();
+    }
 
 
 

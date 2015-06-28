@@ -1,4 +1,4 @@
-package com.company.damonday.CompanyInfo;
+package com.company.damonday.function;
 
 import android.content.Context;
 import android.os.Bundle;
