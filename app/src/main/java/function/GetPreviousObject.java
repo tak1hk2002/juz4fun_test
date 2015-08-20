@@ -15,10 +15,11 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class GetPreviousObject implements Serializable {
 
-    public GetPreviousObject(int id, double latitude, double longitude ){
+    public GetPreviousObject(int id, double latitude, double longitude, String companyName ){
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.companyName = companyName;
     }
     public int getId() {
         return id;
@@ -32,6 +33,9 @@ public class GetPreviousObject implements Serializable {
     public double getLongitude(){
         return this.longitude;
     }
+    public String getCompanyName() {
+        return this.companyName;
+    }
     public void setLatLng(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
@@ -39,6 +43,7 @@ public class GetPreviousObject implements Serializable {
 
     private int id;
     private double latitude, longitude;
+    private String companyName;
 
 
 }

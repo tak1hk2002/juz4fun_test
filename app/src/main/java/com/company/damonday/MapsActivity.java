@@ -72,13 +72,20 @@ public class MapsActivity extends FragmentActivity {
         GetPreviousObject passedObject = (GetPreviousObject)intent.getSerializableExtra("LatLng");
         // 建立位置的座標物件
         LatLng place = new LatLng(passedObject.getLatitude(), passedObject.getLongitude());
+        String companyName = passedObject.getCompanyName();
         // 移動地圖
-        moveMap(place);
+        moveMap(place, companyName);
     }
 
 
-    private void moveMap(LatLng place) {
+    private void moveMap(LatLng place, String companyName) {
         // 建立地圖攝影機的位置物件
+
+        // create marker
+        MarkerOptions marker = new MarkerOptions().position(place).title(companyName);
+
+        // adding marker
+        mMap.addMarker(marker).showInfoWindow();
         CameraPosition cameraPosition =
                 new CameraPosition.Builder()
                         .target(place)
@@ -86,7 +93,7 @@ public class MapsActivity extends FragmentActivity {
                         .build();
 
         // 使用動畫的效果移動地圖
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
 }

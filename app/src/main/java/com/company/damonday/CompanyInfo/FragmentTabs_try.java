@@ -2,11 +2,9 @@ package com.company.damonday.CompanyInfo;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -15,10 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.MediaController;
-import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -29,25 +26,27 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
-import com.company.damonday.R;
-
 import com.company.damonday.CompanyInfo.Fragment.Fragment_ViewComment;
 import com.company.damonday.CompanyInfo.Fragment.Fragment_ViewCompany;
 import com.company.damonday.CompanyInfo.Fragment.Fragment_ViewPhoto;
+import com.company.damonday.R;
+import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.company.damonday.function.TabManager;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 /**
- * Created by LAM on 20/4/2015.
+ * Created by lamtaklung on 4/8/15.
  */
-public class FragmentTabs extends FragmentActivity {
+public class FragmentTabs_try extends Fragment {
 
-    /*private FragmentTabHost mTabHost;
+    private FragmentTabHost mTabHost;
     private TabManager mTabManager;
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
@@ -55,47 +54,59 @@ public class FragmentTabs extends FragmentActivity {
     private LinearLayout dotsLayout;
     private int dotsCount;
     private TextView[] dots;
-    private String urlJsonObj;
-    private int entId;
+    private String urlJsonObj, videoUrl;
+    private String entId;
     private ProgressDialog pDialog;
-    private static String TAG = FragmentTabs.class.getSimpleName();
-    private String coverPage;
+    private static String TAG = FragmentTabs_try.class.getSimpleName();
+    private ArrayList<String> coverPage = new ArrayList<String>();
+    private ArrayList<String> scoreInfo = new ArrayList<String>();
+    private View rootView;
+    private TextView tvLike, tvDislike, tvFair,  tvAverageScore;
+    private String like, dislike, fair, averageScore;
+    private APIConfig details;
+    private MediaController mc;
+    private VideoView videoView;
 
-    public FragmentTabs() {
-    }
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.companyinfo_fragment_tab);
-        ArrayList<String> list=new ArrayList<String>();
-
-        mTabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
-
-        //get the passed object from last activity
-        Intent i = getIntent();
-        entId  = i.getIntExtra("Ent_id", -1);
-        urlJsonObj = "http://damonday.tk/api/entertainment/details/?ent_id="+entId;
-
-        //pass entId to fragment
-        Bundle bundle = new Bundle();
-        bundle.putInt("entId", entId);
-
-
-        pDialog = new ProgressDialog(this);
+        entId = getArguments().getString("ent_id");
+        pDialog = new ProgressDialog(getActivity());
         // Showing progress dialog before making http request
         pDialog.setMessage("Loading...");
         pDialog.show();
+        details = new APIConfig(entId);
 
-        //initialise the tabhost
-        mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
-        mTabManager = new TabManager(this, mTabHost, R.id.realtabcontent);
+
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+
+        //pass entId to fragment
+        Bundle bundle = new Bundle();
+        bundle.putString("ent_Id", entId);
+
+
+
+
+        rootView = inflater.inflate(R.layout.companyinfo_fragment_tab,container, false);
+        tvLike = (TextView) rootView.findViewById(R.id.like);
+        tvDislike = (TextView) rootView.findViewById(R.id.dislike);
+        tvFair = (TextView) rootView.findViewById(R.id.fair);
+        tvAverageScore = (TextView) rootView.findViewById(R.id.average_score);
+
+
+
+
+
+        mTabHost = (FragmentTabHost)rootView.findViewById(android.R.id.tabhost);
+        mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);
 
         mTabHost.setCurrentTab(0);//設定一開始就跳到第一個分頁
         mTabHost.addTab(
                 mTabHost.newTabSpec("概要").setIndicator("概要"),
-        Fragment_ViewCompany.class, bundle);
+                Fragment_ViewCompany.class, bundle);
         mTabHost.addTab(
                 mTabHost.newTabSpec("玩評").setIndicator("玩評"),
                 Fragment_ViewComment.class, null);
@@ -106,17 +117,20 @@ public class FragmentTabs extends FragmentActivity {
 
         makeJsonArrayRequest();
 
-
+        return rootView;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-
+    }
 
     private void makeJsonArrayRequest() {
         showpDialog();
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                urlJsonObj, null, new Response.Listener<JSONObject>() {
+                details.getUrlDetail(), null, new Response.Listener<JSONObject>() {
 
             public void onResponse(JSONObject response) {
                 Log.d(TAG, response.toString());
@@ -127,32 +141,57 @@ public class FragmentTabs extends FragmentActivity {
                     // loop through each json object
                     String status = response.getString("status");
                     JSONObject companyInfo = response.getJSONObject("data");
+                    if (status.equals("success")){
 
-                    coverPage = companyInfo.getString("cover_image");
+                        JSONObject score = companyInfo.getJSONObject("score");
+                        JSONArray promotion_images = companyInfo.getJSONArray("promotion_images");
+                        videoUrl = companyInfo.getString("video");
+                        Log.d("videoUrl", videoUrl);
+
+                        for (int i = 0; i < promotion_images.length(); i++){
+                            coverPage.add((String) promotion_images.get(i));
+                        }
+
+                        like = score.getString("like");
+                        dislike = score.getString("dislike");
+                        fair = score.getString("fair");
+                        averageScore = score.getString("average_score");
+
+
+
+                        initViews();
+                        setViewPagerItemsWithAdapter();
+                        setUiPageViewController();
+
+                    }else{
+                        String errorMsg = companyInfo.getString("msg");
+                        Toast.makeText(getActivity(),
+                                errorMsg,
+                                Toast.LENGTH_LONG).show();
+                    }
+
+
 
                 } catch (JSONException e) {
                     Log.d("error", "error");
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),
+                    Toast.makeText(getActivity(),
                             "Error: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }
 
                 hidepDialog();
 
-                initViews();
-                setViewPagerItemsWithAdapter();
-                setUiPageViewController();
 
                 // notifying list adapter about data changes
                 // so that it renders the list view with updated data
-                myViewPagerAdapter.notifyDataSetChanged();
+                //myViewPagerAdapter.notifyDataSetChanged();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
+                Toast.makeText(getActivity(),
                         error.getMessage(), Toast.LENGTH_SHORT).show();
                 hidepDialog();
             }
@@ -175,23 +214,30 @@ public class FragmentTabs extends FragmentActivity {
 
     //initial of the pics
     private void initViews() {
+        //set score of company
+        tvLike.setText(like);
+        tvDislike.setText(dislike);
+        tvFair.setText(fair);
+        tvAverageScore.setText(averageScore);
 
 
-        //get the passed object from last activity
-        viewPager = (ViewPager)findViewById(R.id.viewPager);
 
         listOfItems = new ArrayList<String>();
-
-            listOfItems.add(coverPage);
-            listOfItems.add("http://cdn.inside.com.tw/wp-content/uploads/2012/05/Chrome.jpg");
-            listOfItems.add("http://cdn.inside.com.tw/wp-content/uploads/2012/05/Chrome.jpg");
-            //listOfItems.add("http://cdn.inside.com.tw/wp-content/uploads/2012/05/Chrome.jpg");
+        if(videoUrl != null)
+            listOfItems.add(videoUrl);
+        for(int i = 0; i < coverPage.size(); i++) {
+            listOfItems.add(coverPage.get(i));
+        }
+        listOfItems.add("http://cdn.inside.com.tw/wp-content/uploads/2012/05/Chrome.jpg");
+        //listOfItems.add("http://cdn.inside.com.tw/wp-content/uploads/2012/05/Chrome.jpg");
+        //listOfItems.add("http://cdn.inside.com.tw/wp-content/uploads/2012/05/Chrome.jpg");
 
     }
 
 
 
     private void setViewPagerItemsWithAdapter() {
+        viewPager = (ViewPager)rootView.findViewById(R.id.viewPager);
         myViewPagerAdapter = new MyViewPagerAdapter(listOfItems);  //call Class to create Object
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.setCurrentItem(0);
@@ -199,12 +245,13 @@ public class FragmentTabs extends FragmentActivity {
     }
 
     private void setUiPageViewController() {
-        dotsLayout = (LinearLayout)findViewById(R.id.viewPagerCountDots);
+        dotsLayout = (LinearLayout)rootView.findViewById(R.id.viewPagerCountDots);
         dotsCount = myViewPagerAdapter.getCount();     //get number of pages(Pics) in ViewPager from the adapter
+        Log.d("dotsCount", Integer.toString(dotsCount));
         dots = new TextView[dotsCount];     //Create a TextView array
 
         for (int i = 0; i < dotsCount; i++) {
-            dots[i] = new TextView(this);
+            dots[i] = new TextView(getActivity());
             dots[i].setText(Html.fromHtml("&#8226;"));
             dots[i].setTextSize(30);
             dots[i].setTextColor(getResources().getColor(android.R.color.darker_gray));
@@ -220,6 +267,7 @@ public class FragmentTabs extends FragmentActivity {
 
         @Override
         public void onPageSelected(int position) {
+            Log.d("onSelected", Integer.toString(position));
             for (int i = 0; i < dotsCount; i++) {
                 dots[i].setTextColor(getResources().getColor(android.R.color.darker_gray));
             }
@@ -253,34 +301,38 @@ public class FragmentTabs extends FragmentActivity {
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
 
-            layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View view;
-            if(position == 0) {
-
+            Log.d("position", Integer.toString(position));
+            if(position == 0 && videoUrl != null) {
                 view = layoutInflater.inflate(R.layout.companyinfo_fragment_tab_video, container,false);
-                final VideoView videoView = (VideoView) view.findViewById(R.id.videoView);
+                videoView = (VideoView) view.findViewById(R.id.videoView);
                 try{
-                    MediaController mc = new MediaController(FragmentTabs.this);
+                    //set media player
+                    mc = new MediaController(getActivity());
                     videoView.setMediaController(mc);
-                    videoView.setVideoURI(Uri.parse("http://www.androidbegin.com/tutorial/AndroidCommercial.3gp"));
+                    videoView.setVideoURI(Uri.parse(listOfItems.get(position)));
                     videoView.seekTo(100);
+                    Log.d("hi", "hi");
                 }catch (Exception e){
-                    Toast.makeText(FragmentTabs.this, e.getMessage(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), e.getMessage(),Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
 
 
                 videoView.requestFocus();
-                *//*videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                /*videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     // Close the progress bar and play the video
                     public void onPrepared(MediaPlayer mp) {
                         pDialog.dismiss();
                         videoView.start();
                     }
-                });*//*
+                });*/
                 //videoView.start();
             }
             else {
+
+                videoView.stopPlayback();
                 view = layoutInflater.inflate(R.layout.companyinfo_fragment_tab_pager_view, container, false);
                 if (imageLoader == null)
                     imageLoader = AppController.getInstance().getImageLoader();
@@ -289,6 +341,7 @@ public class FragmentTabs extends FragmentActivity {
                         .findViewById(R.id.PageView);
 
                 tView.setImageUrl(listOfItems.get(position), imageLoader);
+
             }
 
 
@@ -316,11 +369,5 @@ public class FragmentTabs extends FragmentActivity {
             View view = (View)object;
             container.removeView(view);
         }
-    }*/
-
-
-
-
-
-
+    }
 }

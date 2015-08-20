@@ -7,104 +7,129 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <ScrollView
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:textColor="#000000"
-        android:gravity="center"
-        android:id="@+id/title" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="174dp"
-        android:layout_above="@+id/viewPagerIndicator" >
-    </android.support.v4.view.ViewPager>
-    <RelativeLayout
-        android:id="@+id/viewPagerIndicator"
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp" >
-
-        <LinearLayout
-            android:id="@+id/viewPagerCountDots"
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:gravity="center"
-            android:orientation="horizontal" >
-        </LinearLayout>
-    </RelativeLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:layout_weight="1"
-            android:textColor="#000000"
-            android:gravity="center"
-            android:id="@+id/like" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:layout_weight="1"
-            android:textColor="#000000"
-            android:gravity="center"
-            android:id="@+id/fair" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:layout_weight="1"
-            android:textColor="#000000"
-            android:gravity="center"
-            android:id="@+id/dislike" />
-    </LinearLayout>
-
-
-    <TabHost
-        android:id="@android:id/tabhost"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="1">
+        android:orientation="vertical"
+        android:scrollbars="none" >
 
-        <TabWidget
-            android:id="@android:id/tabs"
-            android:orientation="horizontal"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"/>
-
-        <FrameLayout
-            android:id="@android:id/tabcontent"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0"/>
-
-        <FrameLayout
-            android:id="@+id/realtabcontent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
 
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="174dp"
+                android:layout_above="@+id/viewPagerIndicator" />
 
-    </LinearLayout>
-    </TabHost>
+            <LinearLayout
+                android:id="@+id/viewPagerIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp" >
+
+                <LinearLayout
+                    android:id="@+id/viewPagerCountDots"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="30dp"
+                    android:textColor="#000000"
+                    android:gravity="center"
+                    android:id="@+id/title" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:layout_weight="1"
+                    android:textColor="#000000"
+                    android:gravity="center"
+                    android:id="@+id/like" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:layout_weight="1"
+                    android:textColor="#000000"
+                    android:gravity="center"
+                    android:id="@+id/fair" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:layout_weight="1"
+                    android:textColor="#000000"
+                    android:gravity="center"
+                    android:id="@+id/dislike" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:layout_weight="1"
+                    android:textColor="#000000"
+                    android:gravity="center"
+                    android:id="@+id/average_score" />
+            </LinearLayout>
 
 
+            <android.support.v4.app.FragmentTabHost
+                android:id="@android:id/tabhost"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="1">
+
+                    <TabWidget
+                        android:id="@android:id/tabs"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"/>
+
+                    <FrameLayout
+                        android:id="@android:id/tabcontent"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0"/>
+
+                    <FrameLayout
+                        android:id="@+id/realtabcontent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+
+
+                </LinearLayout>
+            </android.support.v4.app.FragmentTabHost>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
 
 

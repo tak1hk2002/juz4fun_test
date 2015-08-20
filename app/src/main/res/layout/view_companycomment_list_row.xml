@@ -7,7 +7,7 @@
 
     <!-- Thumbnail Image -->
     <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/thumbnail"
+        android:id="@+id/profile_pic"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentLeft="true"
@@ -18,35 +18,35 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/thumbnail"
-        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_alignTop="@+id/profile_pic"
+        android:layout_toRightOf="@+id/profile_pic"
         android:textSize="@dimen/title"
         android:textStyle="bold" />
 
     <!-- Rating -->
     <TextView
-        android:id="@+id/rating"
+        android:id="@+id/content"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title"
         android:layout_marginTop="1dip"
-        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_toRightOf="@+id/profile_pic"
         android:textSize="@dimen/rating" />
 
     <!-- Genre -->
     <TextView
-        android:id="@+id/genre"
+        android:id="@+id/username"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rating"
+        android:layout_below="@id/content"
         android:layout_marginTop="5dp"
-        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_toRightOf="@+id/profile_pic"
         android:textColor="@color/genre"
         android:textSize="@dimen/genre" />
 
     <!-- Release Year -->
     <TextView
-        android:id="@+id/releaseYear"
+        android:id="@+id/posted_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

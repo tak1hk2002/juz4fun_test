@@ -24,6 +24,48 @@
 
     <!-- facebook key-->
     <string name="facebook_app_id">1591220424465295</string>
+    
+    
+    
+    <!-- companyInfo-->
+    <string name="tab_company">概要</string>
+    <string name="tab_comment">玩評</string>
+    <string name="tab_photo">相片</string>
+
+
+    <!--navigation drawer-->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item >Home</item>
+        <item >Find People</item>
+        <item >Photos</item>
+        <item >Communities</item>
+        <item >Pages</item>
+        <item >What\'s Hot</item>
+    </string-array>
+
+
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/ic_icon</item>
+        <item>@drawable/ic_icon</item>
+        <item>@drawable/ic_icon</item>
+        <item>@drawable/ic_icon</item>
+        <item>@drawable/ic_icon</item>
+        <item>@drawable/ic_icon</item>
+    </array>
+
+    <string name="action_refresh">重新整理</string>
+    <string name="action_edit">編輯</string>
+    <string name="action_search">搜尋</string>
+    <string name="action_info">軟體資訊</string>
+
+    <!-- Content Description -->
+    <string name="desc_list_item_icon">Item Icon</string>
 
 
 </resources>

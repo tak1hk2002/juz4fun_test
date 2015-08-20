@@ -3,17 +3,25 @@ package com.company.damonday;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 
 import com.company.damonday.Login.FragmentTabs;
+import com.company.damonday.function.APIConfig;
 import com.company.damonday.Ranking.Ranking;
-import com.company.damonday.function.getJson;
-import com.company.damonday.function.parsonJson;
+import com.company.damonday.function.AppController;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -23,7 +31,6 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -31,11 +38,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
+import java.util.HashMap;
+import java.util.Map;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
     String JsonText = null;
     CallbackManager callbackManager;
     private AccessToken accessToken;
@@ -44,6 +51,7 @@ public class MainActivity extends Activity {
     private Button btn;
     private Button btn_map;
     private Button btn_login;
+    private Button btn_testScorllView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +63,7 @@ public class MainActivity extends Activity {
         btn_login = (Button) findViewById(R.id.login);
         info = (TextView) findViewById(R.id.info);
         profileImgView = (ImageView) findViewById(R.id.profile_img);
+        btn_testScorllView = (Button)findViewById(R.id.button2);
 
 
         //宣告callback Manager
@@ -95,6 +104,16 @@ public class MainActivity extends Activity {
             }
         });
 
+        btn_testScorllView.setOnClickListener(new Button.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                // 啟動地圖元件用的Intent物件
+                Intent i = new Intent(MainActivity.this, TestActivity.class);
+                startActivity(i);
+            }
+        });
+
         //幫loginButton增加callback function
 
         //這邊為了方便 直接寫成inner class
@@ -130,7 +149,9 @@ public class MainActivity extends Activity {
 
                 //accessToken之後或許還會用到 先存起來
                 accessToken = loginResult.getAccessToken();
-                Log.d("accessToken", accessToken.toString());
+
+                Log.d("accessToken", accessToken.getToken());
+                System.out.println(profile.getName());
 
                 //send request and call graph api
 
@@ -159,6 +180,15 @@ public class MainActivity extends Activity {
                 parameters.putString("fields", "id,name,link");
                 request.setParameters(parameters);
                 request.executeAsync();
+
+
+                //profile pic url
+                String ImgUrl = "https://graph.facebook.com/" + profile.getId() + "/picture?type=large";
+
+
+                userFacebook(accessToken.getToken(), profile.getName(), accessToken.getUserId(), ImgUrl);
+
+
             }
 
             //登入取消
@@ -277,6 +307,8 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
+
+
         // Logs 'install' and 'app activate' App Events.
         Profile profile = Profile.getCurrentProfile();
         info.setText(message(profile));
@@ -314,7 +346,97 @@ public class MainActivity extends Activity {
         return stringBuffer.toString();
     }
 
+    private void userFacebook(final String accessToken, final String username,
+                              final String id, final String profilePic) {
+        // Tag used to cancel the request
+        String tag_string_req = "req_facebook";
 
+        //pDialog.setMessage("Registering ...");
+        //showDialog();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                APIConfig.URL_FACEBOOK_USER, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                //Log.d(TAG, "Register Response: " + response.toString());
+                //hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    String error = jObj.getString("status");
+                    if (error.equals("success")) {
+
+                        Toast.makeText(MainActivity.this,
+                                error, Toast.LENGTH_LONG).show();
+                        Log.d("facebook", "success");
+
+                        // User successfully stored in MySQL
+                        // Now store the user in sqlite
+
+                        // Inserting row in users table
+                        //db.addUser(email, username);
+                        //Log.d("email", email);
+
+
+                        //display message login successfully
+                        /*AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
+                        ab.setTitle(R.string.register_success);
+                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                Intent in = new Intent(v.getContext(), FragmentTabs.class);
+                                v.getContext().startActivity(in);
+                            }
+                        });
+                        ab.create().show();*/
+
+                    } else {
+
+                        // Error occurred in registration. Get the error
+                        // message
+                        JSONObject data = jObj.getJSONObject("data");
+                        String errorMsg = data.getString("msg");
+
+                        Toast.makeText(MainActivity.this,
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Log.e(TAG, "Registration Error: " + error.getMessage());
+                Toast.makeText(MainActivity.this,
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                //hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                //params.put("tag", "register");
+                params.put("fb_id", id);
+                params.put("fb_token", accessToken);
+                params.put("fb_username", username);
+                params.put("fb_profile_picture", profilePic);
+
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
 
 
 

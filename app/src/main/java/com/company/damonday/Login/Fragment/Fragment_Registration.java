@@ -20,7 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.company.damonday.Login.FragmentTabs;
-import com.company.damonday.Login.LoginConfig;
+import com.company.damonday.function.APIConfig;
 import com.company.damonday.Login.SQLiteHandler;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MainActivity;
@@ -139,7 +139,7 @@ public class Fragment_Registration extends Fragment {
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                LoginConfig.URL_REGISTER, new Response.Listener<String>() {
+                APIConfig.URL_REGISTER, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {

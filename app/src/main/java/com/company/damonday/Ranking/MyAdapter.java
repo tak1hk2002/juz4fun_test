@@ -1,15 +1,23 @@
 package com.company.damonday.Ranking;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.company.damonday.CompanyInfo.FragmentTabs;
 import com.company.damonday.R;
 import com.company.damonday.function.AppController;
 
@@ -63,37 +71,73 @@ public class MyAdapter extends BaseAdapter
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
             convertView = inflater.inflate(R.layout.charts_gridview, null);
+        ProgressBar mProgress=(ProgressBar) convertView.findViewById(R.id.pb);
 
-        if (imageLoader == null)
-            imageLoader = AppController.getInstance().getImageLoader();
-        TextView title = (TextView) convertView.findViewById(R.id.text);
-        NetworkImageView companyImage = (NetworkImageView) convertView
+
+        final TextView title = (TextView) convertView.findViewById(R.id.text);
+        final NetworkImageView companyImage = (NetworkImageView) convertView
                 .findViewById(R.id.picture);
 
-        CompanyInfo c = companyInfoItems.get(position);
-        Log.d("position", Integer.toString(position));
-        Log.d("getUrl", c.getUrl());
+        final CompanyInfo c = companyInfoItems.get(position);
 
         // company image
-        companyImage.setImageUrl(c.getUrl(), imageLoader);
-
-        // title
-        title.setText(c.getTitle());
 
 
+        if(c.getUrl().length()>0) {
+            companyImage.setImageUrl(c.getUrl(), imageLoader);
+            // title
+            title.setText(c.getTitle());
+            mProgress.setVisibility(View.INVISIBLE);
+        }
+        companyImage.setDefaultImageResId(R.drawable.ic_launcher);
+        companyImage.setErrorImageResId(R.drawable.ic_launcher);
 
 
-        /*convertView.setOnClickListener(new View.OnClickListener() {
+        /*imageLoader.get(c.getUrl(), new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                if (response != null) {
+                    Bitmap bitmap = response.getBitmap();
+                    Log.d("response", response.getRequestUrl().toString());
+                    if (bitmap != null) {
+                        pb.setVisibility(View.GONE);
+                        companyImage.setVisibility(View.VISIBLE);
+                        companyImage.setImageBitmap(bitmap);
+                        // title
+                        title.setText(c.getTitle());
+                    }
+                }
+            }
 
             @Override
-            public void onClick(View v) {
+            public void onErrorResponse(VolleyError error) {
+                pb.setVisibility(View.GONE);
+                companyImage.setVisibility(View.VISIBLE);
+                companyImage.setImageResource(R.drawable.ic_launcher);
+            }
+
+
+        });*/
+
+
+
+
+
+
+
+
+        /*convertView.setOnItemClickListener(new View.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
                 Toast.makeText(context, "You Clicked " + companyInfoItems.get(position).getUrl(), Toast.LENGTH_LONG).show();
 
                 //pass the following object to next activity
-                GetPreviousObject passedObject = new GetPreviousObject(companyInfoItems.get(position).getEnt_id(),-1,-1);
-                Intent i = new Intent(this, FragmentTabs.class);
+                GetPreviousObject passedObject = new GetPreviousObject(companyInfoItems.get(position).getEnt_id(), -1, -1);
+                Intent i = new Intent(context, FragmentTabs.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra("sampleObject", passedObject);
-                startActivity(i);
+                context.startActivity(i);
             }
         });*/
         return convertView;
