@@ -1,46 +1,6 @@
 package com.company.damonday.CompanyInfo;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTabHost;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.text.Html;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.MediaController;
-import android.widget.TabHost;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.VideoView;
-
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.NetworkImageView;
-import com.company.damonday.R;
-
-import com.company.damonday.CompanyInfo.Fragment.Fragment_ViewComment;
-import com.company.damonday.CompanyInfo.Fragment.Fragment_ViewCompany;
-import com.company.damonday.CompanyInfo.Fragment.Fragment_ViewPhoto;
-import com.company.damonday.function.AppController;
-import com.company.damonday.function.TabManager;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * Created by LAM on 20/4/2015.

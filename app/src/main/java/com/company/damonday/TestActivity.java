@@ -12,14 +12,20 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.company.damonday.LatestComment.latestcommentvolley;
+import com.company.damonday.MyFavourites.MyFavourites;
+import com.company.damonday.NewFound.NewFound;
 import com.company.damonday.Ranking.NavDrawerListAdapter;
 import com.company.damonday.Ranking.Ranking_try;
+import com.company.damonday.Search.search;
+import com.company.damonday.Setting.Setting;
 
 import java.util.ArrayList;
 
@@ -77,6 +83,8 @@ public class TestActivity extends FragmentActivity {
         // What's hot, We  will add a counter here
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
 
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
+
 
         // Recycle the typed array
         navMenuIcons.recycle();
@@ -89,16 +97,16 @@ public class TestActivity extends FragmentActivity {
         mDrawerList.setAdapter(adapter);
 
         // enabling action bar app icon and behaving it as toggle button
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);     //make back button
+        //getActionBar().setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.drawer, //nav menu toggle icon
+                R.drawable.back, //nav menu toggle icon
                 R.string.app_name, // nav drawer open - description for accessibility
                 R.string.app_name // nav drawer close - description for accessibility
         ) {
             public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
+               getActionBar().setTitle(mTitle);
                 // calling onPrepareOptionsMenu() to show action bar icons
                 invalidateOptionsMenu();
             }
@@ -131,21 +139,42 @@ public class TestActivity extends FragmentActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {                 //action bar 出現
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
+       // return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {               //action bar onclick
         // toggle nav drawer on selecting action bar app icon/title
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
+//        if (mDrawerToggle.onOptionsItemSelected(item)) {
+//            return true;
+//        }
         // Handle action bar actions click
-        switch (item.getItemId()) {
-            case R.id.action_settings:
+       switch (item.getItemId()) {
+            case R.id.btnMyMenu:
+
+                if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {//tomc 31/8/2015
+                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                } else {
+                    mDrawerLayout.openDrawer(Gravity.RIGHT);
+                }
+
                 return true;
+
+//            case R.id.btnMyMenu:
+//                Log.d("btn","btn");
+//                if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {//tomc 31/8/2015
+//                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
+//                } else {
+//                    mDrawerLayout.openDrawer(Gravity.RIGHT);
+//                }
+//
+//                return true;
+
+
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -158,7 +187,7 @@ public class TestActivity extends FragmentActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        //menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -171,24 +200,41 @@ public class TestActivity extends FragmentActivity {
         String tag = null;
         switch (position) {
             case 0:
+                //主頁
                 fragment = new Ranking_try();
                 tag = "ranking";
                 break;
-            /*case 1:
-                fragment = new FindPeopleFragment();
+            case 1:
+                //進階搜尋
+                fragment = new search();
+                tag = "search";
                 break;
             case 2:
-                fragment = new PhotosFragment();
+                //排行榜
+                fragment = new Ranking_try();
+                tag = "ranking";
                 break;
             case 3:
-                fragment = new CommunityFragment();
+                //最新評論
+                fragment = new latestcommentvolley();
+                tag = "latestcommentvolley";
                 break;
             case 4:
-                fragment = new PagesFragment();
+                //我的最愛
+                fragment = new MyFavourites();
+                tag = "myfavourites";
                 break;
             case 5:
-                fragment = new WhatsHotFragment();
-                break;*/
+                //新發現
+                fragment = new NewFound();
+                tag = "newfound";
+                break;
+
+            case 6:
+                //設定
+                fragment = new Setting();
+                tag = "setting";
+                break;
 
             default:
                 break;

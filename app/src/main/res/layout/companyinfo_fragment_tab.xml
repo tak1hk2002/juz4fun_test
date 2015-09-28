@@ -8,7 +8,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ScrollView
-
+        android:id="@+id/parent_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -26,72 +26,85 @@
                 android:layout_height="174dp"
                 android:layout_above="@+id/viewPagerIndicator" />
 
-            <LinearLayout
-                android:id="@+id/viewPagerIndicator"
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp" >
+            <com.viewpagerindicator.UnderlinePageIndicator
+                android:id="@+id/indicator"
+                android:layout_width="fill_parent"
+                android:layout_height="5dp" />
 
-                <LinearLayout
-                    android:id="@+id/viewPagerCountDots"
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:id="@+id/company_title" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:gravity="center"
-                    android:orientation="horizontal" >
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="30dp"
-                    android:textColor="#000000"
-                    android:gravity="center"
-                    android:id="@+id/title" />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/like_image"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:id="@+id/like"
+                        android:layout_toRightOf="@id/like_image"/>
+                </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:layout_weight="1"
-                    android:textColor="#000000"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:id="@+id/like" />
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:layout_weight="1"
-                    android:textColor="#000000"
+                    android:layout_weight="0.25">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/fair_image"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:textColor="#000000"
+                        android:id="@+id/fair"
+                        android:layout_toRightOf="@+id/fair_image"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:id="@+id/fair" />
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:layout_weight="1"
-                    android:textColor="#000000"
+                    android:layout_weight="0.25">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/dislike_image"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:textColor="#000000"
+                        android:id="@+id/dislike"
+                        android:layout_toRightOf="@+id/dislike_image"/>
+                </RelativeLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:id="@+id/dislike" />
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:layout_weight="1"
-                    android:textColor="#000000"
-                    android:gravity="center"
-                    android:id="@+id/average_score" />
+                    android:layout_weight="0.25"
+                    android:id="@+id/my_favourite" />
             </LinearLayout>
 
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DaMonday</string>
+    <string name="app_name">Juz4fun</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
@@ -32,6 +32,8 @@
     <string name="tab_comment">玩評</string>
     <string name="tab_photo">相片</string>
 
+    <!-- media controller-->
+    <string name="description">Media Controls</string>
 
     <!--navigation drawer-->
     <string name="drawer_open">Open navigation drawer</string>
@@ -39,18 +41,20 @@
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
-        <item >Home</item>
-        <item >Find People</item>
-        <item >Photos</item>
-        <item >Communities</item>
-        <item >Pages</item>
-        <item >What\'s Hot</item>
+        <item >主頁</item>
+        <item >進階搜尋</item>
+        <item >排行榜</item>
+        <item >最新評論</item>
+        <item >我的最愛</item>
+        <item >新發現</item>
+        <item >設定</item>
     </string-array>
 
 
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
+        <item>@drawable/ic_icon</item>
         <item>@drawable/ic_icon</item>
         <item>@drawable/ic_icon</item>
         <item>@drawable/ic_icon</item>
@@ -66,6 +70,15 @@
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
+
+
+    <!--comment detail-->
+    <string name="commentDetail_max_score">/5</string>
+    <string name="commentDetail_fun">趣味</string>
+    <string name="commentDetail_service">服務</string>
+    <string name="commentDetail_environment">環境</string>
+    <string name="commentDetail_equipment">設備</string>
+    <string name="commentDetail_price">抵玩</string>
 
 
 </resources>

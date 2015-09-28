@@ -13,7 +13,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import function.GetPreviousObject;
 
-public class MapsActivity extends FragmentActivity {
+public class    MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -72,6 +72,7 @@ public class MapsActivity extends FragmentActivity {
         GetPreviousObject passedObject = (GetPreviousObject)intent.getSerializableExtra("LatLng");
         // 建立位置的座標物件
         LatLng place = new LatLng(passedObject.getLatitude(), passedObject.getLongitude());
+        System.out.println(place);
         String companyName = passedObject.getCompanyName();
         // 移動地圖
         moveMap(place, companyName);

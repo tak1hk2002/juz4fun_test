@@ -27,4 +27,14 @@ public class APIConfig {
     public String getUrlDetail(){
         return "http://damonday.tk/api/entertainment/details/?ent_id="+id;
     }
+
+    //ent comment
+    public String getUrlComment(){
+       return "http://damonday.tk/api/comment/ent_comment/?ent_id="+id+"&page=";
+    }
+
+    public String getUrlCommentDetail(){
+        return "http://damonday.tk/api/comment/detail/?id="+id;
+    }
+
 }
