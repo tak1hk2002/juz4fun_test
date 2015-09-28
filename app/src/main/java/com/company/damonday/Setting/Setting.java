@@ -45,7 +45,7 @@ private LinearLayout islogouted;
 //                bundle.putString("ent_id", Integer.toString(companyInfoItems.get(position).getEnt_id()));
                 //              fragmentTabs_try = new FragmentTabs_try();
 //                fragmentTabs_try.setArguments(bundle);
-                About_us about_us_fragment = new About_us();
+                AboutUs about_us_fragment = new AboutUs();
 
                 FragmentManager fragmentManager = getFragmentManager();
                 System.out.println(fragmentManager.getBackStackEntryCount());
