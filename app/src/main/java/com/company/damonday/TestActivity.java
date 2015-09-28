@@ -21,7 +21,7 @@ import android.widget.ListView;
 
 import com.company.damonday.LatestComment.latestcommentvolley;
 import com.company.damonday.MyFavourites.MyFavourites;
-import com.company.damonday.NewFound.NewFound;
+import com.company.damonday.NewFoundCompany.NewFoundCompany;
 import com.company.damonday.Ranking.NavDrawerListAdapter;
 import com.company.damonday.Ranking.Ranking_try;
 import com.company.damonday.Search.search;
@@ -226,7 +226,7 @@ public class TestActivity extends FragmentActivity {
                 break;
             case 5:
                 //新發現
-                fragment = new NewFound();
+                fragment = new NewFoundCompany();
                 tag = "newfound";
                 break;
 
