@@ -80,5 +80,9 @@
     <string name="commentDetail_equipment">設備</string>
     <string name="commentDetail_price">抵玩</string>
 
+    <!--write comment-->
+    <string name="writeComment_checklogin1">請</string>
+    <string name="writeComment_checklogin2">或</string>
+
 
 </resources>

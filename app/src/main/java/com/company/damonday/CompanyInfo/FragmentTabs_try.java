@@ -32,6 +32,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.company.damonday.CompanyInfo.Fragment.ViewComment.Fragment_ViewComment;
 import com.company.damonday.CompanyInfo.Fragment.ViewCompany.Fragment_ViewCompany;
 import com.company.damonday.CompanyInfo.Fragment.ViewCompany.Fragment_ViewPhoto;
+import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment;
 import com.company.damonday.CompanyInfo.Lib.VideoControllerView;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
@@ -167,7 +168,7 @@ public class FragmentTabs_try extends Fragment implements
                 Fragment_ViewComment.class, bundle);
         mTabHost.addTab(
                 mTabHost.newTabSpec("我要評論").setIndicator("我要評論"),
-                Fragment_ViewPhoto.class, bundle);
+                Fragment_ViewWriteComment.class, bundle);
 
 
 
