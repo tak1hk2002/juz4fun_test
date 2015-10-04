@@ -35,6 +35,7 @@ private LinearLayout islogouted;
 
 
         Button button_aboutus =(Button)view.findViewById(R.id.button_aboutus);
+        Button button_feedback =(Button)view.findViewById(R.id.button_feedback);
         button_aboutus.setOnClickListener(new Button.OnClickListener() {
 
             @Override
@@ -59,7 +60,29 @@ private LinearLayout islogouted;
 
         });
 
+        button_feedback.setOnClickListener(new Button.OnClickListener() {
 
+            @Override
+
+            public void onClick(View v) {
+
+                Bundle bundle = new Bundle();
+//                bundle.putString("ent_id", Integer.toString(companyInfoItems.get(position).getEnt_id()));
+                //              fragmentTabs_try = new FragmentTabs_try();
+//                fragmentTabs_try.setArguments(bundle);
+                FeedBack feedback_fragment = new FeedBack();
+
+                FragmentManager fragmentManager = getFragmentManager();
+                System.out.println(fragmentManager.getBackStackEntryCount());
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("setting"));
+                fragmentTransaction.add(R.id.frame_container, feedback_fragment, "feedback").addToBackStack(null);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.commit();
+
+            }
+
+        });
 
         return view;
     }

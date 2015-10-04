@@ -28,7 +28,7 @@ import com.company.damonday.R;
 
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.feedback, container, false);
+            View view = inflater.inflate(R.layout.setting_feedback, container, false);
 
             return view;
         }

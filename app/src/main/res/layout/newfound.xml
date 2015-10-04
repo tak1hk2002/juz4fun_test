@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
 
     <LinearLayout
@@ -10,13 +11,19 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:divider="@color/primary_dark_material_dark"
+        android:showDividers="end"
         >
 
-        <TextView android:text="公司名稱 *" android:layout_width="wrap_content"
+        <TextView android:text="公司名稱 *"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:textSize="30dp"
-            android:layout_weight="1.07" />
+            android:textSize="24dp"
+            android:layout_weight="1.07"
+            />
 
         <EditText
             android:layout_width="157dp"
@@ -27,16 +34,20 @@
     </LinearLayout>
 
 
+
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp">
 
         <TextView android:text="公司電話 *" android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:textSize="30dp"
+            android:textSize="24dp"
             android:layout_weight="1.07" />
 
         <EditText
@@ -48,16 +59,20 @@
 
     </LinearLayout>
 
+
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp">
 
         <TextView android:text="公司類別 *" android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:textSize="30dp"
+            android:textSize="24dp"
             android:layout_weight="1.07" />
 
         <EditText
@@ -72,12 +87,14 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp">
 
         <TextView android:text="公司地址 *" android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:textSize="30dp"
+            android:textSize="24dp"
             android:layout_weight="1.07" />
 
         <EditText
@@ -93,12 +110,14 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp">
 
         <TextView android:text="消費" android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:textSize="30dp"
+            android:textSize="24dp"
             android:layout_weight="1.07" />
 
         <EditText
@@ -114,12 +133,14 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp">
 
         <TextView android:text="營業時間" android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:textSize="30dp"
+            android:textSize="24dp"
             android:layout_weight="1.07" />
 
         <EditText
@@ -138,7 +159,9 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp">
 
         <Button
             android:layout_width="0dp"
