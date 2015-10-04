@@ -23,7 +23,7 @@ import java.util.Map;
  * Created by lamtaklung on 13/9/15.
  */
 public class Fragment_ViewWriteComment extends Fragment {
-
+//hi
     private SQLiteHandler db;
     private SessionManager session;
     private View view;
