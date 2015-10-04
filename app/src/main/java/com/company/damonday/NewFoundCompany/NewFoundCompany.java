@@ -18,6 +18,7 @@ public class NewFoundCompany extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.setting);
+        //hi
 
 
 
