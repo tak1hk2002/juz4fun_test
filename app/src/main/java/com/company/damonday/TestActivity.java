@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,12 +47,13 @@ public class TestActivity extends FragmentActivity {
     // slide menu items
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
-
+    private CharSequence tempmtitle;
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("onCreate", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer);
 
@@ -140,6 +142,8 @@ public class TestActivity extends FragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {                 //action bar 出現
+
+        Log.d("onCreateOptionsMenu", "onCreateOptionsMenu");
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
        // return true;
@@ -152,6 +156,9 @@ public class TestActivity extends FragmentActivity {
 //            return true;
 //        }
         // Handle action bar actions click
+
+
+        Log.d("hihihihi", Integer.toString(item.getItemId()));
        switch (item.getItemId()) {
             case R.id.btnMyMenu:
 
@@ -175,7 +182,31 @@ public class TestActivity extends FragmentActivity {
 
 
 
-            default:
+            default:                        //tomc 13/10/2015 press back button in menu
+
+                mDrawerLayout.closeDrawer(Gravity.RIGHT);
+
+
+                //finish();
+               // onKeyDown(KeyEvent.KEYCODE_BACK, null);     //tomc 13/10/2015 call
+
+                onBackPressed();            //tomc 13/10/2015 call back button activity
+                //Log.d("222222","rrrrrrr");
+
+                //setTitle("dddd");
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                System.out.println("tom");
+                System.out.println(fragmentManager.getBackStackEntryCount());
+
+                if (fragmentManager.getBackStackEntryCount()==0){
+                    //如果返主頁
+                    setTitle(navMenuTitles[0]);}
+                else{
+                    //如果不是返主頁
+                    setTitle(mTitle);
+                }
+
+                //mDrawerLayout.closeDrawer(Gravity.RIGHT);
                 return super.onOptionsItemSelected(item);
         }
     }
@@ -185,10 +216,13 @@ public class TestActivity extends FragmentActivity {
      */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        Log.d("onPrepareOptionsMenu", "onPrepareOptionsMenu");
+
         // if nav drawer is opened, hide the action items
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         //menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
+
     }
 
     /**
@@ -246,7 +280,7 @@ public class TestActivity extends FragmentActivity {
             //clear all of the fragment at the stack
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-            System.out.println(fragmentManager.getBackStackEntryCount());
+            //System.out.println(fragmentManager.getBackStackEntryCount());
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frame_container, fragment, tag).addToBackStack("main");
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -255,6 +289,10 @@ public class TestActivity extends FragmentActivity {
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);
+
+            tempmtitle= mTitle;
+            System.out.println("tempmtitle="+tempmtitle);
+
             setTitle(navMenuTitles[position]);
             mDrawerLayout.closeDrawer(mDrawerList);
         } else {
@@ -276,14 +314,19 @@ public class TestActivity extends FragmentActivity {
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
+        Log.d("onPostCreate", "onPostCreate ");
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
+
         mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        Log.d("onConfigurationChanged", "onConfigurationChanged");
         super.onConfigurationChanged(newConfig);
+
+
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }

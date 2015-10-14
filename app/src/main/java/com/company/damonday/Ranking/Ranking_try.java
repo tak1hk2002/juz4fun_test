@@ -86,12 +86,13 @@ public class Ranking_try extends Fragment {
 
 
                 FragmentManager fragmentManager = getFragmentManager();
-                System.out.println(fragmentManager.getBackStackEntryCount());
+               // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("ranking"));
                 fragmentTransaction.add(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
+
             }
         });
 
