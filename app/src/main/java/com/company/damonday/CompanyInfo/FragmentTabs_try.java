@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ import com.company.damonday.CompanyInfo.Lib.VideoControllerView;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.TabManager;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 
@@ -159,7 +161,7 @@ public class FragmentTabs_try extends Fragment implements
         mTabHost = (FragmentTabHost) rootView.findViewById(android.R.id.tabhost);
         mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);
 
-        mTabHost.setCurrentTab(1);//設定一開始就跳到第一個分頁
+        mTabHost.setCurrentTab(0);//設定一開始就跳到第一個分頁
         mTabHost.addTab(
                 mTabHost.newTabSpec("概要").setIndicator("概要"),
                 Fragment_ViewCompany.class, bundle);

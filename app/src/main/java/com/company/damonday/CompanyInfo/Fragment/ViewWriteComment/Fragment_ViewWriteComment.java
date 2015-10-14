@@ -1,8 +1,12 @@
 package com.company.damonday.CompanyInfo.Fragment.ViewWriteComment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +15,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.company.damonday.Login.Fragment.Fragment_Login;
 import com.company.damonday.Login.SQLiteHandler;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.R;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +35,7 @@ public class Fragment_ViewWriteComment extends Fragment {
     private SessionManager session;
     private View view;
     private ListView listView;
+    private AccessToken accessToken;
     private List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
 
     @Override
@@ -38,6 +46,9 @@ public class Fragment_ViewWriteComment extends Fragment {
 
         // session manager
         session = new SessionManager(activity);
+
+        accessToken = AccessToken.getCurrentAccessToken();
+        Log.d("accessToken", accessToken.toString());
     }
 
     @Override
@@ -46,6 +57,16 @@ public class Fragment_ViewWriteComment extends Fragment {
         super.onCreate(savedInstanceState);
 
         Log.d("isLoggedIn", Boolean.toString(session.isLoggedIn()));
+
+        AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
+                updateWithToken(newAccessToken);
+            }
+
+        };
+
+        updateWithToken(AccessToken.getCurrentAccessToken());
 
 
     }
@@ -62,6 +83,14 @@ public class Fragment_ViewWriteComment extends Fragment {
             btnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Fragment_Login fragment_login = new Fragment_Login();
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    System.out.println(fragmentManager.getBackStackEntryCount());
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail"));
+                    fragmentTransaction.add(R.id.frame_container, fragment_login, "login").addToBackStack(null);
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
 
                 }
             });
@@ -85,6 +114,33 @@ public class Fragment_ViewWriteComment extends Fragment {
 
 
 
+    }
+
+    private void updateWithToken(AccessToken currentAccessToken) {
+
+        if (currentAccessToken != null) {
+            /*new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    Intent i = new Intent(SplashScreen.this, GeekTrivia.class);
+                    startActivity(i);
+
+                    finish();
+                }
+            });*/
+        } else {
+            /*new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    Intent i = new Intent(SplashScreen.this, Login.class);
+                    startActivity(i);
+
+                    finish();
+                }
+            });*/
+        }
     }
 
 }
