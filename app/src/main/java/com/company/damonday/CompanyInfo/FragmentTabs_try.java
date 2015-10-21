@@ -103,7 +103,7 @@ public class FragmentTabs_try extends Fragment implements
 
         //pass entId to fragment
         Bundle bundle = new Bundle();
-        bundle.putString("ent_Id", entId);
+        bundle.putString("ent_id", entId);
 
 
 

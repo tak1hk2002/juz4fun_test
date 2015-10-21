@@ -80,7 +80,7 @@ public class Fragment_ViewCompany extends Fragment {
 
         try {
             //get id from previous page
-            entId = getArguments().getString("ent_Id");
+            entId = getArguments().getString("ent_id");
         }catch(Exception e){
             e.printStackTrace();
             Toast.makeText(getActivity(), "No data loaded", Toast.LENGTH_LONG).show();

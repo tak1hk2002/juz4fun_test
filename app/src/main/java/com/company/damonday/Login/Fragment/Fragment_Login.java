@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +15,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.Login.DisplayLogin;
+import com.company.damonday.Login.FragmentTabs;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MainActivity;
@@ -44,11 +49,19 @@ public class Fragment_Login extends Fragment {
     private ProgressDialog pDialog;
     private SessionManager session;
     private View v;
+    private String entId;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            entId = getArguments().getString("ent_id");
+            Log.d("entId", entId);
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -59,6 +72,8 @@ public class Fragment_Login extends Fragment {
         inputUsername = (EditText)v.findViewById(R.id.username);
         inputPassword = (EditText)v.findViewById(R.id.password);
         btnLogin = (Button) v.findViewById(R.id.btnLogin);
+        TextView txtRegister = (TextView) v.findViewById(R.id.register);
+        TextView txtForgotPassword = (TextView) v.findViewById(R.id.forgot_password);
 
 
         // Progress dialog
@@ -93,6 +108,19 @@ public class Fragment_Login extends Fragment {
                 }
             }
 
+        });
+
+        txtRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment_Registration fragment_registration = new Fragment_Registration();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_container, fragment_registration, "register").addToBackStack(null);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.commit();
+
+            }
         });
 
 
@@ -132,7 +160,6 @@ public class Fragment_Login extends Fragment {
                         // Create login session
                         session.setLogin(true);
 
-
                         //display message login successfully
                         AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
                         ab.setTitle(R.string.login_success);
@@ -141,8 +168,39 @@ public class Fragment_Login extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                Intent in = new Intent(v.getContext(), MainActivity.class);
-                                v.getContext().startActivity(in);
+                                if(entId != null){
+                                    Bundle bundle = new Bundle();
+                                    FragmentTabs_try fragmentTabs_try = new FragmentTabs_try();
+                                    bundle.putString("ent_id", entId);
+                                    fragmentTabs_try.setArguments(bundle);
+
+
+                                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                    System.out.println(fragmentManager.getBackStackEntryCount());
+                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                    //delete last fragment
+                                    fragmentManager.popBackStack();
+                                    //delete last fragment
+                                    fragmentManager.popBackStack();
+                                    //delete loginfragment
+                                    /*Fragment loginFragment = getActivity().getSupportFragmentManager().findFragmentByTag("login");
+                                    Fragment companyDetailFragment = getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail");
+                                    if(loginFragment != null)
+                                        fragmentTransaction.remove(loginFragment);
+                                    if(companyDetailFragment != null)
+                                        fragmentTransaction.remove(companyDetailFragment);*/
+
+                                    //fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("home"));
+                                    fragmentTransaction.add(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
+
+                                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                    fragmentTransaction.commit();
+
+
+                                }else {
+                                    Intent in = new Intent(v.getContext(), MainActivity.class);
+                                    v.getContext().startActivity(in);
+                                }
                             }
                         });
                         ab.create().show();

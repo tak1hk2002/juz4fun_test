@@ -52,7 +52,7 @@ public class Fragment_ViewComment extends Fragment {
 
         try {
             //get id from previous page
-            entId = getArguments().getString("ent_Id");
+            entId = getArguments().getString("ent_id");
             Log.d("ent_id", entId);
         }catch(Exception e){
             e.printStackTrace();

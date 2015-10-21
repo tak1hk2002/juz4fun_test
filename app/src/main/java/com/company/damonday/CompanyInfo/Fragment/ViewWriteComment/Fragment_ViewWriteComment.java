@@ -14,8 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.company.damonday.Login.Fragment.Fragment_Login;
+import com.company.damonday.Login.Fragment.Fragment_Registration;
 import com.company.damonday.Login.SQLiteHandler;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.R;
@@ -37,18 +40,28 @@ public class Fragment_ViewWriteComment extends Fragment {
     private ListView listView;
     private AccessToken accessToken;
     private List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
+    private String entId;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
+        //get previous entid
+        try {
+            entId = getArguments().getString("ent_id");
+            Log.d("entId", entId);
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
         // SqLite database handler
         db = new SQLiteHandler(activity);
 
         // session manager
         session = new SessionManager(activity);
 
-        accessToken = AccessToken.getCurrentAccessToken();
-        Log.d("accessToken", accessToken.toString());
+        /*accessToken = AccessToken.getCurrentAccessToken();
+        Log.d("accessToken", accessToken.toString());*/
     }
 
     @Override
@@ -75,6 +88,8 @@ public class Fragment_ViewWriteComment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        //check login
+        //no login, go to login or register option screen
         if (!session.isLoggedIn()) {
             view = inflater.inflate(R.layout.login_login_or_register, container, false);
             Button btnLogin = (Button) view.findViewById(R.id.login);
@@ -83,7 +98,12 @@ public class Fragment_ViewWriteComment extends Fragment {
             btnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //pass variable to next fragment
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ent_id", entId);
                     Fragment_Login fragment_login = new Fragment_Login();
+                    fragment_login.setArguments(bundle);
+
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     System.out.println(fragmentManager.getBackStackEntryCount());
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -98,6 +118,19 @@ public class Fragment_ViewWriteComment extends Fragment {
             btnRegister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //pass variable to next fragment
+                    Bundle bundle = new Bundle();
+                    bundle.putString("writeComment", "register");
+                    Fragment_Registration fragment_registration = new Fragment_Registration();
+                    fragment_registration.setArguments(bundle);
+
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    System.out.println(fragmentManager.getBackStackEntryCount());
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail"));
+                    fragmentTransaction.add(R.id.frame_container, fragment_registration, "register").addToBackStack(null);
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
 
                 }
             });
