@@ -1,13 +1,11 @@
-package com.company.damonday.Ranking;
+package com.company.damonday.Home;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +18,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.company.damonday.CompanyInfo.FragmentTabs;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.R;
+import com.company.damonday.Ranking.CompanyInfo;
+import com.company.damonday.Ranking.MyAdapter;
+import com.company.damonday.Ranking.Ranking;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 
@@ -36,8 +36,10 @@ import java.util.List;
 /**
  * Created by lamtaklung on 3/8/15.
  */
-public class Ranking_try extends Fragment {
+public class Home extends Fragment {
 
+    // json array response url
+    private String urlJsonObj = "http://damonday.tk/api/entertainment/home/";
 
     private static String TAG = Ranking.class.getSimpleName();
 
@@ -58,7 +60,7 @@ public class Ranking_try extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         //init view
-        View view = inflater.inflate(R.layout.ranking, container, false);
+        View view = inflater.inflate(R.layout.home, container, false);
 
         gridView = (GridView)view.findViewById(R.id.gridView);
 
@@ -86,7 +88,7 @@ public class Ranking_try extends Fragment {
                 FragmentManager fragmentManager = getFragmentManager();
                // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("ranking"));
+                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("home"));
                 fragmentTransaction.add(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
@@ -126,7 +128,7 @@ public class Ranking_try extends Fragment {
     private void makeJsonArrayRequest() {
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                APIConfig.URL_RANKING, null, new Response.Listener<JSONObject>() {
+                APIConfig.URL_HOME, null, new Response.Listener<JSONObject>() {
 
             public void onResponse(JSONObject response) {
                 Log.d(TAG, response.toString());
@@ -145,7 +147,7 @@ public class Ranking_try extends Fragment {
                             CompanyInfo companyInfo = new CompanyInfo();
                             JSONObject company = (JSONObject) rank
                                     .get(i);
-                            companyInfo.setTitle(company.getString("name"));
+                           // companyInfo.setTitle(company.getString("name"));
                             companyInfo.setUrl(company.getString("cover_image"));
                             companyInfo.setEnt_id(company.getInt("ID"));
 

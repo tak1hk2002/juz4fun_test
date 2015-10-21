@@ -23,6 +23,8 @@ public class APIConfig {
     //Ranking url
     public static String URL_RANKING = "http://damonday.tk/api/entertainment/rank/";
 
+    public static String URL_HOME = "http://damonday.tk/api/entertainment/home/";
+
     //Detail url
     public String getUrlDetail(){
         return "http://damonday.tk/api/entertainment/details/?ent_id="+id;

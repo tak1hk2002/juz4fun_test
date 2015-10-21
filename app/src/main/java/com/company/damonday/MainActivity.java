@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 
+import com.company.damonday.Home.Home;
 import com.company.damonday.Login.FragmentTabs;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.Ranking.Ranking;
@@ -76,8 +77,10 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, Ranking.class);
+               // Intent i = new Intent(MainActivity.this, Ranking.class);
+                Intent i = new Intent(MainActivity.this, Home.class);  //tomc 13/10/2015 start
                 startActivity(i);
+                
             }
         });
 

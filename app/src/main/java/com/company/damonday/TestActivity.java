@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.company.damonday.Home.Home;
 import com.company.damonday.LatestComment.latestcommentvolley;
 import com.company.damonday.MyFavourites.MyFavourites;
 import com.company.damonday.NewFoundCompany.NewFoundCompany;
@@ -108,7 +109,7 @@ public class TestActivity extends FragmentActivity {
                 R.string.app_name // nav drawer close - description for accessibility
         ) {
             public void onDrawerClosed(View view) {
-               getActionBar().setTitle(mTitle);
+                getActionBar().setTitle(mTitle);
                 // calling onPrepareOptionsMenu() to show action bar icons
                 invalidateOptionsMenu();
             }
@@ -129,7 +130,7 @@ public class TestActivity extends FragmentActivity {
 
     /**
      * Slide menu item click listener
-     * */
+     */
     private class SlideMenuClickListener implements
             ListView.OnItemClickListener {
         @Override
@@ -146,7 +147,7 @@ public class TestActivity extends FragmentActivity {
         Log.d("onCreateOptionsMenu", "onCreateOptionsMenu");
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
-       // return true;
+        // return true;
     }
 
     @Override
@@ -159,7 +160,7 @@ public class TestActivity extends FragmentActivity {
 
 
         Log.d("hihihihi", Integer.toString(item.getItemId()));
-       switch (item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.btnMyMenu:
 
                 if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {//tomc 31/8/2015
@@ -181,33 +182,34 @@ public class TestActivity extends FragmentActivity {
 //                return true;
 
 
-
             default:                        //tomc 13/10/2015 press back button in menu
 
-                mDrawerLayout.closeDrawer(Gravity.RIGHT);
-
-
-                //finish();
-               // onKeyDown(KeyEvent.KEYCODE_BACK, null);     //tomc 13/10/2015 call
-
+//                mDrawerLayout.closeDrawer(Gravity.RIGHT);
+//
+//
+//                //finish();
+//                // onKeyDown(KeyEvent.KEYCODE_BACK, null);     //tomc 13/10/2015 call
+//
                 onBackPressed();            //tomc 13/10/2015 call back button activity
-                //Log.d("222222","rrrrrrr");
-
-                //setTitle("dddd");
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                System.out.println("tom");
-                System.out.println(fragmentManager.getBackStackEntryCount());
-
-                if (fragmentManager.getBackStackEntryCount()==0){
-                    //如果返主頁
-                    setTitle(navMenuTitles[0]);}
-                else{
-                    //如果不是返主頁
-                    setTitle(mTitle);
-                }
-
-                //mDrawerLayout.closeDrawer(Gravity.RIGHT);
+//                //Log.d("222222","rrrrrrr");
+//
+//                //setTitle("dddd");
+//                FragmentManager fragmentManager = getSupportFragmentManager();
+//                System.out.println("tom");
+//                System.out.println(fragmentManager.getBackStackEntryCount());
+//
+//                if (fragmentManager.getBackStackEntryCount() == 0) {
+//                    //如果返主頁
+//                    setTitle(navMenuTitles[0]);
+//                    displayView(0);
+//                } else {
+//                    //如果不是返主頁
+//                    setTitle(mTitle);
+//                }
+//
+//                //mDrawerLayout.closeDrawer(Gravity.RIGHT);
                 return super.onOptionsItemSelected(item);
+
         }
     }
 
@@ -227,7 +229,7 @@ public class TestActivity extends FragmentActivity {
 
     /**
      * Diplaying fragment view for selected nav drawer list item
-     * */
+     */
     private void displayView(int position) {
         // update the main content by replacing fragments
         Fragment fragment = null;
@@ -235,8 +237,8 @@ public class TestActivity extends FragmentActivity {
         switch (position) {
             case 0:
                 //主頁
-                fragment = new Ranking_try();
-                tag = "ranking";
+                fragment = new Home();
+                tag = "home";
                 break;
             case 1:
                 //進階搜尋
@@ -290,8 +292,8 @@ public class TestActivity extends FragmentActivity {
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);
 
-            tempmtitle= mTitle;
-            System.out.println("tempmtitle="+tempmtitle);
+            tempmtitle = mTitle;
+            System.out.println("tempmtitle=" + tempmtitle);
 
             setTitle(navMenuTitles[position]);
             mDrawerLayout.closeDrawer(mDrawerList);
@@ -331,6 +333,32 @@ public class TestActivity extends FragmentActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+
+    @Override
+    public void onBackPressed() {
+
+        super.onBackPressed();
+        System.out.println("yo");
+
+        mDrawerLayout.closeDrawer(Gravity.RIGHT);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        System.out.println(fragmentManager.getBackStackEntryCount());
+
+        if (fragmentManager.getBackStackEntryCount() == 0) {
+            //如果返主頁
+            setTitle(navMenuTitles[0]);
+            displayView(0);
+        } else {
+            //如果不是返主頁
+            setTitle(mTitle);
+        }
+
+
+        //moveTaskToBack(true);
+      //  super.onBackPressed(); // allows standard use of backbutton for page 1
+    }
 }
 
 

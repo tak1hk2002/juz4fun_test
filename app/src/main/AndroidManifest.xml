@@ -40,6 +40,9 @@
             android:name=".Ranking.Ranking"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".Home.Home"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".CompanyInfo.FragmentTabs"
             android:screenOrientation="portrait"/>
         <activity
