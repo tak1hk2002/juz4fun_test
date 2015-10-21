@@ -22,6 +22,7 @@
        <EditText
            android:layout_width="match_parent"
            android:layout_height="match_parent"
+           android:id="@+id/subject"
            android:layout_marginLeft="10dp"/>
 
 
@@ -44,7 +45,8 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:id="@+id/email"/>
 
 
     </LinearLayout>
@@ -67,7 +69,8 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:id="@+id/content"/>
 
 
     </LinearLayout>
@@ -85,14 +88,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.6"
             android:text="重設"
-            android:id="@+id/button1"
+            android:id="@+id/button_reset"
             android:layout_gravity="left" />
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.6"
             android:text="提交"
-            android:id="@+id/button2"
+            android:id="@+id/button_submit"
             android:layout_gravity="right" />
 
 

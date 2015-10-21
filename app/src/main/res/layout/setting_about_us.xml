@@ -7,29 +7,36 @@
 
     <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
             android:textSize="30dp"
             android:text="有關我們"
             android:gravity="center" />
 
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-     <TextView
+    <TextView
               android:layout_width="match_parent"
-              android:layout_height="0dp"
-             android:layout_weight="5"
+              android:layout_height="wrap_content"
+
              android:textSize="20dp"
-             android:text="柏斯音樂集團於1986年創立，從一間規模細小的琴行，經過二十六年的努力，迄今已成為中港最具規模、最具領導地位的大型樂器專門店。
-柏斯音樂集團的創立，建基於一個理想，一個遠大的使命: 「推廣音樂文化，培育音樂人才」。為了成就這個使命，集團積極推動音樂文化的工作，讓學習音樂，不是只為了成為音樂家或演奏家，而是享受音樂帶來的生活樂趣﹗"
+
+             android:id="@+id/textview"
+
              android:gravity="center" />
 
-    <Button
-        android:layout_width="128dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.36"
-        android:text="聯絡我們"
-        android:id="@+id/button2"
-        android:layout_gravity="center_horizontal" />
+</ScrollView>
+
+    <!--<Button-->
+        <!--android:layout_width="128dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="0.36"-->
+        <!--android:text="聯絡我們"-->
+        <!--android:id="@+id/button2"-->
+        <!--android:layout_gravity="center_horizontal" />-->
+
 
 
 </LinearLayout>

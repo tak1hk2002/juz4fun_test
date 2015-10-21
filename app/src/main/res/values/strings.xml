@@ -88,5 +88,8 @@
     <string name="writeComment_checklogin1">請</string>
     <string name="writeComment_checklogin2">或</string>
 
+    <!--feedback-->
+    <string name="submit_success">提交成功</string>
+
 
 </resources>

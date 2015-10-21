@@ -23,7 +23,18 @@ public class APIConfig {
     //Ranking url
     public static String URL_RANKING = "http://damonday.tk/api/entertainment/rank/";
 
+    //Home
     public static String URL_HOME = "http://damonday.tk/api/entertainment/home/";
+
+
+    //Setting_about_us
+    public static String URL_SETTING_ABOUT_US = "http://damonday.tk/api/system/about_us";
+
+    //Setting_feedback
+    public static String URL_SETTING_feedback = "http://damonday.tk/api/system/submit_opinion";
+
+    //newfound
+    public static String URL_newfound = "http://damonday.tk/api/entertainment/new_entertainment";
 
     //Detail url
     public String getUrlDetail(){

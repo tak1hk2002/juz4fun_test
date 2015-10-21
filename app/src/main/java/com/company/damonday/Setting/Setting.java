@@ -42,7 +42,7 @@ private LinearLayout islogouted;
 
             public void onClick(View v) {
 
-                Bundle bundle = new Bundle();
+                //Bundle bundle = new Bundle();
 //                bundle.putString("ent_id", Integer.toString(companyInfoItems.get(position).getEnt_id()));
                 //              fragmentTabs_try = new FragmentTabs_try();
 //                fragmentTabs_try.setArguments(bundle);
