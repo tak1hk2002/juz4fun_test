@@ -148,7 +148,7 @@ import java.util.Map;
                                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                                 fragmentTransaction.commit();
 
-                                
+
 
 
                             }

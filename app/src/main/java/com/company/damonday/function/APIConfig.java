@@ -36,6 +36,13 @@ public class APIConfig {
     //newfound
     public static String URL_newfound = "http://damonday.tk/api/entertainment/new_entertainment";
 
+
+    //advance search criteria
+
+    public static String URL_Search_criteria="http://damonday.tk/api/entertainment/search_criteria";
+
+
+
     //Detail url
     public String getUrlDetail(){
         return "http://damonday.tk/api/entertainment/details/?ent_id="+id;
@@ -45,6 +52,9 @@ public class APIConfig {
     public String getUrlComment(){
        return "http://damonday.tk/api/comment/ent_comment/?ent_id="+id+"&page=";
     }
+
+
+
 
     public String getUrlCommentDetail(){
         return "http://damonday.tk/api/comment/detail/?id="+id;
