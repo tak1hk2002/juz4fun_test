@@ -96,11 +96,13 @@ public class search extends Fragment {
                                                        public void onItemSelected(AdapterView adapterView, View view, int position, long id) {
                                                            Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
                                                            Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
+                                                           if(adapterView.getSelectedItem().toString().equals("全選"))
+                                                           {array_district=array_area_all;
+                                                               Log.d("tom","all");
+                                                           }
                                                            if(adapterView.getSelectedItem().toString().equals("香港島"))
                                                            {array_district=array_HK_Island;
                                                                Log.d("tom","HK_island");
-                                                               //adapter_district = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,array_district);
-                                                               //spinner_district.setAdapter(adapter_district);
                                                            }
 
                                                            if(adapterView.getSelectedItem().toString().equals("九龍"))
@@ -118,9 +120,11 @@ public class search extends Fragment {
                                                                Log.d("tom_membername:",member);
                                                            }
 
-                                                           adapter_district.notifyDataSetChanged();
-                                                           Log.d("test:", "test");
-
+                                                           //adapter_district.notifyDataSetChanged();
+                                                          // Log.d("test:", "test");
+                                                           adapter_district = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,array_district);
+                                                           adapter_district.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                           spinner_district.setAdapter(adapter_district);
                                                        }
                                                        public void onNothingSelected(AdapterView arg0) {
                                                            Toast.makeText(getActivity(), "您沒有選擇任何項目", Toast.LENGTH_LONG).show();
