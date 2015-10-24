@@ -41,9 +41,17 @@ import java.util.HashMap;
  */
 public class search extends Fragment {
 
-    private Spinner spinnerPrice;
-    private ArrayAdapter adapterPrice;
-    private String[] arrayPrice;
+    private Spinner spinnerPrice,spinner_lagre_district,spinner_district,spinner_category;
+    private ArrayAdapter adapterPrice,adapter_lagre_district,adapter_district,adapter_category;
+    private ArrayList<String> arrayPrice=new ArrayList<String>();
+    private ArrayList<String> array_lage_district=new ArrayList<String>();
+    private ArrayList<String> array_district=new ArrayList<String>();
+    private ArrayList<String> array_area_all=new ArrayList<String>();
+    private ArrayList<String> array_HK_Island=new ArrayList<String>();
+    private ArrayList<String> array_Kowloon=new ArrayList<String>();
+    private ArrayList<String> array_Islands_District=new ArrayList<String>();
+    private ArrayList<String> array_New_Territories=new ArrayList<String>();
+    private ArrayList<String> array_category=new ArrayList<String>();
     private HashMap<String, String> hashPrice = new HashMap<String, String>();
 
     private Button button_search;
@@ -58,12 +66,69 @@ public class search extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.search, container, false);
-        spinnerPrice = (Spinner) view.findViewById(R.id.spinner);
-
+        spinnerPrice = (Spinner) view.findViewById(R.id.spinner_price);
+        spinner_lagre_district= (Spinner) view.findViewById(R.id.spinner_lagre_district);
+        spinner_district= (Spinner) view.findViewById(R.id.spinner_district);
+        spinner_category= (Spinner) view.findViewById(R.id.spinner_category);
 
         button_search =(Button)view.findViewById(R.id.button_search);
         makeJsonArrayRequest();
-        Log.d("JSON", "hiyaaaaa");
+
+
+        adapterPrice = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,arrayPrice);
+        adapter_category = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,array_category);
+        adapter_district = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,array_district);
+        adapter_lagre_district = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,array_lage_district);
+        //設定下拉選單的樣式
+
+        adapterPrice.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter_category.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter_district.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter_lagre_district.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    //spinners ser adapter
+        spinnerPrice.setAdapter(adapterPrice);
+        spinner_category.setAdapter(adapter_category);
+        spinner_district.setAdapter(adapter_district);
+        spinner_lagre_district.setAdapter(adapter_lagre_district);
+
+        //選中時
+        spinner_lagre_district.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+                                                       public void onItemSelected(AdapterView adapterView, View view, int position, long id) {
+                                                           Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+                                                           Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
+                                                           if(adapterView.getSelectedItem().toString().equals("香港島"))
+                                                           {array_district=array_HK_Island;
+                                                               Log.d("tom","HK_island");
+                                                               //adapter_district = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,array_district);
+                                                               //spinner_district.setAdapter(adapter_district);
+                                                           }
+
+                                                           if(adapterView.getSelectedItem().toString().equals("九龍"))
+                                                           {array_district=array_Kowloon;
+                                                               Log.d("tom","kowloon");}
+
+                                                           if(adapterView.getSelectedItem().toString().equals("新界"))
+                                                           {array_district=array_New_Territories;
+                                                               Log.d("tom","NT");}
+                                                           if(adapterView.getSelectedItem().toString().equals("離島"))
+                                                           {array_district=array_Islands_District;
+                                                               Log.d("tom","island");}
+                                                           for (String member:array_district
+                                                                ) {
+                                                               Log.d("tom_membername:",member);
+                                                           }
+
+                                                           adapter_district.notifyDataSetChanged();
+                                                           Log.d("test:", "test");
+
+                                                       }
+                                                       public void onNothingSelected(AdapterView arg0) {
+                                                           Toast.makeText(getActivity(), "您沒有選擇任何項目", Toast.LENGTH_LONG).show();
+                                                       }
+                                                   });
+
+
+
         /*adapterPrice = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,arrayPrice);
         //設定下拉選單的樣式
         adapterPrice.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -116,55 +181,70 @@ public class search extends Fragment {
                 APIConfig.URL_Search_criteria, null, new Response.Listener<JSONObject>() {
 
             public void onResponse(JSONObject response) {
-                System.out.print("hi");
-                Log.d("JSON", "hi0");
                 Log.d("JSON", response.toString());
-                Log.d("JSON","hia");
-                System.out.print("hi");
-                Log.d("JSON", "hib");
 
                 try {
-                    Log.d("JSON", "hic");
-                    System.out.print("hi");
+
                     // loop through each json object
                     String status = response.getString("status");
-                    System.out.print("hi2");
-                    Log.d("JSON", "hic");
+
+
                     JSONObject criteria = response.getJSONObject("data");
-                    System.out.print("hi3");
-                    Log.d("JSON", "hid");
+
                     if(status.equals("success")) {
                         System.out.print("success");
-                        Log.d("JSON", "hie");
-//                        data = rank.getString("value");
-//                        Log.d("JSON", data);
-//                        //textview= (TextView)view.findViewById(R.id.textview);
-//                        textview.setText(data);
+
 
                         JSONArray category = criteria.getJSONArray("category");
-                        System.out.print("category");
-                        Log.d("JSON", "hif");
+                        JSONObject price = criteria.getJSONObject("price_range");
+                        JSONObject district = criteria.getJSONObject("district");
+                        //JSONArray lagre_distinct = criteria.getJSONArray("category");
                         for (int i = 0; i < category.length(); i++) {
-                            System.out.print("hi");
+
                             JSONObject categoryDetail = (JSONObject)category.get(i);
                             String name = categoryDetail.getString("name");
                             String ID = categoryDetail.getString("ID");
-                            hashPrice.put(name, ID);
-                            arrayPrice = new String[category.length()];
-                            arrayPrice[i] = name;
-                            Log.d("JSON", "hit" + arrayPrice[i]);
-                            Log.d("JSON", "hiz" + name);
+                          //  hashPrice.put(name, ID);
+                            //arrayPrice = new String[category.length()];
+                            array_category.add(name);
+                        }
+                        for (int i = 1; i <= price.length(); i++) {
+                            String name = price.getString(String.valueOf(i));
+                            arrayPrice.add(name);
+                        }
+
+                        for (int i = 1; i <= district.length(); i++) {
+
+                            JSONObject districtDetail = district.getJSONObject(String.valueOf(i));
+                            //get distrist
+                            String district_name = districtDetail.getString("district_name");
+                            array_lage_district.add(district_name);
+                            //get area array
+try {
+    JSONArray area = districtDetail.getJSONArray("area");
+    for (int j=0; j < area.length(); j++) {
+        JSONObject areaDetail = (JSONObject) area.get(j);
+        String area_name = areaDetail.getString("area_name");
+       // Log.d("tom", area_name);
+        array_district.add(area_name);
+        array_area_all.add(area_name);
+        if(district_name.equals("香港島"))
+        {array_HK_Island.add(area_name);}
+        if(district_name.equals("九龍"))
+        {array_Kowloon.add(area_name);}
+        if(district_name.equals("新界"))
+        {array_New_Territories.add(area_name);}
+        if(district_name.equals("離島"))
+        {array_Islands_District.add(area_name);}
+    }
+}
+catch (JSONException e){
+    Log.d("tom","the first term全選");
+}
 
                         }
-                        Log.d("JSON", "hiy");
-                        adapterPrice = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,arrayPrice);
-                        //設定下拉選單的樣式
-                        Log.d("JSON", "hiye");
-                        adapterPrice.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinnerPrice.setAdapter(adapterPrice);
-                        Log.d("JSON", "hiyaa");
 
-//
+
 
                     }else{
                         String errorMsg = response.getString("msg");
@@ -173,7 +253,16 @@ public class search extends Fragment {
                                 Toast.LENGTH_LONG).show();
                     }
 
-                    //adapterPrice.notifyDataSetChanged();
+
+
+//                    for(int j=0;j<4;j++){
+//                        Log.d("JSON", "tomtomt" + arrayPrice.get(j));
+//                    }
+                    adapterPrice.notifyDataSetChanged();
+                    adapter_district.notifyDataSetChanged();
+                    adapter_lagre_district.notifyDataSetChanged();
+                    adapter_category.notifyDataSetChanged();
+          // adapterPrice = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,new String[]{"紅茶","奶茶","綠茶"});
 
 
 
