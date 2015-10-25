@@ -1,17 +1,35 @@
 package com.company.damonday.Search;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.company.damonday.CompanyInfo.FragmentTabs_try;
+import com.company.damonday.Home.Home;
+import com.company.damonday.LatestComment.latestcomment;
+import com.company.damonday.LatestComment.latestcomment_Adapter;
 import com.company.damonday.R;
+import com.company.damonday.function.APIConfig;
+import com.company.damonday.function.AppController;
 //import com.company.damonday.adapter.CustomListAdapter;
 //import com.company.damonday.app.AppController;
 //import com.company.damonday.model.Movie;
@@ -21,114 +39,347 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tom on 21/6/15.
  */
-public class search_result extends Activity {
+public class search_result extends Fragment {
+    private String price_id;
+    private String district_id;
+    private String large_district_id;
+    private String category_id;
+    private FragmentTabs_try fragmentTabs_try;
 
-//    private static final String TAG = old_latestcommentvolley.class.getSimpleName();
+    private View view;
+
+    // Log tag
+    private static final String TAG = search.class.getSimpleName();
+
+    // Movies json url
+    // private static final String url = "http://damonday.tk/api/comment/latest_comments/?page=1";
+    private ProgressDialog pDialog;
+    private List<CompanyObject> companyObjects = new ArrayList<CompanyObject>();
+    private ListView listView;
+    private search_adapter adapter;
+    private String geturl="";
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+//GET BUNDLE FROM LAST FRAGMENT
+        Bundle bundle = this.getArguments();
+
+        price_id = bundle.getString("price_id");
+        district_id = bundle.getString("district_id");
+        large_district_id = bundle.getString("large_district_id");
+        category_id = bundle.getString("category_id");
+geturl();
+
+
+        Log.d("search", price_id + "+" + district_id + "+" + large_district_id + "+" + category_id);
+
+    }
+
+
+    public String geturl(){
+        geturl=APIConfig.URL_Advance_Search;
+
+            geturl=String.format(geturl+"?price_range="+price_id+"&cat_id="+category_id+"&area_id="+district_id+"&district_id="+large_district_id);
+
+Log.d("geturl",geturl);
+        return geturl;
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.search_result, container, false);
+        pDialog = new ProgressDialog(getActivity());
+        // Showing progress dialog before making http request
+        pDialog.setMessage("Loading...");
+        pDialog.show();
+        //setContentView(R.layout.latestcomment);
+        submitting(category_id, district_id, large_district_id, price_id);
+        listView = (ListView) view.findViewById(R.id.list);
+        adapter = new search_adapter(getActivity(), companyObjects);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+
+                //pass the following object to next activity
+                /*Intent i = new Intent(Ranking.this, FragmentTabs.class);
+                i.putExtra("Ent_id", companyInfoItems.get(position).getEnt_id());
+                startActivity(i);*/
+
+                //pass object to next fragment
+                Bundle bundle = new Bundle();
+                bundle.putString("ent_id", companyObjects.get(position).getUser_id());
+                fragmentTabs_try = new FragmentTabs_try();
+                fragmentTabs_try.setArguments(bundle);
+
+
+                FragmentManager fragmentManager = getFragmentManager();
+                // System.out.println(fragmentManager.getBackStackEntryCount());
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("search_result"));
+                fragmentTransaction.add(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.commit();
+
+            }
+        });
+
+
+        return view;
+    }
+
+    // changing action bar color
+    /*    getActionBar().setBackgroundDrawable(
+                new ColorDrawable(Color.parseColor("#1b1b1b")));*/
+
+
+    // Creating volley request obj
+//            StringRequest latestcommentReq = new StringRequest(APIConfig.URL_Advance_Search,
+//                    new Response.Listener<String>() {
+//                        @Override
+//                        public void onResponse(String response) {
+//                            Log.d("TAG", response);
+//                            hideDialog();
 //
-//    // Movies json url
-//    private static final String url = "http://api.androidhive.info/json/movies.json";
-//    private ProgressDialog pDialog;
-//    private List<Movie> movieList = new ArrayList<Movie>();
-//    private ListView listView;
-//    private CustomListAdapter adapter;
+//                            try{
+//                                JSONObject jObject = new JSONObject(response);
+//                                // String aJsonString = jObject.getString("result");
+//                                //String bJsonString = jObject.getString("timestamp");
+//                                JSONArray jArray = jObject.getJSONArray("data");
+//                                // Parsing json
+//                                for (int i = 0; i < jArray.length(); i++) {
+//                                    try {
+//                                        JSONObject oneObject = jArray.getJSONObject(i);
+//                                        //JSONObject jObject = new JSONObject(response);
+//                                        // String aJsonString = jObject.getString("result");
+//                                        //String bJsonString = jObject.getString("timestamp");
+//                                        // JSONArray jArray = jObject.getJSONArray("data");
 //
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.search_result);
+//                                        // JSONObject obj = response.getJSONObject(i);
+//                                        latestcomment latestcomment = new latestcomment();
+//                                        latestcomment.setTitle(oneObject.getString("title"));
+//                                        latestcomment.setThumbnailUrl(oneObject.getString("profile_picture"));
+//                                        latestcomment.setAveage_scrore(oneObject.getString("average_score"));
 //
-//        listView = (ListView) findViewById(R.id.list);
-//        adapter = new CustomListAdapter(this, movieList);
-//        listView.setAdapter(adapter);
+//                                        Log.d("1112", oneObject.getString("days_before"));
+//                                        latestcomment.setDay_before(oneObject.getString("days_before"));
+//                                        latestcomment.setComment(oneObject.getString("comment"));
+//                                        Log.d("1113", oneObject.getString("comment"));
 //
-//        pDialog = new ProgressDialog(this);
-//        // Showing progress dialog before making http request
-//        pDialog.setMessage("Loading...");
-//        pDialog.show();
 //
-//        // changing action bar color
-//    /*    getActionBar().setBackgroundDrawable(
-//                new ColorDrawable(Color.parseColor("#1b1b1b")));*/
+//                                        // adding movie to movies array
+//                                        latestcommentList.add(latestcomment);
 //
-//        // Creating volley request obj
-//        JsonArrayRequest movieReq = new JsonArrayRequest(url,
-//                new Response.Listener<JSONArray>() {
-//                    @Override
-//                    public void onResponse(JSONArray response) {
-//                        Log.d(TAG, response.toString());
-//                        hidePDialog();
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
 //
-//                        // Parsing json
-//                        for (int i = 0; i < response.length(); i++) {
-//                            try {
-//
-//                                JSONObject obj = response.getJSONObject(i);
-//                                Movie movie = new Movie();
-//                                movie.setTitle(obj.getString("title"));
-//                                movie.setThumbnailUrl(obj.getString("image"));
-//                                movie.setRating(((Number) obj.get("rating"))
-//                                        .doubleValue());
-//                                movie.setYear(obj.getInt("releaseYear"));
-//
-//                                // Genre is json array
-//                                JSONArray genreArry = obj.getJSONArray("genre");
-//                                ArrayList<String> genre = new ArrayList<String>();
-//                                for (int j = 0; j < genreArry.length(); j++) {
-//                                    genre.add((String) genreArry.get(j));
 //                                }
-//                                movie.setGenre(genre);
-//
-//                                // adding movie to movies array
-//                                movieList.add(movie);
-//
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
+//                            }
+//                            catch (JSONException e) {
+//                                Log.e("log_tag", "Error parsing data " + e.toString());
 //                            }
 //
+//                            // notifying list adapter about data changes
+//                            // so that it renders the list view with updated data
+//                            adapter.notifyDataSetChanged();
 //                        }
+//                    }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                    VolleyLog.d(TAG, "Error: " + error.getMessage());
+//                    hideDialog();
 //
-//                        // notifying list adapter about data changes
-//                        // so that it renders the list view with updated data
-//                        adapter.notifyDataSetChanged();
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                VolleyLog.d(TAG, "Error: " + error.getMessage());
-//                hidePDialog();
+//                }
+//            });
 //
-//            }
-//        });
+//            // Adding request to request queue
+//            AppController.getInstance().addToRequestQueue(latestcommentReq);
 //
-//        // Adding request to request queue
-//        AppController.getInstance().addToRequestQueue(movieReq);
-//    }
 //
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        hidePDialog();
-//    }
 //
-//    private void hidePDialog() {
-//        if (pDialog != null) {
-//            pDialog.dismiss();
-//            pDialog = null;
+//
+//            return view;
 //        }
-//    }
+
+
+    private void submitting(final String category_id, final String district_id, final String large_district_id, final String price_id) {
+        // Tag used to cancel the request
+        String tag_string_req = "req_login";
+
+        pDialog.setMessage("提交中 ...");
+        showDialog();
+
+        StringRequest strReq = new StringRequest(Request.Method.GET,
+                geturl, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d("FeedBack", "Login Response: " + response.toString());
+                hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    String error = jObj.getString("status");
+
+                    // Check for error node in json
+                    if (error.equals("success")) {
+                        // user successfully logged in
+                        // Create login session
+                        //session.setLogin(true);
+                        JSONArray jArray = jObj.getJSONArray("data");
+                        for (int i = 0; i < jArray.length(); i++) {
+
+                            JSONObject oneObject = jArray.getJSONObject(i);
+                            JSONObject score = oneObject.getJSONObject("score");
+                            String average_score = score.getString("average_score");
+                            String like = score.getString("like");
+                            String fair = score.getString("fair");
+                            String dislike = score.getString("dislike");
+
+
+                            //JSONObject jObject = new JSONObject(response);
+                            // String aJsonString = jObject.getString("result");
+                            //String bJsonString = jObject.getString("timestamp");
+                            // JSONArray jArray = jObject.getJSONArray("data");
+
+                            // JSONObject obj = response.getJSONObject(i);
+                            CompanyObject companyObject = new CompanyObject();
+                            // companyObject.setTitle(oneObject.getString("title"));
+                            companyObject.setUser_id(oneObject.getString("ID"));
+                            companyObject.setThumbnailUrl(oneObject.getString("cover_image"));
+                            companyObject.setAveage_scrore(average_score);
+
+
+//                            latestcomment.setDay_before(oneObject.getString("days_before"));
+//                            latestcomment.setComment(oneObject.getString("comment"));
+//                            Log.d("1113", oneObject.getString("comment"));
+
+
+                            // adding movie to movies array
+                            companyObjects.add(companyObject);
+                        }
+
+
+                        //display message login successfully
+//                        AlertDialog.Builder ab = new AlertDialog.Builder(view.getContext());
+//                        ab.setTitle(R.string.submit_success);
+//                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
 //
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//
+////                                Intent in = new Intent(view.getContext(), MainActivity.class);
+////                                view.getContext().startActivity(in);
+//
+//                                Home home_fragment = new Home();
+//
+//                                FragmentManager fragmentManager = getFragmentManager();
+//                                System.out.println(fragmentManager.getBackStackEntryCount());
+//                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("newfound"));
+//                                fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack(null);
+//                                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                                fragmentTransaction.commit();
+//
+//
+//
+//
+//                            }
+//                        });
+//                        ab.create().show();
+
+
+                    } else {
+                        // Error in login. Get the error message
+                        JSONObject data = jObj.getJSONObject("data");
+                        String errorMsg = data.getString("msg");
+
+                        Toast.makeText(getActivity(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                }
+                adapter.notifyDataSetChanged();
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("FeedBack", "Login Error: " + error.getMessage());
+                Toast.makeText(getActivity(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<String, String>();
+                // params.put("category_id", category_id);
+                // params.put("district_id", district_id);
+                // params.put("large_district_id", large_district_id);
+                params.put("price_range", price_id);
+
+                return params;
+            }
+
+        };
+        // Adding request to request queue
+        Log.d("strReq", strReq.toString());
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        hideDialog();
+    }
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+
+    private void hideDialog() {
+        if (pDialog != null) {
+            pDialog.dismiss();
+            pDialog = null;
+        }
+    }
+
+    private void hidePDialog() {
+        if (pDialog != null) {
+            pDialog.dismiss();
+            pDialog = null;
+        }
+    }
+
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
-//        // getMenuInflater().inflate(R.menu.menu_main, menu);
+//       // getMenuInflater().inflate(R.menu.menu_main, menu);
 //        return true;
 //    }
 
-
 }
+
+
+
 

@@ -38,8 +38,10 @@ public class APIConfig {
 
 
     //advance search criteria
+    public static String URL_Advance_Search_criteria="http://damonday.tk/api/entertainment/search_criteria";
 
-    public static String URL_Search_criteria="http://damonday.tk/api/entertainment/search_criteria";
+    //advance search
+    public static String URL_Advance_Search="http://damonday.tk/api/entertainment/advanced_search/";
 
 
 
