@@ -31,10 +31,12 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.company.damonday.CompanyInfo.Fragment.ViewComment.Fragment_ViewComment;
+import com.company.damonday.CompanyInfo.Fragment.ViewCompany.CompanySQLiteHandler;
 import com.company.damonday.CompanyInfo.Fragment.ViewCompany.Fragment_ViewCompany;
 import com.company.damonday.CompanyInfo.Fragment.ViewCompany.Fragment_ViewPhoto;
 import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment;
 import com.company.damonday.CompanyInfo.Lib.VideoControllerView;
+import com.company.damonday.MyFavourites.MyFavouritesObject;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
@@ -62,9 +64,10 @@ public class FragmentTabs_try extends Fragment implements
     private ProgressDialog pDialog;
     private static String TAG = FragmentTabs_try.class.getSimpleName();
     private ArrayList<String> coverPage = new ArrayList<String>();
+    private ArrayList<String> categories = new ArrayList<String>();
     private View rootView;
     private TextView tvLike, tvDislike, tvFair, tvCompanyTitle;
-    private String like, dislike, fair, companyName;
+    private String like, dislike, fair, companyName, averageScore, cat, price;
     private APIConfig details;
     private VideoControllerView controller;
     private MediaPlayer player;
@@ -72,6 +75,8 @@ public class FragmentTabs_try extends Fragment implements
     private ImageView ivMyFavourite, ivLike, ivFair, ivDislike;
     private UnderlinePageIndicator mIndicator;
     private View view;
+    private CompanySQLiteHandler db;
+    private MyFavouritesObject myFavouritesObject;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +87,8 @@ public class FragmentTabs_try extends Fragment implements
             e.printStackTrace();
             Toast.makeText(getActivity(), "No data loaded", Toast.LENGTH_LONG).show();
         }
+
+
         pDialog = new ProgressDialog(getActivity());
         // Showing progress dialog before making http request
         pDialog.setMessage("Loading...");
@@ -100,14 +107,7 @@ public class FragmentTabs_try extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        //pass entId to fragment
-        Bundle bundle = new Bundle();
-        bundle.putString("ent_id", entId);
-
-
-
-
+        //initial view
         rootView = inflater.inflate(R.layout.companyinfo_fragment_tab,container, false);
         tvLike = (TextView) rootView.findViewById(R.id.like);
         tvDislike = (TextView) rootView.findViewById(R.id.dislike);
@@ -117,14 +117,57 @@ public class FragmentTabs_try extends Fragment implements
         ivLike = (ImageView) rootView.findViewById(R.id.like_image);
         ivFair = (ImageView) rootView.findViewById(R.id.fair_image);
         ivDislike = (ImageView) rootView.findViewById(R.id.dislike_image);
+        viewPager = (ViewPager)rootView.findViewById(R.id.viewPager);
+
+        //config the view
+        ivLike.setImageResource(R.drawable.like);
+        ivFair.setImageResource(R.drawable.fair);
+        ivDislike.setImageResource(R.drawable.dislike);
+
+        myViewPagerAdapter = new MyViewPagerAdapter(listOfItems);  //call Class to create Object
+        viewPager.setAdapter(myViewPagerAdapter);
+        viewPager.setCurrentItem(0);
+
+        // SQLite database handler
+        db = new CompanySQLiteHandler(getActivity());
+
+        //get row count
+        int myFavouriteCount = db.getRowCount(Integer.parseInt(entId));
+        Log.d("myFavouriteCount", Integer.toString(myFavouriteCount));
+
+        final boolean[] heartUnclicked = {true};
+        if(myFavouriteCount > 0) {
+            heartUnclicked[0] = false;
+            ivMyFavourite.setImageResource(R.drawable.heart_clicked);
+        }
+        else {
+            heartUnclicked[0] = true;
+            ivMyFavourite.setImageResource(R.drawable.heart_unclicked);
+        }
+
+        ivMyFavourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(heartUnclicked[0]){
+                    heartUnclicked[0] = false;
+                    ivMyFavourite.setImageResource(R.drawable.heart_clicked);
+                    db.addMyFavourite(myFavouritesObject);
+                    Toast.makeText(getActivity(), R.string.heart_clicked, Toast.LENGTH_SHORT).show();
+
+                }
+                else{
+                    heartUnclicked[0] = true;
+                    ivMyFavourite.setImageResource(R.drawable.heart_unclicked);
+                    db.deleteMyFavourite(Integer.parseInt(entId));
+                    Toast.makeText(getActivity(), R.string.heart_unclicked, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
 
 
         //viewPage
-        viewPager = (ViewPager)rootView.findViewById(R.id.viewPager);
-        myViewPagerAdapter = new MyViewPagerAdapter(listOfItems);  //call Class to create Object
-        viewPager.setAdapter(myViewPagerAdapter);
-        viewPager.setCurrentItem(0);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -156,7 +199,9 @@ public class FragmentTabs_try extends Fragment implements
 
 
 
-
+        //pass entId to fragment
+        Bundle bundle = new Bundle();
+        bundle.putString("ent_id", entId);
 
         mTabHost = (FragmentTabHost) rootView.findViewById(android.R.id.tabhost);
         mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);
@@ -215,6 +260,17 @@ public class FragmentTabs_try extends Fragment implements
                         like = score.getString("like");
                         dislike = score.getString("dislike");
                         fair = score.getString("fair");
+
+                        //other info
+                        JSONArray cat = companyInfo.getJSONArray("cat");
+                        for (int i = 0; i < cat.length(); i++){
+                            categories.add((String) cat.get(i));
+                        }
+                        price = companyInfo.getString("price");
+                        averageScore = score.getString("average_score");
+
+
+
                         initViews();
 
 
@@ -267,7 +323,7 @@ public class FragmentTabs_try extends Fragment implements
     }
 
 
-    //initial of the pics
+    //initial after getting jason
     private void initViews() {
         //set score of company
         tvLike.setText(like);
@@ -276,10 +332,13 @@ public class FragmentTabs_try extends Fragment implements
         tvCompanyTitle.setText(companyName);
 
 
-        ivLike.setImageResource(R.drawable.like);
-        ivFair.setImageResource(R.drawable.fair);
-        ivDislike.setImageResource(R.drawable.dislike);
-        ivMyFavourite.setImageResource(R.drawable.my_favourite);
+        String coverPageUrl;
+        if(!coverPage.isEmpty()) {
+            coverPageUrl = coverPage.get(0);
+        }else {
+            coverPageUrl = "";
+        }
+        myFavouritesObject = new MyFavouritesObject(entId, coverPageUrl, companyName, price, like, fair, dislike, averageScore, categories);
 
 
 

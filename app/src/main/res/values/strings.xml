@@ -35,6 +35,8 @@
     <string name="tab_company">概要</string>
     <string name="tab_comment">玩評</string>
     <string name="tab_photo">相片</string>
+    <string name="heart_unclicked">已從我的最愛中移除</string>
+    <string name="heart_clicked">已加入到我的最愛</string>
 
     <!-- media controller-->
     <string name="description">Media Controls</string>
@@ -87,6 +89,12 @@
     <!--write comment-->
     <string name="writeComment_checklogin1">請</string>
     <string name="writeComment_checklogin2">或</string>
+    <string-array name="title">
+        <item>主題</item>
+        <item>內容</item>
+        <item>消費</item>
+        <item>評分</item>
+    </string-array>
 
     <!--feedback-->
     <string name="submit_success">提交成功</string>
