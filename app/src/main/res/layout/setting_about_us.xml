@@ -4,7 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ScrollView
 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+             android:layout_width="match_parent"
+            android:layout_height="match_parent">
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -13,7 +21,7 @@
             android:text="有關我們"
             android:gravity="center" />
 
-<ScrollView
+
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -26,6 +34,10 @@
              android:id="@+id/textview"
 
              android:gravity="center" />
+
+
+
+</LinearLayout>
 
 </ScrollView>
 

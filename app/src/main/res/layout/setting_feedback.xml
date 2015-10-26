@@ -15,15 +15,17 @@
 
         <TextView
             android:text="主題"
-            android:textSize="26dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:textSize="23dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.35"/>
 
        <EditText
-           android:layout_width="match_parent"
+           android:layout_width="0dp"
            android:layout_height="match_parent"
            android:id="@+id/subject"
-           android:layout_marginLeft="10dp"/>
+           android:layout_weight="0.65"
+           />
 
 
     </LinearLayout>
@@ -38,14 +40,15 @@
 
         <TextView
             android:text="你的電郵"
-            android:textSize="26dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:textSize="23dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.35"/>
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
+            android:layout_weight="0.65"
             android:id="@+id/email"/>
 
 
@@ -62,26 +65,33 @@
 
         <TextView
             android:text="內容"
-            android:textSize="26dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:textSize="23dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.35"/>
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
+            android:layout_weight="0.65"
             android:id="@+id/content"/>
 
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+       android:layout_alignParentBottom="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp">
+
 
         <Button
             android:layout_width="0dp"
@@ -101,5 +111,7 @@
 
 
     </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

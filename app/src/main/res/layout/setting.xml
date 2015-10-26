@@ -61,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
         android:id="@+id/button_aboutus"
-            android:textSize="25dp"
+            android:textSize="22dp"
             android:text="有關我們"
             android:gravity="center" />
 
@@ -69,14 +69,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
             android:id="@+id/button_feedback"
-        android:textSize="25dp"
+        android:textSize="22dp"
         android:text="提交意見"
         android:gravity="center" />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:textSize="25dp"
+        android:textSize="22dp"
         android:text="版本 1.0"
         android:gravity="center" />
 
