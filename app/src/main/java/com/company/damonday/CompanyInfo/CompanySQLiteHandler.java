@@ -1,4 +1,4 @@
-package com.company.damonday.CompanyInfo.Fragment.ViewCompany;
+package com.company.damonday.CompanyInfo;
 
 import android.content.ContentValues;
 import android.content.Context;

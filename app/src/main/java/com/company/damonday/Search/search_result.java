@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -52,6 +53,7 @@ public class search_result extends Fragment {
     private String large_district_id;
     private String category_id;
     private FragmentTabs_try fragmentTabs_try;
+    private ImageView ivMyFavourite, ivLike, ivFair, ivDislike;
 
     private View view;
 
@@ -95,6 +97,12 @@ Log.d("geturl",geturl);
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.search_result, container, false);
+//        ivLike = (ImageView) view.findViewById(R.id.like_image);
+//        ivFair = (ImageView) view.findViewById(R.id.fair_image);
+//        ivDislike = (ImageView) view.findViewById(R.id.dislike_image);
+//        ivLike.setImageResource(R.drawable.like);
+//        ivFair.setImageResource(R.drawable.fair);
+//        ivDislike.setImageResource(R.drawable.dislike);
         pDialog = new ProgressDialog(getActivity());
         // Showing progress dialog before making http request
         pDialog.setMessage("Loading...");
@@ -241,28 +249,32 @@ Log.d("geturl",geturl);
 
                             JSONObject oneObject = jArray.getJSONObject(i);
                             JSONObject score = oneObject.getJSONObject("score");
+                            String price_range=oneObject.getString("price_range");
                             String average_score = score.getString("average_score");
-                            String like = score.getString("like");
+//                            String category = score.getString("category");
+//                            String title = score.getString("title");
+
+                            String category ="室內";  //tomc 26/20/2015
+                            String title ="真好玩工作室";
+
+                                    String like = score.getString("like");
                             String fair = score.getString("fair");
                             String dislike = score.getString("dislike");
+                            //category
+                            //title
 
 
-                            //JSONObject jObject = new JSONObject(response);
-                            // String aJsonString = jObject.getString("result");
-                            //String bJsonString = jObject.getString("timestamp");
-                            // JSONArray jArray = jObject.getJSONArray("data");
-
-                            // JSONObject obj = response.getJSONObject(i);
                             CompanyObject companyObject = new CompanyObject();
-                            // companyObject.setTitle(oneObject.getString("title"));
+                             companyObject.setTitle(title);
+                            companyObject.setCategory(category);
                             companyObject.setUser_id(oneObject.getString("ID"));
                             companyObject.setThumbnailUrl(oneObject.getString("cover_image"));
                             companyObject.setAveage_scrore(average_score);
+                            companyObject.setLike(like);
+                            companyObject.setDislike(dislike);
+                            companyObject.setFair(fair);
+                            companyObject.setPrice_range(price_range);
 
-
-//                            latestcomment.setDay_before(oneObject.getString("days_before"));
-//                            latestcomment.setComment(oneObject.getString("comment"));
-//                            Log.d("1113", oneObject.getString("comment"));
 
 
                             // adding movie to movies array

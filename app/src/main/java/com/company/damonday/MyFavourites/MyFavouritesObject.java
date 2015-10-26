@@ -9,18 +9,6 @@ public class MyFavouritesObject {
     String entId, picUrl, title, price, like, fair, dislike, averageScore;
     ArrayList<String> cat = new ArrayList<>();
 
-    public MyFavouritesObject(String entId, String picUrl, String title, String price, String like, String fair, String dislike, String averageScore, ArrayList<String> cat) {
-        this.entId = entId;
-        this.picUrl = picUrl;
-        this.title = title;
-        this.price = price;
-        this.like = like;
-        this.fair = fair;
-        this.dislike = dislike;
-        this.averageScore = averageScore;
-        this.cat = cat;
-    }
-
     public String getEntId() {
         return entId;
     }
@@ -92,4 +80,19 @@ public class MyFavouritesObject {
     public void setCat(ArrayList<String> cat) {
         this.cat = cat;
     }
+
+    public MyFavouritesObject(String entId, String picUrl, String title, String price, String like, String fair, String dislike, String averageScore, ArrayList<String> cat) {
+        this.entId = entId;
+        this.picUrl = picUrl;
+        this.title = title;
+        this.price = price;
+        this.like = like;
+        this.fair = fair;
+        this.dislike = dislike;
+        this.averageScore = averageScore;
+
+        this.cat = cat;
+    }
+
+
 }

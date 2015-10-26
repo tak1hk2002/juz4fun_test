@@ -7,12 +7,13 @@ public class CompanyObject {
 
         private String title;
         private String thumbnailUrl;
-        private String username;
         private String user_id;
-        private String comment;
-        private String day_before;
+        private String category;
+        private String price_range;
         private String aveage_scrore;
-
+        private String fair;
+        private String dislike;
+        private String like;
 
 
 
@@ -21,17 +22,18 @@ public class CompanyObject {
 
 
 
-        public CompanyObject(String user_id, String thumbnailUrl, String day_before, String aveage_scrore,String username,
-                             String comment,String title
+        public CompanyObject(String user_id, String thumbnailUrl, String category, String aveage_scrore,String price_range,
+                             String like,String dislike,String fair,String title
         ) {
             this.title = title;
             this.user_id=user_id;
             this.thumbnailUrl = thumbnailUrl;
-            this.day_before = day_before;
+            this.category = category;
             this.aveage_scrore = aveage_scrore;
-            this.username =username;
-            this.comment = comment;
-            this.title = title;
+            this.price_range =price_range;
+            this.like = like;
+            this.dislike = dislike;
+            this.fair =fair;
         }
 
 
@@ -52,28 +54,28 @@ public class CompanyObject {
             this.thumbnailUrl = thumbnailUrl;
         }
 
-        public String getUsername() {
-            return username;
+        public String getPrice_range() {
+            return price_range;
         }
 
-        public void setUsername(String username) {
-            this.username = username;
+        public void setPrice_range(String price_range) {
+            this.price_range = price_range;
         }
 
-        public String getComment() {
-            return comment;
+        public String getLike() {
+            return like;
         }
 
-        public void setComment(String comment) {
-            this.comment = comment;
+        public void setLike(String like) {
+            this.like = like;
         }
 
-        public String getDay_before() {
-            return day_before;
+        public String getCategory() {
+            return category;
         }
 
-        public void setDay_before(String day_before) {
-            this.day_before = day_before;
+        public void setCategory(String category) {
+            this.category = category;
         }
 
         public String getAveage_scrore() {
@@ -92,6 +94,21 @@ public class CompanyObject {
             this.user_id = user_id;
         }
 
+        public String getDislike() {
+        return dislike;
+    }
+
+        public void setDislike(String dislike) {
+        this.dislike = dislike;
+    }
+
+        public String getFair() {
+        return fair;
+    }
+
+         public void setFair(String fair) {
+        this.fair = fair;
+    }
 
     }
 

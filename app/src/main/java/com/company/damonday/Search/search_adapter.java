@@ -63,8 +63,12 @@ public class search_adapter extends BaseAdapter {
                     .findViewById(R.id.thumbnail);
             TextView title = (TextView) convertView.findViewById(R.id.title);
             TextView rating = (TextView) convertView.findViewById(R.id.average_score);
-            TextView comment = (TextView) convertView.findViewById(R.id.comment);
-            TextView year = (TextView) convertView.findViewById(R.id.days_before);
+            TextView price_range = (TextView) convertView.findViewById(R.id.price_range);
+            TextView category = (TextView) convertView.findViewById(R.id.category);
+            TextView like = (TextView) convertView.findViewById(R.id.like);
+            TextView fair = (TextView) convertView.findViewById(R.id.fair);
+            TextView dislike = (TextView) convertView.findViewById(R.id.dislike);
+
 
             // getting movie data for the row
             CompanyObject m = companyObjects.get(position);
@@ -76,11 +80,25 @@ public class search_adapter extends BaseAdapter {
             title.setText(m.getTitle());
 
             // rating
-            rating.setText("Rating: " + m.getAveage_scrore());
-            //rating.setText("tom");
-            Log.d("1114", m.getAveage_scrore());
-            // rating.setText("Rating: " );
-            // genre
+            rating.setText(m.getAveage_scrore()+"/5");
+
+            //price_range
+            price_range.setText(m.getPrice_range());
+
+           //category
+            category.setText(m.getCategory());
+
+            //like
+            like.setText(m.getLike());
+
+            //Dislike
+            dislike.setText(m.getDislike());
+
+            //Fair
+            fair.setText(m.getFair());
+
+
+
 //        String genreStr = "";
 //        for (String str : m.getGenre()) {
 //            genreStr += str + ", ";
@@ -89,12 +107,8 @@ public class search_adapter extends BaseAdapter {
 //                genreStr.length() - 2) : genreStr;
 //        genre.setText(genreStr);
 
-            comment.setText(m.getComment());
 
 
-            // release year
-            // year.setText(String.valueOf(m.getDay_before()));
-            year.setText(m.getDay_before());
             return convertView;
         }
 

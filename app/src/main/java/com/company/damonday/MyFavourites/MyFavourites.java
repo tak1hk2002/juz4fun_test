@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.company.damonday.CompanyInfo.CompanySQLiteHandler;
 import com.company.damonday.R;
 
 /**
  * Created by tom on 21/6/15.
  */
 public class MyFavourites extends Fragment {
+    private CompanySQLiteHandler db;
 
 
     @Override

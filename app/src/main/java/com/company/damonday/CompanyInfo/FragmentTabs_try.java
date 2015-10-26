@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,16 +30,13 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.company.damonday.CompanyInfo.Fragment.ViewComment.Fragment_ViewComment;
-import com.company.damonday.CompanyInfo.Fragment.ViewCompany.CompanySQLiteHandler;
 import com.company.damonday.CompanyInfo.Fragment.ViewCompany.Fragment_ViewCompany;
-import com.company.damonday.CompanyInfo.Fragment.ViewCompany.Fragment_ViewPhoto;
 import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment;
 import com.company.damonday.CompanyInfo.Lib.VideoControllerView;
 import com.company.damonday.MyFavourites.MyFavouritesObject;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
-import com.company.damonday.function.TabManager;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 
