@@ -1,5 +1,6 @@
 package com.company.damonday.CompanyInfo;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.media.AudioManager;
@@ -32,11 +33,16 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.company.damonday.CompanyInfo.Fragment.ViewComment.Fragment_ViewComment;
 import com.company.damonday.CompanyInfo.Fragment.ViewCompany.Fragment_ViewCompany;
 import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment;
+import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_login_register;
 import com.company.damonday.CompanyInfo.Lib.VideoControllerView;
+import com.company.damonday.Login.SQLiteHandler;
+import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MyFavourites.MyFavouritesObject;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 
@@ -73,6 +79,35 @@ public class FragmentTabs_try extends Fragment implements
     private View view;
     private CompanySQLiteHandler db;
     private MyFavouritesObject myFavouritesObject;
+    private SQLiteHandler loginDB;
+    private SessionManager session;
+    private AccessToken currentAccessToken;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+/*        AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
+                updateWithToken(newAccessToken);
+            }
+
+        };
+
+        accessTokenTracker.startTracking();
+
+        updateWithToken(AccessToken.getCurrentAccessToken());*/
+
+        // SqLite database handler
+        //loginDB = new SQLiteHandler(activity);
+
+        // session manager
+        //session = new SessionManager(activity);
+
+        /*accessToken = AccessToken.getCurrentAccessToken();
+        Log.d("accessToken", accessToken.toString());*/
+    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -209,9 +244,20 @@ public class FragmentTabs_try extends Fragment implements
         mTabHost.addTab(
                 mTabHost.newTabSpec("玩評").setIndicator("玩評"),
                 Fragment_ViewComment.class, bundle);
-        mTabHost.addTab(
-                mTabHost.newTabSpec("我要評論").setIndicator("我要評論"),
-                Fragment_ViewWriteComment.class, bundle);
+
+        //check login
+        //no login, go to login or register option screen
+        if (currentAccessToken == null) {
+            mTabHost.addTab(
+                    mTabHost.newTabSpec("我要評論").setIndicator("我要評論"),
+                    Fragment_login_register.class, bundle);
+        }else{
+            mTabHost.addTab(
+                    mTabHost.newTabSpec("我要評論").setIndicator("我要評論"),
+                    Fragment_ViewWriteComment.class, bundle);
+        }
+
+
 
 
 
@@ -225,6 +271,36 @@ public class FragmentTabs_try extends Fragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+    }
+
+    private void updateWithToken(AccessToken currentAccessToken) {
+
+        if (currentAccessToken != null) {
+
+            Toast.makeText(getActivity(), "login successfully", Toast.LENGTH_SHORT).show();
+            /*new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    Intent i = new Intent(SplashScreen.this, GeekTrivia.class);
+                    startActivity(i);
+
+                    finish();
+                }
+            });*/
+        } else {
+            Toast.makeText(getActivity(), "login successfully", Toast.LENGTH_SHORT).show();
+            /*new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    Intent i = new Intent(SplashScreen.this, Login.class);
+                    startActivity(i);
+
+                    finish();
+                }
+            });*/
+        }
     }
 
     private void makeJsonArrayRequest() {

@@ -33,18 +33,18 @@ import java.util.Map;
  * Created by lamtaklung on 13/9/15.
  */
 public class Fragment_ViewWriteComment extends Fragment {
-//hi
-    private SQLiteHandler db;
-    private SessionManager session;
+
     private View view;
     private ListView listView;
     private AccessToken accessToken;
     private List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
     private String entId;
 
+
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreate(savedInstanceState);
 
         //get previous entid
         try {
@@ -54,33 +54,6 @@ public class Fragment_ViewWriteComment extends Fragment {
             e.printStackTrace();
         }
 
-        // SqLite database handler
-        db = new SQLiteHandler(activity);
-
-        // session manager
-        session = new SessionManager(activity);
-
-        /*accessToken = AccessToken.getCurrentAccessToken();
-        Log.d("accessToken", accessToken.toString());*/
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
-        super.onCreate(savedInstanceState);
-
-        Log.d("isLoggedIn", Boolean.toString(session.isLoggedIn()));
-
-        AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
-                updateWithToken(newAccessToken);
-            }
-
-        };
-
-        updateWithToken(AccessToken.getCurrentAccessToken());
-
 
     }
 
@@ -88,60 +61,13 @@ public class Fragment_ViewWriteComment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //check login
-        //no login, go to login or register option screen
-        if (!session.isLoggedIn()) {
-            view = inflater.inflate(R.layout.login_login_or_register, container, false);
-            Button btnLogin = (Button) view.findViewById(R.id.login);
-            Button btnRegister = (Button) view.findViewById(R.id.register);
 
-            btnLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //pass variable to next fragment
-                    Bundle bundle = new Bundle();
-                    bundle.putString("ent_id", entId);
-                    Fragment_Login fragment_login = new Fragment_Login();
-                    fragment_login.setArguments(bundle);
+        view = inflater.inflate(R.layout.view_companywritecomment, container, false);
+        listView = (ListView) view.findViewById(R.id.listView);
+        SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), items,
+                R.layout.view_companywritecomment_list, new String[] {"title", "info"}, new int[] {R.id.title, R.id.info});
+        listView.setAdapter(simpleAdapter);
 
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    System.out.println(fragmentManager.getBackStackEntryCount());
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail"));
-                    fragmentTransaction.add(R.id.frame_container, fragment_login, "login").addToBackStack(null);
-                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    fragmentTransaction.commit();
-
-                }
-            });
-
-            btnRegister.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //pass variable to next fragment
-                    Bundle bundle = new Bundle();
-                    bundle.putString("writeComment", "register");
-                    Fragment_Registration fragment_registration = new Fragment_Registration();
-                    fragment_registration.setArguments(bundle);
-
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    System.out.println(fragmentManager.getBackStackEntryCount());
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail"));
-                    fragmentTransaction.add(R.id.frame_container, fragment_registration, "register").addToBackStack(null);
-                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    fragmentTransaction.commit();
-
-                }
-            });
-        }
-        else {
-            view = inflater.inflate(R.layout.view_companywritecomment, container, false);
-            listView = (ListView) view.findViewById(R.id.listView);
-            SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), items,
-                    R.layout.view_companywritecomment_list, new String[] {"title", "info"}, new int[] {R.id.title, R.id.info});
-            listView.setAdapter(simpleAdapter);
-        }
 
         return view;
 
@@ -149,31 +75,5 @@ public class Fragment_ViewWriteComment extends Fragment {
 
     }
 
-    private void updateWithToken(AccessToken currentAccessToken) {
-
-        if (currentAccessToken != null) {
-            /*new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    Intent i = new Intent(SplashScreen.this, GeekTrivia.class);
-                    startActivity(i);
-
-                    finish();
-                }
-            });*/
-        } else {
-            /*new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    Intent i = new Intent(SplashScreen.this, Login.class);
-                    startActivity(i);
-
-                    finish();
-                }
-            });*/
-        }
-    }
 
 }
