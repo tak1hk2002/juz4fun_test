@@ -35,9 +35,11 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -66,6 +68,7 @@ public class Fragment_Login extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        FacebookSdk.sdkInitialize(getActivity());
         super.onCreate(savedInstanceState);
         try {
             entId = getArguments().getString("ent_id");
@@ -74,8 +77,6 @@ public class Fragment_Login extends Fragment {
             e.printStackTrace();
         }
 
-        //宣告callback Manager
-        callbackManager = CallbackManager.Factory.create();
 
     }
 
@@ -91,6 +92,10 @@ public class Fragment_Login extends Fragment {
         TextView txtForgotPassword = (TextView) v.findViewById(R.id.forgot_password);
         //找到login button
         LoginButton loginButton = (LoginButton) v.findViewById(R.id.login_button);
+        loginButton.setFragment(this);
+
+        //宣告callback Manager
+        callbackManager = CallbackManager.Factory.create();
 
 
         // Progress dialog
@@ -102,11 +107,11 @@ public class Fragment_Login extends Fragment {
 
 
         // Check if user is already logged in or not
-        if (session.isLoggedIn()) {
+/*        if (session.isLoggedIn()) {
             Intent intent = new Intent(v.getContext(), DisplayLogin.class);
             startActivity(intent);
 
-        }
+        }*/
 
         btnLogin.setOnClickListener(new AdapterView.OnClickListener() {
 
@@ -365,6 +370,54 @@ public class Fragment_Login extends Fragment {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
     }
+
+
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+
+        // Logs 'install' and 'app activate' App Events.
+        /*Profile profile = Profile.getCurrentProfile();
+        //info.setText(message(profile));
+        try {
+            String profileImgUrl = "https://graph.facebook.com/" + profile.getId() + "/picture?type=large";
+
+            Glide.with(MainActivity.this)
+                    .load(profileImgUrl)
+                    .into(profileImgView);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }*/
+        AppEventsLogger.activateApp(getActivity().getApplicationContext());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(getActivity().getApplicationContext());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private String message(Profile profile) {
+        StringBuilder stringBuffer = new StringBuilder();
+        if (profile != null) {
+            stringBuffer.append("Welcome ").append(profile.getName());
+        }
+        return stringBuffer.toString();
+    }
+
 
     private void userFacebook(final String accessToken, final String username,
                               final String id, final String profilePic) {

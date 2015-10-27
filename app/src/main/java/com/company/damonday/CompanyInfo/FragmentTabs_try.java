@@ -43,6 +43,9 @@ import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
+import com.facebook.FacebookActivity;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 
@@ -79,9 +82,6 @@ public class FragmentTabs_try extends Fragment implements
     private View view;
     private CompanySQLiteHandler db;
     private MyFavouritesObject myFavouritesObject;
-    private SQLiteHandler loginDB;
-    private SessionManager session;
-    private AccessToken currentAccessToken;
 
     @Override
     public void onAttach(Activity activity) {
@@ -110,6 +110,7 @@ public class FragmentTabs_try extends Fragment implements
     }
 
     public void onCreate(Bundle savedInstanceState) {
+        FacebookSdk.sdkInitialize(getActivity());
         super.onCreate(savedInstanceState);
 
         try {
@@ -248,7 +249,8 @@ public class FragmentTabs_try extends Fragment implements
 
         //check login
         //no login, go to login or register option screen
-        if (currentAccessToken == null) {
+        System.out.println(AccessToken.getCurrentAccessToken());
+        if (AccessToken.getCurrentAccessToken() == null) {
             mTabHost.addTab(
                     mTabHost.newTabSpec("我要評論").setIndicator("我要評論"),
                     Fragment_login_register.class, bundle);
