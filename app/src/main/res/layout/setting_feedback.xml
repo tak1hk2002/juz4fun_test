@@ -15,7 +15,7 @@
 
         <TextView
             android:text="主題"
-            android:textSize="23dp"
+            android:textSize="20dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.35"/>
@@ -40,7 +40,7 @@
 
         <TextView
             android:text="你的電郵"
-            android:textSize="23dp"
+            android:textSize="20dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.35"/>
@@ -65,7 +65,7 @@
 
         <TextView
             android:text="內容"
-            android:textSize="23dp"
+            android:textSize="20dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.35"/>

@@ -77,7 +77,7 @@ public class Home extends Fragment {
                 /*Intent i = new Intent(Ranking.this, FragmentTabs.class);
                 i.putExtra("Ent_id", companyInfoItems.get(position).getEnt_id());
                 startActivity(i);*/
-                getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+                getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
                 //pass object to next fragment
                 Bundle bundle = new Bundle();
                 bundle.putString("ent_id", Integer.toString(companyInfoItems.get(position).getEnt_id()));

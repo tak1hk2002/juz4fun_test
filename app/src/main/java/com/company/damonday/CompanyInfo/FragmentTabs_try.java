@@ -138,6 +138,7 @@ public class FragmentTabs_try extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         //initial view
         rootView = inflater.inflate(R.layout.companyinfo_fragment_tab,container, false);
         tvLike = (TextView) rootView.findViewById(R.id.like);
@@ -402,6 +403,9 @@ public class FragmentTabs_try extends Fragment implements
         tvDislike.setText(dislike);
         tvFair.setText(fair);
         tvCompanyTitle.setText(companyName);
+
+        if(!companyName.equals(null));   //tomc 28/10/2015
+        getActivity().getActionBar().setTitle(companyName);
 
 
         String coverPageUrl;
