@@ -82,6 +82,7 @@ public class search extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.search, container, false);
+        getActivity().getActionBar().setTitle(R.string.advance_search);
         spinnerPrice = (Spinner) view.findViewById(R.id.spinner_price);
         spinner_lagre_district = (Spinner) view.findViewById(R.id.spinner_lagre_district);
         spinner_district = (Spinner) view.findViewById(R.id.spinner_district);
@@ -143,11 +144,10 @@ public class search extends Fragment {
                 }
 
 
-                if(!adapterView.getSelectedItem().toString().equals("全選")) {
+                if (!adapterView.getSelectedItem().toString().equals("全選")) {
                     large_district_id = hash_large_district.get(adapterView.getSelectedItem().toString());
-                }
-                else {
-                    large_district_id="";
+                } else {
+                    large_district_id = "";
                 }
                 Log.d("large_district_id:", large_district_id);
                 adapter_district = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, array_district);
@@ -167,10 +167,10 @@ public class search extends Fragment {
                 //Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
                 Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
                 //拎番個id
-                if(!adapterView.getSelectedItem().toString().equals("全選")) {
-                price_id = hash_Price.get(adapterView.getSelectedItem().toString());}
-                else{
-                    price_id="";
+                if (!adapterView.getSelectedItem().toString().equals("全選")) {
+                    price_id = hash_Price.get(adapterView.getSelectedItem().toString());
+                } else {
+                    price_id = "";
                 }
                 Log.d("_price_id:", price_id);
             }
@@ -185,11 +185,10 @@ public class search extends Fragment {
                 //Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
                 Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
                 //拎番個id
-                if(!adapterView.getSelectedItem().toString().equals("全選")) {
+                if (!adapterView.getSelectedItem().toString().equals("全選")) {
                     district_id = hash_area_all.get(adapterView.getSelectedItem().toString());
-                }
-                else{
-                    district_id="";
+                } else {
+                    district_id = "";
                 }
                 Log.d("district_id:", district_id);
             }
@@ -204,11 +203,10 @@ public class search extends Fragment {
                 //Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
                 Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
                 //拎番個id
-                if(!adapterView.getSelectedItem().toString().equals("全選")) {
+                if (!adapterView.getSelectedItem().toString().equals("全選")) {
                     category_id = hash_category.get(adapterView.getSelectedItem().toString());
-                }
-                else {
-                    category_id="";
+                } else {
+                    category_id = "";
                 }
                 Log.d("category_id:", category_id);
             }
@@ -243,10 +241,10 @@ public class search extends Fragment {
 
                 //傳送數據去下一個fragment
                 Bundle bundle = new Bundle();
-               bundle.putString("category_id",category_id );
-                bundle.putString("district_id",district_id );
-                bundle.putString("large_district_id",large_district_id );
-                bundle.putString("price_id",price_id);
+                bundle.putString("category_id", category_id);
+                bundle.putString("district_id", district_id);
+                bundle.putString("large_district_id", large_district_id);
+                bundle.putString("price_id", price_id);
 
                 search_result search_result_fragment = new search_result();
                 search_result_fragment.setArguments(bundle);
@@ -325,7 +323,7 @@ public class search extends Fragment {
                                     String area_name = areaDetail.getString("area_name");
                                     String area_id = areaDetail.getString("area_id");
                                     array_district.add(area_name);
-                                   // array_area_all.add(area_name);
+                                    // array_area_all.add(area_name);
                                     hash_area_all.put(area_name, area_id);
                                     if (district_name.equals("香港島")) {
                                         array_HK_Island.add(area_name);

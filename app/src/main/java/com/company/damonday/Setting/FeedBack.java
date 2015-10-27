@@ -63,6 +63,7 @@ import java.util.Map;
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
              view = inflater.inflate(R.layout.setting_feedback, container, false);
+            getActivity().getActionBar().setTitle(R.string.feedback);
             EditText_Subject=(EditText)view.findViewById(R.id.subject);
             EditText_Content=(EditText)view.findViewById(R.id.content);
             EditText_Email=(EditText)view.findViewById(R.id.email);

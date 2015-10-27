@@ -29,6 +29,7 @@ private LinearLayout islogouted;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.setting, container, false);
+        getActivity().getActionBar().setTitle(R.string.setting);
         islogouted = (LinearLayout)view.findViewById(R.id.logined);
         islogouted.setVisibility(View.GONE);
 

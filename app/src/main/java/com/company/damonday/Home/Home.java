@@ -62,7 +62,7 @@ public class Home extends Fragment {
         //init view
         View view = inflater.inflate(R.layout.home, container, false);
 
-        gridView = (GridView)view.findViewById(R.id.gridView);
+        gridView = (GridView) view.findViewById(R.id.gridView);
 
 
         makeJsonArrayRequest();
@@ -77,7 +77,7 @@ public class Home extends Fragment {
                 /*Intent i = new Intent(Ranking.this, FragmentTabs.class);
                 i.putExtra("Ent_id", companyInfoItems.get(position).getEnt_id());
                 startActivity(i);*/
-
+                getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
                 //pass object to next fragment
                 Bundle bundle = new Bundle();
                 bundle.putString("ent_id", Integer.toString(companyInfoItems.get(position).getEnt_id()));
@@ -86,7 +86,7 @@ public class Home extends Fragment {
 
 
                 FragmentManager fragmentManager = getFragmentManager();
-               // System.out.println(fragmentManager.getBackStackEntryCount());
+                // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("home"));
                 fragmentTransaction.add(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
@@ -124,7 +124,6 @@ public class Home extends Fragment {
     }
 
 
-
     private void makeJsonArrayRequest() {
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
@@ -141,28 +140,25 @@ public class Home extends Fragment {
                     String status = response.getString("status");
                     JSONArray rank = response.getJSONArray("data");
 
-                    if(status.equals("success")) {
+                    if (status.equals("success")) {
 
                         for (int i = 0; i < rank.length(); i++) {
                             CompanyInfo companyInfo = new CompanyInfo();
                             JSONObject company = (JSONObject) rank
                                     .get(i);
-                           // companyInfo.setTitle(company.getString("name"));
+                            // companyInfo.setTitle(company.getString("name"));
                             companyInfo.setUrl(company.getString("cover_image"));
                             companyInfo.setEnt_id(company.getInt("ID"));
 
                             companyInfoItems.add(companyInfo);
 
                         }
-                    }else{
+                    } else {
                         String errorMsg = response.getString("msg");
                         Toast.makeText(getActivity(),
                                 errorMsg,
                                 Toast.LENGTH_LONG).show();
                     }
-
-
-
 
 
                 } catch (JSONException e) {

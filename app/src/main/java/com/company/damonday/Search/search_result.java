@@ -97,7 +97,7 @@ Log.d("geturl",geturl);
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.search_result, container, false);
-
+        getActivity().getActionBar().setTitle(R.string.advance_search_result);
         pDialog = new ProgressDialog(getActivity());
         // Showing progress dialog before making http request
         pDialog.setMessage("Loading...");

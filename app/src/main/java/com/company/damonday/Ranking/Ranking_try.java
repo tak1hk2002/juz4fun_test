@@ -60,7 +60,9 @@ public class Ranking_try extends Fragment {
         //init view
         View view = inflater.inflate(R.layout.ranking, container, false);
 
-        gridView = (GridView)view.findViewById(R.id.gridView);
+        getActivity().getActionBar().setTitle(R.string.ranking);
+
+        gridView = (GridView) view.findViewById(R.id.gridView);
 
 
         makeJsonArrayRequest();
@@ -84,7 +86,7 @@ public class Ranking_try extends Fragment {
 
 
                 FragmentManager fragmentManager = getFragmentManager();
-               // System.out.println(fragmentManager.getBackStackEntryCount());
+                // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("ranking"));
                 fragmentTransaction.add(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
@@ -122,7 +124,6 @@ public class Ranking_try extends Fragment {
     }
 
 
-
     private void makeJsonArrayRequest() {
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
@@ -139,7 +140,7 @@ public class Ranking_try extends Fragment {
                     String status = response.getString("status");
                     JSONArray rank = response.getJSONArray("data");
 
-                    if(status.equals("success")) {
+                    if (status.equals("success")) {
 
                         for (int i = 0; i < rank.length(); i++) {
                             CompanyInfo companyInfo = new CompanyInfo();
@@ -152,15 +153,12 @@ public class Ranking_try extends Fragment {
                             companyInfoItems.add(companyInfo);
 
                         }
-                    }else{
+                    } else {
                         String errorMsg = response.getString("msg");
                         Toast.makeText(getActivity(),
                                 errorMsg,
                                 Toast.LENGTH_LONG).show();
                     }
-
-
-
 
 
                 } catch (JSONException e) {

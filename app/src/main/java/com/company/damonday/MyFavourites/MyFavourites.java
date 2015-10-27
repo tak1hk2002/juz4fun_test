@@ -36,15 +36,15 @@ public class MyFavourites extends Fragment {
         super.onCreate(savedInstanceState);
 
 
-
-
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.myfavourites, container, false);
-        db=new CompanySQLiteHandler(getActivity());
-        myFavouritesObjects= db.getAll();
-        if (myFavouritesObjects.size()==0){
+        getActivity().getActionBar().setTitle(R.string.myfavourite);
+
+        db = new CompanySQLiteHandler(getActivity());
+        myFavouritesObjects = db.getAll();
+        if (myFavouritesObjects.size() == 0) {
             Toast.makeText(getActivity(), "你還沒有收藏，快點去收藏吧！", Toast.LENGTH_LONG).show();
 
         }

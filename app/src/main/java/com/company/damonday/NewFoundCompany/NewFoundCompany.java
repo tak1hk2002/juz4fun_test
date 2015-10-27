@@ -1,4 +1,5 @@
 package com.company.damonday.NewFoundCompany;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -61,60 +62,59 @@ public class NewFoundCompany extends Fragment {
         //hi
 
 
-
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-         view = inflater.inflate(R.layout.newfound, container, false);
+        view = inflater.inflate(R.layout.newfound, container, false);
+        getActivity().getActionBar().setTitle(R.string.newfound);
 
+        EditText_company_name = (EditText) view.findViewById(R.id.company_name);
+        EditText_company_tel = (EditText) view.findViewById(R.id.company_tel);
+        EditText_company_type = (EditText) view.findViewById(R.id.company_type);
 
-        EditText_company_name=(EditText)view.findViewById(R.id.company_name);
-        EditText_company_tel=(EditText)view.findViewById(R.id.company_tel);
-        EditText_company_type=(EditText)view.findViewById(R.id.company_type);
-
-        EditText_company_address=(EditText)view.findViewById(R.id.company_address);
-        EditText_cost=(EditText)view.findViewById(R.id.company_cost);
-        EditText_business_hour=(EditText)view.findViewById(R.id.company_business_hour);
-        btn_submit = (Button)view.findViewById(R.id.button_submit);
-        btn_reset = (Button)view.findViewById(R.id.button_reset);
+        EditText_company_address = (EditText) view.findViewById(R.id.company_address);
+        EditText_cost = (EditText) view.findViewById(R.id.company_cost);
+        EditText_business_hour = (EditText) view.findViewById(R.id.company_business_hour);
+        btn_submit = (Button) view.findViewById(R.id.button_submit);
+        btn_reset = (Button) view.findViewById(R.id.button_reset);
         pDialog = new ProgressDialog(view.getContext());
         pDialog.setCancelable(false);
 
         btn_submit.setOnClickListener(new Button.OnClickListener() {
 
-@Override
-public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
 
 
-    company_name=EditText_company_name.getText().toString();
-    company_tel=EditText_company_tel.getText().toString();
-    company_type=EditText_company_type.getText().toString();
-    company_address=EditText_company_address.getText().toString();
-    company_cost=EditText_cost.getText().toString();
-    company_business_hour=EditText_business_hour.getText().toString();
+                company_name = EditText_company_name.getText().toString();
+                company_tel = EditText_company_tel.getText().toString();
+                company_type = EditText_company_type.getText().toString();
+                company_address = EditText_company_address.getText().toString();
+                company_cost = EditText_cost.getText().toString();
+                company_business_hour = EditText_business_hour.getText().toString();
 
-        submitting(company_name,company_tel,company_type,company_address,company_cost,company_business_hour);
+                submitting(company_name, company_tel, company_type, company_address, company_cost, company_business_hour);
 
 
-        }
+            }
         });
 
 
         btn_reset.setOnClickListener(new Button.OnClickListener() {
 
-@Override
-public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
 
 
-        }
+            }
         });
 
 
         return view;
-        }
+    }
 
 
-private void submitting(final String company_name, final String company_tel,final String company_type,final String company_address,final String company_cost,final String company_business_hour) {
+    private void submitting(final String company_name, final String company_tel, final String company_type, final String company_address, final String company_cost, final String company_business_hour) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
@@ -122,107 +122,104 @@ private void submitting(final String company_name, final String company_tel,fina
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-        APIConfig.URL_newfound, new Response.Listener<String>() {
+                APIConfig.URL_newfound, new Response.Listener<String>() {
 
-@Override
-public void onResponse(String response) {
-        Log.d("FeedBack", "Login Response: " + response.toString());
-        hideDialog();
+            @Override
+            public void onResponse(String response) {
+                Log.d("FeedBack", "Login Response: " + response.toString());
+                hideDialog();
 
-        try {
-        JSONObject jObj = new JSONObject(response);
-        String error = jObj.getString("status");
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    String error = jObj.getString("status");
 
-        // Check for error node in json
-        if (error.equals("success")) {
-        // user successfully logged in
-        // Create login session
-        //session.setLogin(true);
+                    // Check for error node in json
+                    if (error.equals("success")) {
+                        // user successfully logged in
+                        // Create login session
+                        //session.setLogin(true);
 
 
-        //display message login successfully
-        AlertDialog.Builder ab = new AlertDialog.Builder(view.getContext());
-        ab.setTitle(R.string.submit_success);
-        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                        //display message login successfully
+                        AlertDialog.Builder ab = new AlertDialog.Builder(view.getContext());
+                        ab.setTitle(R.string.submit_success);
+                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
 
-@Override
-public void onClick(DialogInterface dialog, int which) {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
 //                                Intent in = new Intent(view.getContext(), MainActivity.class);
 //                                view.getContext().startActivity(in);
 
-        Home home_fragment = new Home();
+                                Home home_fragment = new Home();
 
-        FragmentManager fragmentManager = getFragmentManager();
-        System.out.println(fragmentManager.getBackStackEntryCount());
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.hide(getFragmentManager().findFragmentByTag("newfound"));
-        fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack(null);
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
-
-
+                                FragmentManager fragmentManager = getFragmentManager();
+                                System.out.println(fragmentManager.getBackStackEntryCount());
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("newfound"));
+                                fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack(null);
+                                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                fragmentTransaction.commit();
 
 
-        }
-        });
-        ab.create().show();
+                            }
+                        });
+                        ab.create().show();
 
 
-        } else {
-        // Error in login. Get the error message
-        JSONObject data = jObj.getJSONObject("data");
-        String errorMsg = data.getString("msg");
+                    } else {
+                        // Error in login. Get the error message
+                        JSONObject data = jObj.getJSONObject("data");
+                        String errorMsg = data.getString("msg");
 
-        Toast.makeText(getActivity(),
-                errorMsg, Toast.LENGTH_LONG).show();
-        }
-        } catch (JSONException e) {
-        // JSON error
-        e.printStackTrace();
-        }
+                        Toast.makeText(getActivity(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                }
 
-        }
+            }
         }, new Response.ErrorListener() {
 
-@Override
-public void onErrorResponse(VolleyError error) {
-        Log.e("FeedBack", "Login Error: " + error.getMessage());
-        Toast.makeText(getActivity(),
-        error.getMessage(), Toast.LENGTH_LONG).show();
-        hideDialog();
-        }
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("FeedBack", "Login Error: " + error.getMessage());
+                Toast.makeText(getActivity(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
         }) {
 
-@Override
-protected Map<String, String> getParams() {
-        // Posting parameters to login url
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("company_name", company_name);
-        params.put("company_tel", company_tel);
-        params.put("company_type", company_type);
-        params.put("company_address", company_address);
-        params.put("cost", company_cost);
-        params.put("business_hour", company_business_hour);
-        return params;
-        }
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("company_name", company_name);
+                params.put("company_tel", company_tel);
+                params.put("company_type", company_type);
+                params.put("company_address", company_address);
+                params.put("cost", company_cost);
+                params.put("business_hour", company_business_hour);
+                return params;
+            }
 
         };
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
-        }
+    }
 
 
-
-private void showDialog() {
+    private void showDialog() {
         if (!pDialog.isShowing())
-        pDialog.show();
-        }
+            pDialog.show();
+    }
 
-private void hideDialog() {
+    private void hideDialog() {
         if (pDialog.isShowing())
-        pDialog.dismiss();
-        }
+            pDialog.dismiss();
+    }
 
-        }
+}

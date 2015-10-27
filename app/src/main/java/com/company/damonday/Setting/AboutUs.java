@@ -42,6 +42,7 @@ TextView textview;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.setting_about_us, container, false);
+        getActivity().getActionBar().setTitle(R.string.about_us);
         makeJsonArrayRequest();
         textview= (TextView)view.findViewById(R.id.textview);
        // textview.setText(data);

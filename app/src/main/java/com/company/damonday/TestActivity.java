@@ -234,9 +234,13 @@ public class TestActivity extends FragmentActivity {
         // update the main content by replacing fragments
         Fragment fragment = null;
         String tag = null;
+        getActionBar().setDisplayHomeAsUpEnabled(true);     //make back button
+
         switch (position) {
             case 0:
                 //主頁
+                getActionBar().setDisplayHomeAsUpEnabled(false);     //make back button
+                     //make back button
                 fragment = new Home();
                 tag = "home";
                 break;
