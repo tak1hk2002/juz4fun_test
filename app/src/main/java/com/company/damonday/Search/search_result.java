@@ -97,12 +97,7 @@ Log.d("geturl",geturl);
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.search_result, container, false);
-//        ivLike = (ImageView) view.findViewById(R.id.like_image);
-//        ivFair = (ImageView) view.findViewById(R.id.fair_image);
-//        ivDislike = (ImageView) view.findViewById(R.id.dislike_image);
-//        ivLike.setImageResource(R.drawable.like);
-//        ivFair.setImageResource(R.drawable.fair);
-//        ivDislike.setImageResource(R.drawable.dislike);
+
         pDialog = new ProgressDialog(getActivity());
         // Showing progress dialog before making http request
         pDialog.setMessage("Loading...");
@@ -251,13 +246,22 @@ Log.d("geturl",geturl);
                             JSONObject score = oneObject.getJSONObject("score");
                             String price_range=oneObject.getString("price_range");
                             String average_score = score.getString("average_score");
-//                            String category = score.getString("category");
-//                            String title = score.getString("title");
+                            JSONArray category = oneObject.getJSONArray("category");
+                            String name = oneObject.getString("name");
+                            String category_name="";
+                            for (int j=0;j<category.length();j++){
+                                JSONObject cat_object =category.getJSONObject(j);
+                                String cat = cat_object.getString("name");
+                                if(category_name != "")
+                                    category_name += ", ";
+                                category_name+=cat;
+                            }
 
-                            String category ="室內";  //tomc 26/20/2015
-                            String title ="真好玩工作室";
 
-                                    String like = score.getString("like");
+//                            String category ="室內";  //tomc 26/20/2015
+//                            String title ="真好玩工作室";
+
+                            String like = score.getString("like");
                             String fair = score.getString("fair");
                             String dislike = score.getString("dislike");
                             //category
@@ -265,8 +269,8 @@ Log.d("geturl",geturl);
 
 
                             CompanyObject companyObject = new CompanyObject();
-                             companyObject.setTitle(title);
-                            companyObject.setCategory(category);
+                             companyObject.setTitle(name);
+                            companyObject.setCategory(category_name);
                             companyObject.setUser_id(oneObject.getString("ID"));
                             companyObject.setThumbnailUrl(oneObject.getString("cover_image"));
                             companyObject.setAveage_scrore(average_score);

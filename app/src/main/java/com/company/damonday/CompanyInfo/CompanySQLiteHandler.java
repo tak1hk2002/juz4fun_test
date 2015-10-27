@@ -5,12 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.format.Time;
 import android.util.Log;
 
 import com.company.damonday.Login.SQLiteHandler;
 import com.company.damonday.MyFavourites.MyFavouritesObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by lamtaklung on 22/10/2015.
@@ -88,6 +91,11 @@ public class CompanySQLiteHandler extends SQLiteOpenHelper {
             cat += myFavouritesObject.getCat().get(i);
         }
 
+        Time t = new Time(Time.getCurrentTimezone());
+        t.setToNow();
+        String date = t.format("%Y/%m/%d");
+        Log.d("FAV_TIME",date);
+
         ContentValues values = new ContentValues();
         values.put(KEY_ENT_ID, myFavouritesObject.getEntId()); // entID
         values.put(KEY_PIC_URL, myFavouritesObject.getPicUrl()); // picUrl
@@ -98,9 +106,12 @@ public class CompanySQLiteHandler extends SQLiteOpenHelper {
         values.put(KEY_DISLIKE, myFavouritesObject.getDislike()); // dislike
         values.put(KEY_AVERAGE_SCORE, myFavouritesObject.getAverageScore()); // averageScore
         values.put(KEY_CATEGORIES, cat); // cat
-        values.put(KEY_CREATE_DATE, "datetime()"); // create date
+        values.put(KEY_CREATE_DATE, date); // create date
 
         // Inserting Row
+
+
+
         System.out.println(values);
         long id = db.insert(TABLE_MY_FAVOURITE, null, values);
         db.close(); // Closing database connection
@@ -109,36 +120,75 @@ public class CompanySQLiteHandler extends SQLiteOpenHelper {
     /**
      * Getting all my favourite data from database
      * */
-    public HashMap<String, String> getAllMyFavouriteDetails() {
-        HashMap<String, String> myFavourite = new HashMap<String, String>();
-        String selectQuery = "SELECT  * FROM " + TABLE_MY_FAVOURITE;
+//    public HashMap<String, String> getAllMyFavouriteDetails() {
+//        HashMap<String, String> myFavourite = new HashMap<String, String>();
+//        String selectQuery = "SELECT  * FROM " + TABLE_MY_FAVOURITE;
+//
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery(selectQuery, null);
+//        // Move to first row
+//        cursor.moveToFirst();
+//        if (cursor.getCount() > 0) {
+//            myFavourite.put("id", cursor.getString(1));
+//            myFavourite.put("ent_id", cursor.getString(2));
+//            myFavourite.put("pic_url", cursor.getString(3));
+//            myFavourite.put("title", cursor.getString(4));
+//            myFavourite.put("price", cursor.getString(5));
+//            myFavourite.put("like", cursor.getString(6));
+//            myFavourite.put("fair", cursor.getString(7));
+//            myFavourite.put("dislike", cursor.getString(8));
+//            myFavourite.put("average_score", cursor.getString(9));
+//            myFavourite.put("categories", cursor.getString(10));
+//            myFavourite.put("create_date", cursor.getString(11));
+//        }
+//        cursor.close();
+//        db.close();
+//        // return my favourite
+//        Log.d(TAG, "Fetching user from Sqlite: " + myFavourite.toString());
+//
+//
+//        return myFavourite;
+//    }
 
+
+    public List<MyFavouritesObject> getAll() {
+        List<MyFavouritesObject> result = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_MY_FAVOURITE;
         Cursor cursor = db.rawQuery(selectQuery, null);
-        // Move to first row
-        cursor.moveToFirst();
-        if (cursor.getCount() > 0) {
-            myFavourite.put("id", cursor.getString(1));
-            myFavourite.put("ent_id", cursor.getString(2));
-            myFavourite.put("pic_url", cursor.getString(3));
-            myFavourite.put("title", cursor.getString(4));
-            myFavourite.put("price", cursor.getString(5));
-            myFavourite.put("like", cursor.getString(6));
-            myFavourite.put("fair", cursor.getString(7));
-            myFavourite.put("dislike", cursor.getString(8));
-            myFavourite.put("average_score", cursor.getString(9));
-            myFavourite.put("categories", cursor.getString(10));
-            myFavourite.put("create_date", cursor.getString(11));
+//        Cursor cursor = db.query(
+//                TABLE_NAME, null, null, null, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            result.add(getRecord(cursor));
         }
+
         cursor.close();
-        db.close();
-        // return my favourite
-        Log.d(TAG, "Fetching user from Sqlite: " + myFavourite.toString());
-
-
-        return myFavourite;
+        return result;
     }
 
+
+    public MyFavouritesObject getRecord(Cursor cursor) {
+        // 準備回傳結果用的物件
+        //MyFavouritesObject result;
+
+        //String id=cursor.getString(1);
+        String ent_id=cursor.getString(1);
+        String pic_url=cursor.getString(2);
+        String title=cursor.getString(3);
+        String price=cursor.getString(4);
+        String like=cursor.getString(5);
+        String fair=cursor.getString(6);
+        String dislike=cursor.getString(7);
+        String average_score=cursor.getString(8);
+        String categories=cursor.getString(9);
+        //String create_date=cursor.getString(11);
+
+        MyFavouritesObject result = new MyFavouritesObject(ent_id,pic_url,title,price,like,fair,dislike,average_score,categories);
+
+        // 回傳結果
+        return result;
+    }
 
     /**
      * Getting my favourite status return true if rows are there in table

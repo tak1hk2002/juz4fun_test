@@ -6,7 +6,24 @@ import java.util.ArrayList;
  * Created by lamtaklung on 25/10/2015.
  */
 public class MyFavouritesObject {
-    String entId, picUrl, title, price, like, fair, dislike, averageScore;
+    String entId;
+    String picUrl;
+    String title;
+    String price;
+    String like;
+    String fair;
+    String dislike;
+    String averageScore;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    String category;
     ArrayList<String> cat = new ArrayList<>();
 
     public String getEntId() {
@@ -94,5 +111,17 @@ public class MyFavouritesObject {
         this.cat = cat;
     }
 
+    public MyFavouritesObject(String entId, String picUrl, String title, String price, String like, String fair, String dislike, String averageScore, String cat) {
+        this.entId = entId;
+        this.picUrl = picUrl;
+        this.title = title;
+        this.price = price;
+        this.like = like;
+        this.fair = fair;
+        this.dislike = dislike;
+        this.averageScore = averageScore;
+
+        this.category = cat;
+    }
 
 }

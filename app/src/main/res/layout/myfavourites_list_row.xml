@@ -3,14 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/view_companycomment_list_row_selector"
-    android:padding="15dp"
-   >
+    android:padding="11dp"
+    >
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:id="@+id/left">
+        android:id="@+id/left"
+        >
 
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/thumbnail"
@@ -26,14 +27,14 @@
         android:layout_toRightOf="@+id/left"
         android:layout_toLeftOf="@+id/right"
         android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp">
+        android:layout_marginLeft="30dp">
         <!-- Title -->
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:text="真好玩真好玩"
             android:textStyle="bold" />
 
@@ -43,10 +44,10 @@
             android:id="@+id/price_range"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-           android:layout_below="@+id/title"
+            android:layout_below="@+id/title"
             android:text="$100-200"
             android:textColor="@color/year"
-            android:textSize="20dp" />
+            android:textSize="14dp" />
 
 
 
@@ -58,7 +59,7 @@
             android:layout_marginTop="1dip"
             android:layout_below="@+id/price_range"
             android:text="室內"
-            android:textSize="15dp" />
+            android:textSize="12dp" />
 
 
 
@@ -71,11 +72,11 @@
             >
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:id="@+id/like_image"
                 android:src="@drawable/like"
-                android:padding="2dp"/>
+                android:padding="1dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -88,12 +89,12 @@
                 android:padding="2dp"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:id="@+id/fair_image"
                 android:src="@drawable/fair"
                 android:layout_toRightOf="@+id/like"
-                android:padding="2dp"/>
+                android:padding="1dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -106,12 +107,12 @@
                 android:padding="2dp"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:id="@+id/dislike_image"
                 android:src="@drawable/dislike"
                 android:layout_toRightOf="@+id/fair"
-                android:padding="2dp"/>
+                android:padding="1dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -133,12 +134,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/right"
-        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true">
 
 
         <ImageView
-
+            android:layout_marginTop="8dp"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/big_like"
@@ -150,19 +150,20 @@
             android:textSize="10dp"
             android:text="3.4"
             android:layout_below="@+id/big_like"
+            android:layout_marginTop="5dp"
 
             android:paddingLeft="1dp"
             android:layout_centerHorizontal="true"
 
             />
         <!--<TextView-->
-            <!--android:id="@+id/rating2"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textSize="10dp"-->
-            <!--android:text="/5"-->
-            <!--android:layout_below="@+id/big_like"-->
-            <!--android:padding="1dp"/>-->
+        <!--android:id="@+id/rating2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="10dp"-->
+        <!--android:text="/5"-->
+        <!--android:layout_below="@+id/big_like"-->
+        <!--android:padding="1dp"/>-->
         <!--android:layout_centerHorizontal="true"-->
     </RelativeLayout>
 
