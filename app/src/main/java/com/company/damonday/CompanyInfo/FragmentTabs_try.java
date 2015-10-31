@@ -35,17 +35,14 @@ import com.company.damonday.CompanyInfo.Fragment.ViewCompany.Fragment_ViewCompan
 import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment;
 import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_login_register;
 import com.company.damonday.CompanyInfo.Lib.VideoControllerView;
-import com.company.damonday.Login.SQLiteHandler;
+import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MyFavourites.MyFavouritesObject;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
-import com.facebook.FacebookActivity;
 import com.facebook.FacebookSdk;
-import com.facebook.login.LoginResult;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 
@@ -80,7 +77,8 @@ public class FragmentTabs_try extends Fragment implements
     private ImageView ivMyFavourite, ivLike, ivFair, ivDislike;
     private UnderlinePageIndicator mIndicator;
     private View view;
-    private CompanySQLiteHandler db;
+    private CompanySQLiteHandler myfavouriteDB;
+    private SessionManager session;
     private MyFavouritesObject myFavouritesObject;
 
     @Override
@@ -119,6 +117,8 @@ public class FragmentTabs_try extends Fragment implements
             e.printStackTrace();
             Toast.makeText(getActivity(), "No data loaded", Toast.LENGTH_LONG).show();
         }
+
+        session = new SessionManager(getActivity());
 
 
         pDialog = new ProgressDialog(getActivity());
@@ -162,10 +162,10 @@ public class FragmentTabs_try extends Fragment implements
         viewPager.setCurrentItem(0);
 
         // SQLite database handler
-        db = new CompanySQLiteHandler(getActivity());
+        myfavouriteDB = new CompanySQLiteHandler(getActivity());
 
         //get row count
-        int myFavouriteCount = db.getRowCount(Integer.parseInt(entId));
+        int myFavouriteCount = myfavouriteDB.getRowCount(Integer.parseInt(entId));
         Log.d("myFavouriteCount", Integer.toString(myFavouriteCount));
 
         final boolean[] heartUnclicked = {true};
@@ -184,14 +184,14 @@ public class FragmentTabs_try extends Fragment implements
                 if(heartUnclicked[0]){
                     heartUnclicked[0] = false;
                     ivMyFavourite.setImageResource(R.drawable.heart_clicked);
-                    db.addMyFavourite(myFavouritesObject);
+                    myfavouriteDB.addMyFavourite(myFavouritesObject);
                     Toast.makeText(getActivity(), R.string.heart_clicked, Toast.LENGTH_SHORT).show();
 
                 }
                 else{
                     heartUnclicked[0] = true;
                     ivMyFavourite.setImageResource(R.drawable.heart_unclicked);
-                    db.deleteMyFavourite(Integer.parseInt(entId));
+                    myfavouriteDB.deleteMyFavourite(Integer.parseInt(entId));
                     Toast.makeText(getActivity(), R.string.heart_unclicked, Toast.LENGTH_SHORT).show();
                 }
 
@@ -249,15 +249,25 @@ public class FragmentTabs_try extends Fragment implements
 
         //check login
         //no login, go to login or register option screen
-        System.out.println(AccessToken.getCurrentAccessToken());
-        if (AccessToken.getCurrentAccessToken() == null) {
-            mTabHost.addTab(
-                    mTabHost.newTabSpec("我要評論").setIndicator("我要評論"),
-                    Fragment_login_register.class, bundle);
-        }else{
+/*        Boolean systemLogin = false;
+        try{
+            if(session.isLoggedIn()) {
+                systemLogin = true;
+            }
+
+        }catch(NullPointerException e){
+            e.printStackTrace();
+            systemLogin = false;
+        }*/
+        //no login record
+        if (AccessToken.getCurrentAccessToken() != null || session.isLoggedIn()) {
             mTabHost.addTab(
                     mTabHost.newTabSpec("我要評論").setIndicator("我要評論"),
                     Fragment_ViewWriteComment.class, bundle);
+        }else{ //detect the login record
+            mTabHost.addTab(
+                    mTabHost.newTabSpec("我要評論").setIndicator("我要評論"),
+                    Fragment_login_register.class, bundle);
         }
 
 

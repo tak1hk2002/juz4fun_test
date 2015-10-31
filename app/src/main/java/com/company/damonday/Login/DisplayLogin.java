@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.company.damonday.MainActivity;
 import com.company.damonday.R;
 
 import java.util.HashMap;
@@ -20,7 +19,7 @@ public class DisplayLogin extends Activity{
     private TextView txtEmail;
     private Button btnLogout;
 
-    private SQLiteHandler db;
+    private LoginSQLiteHandler db;
     private SessionManager session;
 
     @Override
@@ -33,7 +32,7 @@ public class DisplayLogin extends Activity{
         btnLogout = (Button) findViewById(R.id.btnLogout);
 
         // SqLite database handler
-        db = new SQLiteHandler(getApplicationContext());
+        db = new LoginSQLiteHandler(getApplicationContext());
 
         // session manager
         session = new SessionManager(getApplicationContext());

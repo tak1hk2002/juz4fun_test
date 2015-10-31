@@ -1,29 +1,16 @@
 package com.company.damonday.CompanyInfo.Fragment.ViewWriteComment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.company.damonday.Login.Fragment.Fragment_Login;
-import com.company.damonday.Login.Fragment.Fragment_Registration;
-import com.company.damonday.Login.SQLiteHandler;
-import com.company.damonday.Login.SessionManager;
 import com.company.damonday.R;
 import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
 
 import java.util.ArrayList;
 import java.util.List;

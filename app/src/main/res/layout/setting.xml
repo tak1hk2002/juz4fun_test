@@ -9,10 +9,10 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-        android:id="@+id/logouted"
-        android:gravity="center_horizontal"
-android:padding="25dp"
-        android:background="@color/bg_login">
+    android:id="@+id/logouted"
+    android:gravity="center_horizontal"
+    android:padding="25dp"
+    android:background="@color/bg_login">
 
         <Button
             android:layout_width="wrap_content"
@@ -40,14 +40,23 @@ android:padding="25dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/logined"
+        android:gravity="center_horizontal"
+        android:padding="25dp">
 
-        android:background="#ABA799" >
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/setting_circle_layer"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="登出"
-            android:id="@+id/button5" />
+            android:id="@+id/button5"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"/>
 
        />
     </LinearLayout>

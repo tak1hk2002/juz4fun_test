@@ -107,11 +107,11 @@ public class Fragment_Login extends Fragment {
 
 
         // Check if user is already logged in or not
-/*        if (session.isLoggedIn()) {
+        if (session.isLoggedIn()) {
             Intent intent = new Intent(v.getContext(), DisplayLogin.class);
             startActivity(intent);
 
-        }*/
+        }
 
         btnLogin.setOnClickListener(new AdapterView.OnClickListener() {
 
@@ -238,6 +238,48 @@ public class Fragment_Login extends Fragment {
 
         return v;
 
+    }
+
+    private void redirectToDetail(){
+        try {
+            if (entId != null) {
+                Bundle bundle = new Bundle();
+                FragmentTabs_try fragmentTabs_try = new FragmentTabs_try();
+                bundle.putString("ent_id", entId);
+                fragmentTabs_try.setArguments(bundle);
+
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                System.out.println(fragmentManager.getBackStackEntryCount());
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                //delete last fragment
+                fragmentManager.popBackStack();
+                //delete last fragment
+                fragmentManager.popBackStack();
+
+                //hide the fragment which is to jump to company detail page
+                String hideFragment = "";
+                if(getActivity().getSupportFragmentManager().findFragmentByTag("home") != null)
+                    hideFragment = "home";
+                else if (getActivity().getSupportFragmentManager().findFragmentByTag("ranking") != null)
+                    hideFragment = "ranking";
+                else if (getActivity().getSupportFragmentManager().findFragmentByTag("search_result") != null)
+                    hideFragment = "search_result";
+
+                fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag(hideFragment));
+                fragmentTransaction.add(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
+
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.commit();
+
+
+            } else {
+                /*Intent in = new Intent(v.getContext(), MainActivity.class);
+                v.getContext().startActivity(in);*/
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -434,15 +476,18 @@ public class Fragment_Login extends Fragment {
             public void onResponse(String response) {
                 //Log.d(TAG, "Register Response: " + response.toString());
                 //hideDialog();
+                Log.d("URL_FACEBOOK_USER", APIConfig.URL_FACEBOOK_USER.toString());
+                Log.d("Response", response.toString());
 
                 try {
                     JSONObject jObj = new JSONObject(response);
                     String error = jObj.getString("status");
                     if (error.equals("success")) {
-
                         Toast.makeText(getActivity(),
                                 error, Toast.LENGTH_LONG).show();
                         Log.d("facebook", "success");
+
+                        redirectToDetail();
 
                         // User successfully stored in MySQL
                         // Now store the user in sqlite

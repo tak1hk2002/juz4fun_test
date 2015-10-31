@@ -8,11 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.format.Time;
 import android.util.Log;
 
-import com.company.damonday.Login.SQLiteHandler;
+import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.MyFavourites.MyFavouritesObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,7 +19,7 @@ import java.util.List;
  */
 public class CompanySQLiteHandler extends SQLiteOpenHelper {
 
-    private static final String TAG = SQLiteHandler.class.getSimpleName();
+    private static final String TAG = LoginSQLiteHandler.class.getSimpleName();
 
     // All Static variables
     // Database Version

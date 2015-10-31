@@ -12,9 +12,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class SQLiteHandler extends SQLiteOpenHelper {
+public class LoginSQLiteHandler extends SQLiteOpenHelper {
 
-    private static final String TAG = SQLiteHandler.class.getSimpleName();
+    private static final String TAG = LoginSQLiteHandler.class.getSimpleName();
 
     // All Static variables
     // Database Version
@@ -32,7 +32,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String KEY_USERNAME = "username";
     //private static final String KEY_UID = "uid";
 
-    public SQLiteHandler(Context context) {
+    public LoginSQLiteHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

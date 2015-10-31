@@ -21,7 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.company.damonday.Login.FragmentTabs;
 import com.company.damonday.function.APIConfig;
-import com.company.damonday.Login.SQLiteHandler;
+import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MainActivity;
 import com.company.damonday.R;
@@ -45,7 +45,7 @@ public class Fragment_Registration extends Fragment {
     private EditText inputConfirmedPassword;
     private ProgressDialog pDialog;
     private SessionManager session;
-    private SQLiteHandler db;
+    private LoginSQLiteHandler db;
     private View v;
     private TabHost mTabHost;
 
@@ -75,7 +75,7 @@ public class Fragment_Registration extends Fragment {
         session = new SessionManager(getActivity());
 
         // SQLite database handler
-        db = new SQLiteHandler(getActivity());
+        db = new LoginSQLiteHandler(getActivity());
 
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {

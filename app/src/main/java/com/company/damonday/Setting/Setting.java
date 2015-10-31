@@ -10,28 +10,42 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.company.damonday.Login.SessionManager;
 import com.company.damonday.R;
+import com.facebook.AccessToken;
 
 /**
  * Created by tom on 21/6/15.
  */
 public class Setting extends Fragment {
-private LinearLayout islogouted;
+    private LinearLayout islogouted, islogined;
+
+    private SessionManager session;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.setting);
+        session = new SessionManager(getActivity());
 
 
 
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.setting, container, false);
         getActivity().getActionBar().setTitle(R.string.setting);
-        islogouted = (LinearLayout)view.findViewById(R.id.logined);
-        islogouted.setVisibility(View.GONE);
+        View view = inflater.inflate(R.layout.setting, container, false);
+        islogined = (LinearLayout) view.findViewById(R.id.logined);
+        islogouted = (LinearLayout)view.findViewById(R.id.logouted);
+        if(session.isLoggedIn() || AccessToken.getCurrentAccessToken() != null){
+            islogouted.setVisibility(View.GONE);
+
+        }
+        else{
+            islogined.setVisibility(View.GONE);
+        }
+
+
 
 
 
