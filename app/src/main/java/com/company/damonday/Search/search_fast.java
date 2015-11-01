@@ -4,7 +4,7 @@ package com.company.damonday.Search;
         import java.util.ArrayList;
         import java.util.HashMap;
         import java.util.Map;
-        
+
 
         import org.json.JSONArray;
         import org.json.JSONException;
@@ -122,16 +122,19 @@ public class search_fast extends Fragment {
             public boolean onQueryTextChange(String newText) {
 
                 if (newText.length() > 1) {
-
+                    Log.d("arraylen1", String.valueOf(filteredProductResults.size()));
                     searchResults.setVisibility(myFragmentView.VISIBLE);
                     Log.d("keyword", newText);
-                    filteredProductResults.clear();
+
 
                     submitting(newText);
+
                     //myAsyncTask m= (myAsyncTask) new myAsyncTask().execute(newText);
                 } else {
 
                     searchResults.setVisibility(myFragmentView.INVISIBLE);
+                    Log.d("arraylen2", String.valueOf(filteredProductResults.size()));
+                    //filteredProductResults.clear();
                 }
 
 
@@ -188,6 +191,7 @@ public class search_fast extends Fragment {
                         // Create login session
                         //session.setLogin(true);
                         JSONArray jArray = jObj.getJSONArray("data");
+                        filteredProductResults.clear();
                         for (int i = 0; i < jArray.length(); i++) {
 
                             JSONObject oneObject = jArray.getJSONObject(i);
@@ -202,7 +206,7 @@ public class search_fast extends Fragment {
 
 
                             // adding movie to movies array
-                           // productResults.add(model);
+                           // productResults.add(model);  filteredProductResults.clear();
                             filteredProductResults.add(model);
                         }
 
@@ -220,9 +224,11 @@ public class search_fast extends Fragment {
                     e.printStackTrace();
                 }
 
-                searchResults.setAdapter(new SearchResultsAdapter(getActivity(), filteredProductResults));
-
-           //     adapter.notifyDataSetChanged();
+                adapter=new SearchResultsAdapter(getActivity(), filteredProductResults);
+                Log.d("hi","hi1");
+                searchResults.setAdapter(adapter);
+                Log.d("hi", "hi2");
+                //adapter.notifyDataSetChanged();
 
             }
         }, new Response.ErrorListener() {
@@ -447,7 +453,7 @@ public class search_fast extends Fragment {
             if (convertView == null) {
                 convertView = layoutInflater.inflate(R.layout.search_fast_list_row, null);}
 
-                TextView title = (TextView) convertView.findViewById(R.id.title);
+            TextView title = (TextView) convertView.findViewById(R.id.title);
 
 
 
