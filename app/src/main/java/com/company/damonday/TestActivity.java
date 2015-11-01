@@ -27,6 +27,7 @@ import com.company.damonday.NewFoundCompany.NewFoundCompany;
 import com.company.damonday.Ranking.NavDrawerListAdapter;
 import com.company.damonday.Ranking.Ranking_try;
 import com.company.damonday.Search.search;
+import com.company.damonday.Search.search_fast;
 import com.company.damonday.Setting.Setting;
 
 import java.util.ArrayList;
@@ -272,7 +273,7 @@ public class TestActivity extends FragmentActivity {
 
             case 6:
                 //設定
-                fragment = new Setting();
+                fragment = new search_fast();
                 tag = "setting";
                 break;
 

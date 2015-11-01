@@ -43,7 +43,8 @@ public class APIConfig {
     //advance search
     public static String URL_Advance_Search="http://damonday.tk/api/entertainment/advanced_search/";
 
-
+    //fast search
+    public static String URL_Fast_Search="http://damonday.tk/api/entertainment/search/";
 
     //Detail url
     public String getUrlDetail(){

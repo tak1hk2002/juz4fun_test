@@ -345,9 +345,9 @@ Log.d("geturl",geturl);
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                // params.put("category_id", category_id);
-                // params.put("district_id", district_id);
-                // params.put("large_district_id", large_district_id);
+                 params.put("category_id", category_id);
+                 params.put("district_id", district_id);
+                 params.put("large_district_id", large_district_id);
                 params.put("price_range", price_id);
 
                 return params;

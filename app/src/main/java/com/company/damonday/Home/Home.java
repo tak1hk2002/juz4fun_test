@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.R;
@@ -25,6 +24,7 @@ import com.company.damonday.Ranking.MyAdapter;
 import com.company.damonday.Ranking.Ranking;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.ConnectionDetector;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +39,7 @@ import java.util.List;
 public class Home extends Fragment {
 
     // json array response url
-    private String urlJsonObj = "http://damonday.tk/api/entertainment/home/";
+   // private String urlJsonObj = "http://damonday.tk/api/entertainment/home/";
 
     private static String TAG = Ranking.class.getSimpleName();
 
@@ -155,6 +155,7 @@ public class Home extends Fragment {
                         }
                     } else {
                         String errorMsg = response.getString("msg");
+                        Log.d("error1","error1");
                         Toast.makeText(getActivity(),
                                 errorMsg,
                                 Toast.LENGTH_LONG).show();
@@ -162,7 +163,7 @@ public class Home extends Fragment {
 
 
                 } catch (JSONException e) {
-                    Log.d("error", "error");
+                    Log.d("error2", "error2");
                     e.printStackTrace();
                     Toast.makeText(getActivity(),
                             "Error: " + e.getMessage(),
@@ -176,12 +177,48 @@ public class Home extends Fragment {
             }
         }, new Response.ErrorListener() {
             @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.d("error3", "error3");
+//                VolleyLog.d("volley", "Error: " + error.networkResponse.statusCode);
+//                Log.d("error4", error.getMessage());
+//                Log.d("error5","Error: " + error.getMessage());
+//                Toast.makeText(getActivity(),
+//                        error.getMessage(), Toast.LENGTH_SHORT).show();
+//                VolleyError error2;
+//
+//                //hidePDialog();
+//            }
+
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("volley", "Error: " + error.getMessage());
+
+              //  ConnectionDetector cd = new ConnectionDetector(getActivity().getApplicationContext());
+
+                Boolean isInternetPresent = ConnectionDetector.isConnectingToInternet(getActivity()); // true or falsew
+
+
+                Log.d("Network","bool="+isInternetPresent);
+               // String body="";
+                //get status code here
+                //String statusCode = String.valueOf(error.networkResponse.statusCode);
+                //get response body and parse with appropriate encoding
+//                if(error.networkResponse.data!=null) {
+//                    try {
+//                        body = new String(error.networkResponse.data,"UTF-8");
+//                    } catch (UnsupportedEncodingException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//
                 Toast.makeText(getActivity(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
-                //hidePDialog();
+                        "newwork="+isInternetPresent  , Toast.LENGTH_SHORT).show();
+
+
+                //do stuff with the body...
             }
+
+
+
         });
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
