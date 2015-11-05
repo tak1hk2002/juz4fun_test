@@ -23,6 +23,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_login_register;
+import com.company.damonday.Login.Fragment.Fragment_Login;
 import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.R;
@@ -91,6 +93,8 @@ public class Setting extends Fragment {
                         public void onClick(DialogInterface dialog, int which) {
                             Setting setting = new Setting();
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            //clear all of the fragment at the stack
+                            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                             fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null);
 
@@ -116,6 +120,33 @@ public class Setting extends Fragment {
         //ready for login
         else{
             islogined.setVisibility(View.GONE);
+            Button btnLogin = (Button) view.findViewById(R.id.login);
+            Button btnRegister = (Button) view.findViewById(R.id.register);
+
+            btnLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("lastFragment", "setting");
+
+                    Fragment_Login fragment_login = new Fragment_Login();
+                    fragment_login.setArguments(bundle);
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_container, fragment_login, "login").addToBackStack(null);
+
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
+
+                }
+            });
+
+            btnRegister.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
 
 

@@ -21,7 +21,7 @@
             android:textSize="13dp"
             android:background="@color/btn_login_bg"
             android:layout_marginRight="10dp"
-            android:id="@+id/button3"
+            android:id="@+id/login"
             android:textColor="@color/btn_login"/>
 
         <Button
@@ -30,7 +30,7 @@
             android:text="注冊"
             android:textSize="13dp"
             android:background="@color/btn_login_bg"
-            android:id="@+id/button4"
+            android:id="@+id/register"
             android:textColor="@color/btn_login"/>
 
     </LinearLayout>

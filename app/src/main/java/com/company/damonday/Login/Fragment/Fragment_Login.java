@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.Login.DisplayLogin;
 import com.company.damonday.Login.FragmentTabs;
+import com.company.damonday.Setting.Setting;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MainActivity;
@@ -61,7 +62,7 @@ public class Fragment_Login extends Fragment {
     private ProgressDialog pDialog;
     private SessionManager session;
     private View v;
-    private String entId;
+    private String entId, lastFragment;
     CallbackManager callbackManager;
     private AccessToken accessToken;
 
@@ -72,7 +73,8 @@ public class Fragment_Login extends Fragment {
         super.onCreate(savedInstanceState);
         try {
             entId = getArguments().getString("ent_id");
-            Log.d("entId", entId);
+            //get last fragment name
+            lastFragment = getArguments().getString("lastFragment");
         }catch(Exception e) {
             e.printStackTrace();
         }
@@ -106,12 +108,7 @@ public class Fragment_Login extends Fragment {
         session = new SessionManager(getActivity().getApplicationContext());
 
 
-        // Check if user is already logged in or not
-        if (session.isLoggedIn()) {
-            Intent intent = new Intent(v.getContext(), DisplayLogin.class);
-            startActivity(intent);
 
-        }
 
         btnLogin.setOnClickListener(new AdapterView.OnClickListener() {
 
@@ -240,8 +237,10 @@ public class Fragment_Login extends Fragment {
 
     }
 
+    //redirect to detail
     private void redirectToDetail(){
         try {
+
             if (entId != null) {
                 Bundle bundle = new Bundle();
                 FragmentTabs_try fragmentTabs_try = new FragmentTabs_try();
@@ -320,6 +319,7 @@ public class Fragment_Login extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
 
                                 try {
+                                    //last fragment is from detail
                                     if (entId != null) {
                                         Bundle bundle = new Bundle();
                                         FragmentTabs_try fragmentTabs_try = new FragmentTabs_try();
@@ -359,7 +359,24 @@ public class Fragment_Login extends Fragment {
                                         fragmentTransaction.commit();
 
 
-                                    } else {
+                                    }
+                                    //last fragment is from setting
+                                    else if (lastFragment != null){
+                                        switch (lastFragment){
+                                            case "setting":
+                                                Setting setting = new Setting();
+                                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                                //clear all of the fragment at the stack
+                                                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                                fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null)
+                                                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                                                        .commit();
+
+                                                break;
+                                        }
+                                    }
+                                    else {
                                         Intent in = new Intent(v.getContext(), MainActivity.class);
                                         v.getContext().startActivity(in);
                                     }

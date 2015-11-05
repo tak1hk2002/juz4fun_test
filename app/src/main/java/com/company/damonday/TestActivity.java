@@ -273,7 +273,7 @@ public class TestActivity extends FragmentActivity {
 
             case 6:
                 //設定
-                fragment = new search_fast();
+                fragment = new Setting();
                 tag = "setting";
                 break;
 
