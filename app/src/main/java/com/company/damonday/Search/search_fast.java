@@ -3,6 +3,7 @@ package com.company.damonday.Search;
 
         import java.util.ArrayList;
         import java.util.HashMap;
+        import java.util.List;
         import java.util.Map;
 
 
@@ -17,11 +18,14 @@ package com.company.damonday.Search;
         import android.os.AsyncTask;
         import android.os.Bundle;
         import android.support.v4.app.Fragment;
+        import android.support.v4.app.FragmentManager;
+        import android.support.v4.app.FragmentTransaction;
         import android.util.Log;
         import android.view.Gravity;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
+        import android.widget.AdapterView;
         import android.widget.BaseAdapter;
         import android.widget.Button;
         import android.widget.ImageButton;
@@ -37,6 +41,7 @@ package com.company.damonday.Search;
         import com.android.volley.VolleyLog;
         import com.android.volley.toolbox.JsonObjectRequest;
         import com.android.volley.toolbox.StringRequest;
+        import com.company.damonday.CompanyInfo.FragmentTabs_try;
         import com.company.damonday.R;
         import com.company.damonday.function.APIConfig;
         import com.company.damonday.function.AppController;
@@ -51,6 +56,7 @@ public class search_fast extends Fragment {
     ImageButton buttonAudio;
     Typeface type;
     ListView searchResults;
+    private List<CompanyObject> companyObjects = new ArrayList<CompanyObject>();
     String found = "N";
     private ProgressDialog pDialog;
     private SearchResultsAdapter adapter;
@@ -142,6 +148,39 @@ public class search_fast extends Fragment {
             }
 
         });
+
+        searchResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+
+                //pass the following object to next activity
+                /*Intent i = new Intent(Ranking.this, FragmentTabs.class);
+                i.putExtra("Ent_id", companyInfoItems.get(position).getEnt_id());
+                startActivity(i);*/
+
+                //pass object to next fragment
+                Bundle bundle = new Bundle();
+                bundle.putString("ent_id", filteredProductResults.get(position).getUser_id());
+               Fragment fragmentTabs_try = new FragmentTabs_try();
+                fragmentTabs_try.setArguments(bundle);
+
+
+                FragmentManager fragmentManager = getFragmentManager();
+                // System.out.println(fragmentManager.getBackStackEntryCount());
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                //fragmentTransaction.hide(getFragmentManager().findFragmentByTag("search_fast"));
+                fragmentTransaction.add(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.commit();
+
+            }
+        });
+
+
+
         return myFragmentView;
     }
 
@@ -291,123 +330,7 @@ public class search_fast extends Fragment {
     }
 
 
-    //
-//    //in this myAsyncTask, we are fetching data from server for the search string entered by user.
-//    class myAsyncTask extends AsyncTask<String, Void, String>
-//    {
-//        JSONParser jParser;
-//        JSONArray productList;
-//        String url=new String();
-//        String textSearch;
-//        ProgressDialog pd;
-//
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            productList=new JSONArray();
-//            jParser = new JSONParser();
-//            pd= new ProgressDialog(getActivity());
-//            pd.setCancelable(false);
-//            pd.setMessage("Searching...");
-//            pd.getWindow().setGravity(Gravity.CENTER);
-//            pd.show();
-//        }
-//
-//        @Override
-//        protected String doInBackground(String... sText) {
-//
-//            url="http://lawgo.in/lawgo/products/user/1/search/"+sText[0];
-//            String returnResult = getProductList(url);
-//            this.textSearch = sText[0];
-//            return returnResult;
-//
-//        }
-//
-//        public String getProductList(String url)
-//        {
-//
-//            Product tempProduct = new Product();
-//            String matchFound = "N";
-//            //productResults is an arraylist with all product details for the search criteria
-//            //productResults.clear();
-//
-//
-//            try {
-//
-//
-//                JSONObject json = jParser.getJSONFromUrl(url);
-//
-//                productList = json.getJSONArray("ProductList");
-//
-//                //parse date for dateList
-//                for(int i=0;i<productList.length();i++)
-//                {
-//                    tempProduct = new Com();
-//
-//                    JSONObject obj=productList.getJSONObject(i);
-//
-//                   // tempProduct.setProductCode(obj.getString("ProductCode"));
-//                    tempProduct.setProductName(obj.getString("ProductName"));
-//                    tempProduct.setProductGrammage(obj.getString("ProductGrammage"));
-//                    tempProduct.setProductBarcode(obj.getString("ProductBarcode"));
-//                    tempProduct.setProductDivision(obj.getString("ProductCatCode"));
-//                    tempProduct.setProductDepartment(obj.getString("ProductSubCode"));
-//                    tempProduct.setProductMRP(obj.getString("ProductMRP"));
-//                    tempProduct.setProductBBPrice(obj.getString("ProductBBPrice"));
-//
-//                    //check if this product is already there in productResults, if yes, then don't add it again.
-//                    matchFound = "N";
-//
-//                    for (int j=0; j < productResults.size();j++)
-//                    {
-//
-//                        if (productResults.get(j).getProductCode().equals(tempProduct.getProductCode()))
-//                        {
-//                            matchFound = "Y";
-//                        }
-//                    }
-//
-//                    if (matchFound == "N")
-//                    {
-//                        productResults.add(tempProduct);
-//                    }
-//
-//                }
-//
-//                return ("OK");
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                return ("Exception Caught");
-//            }
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String result) {
-//
-//            super.onPostExecute(result);
-//
-//            if(result.equalsIgnoreCase("Exception Caught"))
-//            {
-//                Toast.makeText(getActivity(), "Unable to connect to server,please try later", Toast.LENGTH_LONG).show();
-//
-//                pd.dismiss();
-//            }
-//            else
-//            {
-//
-//
-//                //calling this method to filter the search results from productResults and move them to
-//                //filteredProductResults
-//                filterProductArray(textSearch);
-//                searchResults.setAdapter(new SearchResultsAdapter(getActivity(),filteredProductResults));
-//                pd.dismiss();
-//            }
-//        }
-//
-//    }
-//}
+
 //
     class SearchResultsAdapter extends BaseAdapter {
         private LayoutInflater layoutInflater;
@@ -425,7 +348,7 @@ public class search_fast extends Fragment {
             this.productDetails = product_details;
             this.count = product_details.size();
             this.context = context;
-         //   type = Typeface.createFromAsset(context.getAssets(), "fonts/book.TTF");
+
 
         }
 

@@ -1,6 +1,7 @@
 package com.company.damonday.Home;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +23,7 @@ import com.company.damonday.R;
 import com.company.damonday.Ranking.CompanyInfo;
 import com.company.damonday.Ranking.MyAdapter;
 import com.company.damonday.Ranking.Ranking;
+import com.company.damonday.Search.search_fast;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.company.damonday.function.ConnectionDetector;
@@ -49,6 +51,7 @@ public class Home extends Fragment {
     private GridView gridView;
     private MyAdapter adapter;
     private FragmentTabs_try fragmentTabs_try;
+    private View searchview;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,11 +64,33 @@ public class Home extends Fragment {
 
         //init view
         View view = inflater.inflate(R.layout.home, container, false);
+        searchview = view.findViewById(R.id.searchView);
+        getActivity().getActionBar().setTitle(R.string.home);
 
         gridView = (GridView) view.findViewById(R.id.gridView);
 
 
         makeJsonArrayRequest();
+
+        searchview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Intent i = new Intent(MainActivity.this, Ranking.class);
+                getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+               Fragment fragment_search_fast = new search_fast();
+
+
+
+                FragmentManager fragmentManager = getFragmentManager();
+                // System.out.println(fragmentManager.getBackStackEntryCount());
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("home"));
+                fragmentTransaction.add(R.id.frame_container, fragment_search_fast, "search_fast").addToBackStack(null);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.commit();
+
+            }
+        });
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

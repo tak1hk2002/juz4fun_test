@@ -61,6 +61,7 @@ public class TestActivity extends FragmentActivity {
 
         mTitle = mDrawerTitle = getTitle();
 
+
         // load slide menu items
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
 
