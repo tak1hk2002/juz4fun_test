@@ -57,18 +57,10 @@
             android:text="登出"
             android:id="@+id/sys_logout"
             android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"/>
+            android:layout_marginLeft="20dp"/><![CDATA[
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_below="@+id/fb_logout"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp" />
-
-       />
+        />
+    ]]>
     </LinearLayout>
 
 

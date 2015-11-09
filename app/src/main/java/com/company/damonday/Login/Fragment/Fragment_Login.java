@@ -237,10 +237,10 @@ public class Fragment_Login extends Fragment {
 
     }
 
-    //redirect to detail
+    //redirect to the page before login
     private void redirectToDetail(){
         try {
-
+            //if the user login via Detail
             if (entId != null) {
                 Bundle bundle = new Bundle();
                 FragmentTabs_try fragmentTabs_try = new FragmentTabs_try();
@@ -271,8 +271,19 @@ public class Fragment_Login extends Fragment {
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
 
+            //if the user login through setting
+            } else if (getActivity().getSupportFragmentManager().findFragmentByTag("setting") != null){
+                Setting setting = new Setting();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                //clear all of the fragment at the stack
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null);
 
-            } else {
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.commit();
+            }
+            else {
                 /*Intent in = new Intent(v.getContext(), MainActivity.class);
                 v.getContext().startActivity(in);*/
             }

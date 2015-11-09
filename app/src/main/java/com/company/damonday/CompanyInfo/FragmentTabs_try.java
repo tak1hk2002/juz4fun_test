@@ -249,16 +249,7 @@ public class FragmentTabs_try extends Fragment implements
 
         //check login
         //no login, go to login or register option screen
-/*        Boolean systemLogin = false;
-        try{
-            if(session.isLoggedIn()) {
-                systemLogin = true;
-            }
 
-        }catch(NullPointerException e){
-            e.printStackTrace();
-            systemLogin = false;
-        }*/
         //no login record
         if (AccessToken.getCurrentAccessToken() != null || session.isLoggedIn()) {
             mTabHost.addTab(
@@ -286,35 +277,6 @@ public class FragmentTabs_try extends Fragment implements
 
     }
 
-    private void updateWithToken(AccessToken currentAccessToken) {
-
-        if (currentAccessToken != null) {
-
-            Toast.makeText(getActivity(), "login successfully", Toast.LENGTH_SHORT).show();
-            /*new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    Intent i = new Intent(SplashScreen.this, GeekTrivia.class);
-                    startActivity(i);
-
-                    finish();
-                }
-            });*/
-        } else {
-            Toast.makeText(getActivity(), "login successfully", Toast.LENGTH_SHORT).show();
-            /*new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    Intent i = new Intent(SplashScreen.this, Login.class);
-                    startActivity(i);
-
-                    finish();
-                }
-            });*/
-        }
-    }
 
     private void makeJsonArrayRequest() {
         showpDialog();

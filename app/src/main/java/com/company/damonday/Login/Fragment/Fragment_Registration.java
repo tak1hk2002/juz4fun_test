@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -166,8 +168,17 @@ public class Fragment_Registration extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                Intent in = new Intent(v.getContext(), FragmentTabs.class);
-                                v.getContext().startActivity(in);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("lastFragment", "setting");
+
+                                Fragment_Login fragment_login = new Fragment_Login();
+                                fragment_login.setArguments(bundle);
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.frame_container, fragment_login, "login").addToBackStack(null);
+
+                                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                fragmentTransaction.commit();
                             }
                         });
                         ab.create().show();

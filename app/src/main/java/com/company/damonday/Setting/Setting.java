@@ -2,6 +2,7 @@ package com.company.damonday.Setting;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,14 +23,36 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_login_register;
 import com.company.damonday.Login.Fragment.Fragment_Login;
+import com.company.damonday.Login.Fragment.Fragment_Registration;
 import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.R;
+import com.company.damonday.Setting.Lib.RoundedTransformation;
 import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by tom on 21/6/15.
@@ -39,14 +62,19 @@ public class Setting extends Fragment {
 
     private SessionManager session;
     private LoginSQLiteHandler db;
+    private CallbackManager callbackManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        FacebookSdk.sdkInitialize(getActivity());
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.setting);
         session = new SessionManager(getActivity());
         // SqLite database handler
         db = new LoginSQLiteHandler(getActivity());
+
+        //宣告callback Manager
+        callbackManager = CallbackManager.Factory.create();
 
 
 
@@ -58,7 +86,6 @@ public class Setting extends Fragment {
         islogined = (LinearLayout) view.findViewById(R.id.logined);
         islogouted = (LinearLayout)view.findViewById(R.id.logouted);
         Button btnSysLogout = (Button) view.findViewById(R.id.sys_logout);
-        LoginButton btnFBLogout = (LoginButton) view.findViewById(R.id.fb_logout);
         ImageView imgProfile = (ImageView) view.findViewById(R.id.profile_img);
         Log.d("isLoggedIn", Boolean.toString(session.isLoggedIn()));
         //already logined
@@ -114,7 +141,80 @@ public class Setting extends Fragment {
         }
         else if(AccessToken.getCurrentAccessToken() != null){
             islogouted.setVisibility(View.GONE);
-            btnSysLogout.setVisibility(View.GONE);
+            //btnSysLogout.setVisibility(View.GONE);
+            //LoginButton btnFBLogout = (LoginButton) view.findViewById(R.id.fb_logout);
+
+
+            Profile profile = Profile.getCurrentProfile();
+            try {
+                //get the profile and let it to be circular
+                String profileImgUrl = "https://graph.facebook.com/" + profile.getId() + "/picture?type=large";
+                Picasso.with(getActivity())
+                        .load(profileImgUrl)
+                        .transform(new RoundedTransformation(200, 0))
+                        .fit()
+                        .into(imgProfile);
+
+
+                /*Glide.with(getActivity())
+                        .load(profileImgUrl)
+                        .into(imgProfile);*/
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+            btnSysLogout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LoginManager.getInstance().logOut();
+                    Setting setting = new Setting();
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    //clear all of the fragment at the stack
+                    fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null);
+
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
+
+                }
+            });
+
+            /*btnFBLogout.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
+                //登入成功
+
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+
+                    LoginManager.getInstance().logOut();
+
+
+                    //userFacebook(accessToken.getToken(), profile.getName(), accessToken.getUserId(), ImgUrl);
+
+
+                }
+
+                //登入取消
+
+                @Override
+                public void onCancel() {
+                    // App code
+
+                    Log.d("FB", "CANCEL");
+                }
+
+                //登入失敗
+
+                @Override
+                public void onError(FacebookException exception) {
+                    // App code
+
+                    Log.d("FB", exception.toString());
+                }
+            });*/
+
 
         }
         //ready for login
@@ -144,6 +244,13 @@ public class Setting extends Fragment {
             btnRegister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Fragment_Registration fragment_registration = new Fragment_Registration();
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_container, fragment_registration, "register").addToBackStack(null);
+
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
 
                 }
             });
@@ -224,6 +331,58 @@ public class Setting extends Fragment {
 // This will draw the image.
         c.drawCircle(scaleBitmapImage.getWidth()/2, scaleBitmapImage.getHeight()/2, scaleBitmapImage.getWidth()/2-2, paint);
         return circleBitmap;
+    }
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            // Log exception
+            return null;
+        }
+    }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+
+        // Logs 'install' and 'app activate' App Events.
+        /*Profile profile = Profile.getCurrentProfile();
+        //info.setText(message(profile));
+        try {
+            String profileImgUrl = "https://graph.facebook.com/" + profile.getId() + "/picture?type=large";
+
+            Glide.with(MainActivity.this)
+                    .load(profileImgUrl)
+                    .into(profileImgView);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }*/
+        AppEventsLogger.activateApp(getActivity().getApplicationContext());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(getActivity().getApplicationContext());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
 }
