@@ -25,6 +25,7 @@
 
     <!-- Button-->
     <string name="btn_confirm">確定</string>
+    <string name="btn_cancel">取消</string>
     <!---->
 
     <!-- facebook key-->
@@ -96,6 +97,13 @@
         <item>消費</item>
         <item>評分</item>
     </string-array>
+
+    <string name = "writeComment_dialog_title">主題</string>
+    <string name = "writeComment_dialog_content">內容</string>
+    <string name = "writeComment_dialog_consumption">消費</string>
+    <string name = "wirteComment_dialog_rating">評分</string>
+
+
 
     <!--feedback-->
     <string name="submit_success">提交成功</string>

@@ -1,12 +1,19 @@
 package com.company.damonday.CompanyInfo.Fragment.ViewWriteComment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -65,14 +72,116 @@ public class Fragment_ViewWriteComment extends Fragment {
 
         view = inflater.inflate(R.layout.view_companywritecomment, container, false);
         listView = (ListView) view.findViewById(R.id.listView);
-        SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), items,
+        final SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), items,
                 R.layout.view_companywritecomment_list, new String[] {"title", "info"}, new int[] {R.id.title, R.id.info});
         listView.setAdapter(simpleAdapter);
         setListViewHeightBasedOnChildren(listView);
 
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println(position);
+                AlertDialog.Builder ab = new AlertDialog.Builder(getActivity());
+                //new AlertDialog.Builder(getActivity(), R.style.Base_Theme_AppCompat);
+                final EditText txtTitle = new EditText(getActivity());
+                final EditText txtContent = new EditText(getActivity());
+                final EditText txtExpense = new EditText(getActivity());
+                txtExpense.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+
+                String stringTitle = items.get(0).get("info").toString();
+                if(!stringTitle.equals(">")){
+                    txtTitle.setText(stringTitle);
+                }
+                String stringContent = items.get(1).get("info").toString();
+                if(!stringContent.equals(">")){
+                    txtContent.setText(stringContent);
+                }
+                String stringExpense = items.get(2).get("info").toString();
+                if(!stringExpense.equals(">")){
+                    txtExpense.setText(stringExpense);
+                }
+                //txtExpense.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                switch(position){
+
+                    case 0:
+                        ab.setTitle(R.string.writeComment_dialog_title);
+
+                        ab.setView(txtTitle);
+
+                        ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                //What ever you want to do with the value
+                                Editable title = txtTitle.getText();
+                                items.get(0).put("info", title);
+                                simpleAdapter.notifyDataSetChanged();
+                                //OR
+                                //String YouEditTextValue = edittext.getText().toString();
+                            }
+                        });
+
+                        ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                // what ever you want to do with No option.
+                            }
+                        });
+
+                        ab.show();
+                        break;
+                    case 1:
+                        ab.setTitle(R.string.writeComment_dialog_content);
+
+                        ab.setView(txtContent);
+
+                        ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                //What ever you want to do with the value
+                                Editable content = txtContent.getText();
+                                items.get(1).put("info", content);
+                                simpleAdapter.notifyDataSetChanged();
+                                //OR
+                                //String YouEditTextValue = edittext.getText().toString();
+                            }
+                        });
+
+                        ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                // what ever you want to do with No option.
+                            }
+                        });
+
+                        ab.show();
+
+                        break;
+                    case 2:
+                        ab.setTitle(R.string.writeComment_dialog_consumption);
+
+                        ab.setView(txtExpense);
+
+                        ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                //What ever you want to do with the value
+                                Editable expense = txtExpense.getText();
+                                items.get(2).put("info", expense);
+                                simpleAdapter.notifyDataSetChanged();
+                                //OR
+                                //String YouEditTextValue = edittext.getText().toString();
+                            }
+                        });
+
+                        ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                // what ever you want to do with No option.
+                            }
+                        });
+
+                        ab.show();
+                        break;
+                    case 3:
+                        break;
+                    default:
+                }
 
             }
         });
