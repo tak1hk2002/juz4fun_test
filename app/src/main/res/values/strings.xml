@@ -101,9 +101,14 @@
     <string name = "writeComment_dialog_title">主題</string>
     <string name = "writeComment_dialog_content">內容</string>
     <string name = "writeComment_dialog_consumption">消費</string>
-    <string name = "wirteComment_dialog_rating">評分</string>
-
-
+    <string name = "writeComment_dialog_rating">評分</string>
+    <string-array name="writeComment_dialog_rating_detail">
+        <item>趣味</item>
+        <item>環境</item>
+        <item>設備</item>
+        <item>抵玩</item>
+        <item>服務</item>
+    </string-array>
 
     <!--feedback-->
     <string name="submit_success">提交成功</string>

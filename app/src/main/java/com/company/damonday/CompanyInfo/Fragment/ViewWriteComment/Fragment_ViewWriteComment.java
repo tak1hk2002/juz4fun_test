@@ -1,6 +1,7 @@
 package com.company.damonday.CompanyInfo.Fragment.ViewWriteComment;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -12,10 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.company.damonday.R;
 import com.facebook.AccessToken;
@@ -35,8 +40,10 @@ public class Fragment_ViewWriteComment extends Fragment {
     private ListView listView;
     private AccessToken accessToken;
     private List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
+    private List<Map<String, Object>> itemsRating = new ArrayList<Map<String, Object>>();
     private String entId;
     private String[] title;
+    private String[] titleRating;
 
 
     @Override
@@ -58,6 +65,14 @@ public class Fragment_ViewWriteComment extends Fragment {
             item.put("title", title[i]);
             item.put("info", ">");
             items.add(item);
+        }
+
+        titleRating = getResources().getStringArray(R.array.writeComment_dialog_rating_detail);
+        for(int i = 0; i < titleRating.length; i++){
+            Map<String, Object> item = new HashMap<String, Object>();
+            item.put("title", titleRating[i]);
+            item.put("ranking", "1");
+            itemsRating.add(item);
         }
 
 
@@ -88,19 +103,29 @@ public class Fragment_ViewWriteComment extends Fragment {
                 final EditText txtTitle = new EditText(getActivity());
                 final EditText txtContent = new EditText(getActivity());
                 final EditText txtExpense = new EditText(getActivity());
-                txtExpense.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+                txtExpense.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                txtExpense.setRawInputType(Configuration.KEYBOARD_12KEY);
 
-                String stringTitle = items.get(0).get("info").toString();
+                String stringTitle = items.get(0).get("info").toString().trim();
                 if(!stringTitle.equals(">")){
                     txtTitle.setText(stringTitle);
                 }
-                String stringContent = items.get(1).get("info").toString();
+                else{
+                    txtTitle.setText(">");
+                }
+                String stringContent = items.get(1).get("info").toString().trim();
                 if(!stringContent.equals(">")){
                     txtContent.setText(stringContent);
                 }
-                String stringExpense = items.get(2).get("info").toString();
+                else{
+                    txtContent.setText(">");
+                }
+                String stringExpense = items.get(2).get("info").toString().trim();
                 if(!stringExpense.equals(">")){
                     txtExpense.setText(stringExpense);
+                }
+                else{
+                    txtExpense.setText(">");
                 }
                 //txtExpense.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
                 switch(position){
@@ -113,11 +138,11 @@ public class Fragment_ViewWriteComment extends Fragment {
                         ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 //What ever you want to do with the value
-                                Editable title = txtTitle.getText();
+                                //Editable title = txtTitle.getText();
+                                //OR
+                                String title = txtTitle.getText().toString().trim();
                                 items.get(0).put("info", title);
                                 simpleAdapter.notifyDataSetChanged();
-                                //OR
-                                //String YouEditTextValue = edittext.getText().toString();
                             }
                         });
 
@@ -137,11 +162,11 @@ public class Fragment_ViewWriteComment extends Fragment {
                         ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 //What ever you want to do with the value
-                                Editable content = txtContent.getText();
+                                //Editable content = txtContent.getText();
+                                //OR
+                                String content = txtContent.getText().toString().trim();
                                 items.get(1).put("info", content);
                                 simpleAdapter.notifyDataSetChanged();
-                                //OR
-                                //String YouEditTextValue = edittext.getText().toString();
                             }
                         });
 
@@ -162,11 +187,11 @@ public class Fragment_ViewWriteComment extends Fragment {
                         ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 //What ever you want to do with the value
-                                Editable expense = txtExpense.getText();
+                                //Editable expense = txtExpense.getText();
+                                //OR
+                                String expense = txtExpense.getText().toString().trim();
                                 items.get(2).put("info", expense);
                                 simpleAdapter.notifyDataSetChanged();
-                                //OR
-                                //String YouEditTextValue = edittext.getText().toString();
                             }
                         });
 
@@ -179,6 +204,29 @@ public class Fragment_ViewWriteComment extends Fragment {
                         ab.show();
                         break;
                     case 3:
+                        final Dialog rankDialog = new Dialog(getActivity(), R.style.FullHeightDialog);
+                        rankDialog.setContentView(R.layout.view_companywritecomment_rank_dialog);
+                        rankDialog.setCancelable(true);
+                        ListView listView = (ListView) rankDialog.findViewById(R.id.listView);
+                        SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), itemsRating,
+                                R.layout.view_companywritecommnet_rank_dialog_list, new String[] {"title", "ranking"},
+                                new int[] {R.id.title_ranking, R.id.dialog_ratingbar});
+                        simpleAdapter.setViewBinder(new MyBinder());
+                        listView.setAdapter(simpleAdapter);
+                        //final RatingBar ratingBar = (RatingBar)rankDialog.findViewById(R.id.dialog_ratingbar);
+                        //ratingBar.setRating(1);
+
+                        //TextView text = (TextView) rankDialog.findViewById(R.id.rank_dialog_text1);
+                        //text.setText("hi");
+
+                        Button updateButton = (Button) rankDialog.findViewById(R.id.rank_dialog_button);
+                        updateButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                rankDialog.dismiss();
+                            }
+                        });
+                        rankDialog.show();
                         break;
                     default:
                 }
@@ -234,4 +282,21 @@ public class Fragment_ViewWriteComment extends Fragment {
     }
 
 
+
+
+}
+
+class MyBinder implements SimpleAdapter.ViewBinder {
+    @Override
+    public boolean setViewValue(View view, Object data, String textRepresentation) {
+        if(view.getId() == R.id.dialog_ratingbar){
+            String stringval = (String) data;
+            System.out.println(stringval);
+            float ratingValue = Float.parseFloat(stringval);
+            RatingBar ratingBar = (RatingBar) view;
+            ratingBar.setRating(ratingValue);
+            return true;
+        }
+        return false;
+    }
 }
