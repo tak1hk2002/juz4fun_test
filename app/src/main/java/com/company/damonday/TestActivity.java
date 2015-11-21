@@ -354,11 +354,13 @@ public class TestActivity extends FragmentActivity {
 
         if (fragmentManager.getBackStackEntryCount() == 0) {
             //如果返主頁
-            setTitle(navMenuTitles[0]);
+            setTitle(R.string.home);
             displayView(0);
+            System.out.println("case1");
         } else {
             //如果不是返主頁
             setTitle(mTitle);
+            System.out.println("case2");
         }
 
 

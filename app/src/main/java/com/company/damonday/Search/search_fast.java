@@ -91,6 +91,10 @@ public class search_fast extends Fragment {
         getActivity().getActionBar().setTitle(R.string.advance_search);     //tomc
         //define a typeface for formatting text fields and listview.
 
+        FragmentManager fragmentManager = getFragmentManager();
+        System.out.println("time0:" + fragmentManager.getBackStackEntryCount());
+
+
    //     type = Typeface.createFromAsset(getActivity().getAssets(), "fonts/book.TTF");
         myFragmentView = inflater.inflate(R.layout.search_fast, container, false);
 
@@ -98,6 +102,9 @@ public class search_fast extends Fragment {
         search.setQueryHint("Start typing to search...");
 
         searchResults = (ListView) myFragmentView.findViewById(R.id.listview_search);
+        search.setIconified(false);
+
+
         // buttonBarcode = (ImageButton) myFragmentView.findViewById(R.id.imageButton2);
         // buttonAudio = (ImageButton) myFragmentView.findViewById(R.id.imageButton1);
 
@@ -168,6 +175,7 @@ public class search_fast extends Fragment {
 
 
                 FragmentManager fragmentManager = getFragmentManager();
+                System.out.println("time3"+fragmentManager.getBackStackEntryCount());
                 // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.hide(getFragmentManager().findFragmentById(R.id.frame_container));
@@ -175,6 +183,7 @@ public class search_fast extends Fragment {
                 fragmentTransaction.add(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
+                System.out.println("time4" + fragmentManager.getBackStackEntryCount());
 
             }
         });
