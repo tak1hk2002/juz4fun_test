@@ -6,14 +6,14 @@
     android:padding="2dip">
 
 
-    <TextView android:text="dfdsfdsfsdfsdfsdfsdfsdf" android:id="@+id/header"
+    <TextView android:text="dfdsfdsf" android:id="@+id/header"
         android:textSize="24dp" android:layout_marginTop="10dp"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
     <ListView
         android:id="@+id/listView"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:cacheColorHint="#00000000"
         android:layout_height="382dp">
     </ListView>

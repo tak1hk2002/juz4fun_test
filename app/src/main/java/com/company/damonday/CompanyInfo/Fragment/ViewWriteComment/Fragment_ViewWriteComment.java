@@ -1,35 +1,31 @@
 package com.company.damonday.CompanyInfo.Fragment.ViewWriteComment;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.company.damonday.R;
-import com.facebook.AccessToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by lamtaklung on 13/9/15.
@@ -38,12 +34,11 @@ public class Fragment_ViewWriteComment extends Fragment {
 
     private View view;
     private ListView listView;
-    private AccessToken accessToken;
     private List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
-    private List<Map<String, Object>> itemsRating = new ArrayList<Map<String, Object>>();
     private String entId;
     private String[] title;
     private String[] titleRating;
+    private RatingAdapter ratingAdapter;
 
 
     @Override
@@ -67,15 +62,16 @@ public class Fragment_ViewWriteComment extends Fragment {
             items.add(item);
         }
 
+
+        ArrayList<RowModel> list = new ArrayList<RowModel>();
         titleRating = getResources().getStringArray(R.array.writeComment_dialog_rating_detail);
         for(int i = 0; i < titleRating.length; i++){
-            Map<String, Object> item = new HashMap<String, Object>();
-            item.put("title", titleRating[i]);
-            item.put("ranking", "1");
-            itemsRating.add(item);
+
+            list.add(new RowModel(titleRating[i]));
+
         }
 
-
+        ratingAdapter = new RatingAdapter(getActivity(), list);
 
 
     }
@@ -93,10 +89,9 @@ public class Fragment_ViewWriteComment extends Fragment {
         setListViewHeightBasedOnChildren(listView);
 
 
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
                 System.out.println(position);
                 AlertDialog.Builder ab = new AlertDialog.Builder(getActivity());
                 //new AlertDialog.Builder(getActivity(), R.style.Base_Theme_AppCompat);
@@ -106,29 +101,30 @@ public class Fragment_ViewWriteComment extends Fragment {
                 txtExpense.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
                 txtExpense.setRawInputType(Configuration.KEYBOARD_12KEY);
 
+                //get the dialog content
                 String stringTitle = items.get(0).get("info").toString().trim();
-                if(!stringTitle.equals(">")){
+                Log.d("stringTitle", stringTitle);
+
+                if (stringTitle.equals(">")) {
+                    txtTitle.setText("");
+                } else {
                     txtTitle.setText(stringTitle);
                 }
-                else{
-                    txtTitle.setText(">");
-                }
+
                 String stringContent = items.get(1).get("info").toString().trim();
-                if(!stringContent.equals(">")){
+                if (!stringContent.equals(">")) {
+                    txtContent.setText("");
+                } else {
                     txtContent.setText(stringContent);
                 }
-                else{
-                    txtContent.setText(">");
-                }
                 String stringExpense = items.get(2).get("info").toString().trim();
-                if(!stringExpense.equals(">")){
+                if (!stringExpense.equals(">")) {
+                    txtExpense.setText("");
+                } else {
                     txtExpense.setText(stringExpense);
                 }
-                else{
-                    txtExpense.setText(">");
-                }
                 //txtExpense.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
-                switch(position){
+                switch (position) {
 
                     case 0:
                         ab.setTitle(R.string.writeComment_dialog_title);
@@ -141,6 +137,9 @@ public class Fragment_ViewWriteComment extends Fragment {
                                 //Editable title = txtTitle.getText();
                                 //OR
                                 String title = txtTitle.getText().toString().trim();
+                                if (title.isEmpty())
+                                    title = ">";
+                                Log.d("title", title);
                                 items.get(0).put("info", title);
                                 simpleAdapter.notifyDataSetChanged();
                             }
@@ -173,6 +172,7 @@ public class Fragment_ViewWriteComment extends Fragment {
                         ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 // what ever you want to do with No option.
+                                dialog.dismiss();
                             }
                         });
 
@@ -198,35 +198,57 @@ public class Fragment_ViewWriteComment extends Fragment {
                         ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 // what ever you want to do with No option.
+                                dialog.dismiss();
                             }
                         });
 
                         ab.show();
                         break;
                     case 3:
-                        final Dialog rankDialog = new Dialog(getActivity(), R.style.FullHeightDialog);
+                        /*final Dialog rankDialog = new Dialog(getActivity(), R.style.FullHeightDialog);
                         rankDialog.setContentView(R.layout.view_companywritecomment_rank_dialog);
                         rankDialog.setCancelable(true);
-                        ListView listView = (ListView) rankDialog.findViewById(R.id.listView);
-                        SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), itemsRating,
-                                R.layout.view_companywritecommnet_rank_dialog_list, new String[] {"title", "ranking"},
-                                new int[] {R.id.title_ranking, R.id.dialog_ratingbar});
-                        simpleAdapter.setViewBinder(new MyBinder());
-                        listView.setAdapter(simpleAdapter);
-                        //final RatingBar ratingBar = (RatingBar)rankDialog.findViewById(R.id.dialog_ratingbar);
-                        //ratingBar.setRating(1);
-
-                        //TextView text = (TextView) rankDialog.findViewById(R.id.rank_dialog_text1);
-                        //text.setText("hi");
+                        ratingbarListView = (ListView) rankDialog.findViewById(R.id.listView);
+                        ratingbarListView.setAdapter(ratingAdapter);
 
                         Button updateButton = (Button) rankDialog.findViewById(R.id.rank_dialog_button);
                         updateButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                System.out.println(getModel(1).g);
                                 rankDialog.dismiss();
                             }
                         });
-                        rankDialog.show();
+                        rankDialog.show();*/
+
+
+                        final AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
+                        builderSingle.setIcon(R.drawable.ic_launcher);
+                        builderSingle.setTitle(R.string.writeComment_dialog_rating);
+
+                        builderSingle.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                System.out.println(getModel(1).getRating());
+
+                            }
+                        });
+
+                        builderSingle.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        builderSingle.setAdapter(
+                                ratingAdapter,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                });
+
+                        builderSingle.show();
                         break;
                     default:
                 }
@@ -240,6 +262,79 @@ public class Fragment_ViewWriteComment extends Fragment {
 
 
     }
+
+
+    //***************** RatingAdapter***************************************
+    private RowModel getModel(int position){
+        return (RowModel)ratingAdapter.getItem(position);
+    }
+
+    public class RatingAdapter extends BaseAdapter {
+        private Context context;
+        private ArrayList<RowModel> list;
+        public RatingAdapter(Context context, ArrayList<RowModel> list){
+            this.context = context;
+            this.list = list;
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        //步骤2.2： 编写ListView中每个单元的呈现
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View row = convertView;
+            ViewWrapper wrapper;
+            RatingBar ratebar = null;
+            //步骤2.3：如果没有创建View，根据layout创建之，并将widget的存储类的对象与之捆绑为tag
+            if(row == null){
+                LayoutInflater inflater=(LayoutInflater) context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                row = inflater.inflate(R.layout.view_companywritecomment_rank_dialog_list, parent,false);
+                wrapper = new ViewWrapper(row);
+                row.setTag(wrapper);
+                //步骤2.4：在生成View的时候，添加将widget的触发处理
+                ratebar = wrapper.getRatingBar();
+                ratebar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                        //步骤2.4.1：存储变化的数据
+                        Integer index = (Integer)ratingBar.getTag();
+                        RowModel model = getModel(index);
+                        model.rating = rating;
+                        //步骤2.4.2：设置变化
+                        LinearLayout parent = (LinearLayout)ratingBar.getParent();
+                        TextView label = (TextView)parent.findViewById(R.id.title_ranking);
+                        label.setText(model.getLabel());
+                    }
+                });
+            }else{ //步骤2.4：利用已有的View，获得相应的widget
+                wrapper = (ViewWrapper) row.getTag();
+                ratebar = wrapper.getRatingBar();
+            }
+            //步骤2.5：设置显示的内容，同时设置ratingbar捆绑tag为list的位置，因为setTag()是View的方法，因此我们不能降至加在ViewWrapper，所以需要加载ViewWrapper中的widget中，这里选择了ratebar进行捆绑。
+            RowModel model= getModel(position);
+            wrapper.getLabel().setText(model.getLabel());
+            ratebar.setTag(new Integer(position));
+            ratebar.setRating(model.rating);
+            return row;
+        }
+
+
+
+    }
+
+    //********************************************************************************************
 
 
 
@@ -281,22 +376,8 @@ public class Fragment_ViewWriteComment extends Fragment {
         listView.setLayoutParams(params);
     }
 
-
-
-
 }
 
-class MyBinder implements SimpleAdapter.ViewBinder {
-    @Override
-    public boolean setViewValue(View view, Object data, String textRepresentation) {
-        if(view.getId() == R.id.dialog_ratingbar){
-            String stringval = (String) data;
-            System.out.println(stringval);
-            float ratingValue = Float.parseFloat(stringval);
-            RatingBar ratingBar = (RatingBar) view;
-            ratingBar.setRating(ratingValue);
-            return true;
-        }
-        return false;
-    }
-}
+
+
+
