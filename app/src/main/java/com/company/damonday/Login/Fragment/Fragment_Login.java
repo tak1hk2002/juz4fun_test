@@ -22,10 +22,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
-import com.company.damonday.Login.DisplayLogin;
-import com.company.damonday.Login.FragmentTabs;
+import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.Setting.Setting;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.Login.SessionManager;
@@ -61,6 +59,7 @@ public class Fragment_Login extends Fragment {
     private EditText inputPassword;
     private ProgressDialog pDialog;
     private SessionManager session;
+    private LoginSQLiteHandler loginSQLiteHandler;
     private View v;
     private String entId, lastFragment;
     CallbackManager callbackManager;
@@ -78,6 +77,9 @@ public class Fragment_Login extends Fragment {
         }catch(Exception e) {
             e.printStackTrace();
         }
+
+        // SQLite database handler
+        loginSQLiteHandler = new LoginSQLiteHandler(getActivity());
 
 
     }
@@ -300,7 +302,7 @@ public class Fragment_Login extends Fragment {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
-        pDialog.setMessage("登入中 ...");
+        pDialog.setMessage("提交中 ...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -313,13 +315,20 @@ public class Fragment_Login extends Fragment {
 
                 try {
                     JSONObject jObj = new JSONObject(response);
+                    JSONObject data = jObj.getJSONObject("data");
                     String error = jObj.getString("status");
 
                     // Check for error node in json
                     if (error.equals("success")) {
-                        // user successfully logged in
+                        String token = data.getString("token");
+                        String username = data.getString("username");
                         // Create login session
                         session.setLogin(true);
+                        //add user info to sqlite
+                        Log.d("toke", token);
+                        Log.d("username", username);
+                        loginSQLiteHandler.addUser(token, "Wait for Ryo to add email field", username);
+
 
                         //display message login successfully
                         AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
@@ -401,7 +410,6 @@ public class Fragment_Login extends Fragment {
 
                     } else {
                         // Error in login. Get the error message
-                        JSONObject data = jObj.getJSONObject("data");
                         String errorMsg = data.getString("msg");
 
                         Toast.makeText(getActivity(),

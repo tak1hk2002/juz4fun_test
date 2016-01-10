@@ -1,6 +1,7 @@
 package com.company.damonday.CompanyInfo.Fragment.ViewWriteComment;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
@@ -13,14 +14,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.company.damonday.Login.LoginSQLiteHandler;
+import com.company.damonday.Login.SessionManager;
 import com.company.damonday.R;
+import com.company.damonday.function.APIConfig;
+import com.company.damonday.function.AppController;
+import com.facebook.AccessToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,9 +51,15 @@ public class Fragment_ViewWriteComment extends Fragment {
     private ListView listView;
     private List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
     private String entId;
-    private String[] title;
-    private String[] titleRating;
+    private String[] title, titleDetailRating, titleOverAllRating;
     private RatingAdapter ratingAdapter;
+    private ProgressDialog pDialog;
+    private static final String TAG = Fragment_ViewWriteComment.class.getSimpleName();
+    private SessionManager session;
+    private LoginSQLiteHandler DB;
+    private Boolean systemLogin;
+    //map the selected overall rating to key value
+    Map<String, Integer> mapOverallRating = new HashMap<String, Integer>();
 
 
     @Override
@@ -54,6 +75,7 @@ public class Fragment_ViewWriteComment extends Fragment {
             e.printStackTrace();
         }
 
+        //get the array list of writeComment option
         title = getResources().getStringArray(R.array.writeComment_title);
         for(int i = 0; i < title.length; i++){
             Map<String, Object> item = new HashMap<String, Object>();
@@ -62,16 +84,31 @@ public class Fragment_ViewWriteComment extends Fragment {
             items.add(item);
         }
 
-
+        //get the array list of rating bar option
         ArrayList<RowModel> list = new ArrayList<RowModel>();
-        titleRating = getResources().getStringArray(R.array.writeComment_dialog_rating_detail);
-        for(int i = 0; i < titleRating.length; i++){
+        titleDetailRating = getResources().getStringArray(R.array.writeComment_dialog_rating_detail);
+        for(int i = 0; i < titleDetailRating.length; i++){
 
-            list.add(new RowModel(titleRating[i]));
+            list.add(new RowModel(titleDetailRating[i]));
 
         }
 
+        //get the array list of overall rating
+        titleOverAllRating = getResources().getStringArray(R.array.writeComment_dialog_rating_overall);
+
         ratingAdapter = new RatingAdapter(getActivity(), list);
+
+        mapOverallRating.put("正評", 0);
+        mapOverallRating.put("一般", 1);
+        mapOverallRating.put("負評", 2);
+
+        DB = new LoginSQLiteHandler(getActivity());
+
+        // Progress dialog
+        pDialog = new ProgressDialog(getActivity());
+        pDialog.setCancelable(false);
+
+
 
 
     }
@@ -80,58 +117,139 @@ public class Fragment_ViewWriteComment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
+        final Boolean[] ratingBarClicked = {false};
         view = inflater.inflate(R.layout.view_companywritecomment, container, false);
         listView = (ListView) view.findViewById(R.id.listView);
+        Button btnReset = (Button) view.findViewById(R.id.reset);
+        Button btnSubmit = (Button) view.findViewById(R.id.submit);
         final SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), items,
                 R.layout.view_companywritecomment_list, new String[] {"title", "info"}, new int[] {R.id.title, R.id.info});
         listView.setAdapter(simpleAdapter);
         setListViewHeightBasedOnChildren(listView);
 
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(int i = 0; i < items.size(); i++){
+                    items.get(i).put("info", ">");
+                }
+                simpleAdapter.notifyDataSetChanged();
+
+            }
+        });
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //init
+                String submitVars[] = new String[items.size() - 1];
+                String token = "";
+                ArrayList<String> rating = new ArrayList<String>();
+                Boolean passChecking = true;
+                String warning[] = getResources().getStringArray(R.array.writeComment_warning);
+                //------------------------------------------------------------------------
+
+                //without detailRating because it will be obtained individually
+                for (int i = 0; i < items.size() - 1; i++){
+                    //get the value that the user inputted
+                    submitVars[i] = items.get(i).get("info").toString().trim();
+                    if(submitVars[i].equals(">"))
+                        submitVars[i] = "";
+                    if(submitVars[i].isEmpty()){
+                        Toast.makeText(getActivity(), warning[i], Toast.LENGTH_SHORT).show();
+                        passChecking = false;
+                    }
+                }
+
+                //hardcode detail rating
+                if(ratingBarClicked[0] == false) {
+                    Toast.makeText(getActivity(), warning[4], Toast.LENGTH_SHORT).show();
+                    passChecking = false;
+                }
+
+                //get rating bar value
+                for(int i =0; i < titleDetailRating.length; i++){
+                    rating.add(Float.toString(getModel(i).getRating()));
+                }
+
+                if(passChecking){
+                    //check facebook login or system login
+                    session = new SessionManager(getActivity());
+                    if(AccessToken.getCurrentAccessToken() != null) {
+                        token = AccessToken.getCurrentAccessToken().toString();
+                    }
+                    else if (session.isLoggedIn()) {
+                        systemLogin = true;
+                        HashMap<String, String> user = DB.getUserDetails();
+                        token = user.get("token");
+                    }
+                    System.out.println(submitVars[0]);
+                    System.out.println(submitVars[1]);
+                    System.out.println(submitVars[2]);
+                    System.out.println(submitVars[3]);
+                    System.out.println(rating);
+                    submitWriteComment(token, submitVars[0], submitVars[1], submitVars[2],
+                            Integer.toString(mapOverallRating.get(submitVars[3])), rating);
+
+                }
+
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-                System.out.println(position);
-                AlertDialog.Builder ab = new AlertDialog.Builder(getActivity());
-                //new AlertDialog.Builder(getActivity(), R.style.Base_Theme_AppCompat);
+            public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
+                final AlertDialog.Builder[] ab = {new AlertDialog.Builder(getActivity())};
                 final EditText txtTitle = new EditText(getActivity());
                 final EditText txtContent = new EditText(getActivity());
                 final EditText txtExpense = new EditText(getActivity());
+                final String[] txtOverAllRating = new String[1];
+                final int[] selectedOverallRating = {-1};
+
                 txtExpense.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
                 txtExpense.setRawInputType(Configuration.KEYBOARD_12KEY);
 
                 //get the dialog content
-                String stringTitle = items.get(0).get("info").toString().trim();
-                Log.d("stringTitle", stringTitle);
-
+                String stringTitle = items.get(position).get("info").toString().trim();
                 if (stringTitle.equals(">")) {
                     txtTitle.setText("");
                 } else {
                     txtTitle.setText(stringTitle);
                 }
-
-                String stringContent = items.get(1).get("info").toString().trim();
-                if (!stringContent.equals(">")) {
+                //get the dialog content
+                String stringContent = items.get(position).get("info").toString().trim();
+                if (stringContent.equals(">")) {
                     txtContent.setText("");
                 } else {
                     txtContent.setText(stringContent);
                 }
-                String stringExpense = items.get(2).get("info").toString().trim();
-                if (!stringExpense.equals(">")) {
+                //get the dialog content
+                String stringExpense = items.get(position).get("info").toString().trim();
+                if (stringExpense.equals(">")) {
                     txtExpense.setText("");
                 } else {
                     txtExpense.setText(stringExpense);
                 }
-                //txtExpense.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+
+                //get the dialog content
+                String stringOverAllRating = items.get(position).get("info").toString().trim();
+                if (stringOverAllRating.equals(">")) {
+                    txtOverAllRating[0] = "";
+                } else {
+                    txtOverAllRating[0] = stringOverAllRating;
+                    if(mapOverallRating.get(stringOverAllRating) != null)
+                        selectedOverallRating[0] = mapOverallRating.get(stringOverAllRating);
+                }
+
                 switch (position) {
-
+                    //title
                     case 0:
-                        ab.setTitle(R.string.writeComment_dialog_title);
+                        ab[0].setTitle(R.string.writeComment_dialog_title);
 
-                        ab.setView(txtTitle);
+                        ab[0].setView(txtTitle);
 
-                        ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                        ab[0].setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 //What ever you want to do with the value
                                 //Editable title = txtTitle.getText();
@@ -139,108 +257,139 @@ public class Fragment_ViewWriteComment extends Fragment {
                                 String title = txtTitle.getText().toString().trim();
                                 if (title.isEmpty())
                                     title = ">";
-                                Log.d("title", title);
-                                items.get(0).put("info", title);
+                                items.get(position).put("info", title);
                                 simpleAdapter.notifyDataSetChanged();
                             }
                         });
 
-                        ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                        ab[0].setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 // what ever you want to do with No option.
                             }
                         });
 
-                        ab.show();
+                        ab[0].show();
                         break;
+                    //content
                     case 1:
-                        ab.setTitle(R.string.writeComment_dialog_content);
+                        ab[0].setTitle(R.string.writeComment_dialog_content);
 
-                        ab.setView(txtContent);
+                        ab[0].setView(txtContent);
 
-                        ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                        ab[0].setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 //What ever you want to do with the value
                                 //Editable content = txtContent.getText();
                                 //OR
                                 String content = txtContent.getText().toString().trim();
-                                items.get(1).put("info", content);
+                                if (content.isEmpty())
+                                    content = ">";
+                                items.get(position).put("info", content);
                                 simpleAdapter.notifyDataSetChanged();
                             }
                         });
 
-                        ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                        ab[0].setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 // what ever you want to do with No option.
                                 dialog.dismiss();
                             }
                         });
 
-                        ab.show();
+                        ab[0].show();
 
                         break;
+                    //consumption
                     case 2:
-                        ab.setTitle(R.string.writeComment_dialog_consumption);
+                        ab[0].setTitle(R.string.writeComment_dialog_consumption);
 
-                        ab.setView(txtExpense);
+                        ab[0].setView(txtExpense);
 
-                        ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                        ab[0].setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 //What ever you want to do with the value
                                 //Editable expense = txtExpense.getText();
                                 //OR
                                 String expense = txtExpense.getText().toString().trim();
-                                items.get(2).put("info", expense);
+                                if (expense.isEmpty())
+                                    expense = ">";
+                                items.get(position).put("info", expense);
                                 simpleAdapter.notifyDataSetChanged();
                             }
                         });
 
-                        ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                        ab[0].setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 // what ever you want to do with No option.
                                 dialog.dismiss();
                             }
                         });
 
-                        ab.show();
+                        ab[0].show();
                         break;
+                    //Overall Rating
                     case 3:
-                        /*final Dialog rankDialog = new Dialog(getActivity(), R.style.FullHeightDialog);
-                        rankDialog.setContentView(R.layout.view_companywritecomment_rank_dialog);
-                        rankDialog.setCancelable(true);
-                        ratingbarListView = (ListView) rankDialog.findViewById(R.id.listView);
-                        ratingbarListView.setAdapter(ratingAdapter);
+                        final AlertDialog.Builder builderOverALlRating = new AlertDialog.Builder(getActivity());
+                        builderOverALlRating.setTitle(R.string.writeComment_dialog_overallrating);
+                        builderOverALlRating.setSingleChoiceItems(titleOverAllRating, selectedOverallRating[0], new DialogInterface.OnClickListener() {
 
-                        Button updateButton = (Button) rankDialog.findViewById(R.id.rank_dialog_button);
-                        updateButton.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View v) {
-                                System.out.println(getModel(1).g);
-                                rankDialog.dismiss();
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case 0:
+                                        txtOverAllRating[0] = titleOverAllRating[which];
+                                        selectedOverallRating[0] = which;
+                                        break;
+                                    case 1:
+                                        txtOverAllRating[0] = titleOverAllRating[which];
+                                        selectedOverallRating[0] = which;
+                                        break;
+                                    case 2:
+                                        txtOverAllRating[0] = titleOverAllRating[which];
+                                        selectedOverallRating[0] = which;
+                                        break;
+                                }
+
                             }
                         });
-                        rankDialog.show();*/
+                        builderOverALlRating.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                items.get(position).put("info", txtOverAllRating[0]);
+                                simpleAdapter.notifyDataSetChanged();
+                            }
+                        });
 
+                        builderOverALlRating.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        builderOverALlRating.show();
+                        break;
+                    //Detail rating
+                    case 4:
 
-                        final AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
-                        builderSingle.setIcon(R.drawable.ic_launcher);
-                        builderSingle.setTitle(R.string.writeComment_dialog_rating);
+                        final AlertDialog.Builder builderDetailRating = new AlertDialog.Builder(getActivity());
+                        //builderSingle.setIcon(R.drawable.ic_launcher);
+                        builderDetailRating.setTitle(R.string.writeComment_dialog_detailrating);
 
-                        builderSingle.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                        builderDetailRating.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 System.out.println(getModel(1).getRating());
+                                ratingBarClicked[0] = true;
 
                             }
                         });
 
-                        builderSingle.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                        builderDetailRating.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
                         });
 
-                        builderSingle.setAdapter(
+                        builderDetailRating.setAdapter(
                                 ratingAdapter,
                                 new DialogInterface.OnClickListener() {
                                     @Override
@@ -248,7 +397,7 @@ public class Fragment_ViewWriteComment extends Fragment {
                                     }
                                 });
 
-                        builderSingle.show();
+                        builderDetailRating.show();
                         break;
                     default:
                 }
@@ -336,6 +485,87 @@ public class Fragment_ViewWriteComment extends Fragment {
 
     //********************************************************************************************
 
+    //***********************JSON volley**********************************************************
+    public void submitWriteComment(final String token, final String title, final String content, final String expense, final String overallRating, final ArrayList<String> detailRating){
+        // Tag used to cancel the request
+        String tag_string_req = "req_login";
+        final String detailRatingDB[] = getResources().getStringArray(R.array.writeComment_dialog_rating_detail_db);
+        pDialog.setMessage("提交中 ...");
+        showDialog();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                APIConfig.URL_Write_Comment, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                hideDialog();
+                Log.d("response", response.toString());
+
+                try{
+                    JSONObject jObj = new JSONObject(response);
+                    String error = jObj.getString("status");
+                    // Check for error node in json
+                    if (error.equals("success")) {
+
+
+                        //display message that the submission is successful
+                        AlertDialog.Builder ab = new AlertDialog.Builder(getActivity());
+                        ab.setTitle(R.string.writeComment_submit_success);
+                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        ab.create().show();
+
+
+                    }else {
+                        // Error in login. Get the error message
+                        JSONObject data = jObj.getJSONObject("data");
+                        String errorMsg = data.getString("msg");
+
+                        Toast.makeText(getActivity(),
+                                errorMsg, Toast.LENGTH_SHORT).show();
+                    }
+                }catch(JSONException e){
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Login Error: " + error.getMessage());
+                Toast.makeText(getActivity(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("token", token);
+                params.put("title", title);
+                params.put("ent_id", entId);
+                params.put("comment", content);
+                params.put("assess", overallRating);
+                for (int i = 0; i < detailRating.size(); i++){
+                    params.put(detailRatingDB[i], detailRating.get(i));
+                }
+                return params;
+            }
+
+        };
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    //******************************************************************************************
+
 
 
     //doulbe scrollView
@@ -374,6 +604,16 @@ public class Fragment_ViewWriteComment extends Fragment {
         params.height = totalHeight
                 + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
+    }
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 
 }

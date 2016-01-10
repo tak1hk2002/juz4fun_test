@@ -21,16 +21,16 @@ public class LoginSQLiteHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "android_api";
+    private static final String DATABASE_NAME = "android";
 
     // Login table name
     private static final String TABLE_LOGIN = "login";
 
     // Login Table Columns names
     private static final String KEY_ID = "id";
+    private static final String KEY_TOKEN = "token";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_USERNAME = "username";
-    //private static final String KEY_UID = "uid";
 
     public LoginSQLiteHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -40,7 +40,7 @@ public class LoginSQLiteHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_LOGIN + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_EMAIL + " TEXT UNIQUE,"
+                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_TOKEN + " TEXT UNIQUE," + KEY_EMAIL + " TEXT UNIQUE,"
                 + KEY_USERNAME + " TEXT UNIQUE)";
         db.execSQL(CREATE_LOGIN_TABLE);
 
@@ -60,13 +60,13 @@ public class LoginSQLiteHandler extends SQLiteOpenHelper {
     /**
      * Storing user details in database
      * */
-    public void addUser(String email, String username) {
+    public void addUser(String token, String email, String username) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(KEY_TOKEN, token); //Token
         values.put(KEY_EMAIL, email); // Email
         values.put(KEY_USERNAME, username); // Username
-        //values.put(KEY_UID, uid); // UID
 
         // Inserting Row
         long id = db.insert(TABLE_LOGIN, null, values);
@@ -87,8 +87,9 @@ public class LoginSQLiteHandler extends SQLiteOpenHelper {
         // Move to first row
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
-            user.put("email", cursor.getString(1));
-            user.put("username", cursor.getString(2));
+            user.put("token", cursor.getString(1));
+            user.put("email", cursor.getString(2));
+            user.put("username", cursor.getString(3));
         }
         cursor.close();
         db.close();

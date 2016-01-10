@@ -49,7 +49,6 @@ public class Fragment_Registration extends Fragment {
     private SessionManager session;
     private LoginSQLiteHandler db;
     private View v;
-    private TabHost mTabHost;
 
 
     @Override
@@ -150,15 +149,13 @@ public class Fragment_Registration extends Fragment {
 
                 try {
                     JSONObject jObj = new JSONObject(response);
+                    JSONObject data = jObj.getJSONObject("data");
                     String error = jObj.getString("status");
                     if (error.equals("success")) {
-                        // User successfully stored in MySQL
-                        // Now store the user in sqlite
-
+                        //get toke from API
+                        String token = data.getString("token");
                         // Inserting row in users table
-                        db.addUser(email, username);
-                        Log.d("email", email);
-
+                        db.addUser(token, email, username);
 
                         //display message login successfully
                         AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
@@ -187,7 +184,6 @@ public class Fragment_Registration extends Fragment {
 
                         // Error occurred in registration. Get the error
                         // message
-                        JSONObject data = jObj.getJSONObject("data");
                         String errorMsg = data.getString("msg");
 
                         Toast.makeText(getActivity(),

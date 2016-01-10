@@ -26,6 +26,8 @@
     <!-- Button-->
     <string name="btn_confirm">確定</string>
     <string name="btn_cancel">取消</string>
+    <string name="btn_submit">提交</string>
+    <string name="btn_reset">重設</string>
     <!---->
 
     <!-- facebook key-->
@@ -95,13 +97,15 @@
         <item>主題</item>
         <item>內容</item>
         <item>消費</item>
-        <item>評分</item>
+        <item>整體評分</item>
+        <item>詳細評分</item>
     </string-array>
 
     <string name = "writeComment_dialog_title">主題</string>
     <string name = "writeComment_dialog_content">內容</string>
     <string name = "writeComment_dialog_consumption">消費</string>
-    <string name = "writeComment_dialog_rating">評分</string>
+    <string name = "writeComment_dialog_overallrating">整體評分</string>
+    <string name = "writeComment_dialog_detailrating">詳細評分</string>
     <string-array name="writeComment_dialog_rating_detail">
         <item>趣味</item>
         <item>環境</item>
@@ -109,6 +113,30 @@
         <item>抵玩</item>
         <item>服務</item>
     </string-array>
+    <string-array name="writeComment_dialog_rating_detail_db">
+        <item>interest</item>
+        <item>environment</item>
+        <item>equipment</item>
+        <item>worth</item>
+        <item>service</item>
+    </string-array>
+
+    <string-array name="writeComment_dialog_rating_overall">
+        <item>正評</item>
+        <item>一般</item>
+        <item>負評</item>
+    </string-array>
+
+    <string-array name="writeComment_warning">
+        <item>請輸入主題</item>
+        <item>請輸入內容</item>
+        <item>請輸入消費</item>
+        <item>請輸入整體評分</item>
+        <item>請輸入詳細評分</item>
+    </string-array>
+    
+
+    <string name="writeComment_submit_success">成功提交</string>
 
     <!--feedback-->
     <string name="submit_success">提交成功</string>

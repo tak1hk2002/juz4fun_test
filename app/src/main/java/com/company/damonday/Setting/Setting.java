@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -53,6 +54,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 /**
  * Created by tom on 21/6/15.
@@ -87,11 +89,17 @@ public class Setting extends Fragment {
         islogouted = (LinearLayout)view.findViewById(R.id.logouted);
         Button btnSysLogout = (Button) view.findViewById(R.id.sys_logout);
         ImageView imgProfile = (ImageView) view.findViewById(R.id.profile_img);
-        Log.d("isLoggedIn", Boolean.toString(session.isLoggedIn()));
+        TextView txtUsername = (TextView) view.findViewById(R.id.username);
+        TextView txtEmail = (TextView) view.findViewById(R.id.email);
         //already logined
         if(session.isLoggedIn()){
             islogouted.setVisibility(View.GONE);
-            //btnFBLogout.setVisibility(View.GONE);
+            // Fetching user details from sqlite
+            HashMap<String, String> user = db.getUserDetails();
+            String name = user.get("username");
+            String email = user.get("email");
+            txtUsername.setText(name);
+            txtEmail.setText(email);
 
 
             Resources res = getResources();

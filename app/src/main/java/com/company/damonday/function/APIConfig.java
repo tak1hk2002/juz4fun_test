@@ -46,6 +46,9 @@ public class APIConfig {
     //fast search
     public static String URL_Fast_Search="http://damonday.tk/api/entertainment/search/";
 
+    //submit comment
+    public static String URL_Write_Comment = "http://damonday.tk/api/comment/submit_comment/";
+
     //Detail url
     public String getUrlDetail(){
         return "http://damonday.tk/api/entertainment/details/?ent_id="+id;
@@ -55,8 +58,6 @@ public class APIConfig {
     public String getUrlComment(){
        return "http://damonday.tk/api/comment/ent_comment/?ent_id="+id+"&page=";
     }
-
-
 
 
     public String getUrlCommentDetail(){

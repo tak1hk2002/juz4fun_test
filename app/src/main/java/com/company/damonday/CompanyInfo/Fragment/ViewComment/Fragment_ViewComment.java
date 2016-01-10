@@ -90,23 +90,22 @@ public class Fragment_ViewComment extends Fragment {
         commentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("position", Integer.toString(position));
                 Bundle bundle = new Bundle();
                 bundle.putString("comment_id", commentList.get(position).getId());
                 Fragment_ViewCommentDetail fragment_ViewCommentDetail = new Fragment_ViewCommentDetail();
                 fragment_ViewCommentDetail.setArguments(bundle);
 
 
-                getFragmentManager().beginTransaction()
+                /*getFragmentManager().beginTransaction()
                         .add(R.id.frame_container, fragment_ViewCommentDetail)
-                        .commit();
-                /*FragmentManager fragmentManager = getFragmentManager();
+                        .commit();*/
+                FragmentManager fragmentManager = getFragmentManager();
                 System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 //fragmentTransaction.hide(getChildFragmentManager().findFragmentByTag("companyDetail"));
                 fragmentTransaction.add(R.id.frame_container, fragment_ViewCommentDetail, "commentDetail").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                fragmentTransaction.commit();*/
+                fragmentTransaction.commit();
 
             }
         });
