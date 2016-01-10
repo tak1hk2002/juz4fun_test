@@ -102,7 +102,7 @@ public class Home extends Fragment {
 
                         //fragmentTransaction.hide(getFragmentManager().findFragmentById(R.id.frame_container));
                         //fragmentTransaction.replace(R.id.frame_container, fragment_search_fast, "search_fast").addToBackStack("main");
-               // fragmentTransaction.add(R.id.frame_container, fragment_search_fast, "search_fast").addToBackStack(null);
+                fragmentTransaction.add(R.id.frame_container, fragment_search_fast, "search_fast").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
 
