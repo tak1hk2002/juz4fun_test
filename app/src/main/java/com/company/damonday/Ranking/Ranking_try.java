@@ -148,7 +148,7 @@ public class Ranking_try extends Fragment {
                                     .get(i);
                             companyInfo.setTitle(company.getString("name"));
                             companyInfo.setUrl(company.getString("cover_image"));
-                            companyInfo.setEnt_id(company.getInt("ID"));
+                            companyInfo.setEnt_id(3);
 
                             companyInfoItems.add(companyInfo);
 

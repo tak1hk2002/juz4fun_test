@@ -6,10 +6,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -39,11 +43,12 @@ import java.util.Map;
 public class Fragment_ViewComment extends Fragment {
 
     private View v;
-    private ListView commentListView;
+    public  ListView commentListView;
     private Fragment_ViewComment_CustomListAdapter customListAdapter;
-    private List<Fragment_ViewComment_Comment> commentList = new ArrayList<Fragment_ViewComment_Comment>();
+    public  List<Fragment_ViewComment_Comment> commentList = new ArrayList<Fragment_ViewComment_Comment>();
     private String entId;
     private APIConfig ranking;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,7 @@ public class Fragment_ViewComment extends Fragment {
         //new object for Api url
         ranking = new APIConfig(entId);
 
+        //call api
         customLoadMoreDataFromApi(1);
 
     }
@@ -74,19 +80,24 @@ public class Fragment_ViewComment extends Fragment {
 
         commentListView = (ListView) v.findViewById(R.id.list);
         customListAdapter = new Fragment_ViewComment_CustomListAdapter(getActivity(), commentList);
+        commentListView.setAdapter(customListAdapter);
+        //customListAdapter.notifyDataSetChanged();
+        setListViewHeightBasedOnChildren(commentListView);
+        commentListView.deferNotifyDataSetChanged();
 
 
 
-        // Attach the listener to the AdapterView onCreate
+        /*// Attach the listener to the AdapterView onCreate
         commentListView.setOnScrollListener(new EndlessScrollListener() {
             @Override
-            public void onLoadMore(int page, int totalItemsCount) {
+            public boolean onLoadMore(int page, int totalItemsCount) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to your AdapterView
                 customLoadMoreDataFromApi(page);
                 // or customLoadMoreDataFromApi(totalItemsCount);
+                return true; // ONLY if more data is actually being loaded; false otherwise.
             }
-        });
+        });*/
         commentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -94,15 +105,15 @@ public class Fragment_ViewComment extends Fragment {
                 bundle.putString("comment_id", commentList.get(position).getId());
                 Fragment_ViewCommentDetail fragment_ViewCommentDetail = new Fragment_ViewCommentDetail();
                 fragment_ViewCommentDetail.setArguments(bundle);
-
+                Log.d("getLayoutParams", Integer.toString(commentListView.getLayoutParams().height));
 
                 /*getFragmentManager().beginTransaction()
                         .add(R.id.frame_container, fragment_ViewCommentDetail)
                         .commit();*/
-                FragmentManager fragmentManager = getFragmentManager();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                //fragmentTransaction.hide(getChildFragmentManager().findFragmentByTag("companyDetail"));
+                fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail"));
                 fragmentTransaction.add(R.id.frame_container, fragment_ViewCommentDetail, "commentDetail").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
@@ -110,26 +121,42 @@ public class Fragment_ViewComment extends Fragment {
             }
         });
 
-        commentListView.setAdapter(customListAdapter);
-        setListViewHeightBasedOnChildren(commentListView);
 
 
         return v;
     }
 
     //doulbe scrollView
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        Fragment_ViewComment_CustomListAdapter listAdapter = (Fragment_ViewComment_CustomListAdapter) listView.getAdapter();
+    public void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
             // pre-condition
             return;
         }
 
-        int totalHeight = 0;
+        /*int totalHeight = listView.getPaddingTop() + listView.getPaddingBottom();
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
         for (int i = 0; i < listAdapter.getCount(); i++) {
             View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+            if(listItem != null){
+                // This next line is needed before you call measure or else you won't get measured height at all. The listitem needs to be drawn first to know the height.
+                listItem.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                totalHeight += listItem.getMeasuredHeight();
+
+            }
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);*/
+        //listView.requestLayout();
+
+        int totalHeight = listView.getPaddingTop() + listView.getPaddingBottom();;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
             totalHeight += listItem.getMeasuredHeight();
         }
 
@@ -137,7 +164,6 @@ public class Fragment_ViewComment extends Fragment {
         params.height = totalHeight
                 + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
-        listView.requestLayout();
     }
 
     // Append more data into the adapter
@@ -150,7 +176,7 @@ public class Fragment_ViewComment extends Fragment {
                 ranking.getUrlComment().concat(Integer.toString(offset)), null, new Response.Listener<JSONObject>() {
 
             public void onResponse(JSONObject response) {
-                Log.d("json", response.toString());
+                Log.d("json_loadmore", response.toString());
 
 
                 try {
@@ -182,7 +208,7 @@ public class Fragment_ViewComment extends Fragment {
                 */
                 //hidepDialog();
                 setListViewHeightBasedOnChildren(commentListView);
-                //customListAdapter.notifyDataSetChanged();
+                commentListView.deferNotifyDataSetChanged();
 
                 // notifying list adapter about data changes
                 // so that it renders the list view with updated data
@@ -202,5 +228,17 @@ public class Fragment_ViewComment extends Fragment {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        //simpleAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
 }
 

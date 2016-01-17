@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -30,7 +31,9 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
+import com.company.damonday.CompanyInfo.Fragment.ViewComment.CustomScrollView;
 import com.company.damonday.CompanyInfo.Fragment.ViewComment.Fragment_ViewComment;
+import com.company.damonday.CompanyInfo.Fragment.ViewComment.Fragment_ViewComment_Comment;
 import com.company.damonday.CompanyInfo.Fragment.ViewCompany.Fragment_ViewCompany;
 import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment;
 import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_login_register;
@@ -80,6 +83,10 @@ public class FragmentTabs_try extends Fragment implements
     private CompanySQLiteHandler myfavouriteDB;
     private SessionManager session;
     private MyFavouritesObject myFavouritesObject;
+    private boolean mEnableFlag=true;
+    private int SCROLL_Y=0;
+    private CustomScrollView scrollView;
+    public int pageNum = 1;
 
     @Override
     public void onAttach(Activity activity) {
@@ -151,6 +158,10 @@ public class FragmentTabs_try extends Fragment implements
         ivFair = (ImageView) rootView.findViewById(R.id.fair_image);
         ivDislike = (ImageView) rootView.findViewById(R.id.dislike_image);
         viewPager = (ViewPager)rootView.findViewById(R.id.viewPager);
+        scrollView = (CustomScrollView) rootView.findViewById(R.id.parent_scroll);
+
+        //get the scroll Y position
+        scrollView.setScrollChangedListener(mScrollChangedListener);
 
         //config the view
         ivLike.setImageResource(R.drawable.like);
@@ -270,11 +281,44 @@ public class FragmentTabs_try extends Fragment implements
     }
 
 
+    //Calculate the height of the ScrollView after combining outer and inner listView
+    private CustomScrollView.ScrollChangedListener mScrollChangedListener = new CustomScrollView.ScrollChangedListener() {
+        @Override
+        public void onScrollChanged(int y) {
+            int height=scrollView.getHeight();
+            int scrollViewMeasuredHeight=scrollView.getChildAt(0).getMeasuredHeight();
+            System.out.println(">>>>>>>>>>>> "+"scrollY="+y+",height="+height+",scrollViewMeasuredHeight="+scrollViewMeasuredHeight*0.9);
+            SCROLL_Y=y;
+            if((y+height)>=scrollViewMeasuredHeight*0.9) {
+                if(mEnableFlag)
+                {
+                    //mEnableFlag=false;
+                    // GO TO Load More!!!
+                    Log.d("Load more", "Load more");
+                    //Fragment_ViewComment.
+                    //Fragment_ViewComment.setListViewHeightBasedOnChildren(Fragment_ViewComment.commentListView);
+                    FragmentManager fragmentManager = getChildFragmentManager();
+                    Fragment_ViewComment fragment_viewComment = (Fragment_ViewComment)fragmentManager.findFragmentByTag("玩評");
+                    pageNum++;
+                    fragment_viewComment.customLoadMoreDataFromApi(pageNum);
+
+                }
+            }
+        }
+    };
+
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        scrollView.smoothScrollTo(0, SCROLL_Y);
     }
 
 
@@ -296,7 +340,8 @@ public class FragmentTabs_try extends Fragment implements
 
                         JSONObject score = companyInfo.getJSONObject("score");
                         JSONArray promotion_images = companyInfo.getJSONArray("promotion_images");
-                        videoUrl = companyInfo.getString("video");
+                        //videoUrl = companyInfo.getString("video");
+                        videoUrl = "https://r3---sn-a8au-vgqe.googlevideo.com/videoplayback?initcwndbps=972500&source=youtube&sparams=dur%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpcm2cms%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cupn%2Cexpire&pl=20&upn=aGLaFhwh8L8&mm=31&ipbits=0&fexp=9408937%2C9413138%2C9416126%2C9420452%2C9422141%2C9422596%2C9423662%2C9424753%2C9425945%2C9426382%2C9426482%2C9426624%2C9426674%2C9426722%2C9427126%2C9427292&mime=video%2Fmp4&requiressl=yes&ratebypass=yes&mv=m&mt=1453024336&ms=au&sver=3&dur=106.626&mn=sn-a8au-vgqe&signature=7E08703E4AB390EF876DF94FA89C3E4DC1F0B64C.767B3EA799C1D2160B83D0340AFE8D97056A64B4&key=yt6&itag=18&expire=1453046081&id=o-ABz2GeyAUt7Sey9KgBeFrwe41M1Jv_53uyJT1qU3q_mB&lmt=1393055536888759&ip=173.234.194.20&pcm2cms=yes&title=WWW.DOWNVIDS.NET-Hahaha...So%20Funny.mp4";
                         companyName = companyInfo.getString("name");
                         Log.d("videoUrl", videoUrl);
 

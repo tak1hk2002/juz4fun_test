@@ -8,12 +8,11 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ScrollView
+    <com.company.damonday.CompanyInfo.Fragment.ViewComment.CustomScrollView
         android:id="@+id/parent_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:scrollbars="none" >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -143,7 +142,7 @@
                 </LinearLayout>
             </android.support.v4.app.FragmentTabHost>
         </LinearLayout>
-    </ScrollView>
+    </com.company.damonday.CompanyInfo.Fragment.ViewComment.CustomScrollView>
 </LinearLayout>
 
 
