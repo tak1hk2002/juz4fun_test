@@ -33,7 +33,12 @@ import com.company.damonday.Setting.Setting;
 import java.util.ArrayList;
 
 /**
- * Created by lamtaklung on 2/8/15.
+ * Created by tomc on 2/8/15.
+ * It is a fragment activity class for the sliding menu
+ *
+ *
+ *
+ *
  */
 public class TestActivity extends FragmentActivity {
     private DrawerLayout mDrawerLayout;
@@ -60,7 +65,6 @@ public class TestActivity extends FragmentActivity {
         setContentView(R.layout.drawer);
 
         mTitle = mDrawerTitle = getTitle();
-
 
         // load slide menu items
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -161,7 +165,7 @@ public class TestActivity extends FragmentActivity {
         // Handle action bar actions click
 
 
-        Log.d("hihihihi", Integer.toString(item.getItemId()));
+        Log.d("onOptionsItemSelected", Integer.toString(item.getItemId()));
         switch (item.getItemId()) {
             case R.id.btnMyMenu:
 
@@ -344,7 +348,7 @@ public class TestActivity extends FragmentActivity {
     public void onBackPressed() {
 
         super.onBackPressed();
-        System.out.println("yo");
+        System.out.println("onBackPressed");
 
         mDrawerLayout.closeDrawer(Gravity.RIGHT);
 

@@ -72,7 +72,7 @@ public class Home extends Fragment {
 
 
 
-        search =(SearchView)view.findViewById(R.id.search);
+        //search =(SearchView)view.findViewById(R.id.search);
         gridView = (GridView) view.findViewById(R.id.gridView);
         getActivity().getActionBar().setTitle(R.string.home);
 
