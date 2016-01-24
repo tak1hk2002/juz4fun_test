@@ -51,7 +51,7 @@
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
-        <item >主頁</item>
+        <item >Juz4fun</item>
         <item >進階搜尋</item>
         <item >排行榜</item>
         <item >最新評論</item>
@@ -146,6 +146,7 @@
     <string name="feedback">提交意見</string>
     <string name="about_us">關於我們</string>
     <string name="home">Juz4fun</string>
+    <string name="home2">主頁</string>
     <string name="advance_search">進階搜尋</string>
     <string name="advance_search_result">搜尋結果</string>
     <string name="ranking">排行榜</string>

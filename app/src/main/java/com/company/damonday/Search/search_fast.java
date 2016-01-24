@@ -273,9 +273,9 @@ public class search_fast extends Fragment {
                 }
 
                 adapter=new SearchResultsAdapter(getActivity(), filteredProductResults);
-                Log.d("hi","hi1");
+
                 searchResults.setAdapter(adapter);
-                Log.d("hi", "hi2");
+
                 //adapter.notifyDataSetChanged();
 
             }

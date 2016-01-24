@@ -74,7 +74,10 @@ public class Home extends Fragment {
 
         //search =(SearchView)view.findViewById(R.id.search);
         gridView = (GridView) view.findViewById(R.id.gridView);
+
+
         getActivity().getActionBar().setTitle(R.string.home);
+        //System.out.println("ordertest2");
 
         makeJsonArrayRequest();
 
@@ -95,14 +98,14 @@ public class Home extends Fragment {
 
 
                 FragmentManager fragmentManager = getFragmentManager();
-
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);   //important to clear repeat fragment in the stack //tomc 24/1/2016
                 // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("home"));
-
+                //fragmentTransaction.hide(getFragmentManager().findFragmentByTag("home"));
+                fragmentTransaction.replace(R.id.frame_container, fragment_search_fast, "search_fast").addToBackStack("main");  //tomc 24/1/2016
                         //fragmentTransaction.hide(getFragmentManager().findFragmentById(R.id.frame_container));
                         //fragmentTransaction.replace(R.id.frame_container, fragment_search_fast, "search_fast").addToBackStack("main");
-                fragmentTransaction.add(R.id.frame_container, fragment_search_fast, "search_fast").addToBackStack(null);
+                //fragmentTransaction.add(R.id.frame_container, fragment_search_fast, "search_fast").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
 
@@ -129,7 +132,7 @@ public class Home extends Fragment {
                 fragmentTabs_try = new FragmentTabs_try();
                 fragmentTabs_try.setArguments(bundle);
 
-
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);   //important to clear repeat fragment in the stack //tomc 24/1/2016
                 //FragmentManager fragmentManager = getFragmentManager();
                 // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

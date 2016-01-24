@@ -80,7 +80,12 @@ public class TestActivity extends FragmentActivity {
 
         // adding nav drawer items to array
         // Home
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
+
+        //Special handel, as （Juz4fun and 主頁） tomc 26/1/2016
+        navDrawerItems.add(new NavDrawerItem("主頁", navMenuIcons.getResourceId(0, -1)));
+
+
+
         // Find People
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
         // PhotosgetResourceId
@@ -115,13 +120,19 @@ public class TestActivity extends FragmentActivity {
                 R.string.app_name // nav drawer close - description for accessibility
         ) {
             public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
+                //calling when Drawer is closed tomc 26/1/2016
+
+
+               // getActionBar().setTitle(mTitle);
+                System.out.println("onDrawerClosed");
                 // calling onPrepareOptionsMenu() to show action bar icons
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
+                //calling when Drawer is opened tomc 26/1/2016
+
+              //  getActionBar().setTitle(mDrawerTitle);
                 // calling onPrepareOptionsMenu() to hide action bar icons
                 invalidateOptionsMenu();
             }
@@ -288,7 +299,7 @@ public class TestActivity extends FragmentActivity {
 
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-
+             System.out.println("ttttttt"+fragmentManager.getBackStackEntryCount());
             //clear all of the fragment at the stack
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
@@ -305,7 +316,9 @@ public class TestActivity extends FragmentActivity {
             tempmtitle = mTitle;
             System.out.println("tempmtitle=" + tempmtitle);
 
+
             setTitle(navMenuTitles[position]);
+            System.out.println("ordertest1");
             mDrawerLayout.closeDrawer(mDrawerList);
         } else {
             // error in creating fragment
