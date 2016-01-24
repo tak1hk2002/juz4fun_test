@@ -6,14 +6,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -22,8 +19,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.company.damonday.CompanyInfo.Fragment.ViewCommentDetail.Fragment_ViewCommentDetail;
-import com.company.damonday.CompanyInfo.FragmentTabs;
-import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
@@ -33,9 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by LAM on 20/4/2015.
@@ -67,7 +60,11 @@ public class Fragment_ViewComment extends Fragment {
         ranking = new APIConfig(entId);
 
         //call api
+        //APICall apiCall = new APICall(entId);
+        //apiCall.customLoadMoreDataFromApi(1);
         customLoadMoreDataFromApi(1);
+
+
 
     }
 
@@ -127,7 +124,7 @@ public class Fragment_ViewComment extends Fragment {
     }
 
     //doulbe scrollView
-    public void setListViewHeightBasedOnChildren(ListView listView) {
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
             // pre-condition
@@ -165,6 +162,7 @@ public class Fragment_ViewComment extends Fragment {
                 + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
     }
+
 
     // Append more data into the adapter
     public void customLoadMoreDataFromApi(int offset) {

@@ -18,6 +18,7 @@ package com.company.damonday.CompanyInfo.Lib;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -30,13 +31,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+import com.company.damonday.CompanyInfo.VideoPlayerActivity;
 import com.company.damonday.R;
 
 import java.lang.ref.WeakReference;
@@ -152,6 +156,28 @@ public class VideoControllerView extends FrameLayout {
         removeAllViews();
         View v = makeControllerView();
         addView(v, frameParams);
+
+        /*Button fullScreen = new Button(getContext());
+        fullScreen.setText("FullScreen");
+        Log.e("media controller","Set anchorView");
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.setMargins(view.getWidth(), 0, 5, 20);
+        params.gravity =  Gravity.RIGHT;
+        addView(fullScreen, params);
+
+        fullScreen.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Log.e("media controller", "full screen onclick");
+
+                Intent i = new Intent(getContext(), VideoPlayerActivity.class);
+
+                getContext().sendBroadcast(i);
+
+            }
+        });*/
     }
 
     /**
@@ -431,6 +457,7 @@ public class VideoControllerView extends FrameLayout {
 
     private View.OnClickListener mFullscreenListener = new View.OnClickListener() {
         public void onClick(View v) {
+            Log.d("FullScreenListener", "FullScreenListener");
             doToggleFullscreen();
             show(sDefaultTimeout);
         }
