@@ -1,13 +1,11 @@
 package com.company.damonday.Ranking;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.company.damonday.CompanyInfo.FragmentTabs;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
