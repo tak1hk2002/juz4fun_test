@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,8 +24,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -56,8 +60,7 @@ import java.util.ArrayList;
 /**
  * Created by lamtaklung on 4/8/15.
  */
-public class FragmentTabs_try extends Fragment implements
-        SurfaceHolder.Callback, MediaPlayer.OnPreparedListener, VideoControllerView.MediaPlayerControl{
+public class FragmentTabs_try extends Fragment{
 
     private FragmentTabHost mTabHost;
     private ViewPager viewPager;
@@ -448,94 +451,7 @@ public class FragmentTabs_try extends Fragment implements
 
     }
 
-    // Implement SurfaceHolder.Callback
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        player.setDisplay(holder);
-        player.prepareAsync();
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-
-    }
-    // End SurfaceHolder.Callback
-    // Implement MediaPlayer.OnPreparedListener
-    @Override
-    public void onPrepared(MediaPlayer mp) {
-        controller.setMediaPlayer(this);
-
-        //player.start();
-    }
-    // End MediaPlayer.OnPreparedListener
-
-    // Implement VideoMediaController.MediaPlayerControl
-    @Override
-    public boolean canPause() {
-        return true;
-    }
-
-    @Override
-    public boolean canSeekBackward() {
-        return true;
-    }
-
-    @Override
-    public boolean canSeekForward() {
-        return true;
-    }
-
-    @Override
-    public int getBufferPercentage() {
-        return 0;
-    }
-
-    @Override
-    public int getCurrentPosition() {
-        return player.getCurrentPosition();
-    }
-
-    @Override
-    public int getDuration() {
-        return player.getDuration();
-    }
-
-    @Override
-    public boolean isPlaying() {
-        return player.isPlaying();
-    }
-
-    @Override
-    public void pause() {
-        player.pause();
-    }
-
-    @Override
-    public void seekTo(int i) {
-        player.seekTo(i);
-    }
-
-    @Override
-    public void start() {
-        player.start();
-    }
-
-    @Override
-    public boolean isFullScreen() {
-        return false;
-
-    }
-
-    @Override
-    public void toggleFullScreen() {
-        startActivity(new Intent(getActivity(), VideoPlayerActivity.class));
-    }
-    // End VideoMediaController.MediaPlayerControl
 
 
 
@@ -561,33 +477,37 @@ public class FragmentTabs_try extends Fragment implements
             //show the first page which is the video player
             if(position == 0 && videoUrl != null) {
                 view = layoutInflater.inflate(R.layout.companyinfo_fragment_tab_video, container,false);
+                NetworkImageView MediaPreview = (NetworkImageView) view.findViewById(R.id.MediaPreview);
+                NetworkImageView VideoPreviewPlayButton = (NetworkImageView) view.findViewById(R.id.VideoPreviewPlayButton);
+
+                MediaPreview.setImageUrl("http://cdn.inside.com.tw/wp-content/uploads/2012/05/Chrome.jpg", imageLoader);
+                VideoPreviewPlayButton.setImageResource(R.drawable.ic_media_play);
+                VideoPreviewPlayButton.setVisibility(view.VISIBLE);
+
+
+
+                /*view = layoutInflater.inflate(R.layout.companyinfo_fragment_tab_video, container,false);
                 controller.setAnchorView((FrameLayout) view.findViewById(R.id.videoSurfaceContainer));
 
 
 
                 videoSurface = (SurfaceView) view.findViewById(R.id.videoSurface);
                 SurfaceHolder videoHolder = videoSurface.getHolder();
-                videoHolder.addCallback(FragmentTabs_try.this);
+                //videoHolder.addCallback(FragmentTabs_try.this);
                 try{
                     //set media player
                     player.setAudioStreamType(AudioManager.STREAM_MUSIC);
                     player.setDataSource(getActivity(), Uri.parse(listOfItems.get(position)));
-                    player.setOnPreparedListener(FragmentTabs_try.this);
+                    player.seekTo(20);
                 }catch (Exception e){
                     Toast.makeText(getActivity(), e.getMessage(),Toast.LENGTH_LONG).show();
                     e.printStackTrace();
-                }
+                }*/
 
-                view.setOnTouchListener(new View.OnTouchListener() {
+                view.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if(event.getAction() == MotionEvent.ACTION_DOWN){
-                            controller.show();
-                            Log.d("position", Integer.toString(position));
-                        }
-                        Log.d("position", event.toString());
-
-                        return false;
+                    public void onClick(View v) {
+                        startActivity(new Intent(getActivity(), VideoPlayerActivity.class));
                     }
                 });
 

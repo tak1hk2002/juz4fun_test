@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.company.damonday"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 17
         versionCode 1
         versionName "1.0"
@@ -28,7 +28,7 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile(name:'ViewPagerIndicator-2.4.1', ext:'aar')
+    compile(name: 'ViewPagerIndicator-2.4.1', ext: 'aar')
     compile files('libs/android-support-v4.jar')
     compile 'com.android.support:appcompat-v7:22.1.1'
     compile 'com.google.android.gms:play-services:7.3.0'
@@ -38,12 +38,14 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.6.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     //compile project(':facebook')
-
 }
 
 
 configurations {
     all*.exclude group: 'com.android.support', module: 'support-v4'
 }
+
+
+
 
 
