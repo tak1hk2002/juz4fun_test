@@ -299,7 +299,7 @@ public class TestActivity extends FragmentActivity {
 
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-             System.out.println("ttttttt"+fragmentManager.getBackStackEntryCount());
+             System.out.println("testActivity_backstackEntryCount:="+fragmentManager.getBackStackEntryCount());
             //clear all of the fragment at the stack
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 

@@ -154,12 +154,14 @@ public class NewFoundCompany extends Fragment {
                                 Home home_fragment = new Home();
 
                                 FragmentManager fragmentManager = getFragmentManager();
-                                System.out.println(fragmentManager.getBackStackEntryCount());
+                                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);  //tomc 31/1/2016  To disable the back button in home
+                                //System.out.println(fragmentManager.getBackStackEntryCount());
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("newfound"));
                                 fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack(null);
                                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                                 fragmentTransaction.commit();
+                                getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 
 
                             }
