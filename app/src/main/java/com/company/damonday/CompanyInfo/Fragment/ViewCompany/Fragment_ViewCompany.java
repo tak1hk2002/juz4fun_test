@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,7 @@ import com.company.damonday.function.AppController;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,6 +90,7 @@ public class Fragment_ViewCompany extends Fragment {
         }
         //new object for Api url
         ranking = new APIConfig(entId);
+        Log.d("entId", entId);
 
 
 
@@ -229,7 +233,7 @@ public class Fragment_ViewCompany extends Fragment {
 
                 try {
 
-                    ArrayList<String> info = new ArrayList<String>();
+                    ArrayList<Spanned> info = new ArrayList<Spanned>();
 
                     // loop through each json object
                     String status = response.getString("status");
@@ -237,18 +241,27 @@ public class Fragment_ViewCompany extends Fragment {
 
                     if (status.equals("success")) {
                         compayName = companyInfo.getString("name");
-                        info.add(companyInfo.getString("description"));
-                        info.add(companyInfo.getString("address"));
-                        info.add(companyInfo.getString("contact_number"));
-                        info.add(companyInfo.getString("price"));
-                        info.add(companyInfo.getString("preferred_transport"));
-                        info.add(companyInfo.getString("business_hour"));
-                        info.add("Dummy text");
-                        info.add("Dummy text");
-                        info.add("Dummy text");
-                        info.add("Dummy text");
-                        info.add("Dummy text");
-                        info.add("Dummy text");
+                        info.add((Html.fromHtml(companyInfo.getString("description"))));
+                        info.add(Html.fromHtml(companyInfo.getString("address")));
+                        info.add(Html.fromHtml(companyInfo.getString("contact_number")));
+                        //cat
+                        JSONArray catList = companyInfo.getJSONArray("cat");
+                        String cat = "";
+                        for (int i = 0; i < catList.length(); i++){
+                            if(!cat.isEmpty())
+                                cat += ", ";
+                            cat += catList.get(i);
+                        }
+                        info.add(Html.fromHtml(cat));
+                        info.add(Html.fromHtml(companyInfo.getString("price")));
+                        info.add(Html.fromHtml(companyInfo.getString("preferred_transport")));
+                        info.add(Html.fromHtml(companyInfo.getString("business_hour")));
+                        info.add(Html.fromHtml("Dummy text"));
+                        info.add(Html.fromHtml("Dummy text"));
+                        info.add(Html.fromHtml("Dummy text"));
+                        info.add(Html.fromHtml("Dummy text"));
+                        info.add(Html.fromHtml("Dummy text"));
+                        info.add(Html.fromHtml("Dummy text"));
 
                         latitude = companyInfo.getDouble("latitude");
                         longitude = companyInfo.getDouble("longitude");

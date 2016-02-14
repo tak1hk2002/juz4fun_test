@@ -8,10 +8,13 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -201,14 +204,15 @@ public class Fragment_ViewWriteComment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
                 final AlertDialog.Builder[] ab = {new AlertDialog.Builder(getActivity())};
+                AlertDialog dialog;
                 final EditText txtTitle = new EditText(getActivity());
                 final EditText txtContent = new EditText(getActivity());
                 final EditText txtExpense = new EditText(getActivity());
                 final String[] txtOverAllRating = new String[1];
                 final int[] selectedOverallRating = {-1};
 
-                txtExpense.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
-                txtExpense.setRawInputType(Configuration.KEYBOARD_12KEY);
+                //only allow user to enter digits and "."
+                txtExpense.setKeyListener(DigitsKeyListener.getInstance("0123456789."));
 
                 //get the dialog content
                 String stringTitle = items.get(position).get("info").toString().trim();
@@ -268,7 +272,11 @@ public class Fragment_ViewWriteComment extends Fragment {
                             }
                         });
 
-                        ab[0].show();
+                        //when alertview is launched, the keyboard show immediately
+                        dialog = ab[0].create();
+                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+                        dialog.show();
                         break;
                     //content
                     case 1:
@@ -296,7 +304,11 @@ public class Fragment_ViewWriteComment extends Fragment {
                             }
                         });
 
-                        ab[0].show();
+                        //when alertview is launched, the keyboard show immediately
+                        dialog = ab[0].create();
+                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+                        dialog.show();
 
                         break;
                     //consumption
@@ -325,7 +337,11 @@ public class Fragment_ViewWriteComment extends Fragment {
                             }
                         });
 
-                        ab[0].show();
+                        //when alertview is launched, the keyboard show immediately
+                        dialog = ab[0].create();
+                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+                        dialog.show();
                         break;
                     //Overall Rating
                     case 3:

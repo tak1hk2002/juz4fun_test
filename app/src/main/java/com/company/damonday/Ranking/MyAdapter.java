@@ -1,29 +1,19 @@
 package com.company.damonday.Ranking;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.company.damonday.CompanyInfo.FragmentTabs;
 import com.company.damonday.R;
 import com.company.damonday.function.AppController;
 
 import java.util.List;
-
-import function.GetPreviousObject;
 
 /**
  * Created by lamtaklung on 27/6/15.
@@ -70,7 +60,7 @@ public class MyAdapter extends BaseAdapter
             inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
-            convertView = inflater.inflate(R.layout.charts_gridview, null);
+            convertView = inflater.inflate(R.layout.ranking_charts_gridview, null);
         ProgressBar mProgress=(ProgressBar) convertView.findViewById(R.id.pb);
 
 

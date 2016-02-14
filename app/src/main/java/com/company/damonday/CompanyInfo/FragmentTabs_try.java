@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
@@ -22,6 +23,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.MediaController;
@@ -45,6 +48,7 @@ import com.company.damonday.CompanyInfo.Lib.VideoControllerView;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MyFavourites.MyFavouritesObject;
 import com.company.damonday.R;
+import com.company.damonday.Search.search_fast;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.facebook.AccessToken;
@@ -90,31 +94,6 @@ public class FragmentTabs_try extends Fragment{
     private CustomScrollView scrollView;
     public int pageNum = 1;
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-/*        AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
-                updateWithToken(newAccessToken);
-            }
-
-        };
-
-        accessTokenTracker.startTracking();
-
-        updateWithToken(AccessToken.getCurrentAccessToken());*/
-
-        // SqLite database handler
-        //loginDB = new SQLiteHandler(activity);
-
-        // session manager
-        //session = new SessionManager(activity);
-
-        /*accessToken = AccessToken.getCurrentAccessToken();
-        Log.d("accessToken", accessToken.toString());*/
-    }
 
     public void onCreate(Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(getActivity());
@@ -148,9 +127,11 @@ public class FragmentTabs_try extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
         //initial view
         rootView = inflater.inflate(R.layout.companyinfo_fragment_tab,container, false);
+        rootView.setFocusableInTouchMode(true);
+        rootView.requestFocus();
+
         tvLike = (TextView) rootView.findViewById(R.id.like);
         tvDislike = (TextView) rootView.findViewById(R.id.dislike);
         tvFair = (TextView) rootView.findViewById(R.id.fair);
@@ -320,7 +301,7 @@ public class FragmentTabs_try extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        scrollView.smoothScrollTo(0, SCROLL_Y);
+        //scrollView.smoothScrollTo(0, SCROLL_Y);
     }
 
 
@@ -477,11 +458,12 @@ public class FragmentTabs_try extends Fragment{
             //show the first page which is the video player
             if(position == 0 && videoUrl != null) {
                 view = layoutInflater.inflate(R.layout.companyinfo_fragment_tab_video, container,false);
-                NetworkImageView MediaPreview = (NetworkImageView) view.findViewById(R.id.MediaPreview);
-                NetworkImageView VideoPreviewPlayButton = (NetworkImageView) view.findViewById(R.id.VideoPreviewPlayButton);
+                ImageView MediaPreview = (ImageView) view.findViewById(R.id.MediaPreview);
+                ImageView VideoPreviewPlayButton = (ImageView) view.findViewById(R.id.VideoPreviewPlayButton);
 
-                MediaPreview.setImageUrl("http://cdn.inside.com.tw/wp-content/uploads/2012/05/Chrome.jpg", imageLoader);
-                VideoPreviewPlayButton.setImageResource(R.drawable.ic_media_play);
+                MediaPreview.setImageResource(R.color.black);
+                VideoPreviewPlayButton.setImageResource(R.drawable.ic_media_play1);
+
                 VideoPreviewPlayButton.setVisibility(view.VISIBLE);
 
 
@@ -507,7 +489,17 @@ public class FragmentTabs_try extends Fragment{
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(getActivity(), VideoPlayerActivity.class));
+                        //startActivity(new Intent(getActivity(), VideoPlayerActivity.class));
+
+                        VideoPlayerActivity videoPlayerActivity = new VideoPlayerActivity();
+
+                        FragmentManager fragmentManager = getFragmentManager();
+                        //fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);   //important to clear repeat fragment in the stack //Alan 9/2/2016
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.hide(getFragmentManager().findFragmentByTag("companyDetail"));
+                        fragmentTransaction.add(R.id.frame_container, videoPlayerActivity, "video").addToBackStack("main");  //Alan 9/2/2016
+                        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        fragmentTransaction.commit();
                     }
                 });
 
@@ -524,6 +516,18 @@ public class FragmentTabs_try extends Fragment{
                         .findViewById(R.id.PageView);
 
                 tView.setImageUrl(listOfItems.get(position), imageLoader);
+
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(getActivity(), FullScreenViewActivity.class);
+                        i.putExtra("position", position);
+                        i.putExtra("listOfItems", listOfItems);
+                        startActivity(i);
+                    }
+                });
+
+
             }
 
 

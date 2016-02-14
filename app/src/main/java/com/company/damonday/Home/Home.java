@@ -59,6 +59,7 @@ public class Home extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        makeJsonArrayRequest();
 
     }
 
@@ -79,7 +80,6 @@ public class Home extends Fragment {
         getActivity().getActionBar().setTitle(R.string.home);
         //System.out.println("ordertest2");
 
-        makeJsonArrayRequest();
 
 
         FragmentManager fragmentManager = getFragmentManager();

@@ -5,40 +5,48 @@ package com.company.damonday.CompanyInfo;
  */
 import java.io.IOException;
 
-import android.app.Activity;
+import android.app.ActionBar;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.company.damonday.CompanyInfo.Lib.VideoControllerView;
 import com.company.damonday.R;
 
-public class VideoPlayerActivity extends Activity implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener, VideoControllerView.MediaPlayerControl {
+public class VideoPlayerActivity extends Fragment implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener, VideoControllerView.MediaPlayerControl {
 
     SurfaceView videoSurface;
     MediaPlayer player;
     VideoControllerView controller;
+    View rootView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_player);
+        //setContentView(R.layout.activity_video_player);
+        getActivity().setRequestedOrientation(
+                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        ActionBar action=getActivity().getActionBar();
+        action.hide();
 
-        videoSurface = (SurfaceView) findViewById(R.id.videoSurface);
-        SurfaceHolder videoHolder = videoSurface.getHolder();
-        videoHolder.addCallback(this);
 
         player = new MediaPlayer();
-        controller = new VideoControllerView(this);
+        controller = new VideoControllerView(getActivity());
 
         try {
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setDataSource(this, Uri.parse("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"));
+            player.setDataSource(getActivity(), Uri.parse("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"));
             player.setOnPreparedListener(this);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -51,11 +59,24 @@ public class VideoPlayerActivity extends Activity implements SurfaceHolder.Callb
         }
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        controller.show();
-        return false;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        rootView = inflater.inflate(R.layout.activity_video_player,container, false);
+        videoSurface = (SurfaceView) rootView.findViewById(R.id.videoSurface);
+        SurfaceHolder videoHolder = videoSurface.getHolder();
+        videoHolder.addCallback(this);
+
+        rootView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                controller.show();
+                return false;
+            }
+        });
+        return rootView;
     }
+
 
     // Implement SurfaceHolder.Callback
     @Override
@@ -79,7 +100,7 @@ public class VideoPlayerActivity extends Activity implements SurfaceHolder.Callb
     @Override
     public void onPrepared(MediaPlayer mp) {
         controller.setMediaPlayer(this);
-        controller.setAnchorView((FrameLayout) findViewById(R.id.videoSurfaceContainer));
+        controller.setAnchorView((FrameLayout) rootView.findViewById(R.id.videoSurfaceContainer));
         player.start();
     }
     // End MediaPlayer.OnPreparedListener
@@ -145,5 +166,26 @@ public class VideoPlayerActivity extends Activity implements SurfaceHolder.Callb
 
     }
     // End VideoMediaController.MediaPlayerControl
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        player.pause();
+        getActivity().setRequestedOrientation(
+                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        ActionBar action=getActivity().getActionBar();
+        action.show();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 
 }

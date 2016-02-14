@@ -49,6 +49,12 @@ public class Ranking_try extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        pDialog = new ProgressDialog(getActivity());
+        // Showing progress dialog before making http request
+        pDialog.setMessage("Loading...");
+        pDialog.show();
+
+        makeJsonArrayRequest();
     }
 
     @Override
@@ -62,7 +68,7 @@ public class Ranking_try extends Fragment {
         gridView = (GridView) view.findViewById(R.id.gridView);
 
 
-        makeJsonArrayRequest();
+
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -122,7 +128,7 @@ public class Ranking_try extends Fragment {
 
 
     private void makeJsonArrayRequest() {
-
+        showpDialog();
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 APIConfig.URL_RANKING, null, new Response.Listener<JSONObject>() {
 
@@ -168,7 +174,7 @@ public class Ranking_try extends Fragment {
                 //hidePDialog();
                 // notifying list adapter about data changes
                 // so that it renders the list view with updated data
-
+                hidepDialog();
                 adapter.notifyDataSetChanged();
             }
         }, new Response.ErrorListener() {
@@ -177,12 +183,22 @@ public class Ranking_try extends Fragment {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 Toast.makeText(getActivity(),
                         error.getMessage(), Toast.LENGTH_SHORT).show();
-                //hidePDialog();
+                hidepDialog();
             }
         });
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
 
+    }
+
+    private void showpDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hidepDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 
 }

@@ -1,27 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/video_container"
+
+
+<FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
-    android:gravity="center_horizontal|center_vertical"
-    android:orientation="vertical" >
+    android:layout_margin="3dp"
+    android:layout_gravity="center_horizontal|center_vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
-        android:id="@+id/videoSurfaceContainer"
+    <ImageView
+        android:id="@+id/MediaPreview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        <com.android.volley.toolbox.NetworkImageView
-            android:id="@+id/MediaPreview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        <com.android.volley.toolbox.NetworkImageView
-            android:id="@+id/VideoPreviewPlayButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:layout_gravity="center_horizontal|bottom"
-            android:visibility="gone"/>
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:background="@color/black"/>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/VideoPreviewPlayButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/VideoTitle"
+        android:text="abcabcabc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:layout_gravity="top"
+        android:textColor="@android:color/white"
+        android:background="#e75e5050"
+        android:layout_alignBottom="@+id/picture"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+</FrameLayout>
+
