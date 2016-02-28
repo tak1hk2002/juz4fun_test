@@ -153,6 +153,10 @@ public class Ranking_try extends Fragment {
                             companyInfo.setUrl(company.getString("cover_image"));
                             companyInfo.setEnt_id(3);
 
+                            int resID = getResources().getIdentifier("mascot_rank"+Integer.toString(i + 1) , "drawable", getActivity().getPackageName());
+                            companyInfo.setMoscotId(resID);
+
+
                             companyInfoItems.add(companyInfo);
 
                         }

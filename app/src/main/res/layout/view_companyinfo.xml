@@ -8,5 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/listView_Company"
+        android:background="@color/main_bg1"
+        android:divider="@color/separate_line"
+        android:dividerHeight="1dp"
         />
 </LinearLayout>

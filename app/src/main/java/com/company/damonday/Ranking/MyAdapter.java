@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -67,6 +68,7 @@ public class MyAdapter extends BaseAdapter
         final TextView title = (TextView) convertView.findViewById(R.id.text);
         final NetworkImageView companyImage = (NetworkImageView) convertView
                 .findViewById(R.id.picture);
+        ImageView ranking = (ImageView) convertView.findViewById(R.id.ranking);
 
         final CompanyInfo c = companyInfoItems.get(position);
 
@@ -81,55 +83,11 @@ public class MyAdapter extends BaseAdapter
         }
         companyImage.setDefaultImageResId(R.drawable.ic_launcher);
         companyImage.setErrorImageResId(R.drawable.ic_launcher);
-
-
-        /*imageLoader.get(c.getUrl(), new ImageLoader.ImageListener() {
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                if (response != null) {
-                    Bitmap bitmap = response.getBitmap();
-                    Log.d("response", response.getRequestUrl().toString());
-                    if (bitmap != null) {
-                        pb.setVisibility(View.GONE);
-                        companyImage.setVisibility(View.VISIBLE);
-                        companyImage.setImageBitmap(bitmap);
-                        // title
-                        title.setText(c.getTitle());
-                    }
-                }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                pb.setVisibility(View.GONE);
-                companyImage.setVisibility(View.VISIBLE);
-                companyImage.setImageResource(R.drawable.ic_launcher);
-            }
-
-
-        });*/
+        ranking.setImageResource(c.getMoscotId());
 
 
 
 
-
-
-
-
-        /*convertView.setOnItemClickListener(new View.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
-                Toast.makeText(context, "You Clicked " + companyInfoItems.get(position).getUrl(), Toast.LENGTH_LONG).show();
-
-                //pass the following object to next activity
-                GetPreviousObject passedObject = new GetPreviousObject(companyInfoItems.get(position).getEnt_id(), -1, -1);
-                Intent i = new Intent(context, FragmentTabs.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.putExtra("sampleObject", passedObject);
-                context.startActivity(i);
-            }
-        });*/
         return convertView;
     }
 }

@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/view_companycomment_list_row_selector"
     android:padding="8dp"
     android:weightSum="1"
     android:orientation="horizontal">
@@ -32,14 +31,15 @@
             android:layout_alignParentLeft="true"
             android:textSize="@dimen/title"
             android:textStyle="bold"
+            android:textColor="@color/font2"
             android:text="How are you? How are you? How are you? How are you?"/>
         <TextView
             android:id="@+id/posted_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/username"
-            android:textColor="@color/year"
             android:textSize="@dimen/year"
+            android:textColor="@color/font2"
             android:text="2015-12-12 08:00:00"/>
         <TextView
             android:id="@+id/username"
@@ -48,8 +48,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_marginTop="5dp"
-            android:textColor="@color/genre"
             android:textSize="@dimen/genre"
+            android:textColor="@color/font2"
             android:text="Alan Lam"/>
     </RelativeLayout>
 
@@ -70,6 +70,7 @@
             android:layout_marginTop="1dip"
             android:layout_below="@+id/like"
             android:textSize="@dimen/rating"
+            android:textColor="@color/font2"
             android:text="3.4"/>
         <TextView
             android:id="@+id/rating2"
@@ -79,6 +80,7 @@
             android:layout_below="@+id/like"
             android:layout_toRightOf="@+id/rating1"
             android:textSize="@dimen/rating"
+            android:textColor="@color/font2"
             android:text="/5"/>
 
     </RelativeLayout>

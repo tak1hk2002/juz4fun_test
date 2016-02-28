@@ -6,16 +6,19 @@ package com.company.damonday.Ranking;
 
 public class CompanyInfo {
     private String title, url;
-    private int ent_id;
+    private int ent_id, moscotId;
 
 
     public CompanyInfo() {
     }
 
-    public CompanyInfo(String name, String url, int ent_id) {
+
+
+    public CompanyInfo(String name, String url, int ent_id, int moscotId) {
         this.title = name;
         this.url = url;
         this.ent_id = ent_id;
+        this.moscotId = moscotId;
 
     }
 
@@ -43,7 +46,13 @@ public class CompanyInfo {
         this.ent_id = ent_id;
     }
 
+    public int getMoscotId() {
+        return moscotId;
+    }
 
+    public void setMoscotId(int moscotId) {
+        this.moscotId = moscotId;
+    }
 
 
 }

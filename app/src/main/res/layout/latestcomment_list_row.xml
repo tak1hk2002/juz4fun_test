@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:textColor="@color/year"
+        android:textColor="@color/font2"
         android:textSize="@dimen/year" />
 
 </RelativeLayout>

@@ -67,7 +67,6 @@ import java.util.ArrayList;
 public class FragmentTabs_try extends Fragment{
 
     private FragmentTabHost mTabHost;
-    private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
     private ArrayList<String> listOfItems = new ArrayList<String>();;
     private String videoUrl;
@@ -76,23 +75,16 @@ public class FragmentTabs_try extends Fragment{
     private static String TAG = FragmentTabs_try.class.getSimpleName();
     private ArrayList<String> coverPage = new ArrayList<String>();
     private ArrayList<String> categories = new ArrayList<String>();
-    private View rootView;
     private TextView tvLike, tvDislike, tvFair, tvCompanyTitle;
     private String like, dislike, fair, companyName, averageScore, cat, price;
     private APIConfig details;
-    private VideoControllerView controller;
-    private MediaPlayer player;
-    private SurfaceView videoSurface;
-    private ImageView ivMyFavourite, ivLike, ivFair, ivDislike;
-    private UnderlinePageIndicator mIndicator;
-    private View view;
+    private ImageView ivMyFavourite, ivFair;
     private CompanySQLiteHandler myfavouriteDB;
     private SessionManager session;
     private MyFavouritesObject myFavouritesObject;
-    private boolean mEnableFlag=true;
     private int SCROLL_Y=0;
     private CustomScrollView scrollView;
-    public int pageNum = 1;
+    private int pageNum = 1;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -116,8 +108,6 @@ public class FragmentTabs_try extends Fragment{
         details = new APIConfig(entId);
 
         //intialise the Video player
-        player = new MediaPlayer();
-        controller = new VideoControllerView(getActivity());
 
 
         makeJsonArrayRequest();
@@ -128,7 +118,7 @@ public class FragmentTabs_try extends Fragment{
                              Bundle savedInstanceState) {
 
         //initial view
-        rootView = inflater.inflate(R.layout.companyinfo_fragment_tab,container, false);
+        View rootView = inflater.inflate(R.layout.companyinfo_fragment_tab, container, false);
         rootView.setFocusableInTouchMode(true);
         rootView.requestFocus();
 
@@ -137,19 +127,15 @@ public class FragmentTabs_try extends Fragment{
         tvFair = (TextView) rootView.findViewById(R.id.fair);
         ivMyFavourite = (ImageView) rootView.findViewById(R.id.my_favourite);
         tvCompanyTitle = (TextView) rootView.findViewById(R.id.company_title);
-        ivLike = (ImageView) rootView.findViewById(R.id.like_image);
         ivFair = (ImageView) rootView.findViewById(R.id.fair_image);
-        ivDislike = (ImageView) rootView.findViewById(R.id.dislike_image);
-        viewPager = (ViewPager)rootView.findViewById(R.id.viewPager);
+        ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
         scrollView = (CustomScrollView) rootView.findViewById(R.id.parent_scroll);
 
         //get the scroll Y position
         scrollView.setScrollChangedListener(mScrollChangedListener);
 
         //config the view
-        ivLike.setImageResource(R.drawable.like);
         ivFair.setImageResource(R.drawable.fair);
-        ivDislike.setImageResource(R.drawable.dislike);
 
         myViewPagerAdapter = new MyViewPagerAdapter(listOfItems);  //call Class to create Object
         viewPager.setAdapter(myViewPagerAdapter);
@@ -165,11 +151,11 @@ public class FragmentTabs_try extends Fragment{
         final boolean[] heartUnclicked = {true};
         if(myFavouriteCount > 0) {
             heartUnclicked[0] = false;
-            ivMyFavourite.setImageResource(R.drawable.heart_clicked);
+            ivMyFavourite.setImageResource(R.drawable.btn_favourite_selected);
         }
         else {
             heartUnclicked[0] = true;
-            ivMyFavourite.setImageResource(R.drawable.heart_unclicked);
+            ivMyFavourite.setImageResource(R.drawable.btn_favourite_unselect);
         }
 
         ivMyFavourite.setOnClickListener(new View.OnClickListener() {
@@ -177,14 +163,14 @@ public class FragmentTabs_try extends Fragment{
             public void onClick(View v) {
                 if(heartUnclicked[0]){
                     heartUnclicked[0] = false;
-                    ivMyFavourite.setImageResource(R.drawable.heart_clicked);
+                    ivMyFavourite.setImageResource(R.drawable.btn_favourite_selected);
                     myfavouriteDB.addMyFavourite(myFavouritesObject);
                     Toast.makeText(getActivity(), R.string.heart_clicked, Toast.LENGTH_SHORT).show();
 
                 }
                 else{
                     heartUnclicked[0] = true;
-                    ivMyFavourite.setImageResource(R.drawable.heart_unclicked);
+                    ivMyFavourite.setImageResource(R.drawable.btn_favourite_unselect);
                     myfavouriteDB.deleteMyFavourite(Integer.parseInt(entId));
                     Toast.makeText(getActivity(), R.string.heart_unclicked, Toast.LENGTH_SHORT).show();
                 }
@@ -219,9 +205,10 @@ public class FragmentTabs_try extends Fragment{
 
 
         // ViewPager Indicator
-        mIndicator = (UnderlinePageIndicator) rootView.findViewById(R.id.indicator);
+        UnderlinePageIndicator mIndicator = (UnderlinePageIndicator) rootView.findViewById(R.id.indicator);
         mIndicator.setFades(false);
         mIndicator.setViewPager(viewPager);
+        mIndicator.setSelectedColor(R.color.main_bg1);
 
 
 
@@ -235,10 +222,10 @@ public class FragmentTabs_try extends Fragment{
 
         mTabHost.setCurrentTab(0);//設定一開始就跳到第一個分頁
         mTabHost.addTab(
-                mTabHost.newTabSpec("概要").setIndicator("概要"),
+                mTabHost.newTabSpec("概要").setIndicator(createTabView(getActivity(), "概要")),
                 Fragment_ViewCompany.class, bundle);
         mTabHost.addTab(
-                mTabHost.newTabSpec("玩評").setIndicator("玩評"),
+                mTabHost.newTabSpec("玩評").setIndicator(createTabView(getActivity(), "玩評")),
                 Fragment_ViewComment.class, bundle);
 
         //check login
@@ -247,11 +234,11 @@ public class FragmentTabs_try extends Fragment{
         //no login record
         if (AccessToken.getCurrentAccessToken() != null || session.isLoggedIn()) {
             mTabHost.addTab(
-                    mTabHost.newTabSpec("我要評論").setIndicator("我要評論"),
+                    mTabHost.newTabSpec("我要評論").setIndicator(createTabView(getActivity(), "我要評論")),
                     Fragment_ViewWriteComment.class, bundle);
         }else{ //detect the login record
             mTabHost.addTab(
-                    mTabHost.newTabSpec("我要評論").setIndicator("我要評論"),
+                    mTabHost.newTabSpec("我要評論").setIndicator(createTabView(getActivity(), "我要評論")),
                     Fragment_login_register.class, bundle);
         }
 
@@ -261,6 +248,13 @@ public class FragmentTabs_try extends Fragment{
 
 
         return rootView;
+    }
+
+    private static View createTabView(Context context, String tabText) {
+        View view = LayoutInflater.from(context).inflate(R.layout.companyinfo_frgment_tab_tabs, null, false);
+        TextView tv = (TextView) view.findViewById(R.id.tabTitleText);
+        tv.setText(tabText);
+        return view;
     }
 
     //Calculate the height of the ScrollView after combining outer and inner listView
@@ -274,6 +268,7 @@ public class FragmentTabs_try extends Fragment{
             System.out.println(">>>>>>>>>>>> "+"scrollY="+y+",height="+height+",scrollViewMeasuredHeight="+scrollViewMeasuredHeight*0.9);
             SCROLL_Y=y;
             if((y+height)>=scrollViewMeasuredHeight*0.9 && mTabHost.getCurrentTab() == 1) {
+                boolean mEnableFlag = true;
                 if(mEnableFlag)
                 {
                     //mEnableFlag=false;
@@ -301,7 +296,7 @@ public class FragmentTabs_try extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        //scrollView.smoothScrollTo(0, SCROLL_Y);
+        scrollView.smoothScrollTo(0, SCROLL_Y);
     }
 
 
@@ -456,6 +451,7 @@ public class FragmentTabs_try extends Fragment{
             layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             //show the first page which is the video player
+            View view;
             if(position == 0 && videoUrl != null) {
                 view = layoutInflater.inflate(R.layout.companyinfo_fragment_tab_video, container,false);
                 ImageView MediaPreview = (ImageView) view.findViewById(R.id.MediaPreview);

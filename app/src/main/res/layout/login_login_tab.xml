@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_login"
     android:orientation="vertical"
+    android:background="@color/main_bg1"
     android:padding="10dp" >
 
     <LinearLayout
@@ -16,7 +16,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_member_login"/>
+            android:text="@string/title_member_login"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/login_red"
+            android:layout_marginBottom="15dp"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -26,6 +29,7 @@
             android:ems="10"
             android:id="@+id/username"
             android:hint="@string/hint_username"
+            android:textColor="@color/font2"
             android:layout_gravity="center_horizontal" />
 
 
@@ -37,6 +41,7 @@
             android:singleLine="true"
             android:id="@+id/password"
             android:hint="@string/hint_password"
+            android:textColor="@color/font2"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
@@ -54,7 +59,8 @@
             android:id="@+id/forgot_password"
             android:layout_alignParentRight="true"
             android:textSize="18sp"
-            android:text="@string/forgot_password"/>
+            android:text="@string/forgot_password"
+            android:textColor="@color/font2"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -62,45 +68,63 @@
             android:id="@+id/register"
             android:layout_alignParentLeft="true"
             android:textSize="18sp"
-            android:text="@string/btn_register"/>
+            android:text="@string/btn_register"
+            android:textColor="@color/font2"/>
 
 
     </RelativeLayout>
         <!-- Login Button -->
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
         android:paddingLeft="20dp"
         android:paddingRight="20dp" >
-
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/btn_login_bg"
-            android:text="@string/btn_login"
-            android:textColor="@color/btn_login" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/login_or"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:textSize="18sp"
-            android:text="@string/or"/>
+            android:textColor="@color/login_yellow"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/textView" />
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_below="@+id/login"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp" />
-    </LinearLayout>
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_fb_login"
+            android:layout_below="@+id/textView"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/action_cell_login"
+            android:text="@string/btn_login"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/textView"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/action_cell_cancel"
+            android:text="@string/btn_cancel"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/textView"
+            android:layout_toLeftOf="@+id/textView" />
+    </RelativeLayout>
 
 
 </LinearLayout>

@@ -9,8 +9,8 @@
 
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/picture"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="721dp"
+        android:layout_height="336dp"
         android:scaleType="centerCrop"/>
 
 
@@ -29,6 +29,14 @@
         android:layout_alignBottom="@+id/picture"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="104dp"
+        android:layout_height="88px"
+        android:id="@+id/ranking"
+        android:layout_above="@+id/text"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 
     <ProgressBar

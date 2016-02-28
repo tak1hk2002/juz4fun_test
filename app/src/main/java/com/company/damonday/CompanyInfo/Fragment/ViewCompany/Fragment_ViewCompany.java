@@ -114,8 +114,8 @@ public class Fragment_ViewCompany extends Fragment {
 
         listView = (ListView)v.findViewById(R.id.listView_Company);
         simpleAdapter = new SimpleAdapter(getActivity(),
-                items, R.layout.view_companyinfo_simpleadapter, new String[]{"image", "text"},
-                new int[]{R.id.image, R.id.text});
+                items, R.layout.view_companyinfo_simpleadapter, new String[]{"image", "text", "indicator"},
+                new int[]{R.id.image, R.id.text, R.id.indicator});
         listView.setAdapter(simpleAdapter);
         setListViewHeightBasedOnChildren(listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -278,6 +278,7 @@ public class Fragment_ViewCompany extends Fragment {
                             Map<String, Object> item = new HashMap<String, Object>();
                             item.put("image", image[i]);
                             item.put("text", info.get(i));
+                            item.put("indicator", R.drawable.icon_forward_arrow);
                             items.add(item);
                         }
                     }else{

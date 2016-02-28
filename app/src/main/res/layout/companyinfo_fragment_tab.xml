@@ -12,7 +12,8 @@
         android:id="@+id/parent_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/main_bg1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,11 +36,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:background="@color/main_bg2"
+                android:orientation="horizontal"
+                android:padding="8dp">
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="17sp"
+                    android:textColor="@color/font1"
                     android:id="@+id/company_title" />
             </LinearLayout>
 
@@ -47,25 +51,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_weight="1">
+                android:background="@color/main_bg2"
+                android:layout_weight="1"
+                android:padding="3dp">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.25">
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/like_image"/>
+                        android:id="@+id/like_image"
+                        android:src="@drawable/icon_like"/>
                     <TextView
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="15dp"
+                        android:textSize="15sp"
                         android:id="@+id/like"
-                        android:layout_toRightOf="@id/like_image"/>
-                </RelativeLayout>
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/font1"
+                        android:layout_marginLeft="3dp"/>
+                </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -77,12 +86,13 @@
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="15dp"
-                        android:textColor="#000000"
+                        android:textSize="15sp"
                         android:id="@+id/fair"
-                        android:layout_toRightOf="@+id/fair_image"/>
-                </RelativeLayout>
-                <RelativeLayout
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/font1"
+                        android:layout_marginLeft="3dp"/>
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -90,15 +100,17 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/dislike_image"/>
+                        android:id="@+id/dislike_image"
+                        android:src="@drawable/icon_dislike"/>
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="15dp"
-                        android:textColor="#000000"
-                        android:id="@+id/dislike"
-                        android:layout_toRightOf="@+id/dislike_image"/>
-                </RelativeLayout>
+                        android:textSize="15sp"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/font1"
+                        android:layout_marginLeft="3dp"
+                        android:id="@+id/dislike"/>
+                </LinearLayout>
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -108,39 +120,44 @@
             </LinearLayout>
 
 
-            <android.support.v4.app.FragmentTabHost
-                android:id="@android:id/tabhost"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:background="@color/main_bg1">
+                <android.support.v4.app.FragmentTabHost
+                    android:id="@android:id/tabhost"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:weightSum="1">
+                    android:layout_height="match_parent">
 
-                    <TabWidget
-                        android:id="@android:id/tabs"
-                        android:orientation="horizontal"
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0"/>
+                        android:layout_height="match_parent"
+                        android:weightSum="1">
 
-                    <FrameLayout
-                        android:id="@android:id/tabcontent"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0"/>
+                        <TabWidget
+                            android:id="@android:id/tabs"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"/>
 
-                    <FrameLayout
-                        android:id="@+id/realtabcontent"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        <FrameLayout
+                            android:id="@android:id/tabcontent"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0"/>
+
+                        <FrameLayout
+                            android:id="@+id/realtabcontent"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
 
 
 
-                </LinearLayout>
-            </android.support.v4.app.FragmentTabHost>
+                    </LinearLayout>
+                </android.support.v4.app.FragmentTabHost>
+            </LinearLayout>
         </LinearLayout>
     </com.company.damonday.CompanyInfo.Fragment.ViewComment.CustomScrollView>
 </LinearLayout>

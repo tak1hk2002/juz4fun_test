@@ -15,7 +15,8 @@
     <string name="register_success">你會稍後收到電郵，然後請激活你的帳號</string>
     <string name="login_success">登入成功</string>
     <string name="logout_success">登出成功</string>
-    <string name="title_member_login">會員身份登入</string>
+    <string name="title_member_login">會員登入</string>
+    <string name="login_or">或</string>
     <string name="forgot_password">忘記密碼</string>
     <string name="btn_login">登入</string>
     <string name="btn_register">注冊</string>
