@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/main_bg1">
+        android:background="@color/bg_grey_black_light">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,14 +36,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/main_bg2"
+                android:background="@color/bg_grey_black_deep"
                 android:orientation="horizontal"
                 android:padding="8dp">
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textSize="17sp"
-                    android:textColor="@color/font1"
+                    android:textColor="@color/font_white"
                     android:id="@+id/company_title" />
             </LinearLayout>
 
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="@color/main_bg2"
+                android:background="@color/bg_grey_black_deep"
                 android:layout_weight="1"
                 android:padding="3dp">
 
@@ -70,7 +70,7 @@
                         android:textSize="15sp"
                         android:id="@+id/like"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/font1"
+                        android:textColor="@color/font_white"
                         android:layout_marginLeft="3dp"/>
                 </LinearLayout>
 
@@ -89,7 +89,7 @@
                         android:textSize="15sp"
                         android:id="@+id/fair"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/font1"
+                        android:textColor="@color/font_white"
                         android:layout_marginLeft="3dp"/>
                 </LinearLayout>
                 <LinearLayout
@@ -107,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/font1"
+                        android:textColor="@color/font_white"
                         android:layout_marginLeft="3dp"
                         android:id="@+id/dislike"/>
                 </LinearLayout>
@@ -123,7 +123,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/main_bg1">
+                android:background="@color/bg_grey_black_light">
                 <android.support.v4.app.FragmentTabHost
                     android:id="@android:id/tabhost"
                     android:layout_width="match_parent"

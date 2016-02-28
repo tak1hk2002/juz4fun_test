@@ -97,6 +97,7 @@ public class Fragment_Login extends Fragment {
         //找到login button
         LoginButton loginButton = (LoginButton) v.findViewById(R.id.login_button);
         loginButton.setFragment(this);
+        loginButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 
         //宣告callback Manager
         callbackManager = CallbackManager.Factory.create();

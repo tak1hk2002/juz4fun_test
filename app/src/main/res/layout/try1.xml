@@ -26,7 +26,7 @@
                 android:textSize="15dp"
                 android:id="@+id/like"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/font1"
+                android:textColor="@color/font_white"
                 android:layout_marginLeft="3dp"
                 android:layout_toRightOf="@+id/like_image"/>
 
@@ -42,7 +42,7 @@
                 android:textSize="15dp"
                 android:id="@+id/fair"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/font1"
+                android:textColor="@color/font_white"
                 android:layout_marginLeft="3dp"
                 android:layout_toRightOf="@+id/fair_image"/>
             <ImageView
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="15dp"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/font1"
+                android:textColor="@color/font_white"
                 android:layout_marginLeft="3dp"
                 android:id="@+id/dislike"
                 android:layout_toRightOf="@+id/dislike_image"/>

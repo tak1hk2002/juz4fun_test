@@ -37,13 +37,13 @@
     
     
     <!--font color-->
-    <color name="font1">#ffffff</color>
-    <color name="font2">#a0a0a0</color>
+    <color name="font_white">#ffffff</color>
+    <color name="font_grey_white">#a0a0a0</color>
 
     <!--Background-->
-    <color name="main_bg2">#232323</color>
-    <color name="main_bg1">#323232</color>
-    <color name="main_bg3">#000000</color>
+    <color name="bg_grey_black_deep">#232323</color>
+    <color name="bg_grey_black_light">#323232</color>
+    <color name="bg_black">#000000</color>
 
     <!--line-->
     <color name="separate_line">#c8c7cc</color>

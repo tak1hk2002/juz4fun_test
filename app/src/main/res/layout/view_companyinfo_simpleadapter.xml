@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:id="@+id/text"
         android:textSize="40px"
-        android:textColor="@color/font2"
+        android:textColor="@color/font_grey_white"
         android:layout_centerHorizontal="true" />
     <ImageView
         android:layout_width="12dp"

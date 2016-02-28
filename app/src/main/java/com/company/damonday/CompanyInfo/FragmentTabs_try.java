@@ -208,7 +208,7 @@ public class FragmentTabs_try extends Fragment{
         UnderlinePageIndicator mIndicator = (UnderlinePageIndicator) rootView.findViewById(R.id.indicator);
         mIndicator.setFades(false);
         mIndicator.setViewPager(viewPager);
-        mIndicator.setSelectedColor(R.color.main_bg1);
+        mIndicator.setSelectedColor(R.color.bg_grey_black_light);
 
 
 

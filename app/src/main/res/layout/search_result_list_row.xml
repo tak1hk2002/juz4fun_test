@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
            android:layout_below="@+id/title"
             android:text="$100-200"
-            android:textColor="@color/font2"
+            android:textColor="@color/font_grey_white"
             android:textSize="14dp" />
 
 

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/main_bg1"
+    android:background="@color/bg_grey_black_light"
     android:padding="10dp" >
 
     <LinearLayout
@@ -29,7 +29,7 @@
             android:ems="10"
             android:id="@+id/username"
             android:hint="@string/hint_username"
-            android:textColor="@color/font2"
+            android:textColor="@color/font_grey_white"
             android:layout_gravity="center_horizontal" />
 
 
@@ -41,7 +41,7 @@
             android:singleLine="true"
             android:id="@+id/password"
             android:hint="@string/hint_password"
-            android:textColor="@color/font2"
+            android:textColor="@color/font_grey_white"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
@@ -60,7 +60,7 @@
             android:layout_alignParentRight="true"
             android:textSize="18sp"
             android:text="@string/forgot_password"
-            android:textColor="@color/font2"/>
+            android:textColor="@color/font_grey_white"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
             android:layout_alignParentLeft="true"
             android:textSize="18sp"
             android:text="@string/btn_register"
-            android:textColor="@color/font2"/>
+            android:textColor="@color/font_grey_white"/>
 
 
     </RelativeLayout>
@@ -99,6 +99,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:background="@drawable/btn_fb_login"
+            android:text="By FACEBOOK"
             android:layout_below="@+id/textView"
             android:layout_centerHorizontal="true" />
 
