@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -268,9 +269,9 @@ public class Setting extends Fragment {
 
 
 
-        Button button_aboutus =(Button)view.findViewById(R.id.button_aboutus);
-        Button button_feedback =(Button)view.findViewById(R.id.button_feedback);
-        button_aboutus.setOnClickListener(new Button.OnClickListener() {
+        RelativeLayout onClick_aboutus =(RelativeLayout)view.findViewById(R.id.RA_aboutus);
+        RelativeLayout onClick_feedback =(RelativeLayout)view.findViewById(R.id.RA_feedback);
+        onClick_aboutus.setOnClickListener(new Button.OnClickListener() {
 
             @Override
 
@@ -294,7 +295,11 @@ public class Setting extends Fragment {
 
         });
 
-        button_feedback.setOnClickListener(new Button.OnClickListener() {
+
+
+
+
+        onClick_feedback.setOnClickListener(new Button.OnClickListener() {
 
             @Override
 

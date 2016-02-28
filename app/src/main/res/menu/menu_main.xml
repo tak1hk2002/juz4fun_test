@@ -9,7 +9,7 @@
     <item
         android:id="@+id/btnMyMenu"
         android:title="btnMyMenu"
-        android:icon="@drawable/drawer"
+        android:icon="@drawable/btn_setting"
         android:showAsAction="ifRoom"/>
 
         <!--app:showAsAction="ifRoom"/>-->

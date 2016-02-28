@@ -115,7 +115,7 @@ public class TestActivity extends FragmentActivity {
         //getActionBar().setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.back, //nav menu toggle icon
+                R.drawable.btn_back, //nav menu toggle icon
                 R.string.app_name, // nav drawer open - description for accessibility
                 R.string.app_name // nav drawer close - description for accessibility
         ) {

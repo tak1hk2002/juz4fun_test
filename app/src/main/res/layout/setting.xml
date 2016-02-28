@@ -6,32 +6,32 @@
 
 
     <LinearLayout
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:id="@+id/logouted"
     android:gravity="center_horizontal"
     android:padding="25dp"
-    android:background="@color/bg_login">
+    android:background="@color/bg_grey_black_light">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:text="登入"
             android:textSize="13dp"
-            android:background="@color/btn_login_bg"
-            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_login"
+            android:layout_margin="10dp"
             android:id="@+id/login"
-            android:textColor="@color/btn_login"/>
+            android:textColor="@color/white"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:text="注冊"
             android:textSize="13dp"
-            android:background="@color/btn_login_bg"
+            android:background="@drawable/btn_register"
             android:id="@+id/register"
-            android:textColor="@color/btn_login"/>
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 
@@ -75,39 +75,139 @@
 
     </LinearLayout>
 
-
-    <ListView
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-
-
-
-    </ListView>
-
-    <Button
-            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/bg_grey_black_deep">
+    <!--<ListView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/list"-->
+        <!--android:background="@color/bg_grey_black_light"-->
+        <!--android:divider="@color/separate_line"-->
+        <!--android:dividerHeight="1dp"/>-->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/bg_grey_black_deep"
+        android:onClick="onClick_aboutus"
+        android:clickable="true"
+        android:id="@+id/RA_aboutus"
+       >
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-        android:id="@+id/button_aboutus"
+            android:id="@+id/onClick_aboutus"
             android:textSize="20dp"
             android:text="有關我們"
+            android:textColor="@color/separate_line"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_forward_arrow"
+            android:layout_alignParentRight="true"/>
 
-            android:gravity="center" />
 
-        <Button
+
+
+
+    </RelativeLayout>
+
+
+    <!--<Button-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/button_aboutus"-->
+            <!--android:textSize="20dp"-->
+            <!--android:text="有關我們"-->
+
+            <!--android:gravity="center" />-->
+
+    <View
         android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+       />
+
+        <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/button_feedback"-->
+        <!--android:textSize="20dp"-->
+        <!--android:text="提交意見"-->
+        <!--android:gravity="center" />-->
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button_feedback"
-        android:textSize="20dp"
-        android:text="提交意見"
-        android:gravity="center" />
-    <Button
+        android:layout_margin="10dp"
+        android:onClick="onClick_feedback"
+        android:clickable="true"
+        android:id="@+id/RA_feedback">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/onClick_feedback"
+            android:textSize="20dp"
+            android:text="提交意見"
+            android:textColor="@color/separate_line"
+
+
+
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_forward_arrow"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <View
         android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+       />
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+       >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        android:textSize="20dp"
-        android:text="版本 1.0"
-        android:gravity="center" />
+            android:textSize="20dp"
+            android:text="版本"
+            android:textColor="@color/separate_line"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.1"
+            android:textSize="20dp"
+            android:textColor="@color/separate_line"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        />
+
+
+    <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+
+        <!--android:textSize="20dp"-->
+        <!--android:text="版本 1.0"-->
+        <!--android:gravity="center" />-->
+    </LinearLayout>
 
 </LinearLayout>
