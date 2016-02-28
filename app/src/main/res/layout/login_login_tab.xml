@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/bg_grey_black_light"
-    android:padding="10dp" >
+    android:padding="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:text="@string/title_member_login"
             android:layout_gravity="center_horizontal"
-            android:textColor="@color/login_red"
+            android:textColor="@color/font_red"
             android:layout_marginBottom="15dp"/>
 
         <EditText
@@ -87,21 +87,22 @@
             android:layout_height="wrap_content"
             android:text="@string/login_or"
             android:layout_gravity="center_horizontal"
-            android:textColor="@color/login_yellow"
+            android:textColor="@color/font_yellow"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:id="@+id/textView" />
 
         <com.facebook.login.widget.LoginButton
+            xmlns:facebook="http://schemas.android.com/apk/res-auto"
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:background="@drawable/btn_fb_login"
-            android:text="By FACEBOOK"
             android:layout_below="@+id/textView"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            facebook:com_facebook_login_text="@string/btn_facebook_login"/>
 
         <Button
             android:id="@+id/btnLogin"

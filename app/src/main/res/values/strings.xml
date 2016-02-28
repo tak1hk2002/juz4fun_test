@@ -22,6 +22,8 @@
     <string name="btn_register">注冊</string>
     <string name="btn_logout">登出</string>
     <string name="welcome">Welcome</string>
+    <string name="btn_facebook_login">By FACEBOOK</string>
+    <string name="btn_facebook_logout">Log out with FACEBOOK</string>
     <!-- -->
 
     <!-- Button-->

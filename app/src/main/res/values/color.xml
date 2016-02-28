@@ -39,6 +39,8 @@
     <!--font color-->
     <color name="font_white">#ffffff</color>
     <color name="font_grey_white">#a0a0a0</color>
+    <color name="font_red">#f06932</color>
+    <color name="font_yellow">#ffc300</color>
 
     <!--Background-->
     <color name="bg_grey_black_deep">#232323</color>
@@ -47,8 +49,5 @@
 
     <!--line-->
     <color name="separate_line">#c8c7cc</color>
-    
-    <!--Login page-->
-    <color name="login_red">#f06932</color>
-    <color name="login_yellow">#ffc300</color>
+
 </resources>
