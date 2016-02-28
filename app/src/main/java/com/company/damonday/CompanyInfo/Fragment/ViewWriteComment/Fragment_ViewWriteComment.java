@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -39,6 +40,7 @@ import com.facebook.AccessToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,7 +85,7 @@ public class Fragment_ViewWriteComment extends Fragment {
         for(int i = 0; i < title.length; i++){
             Map<String, Object> item = new HashMap<String, Object>();
             item.put("title", title[i]);
-            item.put("info", ">");
+            item.put("info", "");
             items.add(item);
         }
 
@@ -134,7 +136,7 @@ public class Fragment_ViewWriteComment extends Fragment {
             @Override
             public void onClick(View v) {
                 for(int i = 0; i < items.size(); i++){
-                    items.get(i).put("info", ">");
+                    items.get(i).put("info", "");
                 }
                 simpleAdapter.notifyDataSetChanged();
 
@@ -210,27 +212,34 @@ public class Fragment_ViewWriteComment extends Fragment {
                 final EditText txtExpense = new EditText(getActivity());
                 final String[] txtOverAllRating = new String[1];
                 final int[] selectedOverallRating = {-1};
+                View parentView = (View) view.getParent();
+                final ImageView imgIndicator = (ImageView) parentView.findViewById(R.id.indicator);
+                final TextView txtInfo = (TextView) parentView.findViewById(R.id.info);
+
 
                 //only allow user to enter digits and "."
                 txtExpense.setKeyListener(DigitsKeyListener.getInstance("0123456789."));
 
                 //get the dialog content
                 String stringTitle = items.get(position).get("info").toString().trim();
-                if (stringTitle.equals(">")) {
+
+                if (stringTitle.isEmpty()) {
+                    //imgIndicator.setVisibility(view.VISIBLE);
                     txtTitle.setText("");
                 } else {
+                    //imgIndicator.setVisibility(view.GONE);
                     txtTitle.setText(stringTitle);
                 }
                 //get the dialog content
                 String stringContent = items.get(position).get("info").toString().trim();
-                if (stringContent.equals(">")) {
+                if (stringContent.isEmpty()) {
                     txtContent.setText("");
                 } else {
                     txtContent.setText(stringContent);
                 }
                 //get the dialog content
                 String stringExpense = items.get(position).get("info").toString().trim();
-                if (stringExpense.equals(">")) {
+                if (stringExpense.isEmpty()) {
                     txtExpense.setText("");
                 } else {
                     txtExpense.setText(stringExpense);
@@ -238,7 +247,7 @@ public class Fragment_ViewWriteComment extends Fragment {
 
                 //get the dialog content
                 String stringOverAllRating = items.get(position).get("info").toString().trim();
-                if (stringOverAllRating.equals(">")) {
+                if (stringOverAllRating.isEmpty()) {
                     txtOverAllRating[0] = "";
                 } else {
                     txtOverAllRating[0] = stringOverAllRating;
@@ -259,8 +268,14 @@ public class Fragment_ViewWriteComment extends Fragment {
                                 //Editable title = txtTitle.getText();
                                 //OR
                                 String title = txtTitle.getText().toString().trim();
-                                if (title.isEmpty())
-                                    title = ">";
+                                if (title.isEmpty()) {
+                                    imgIndicator.setVisibility(view.VISIBLE);
+                                    txtInfo.setVisibility(view.GONE);
+                                }
+                                else {
+                                    imgIndicator.setVisibility(view.GONE);
+                                    txtInfo.setVisibility(view.VISIBLE);
+                                }
                                 items.get(position).put("info", title);
                                 simpleAdapter.notifyDataSetChanged();
                             }
@@ -290,8 +305,14 @@ public class Fragment_ViewWriteComment extends Fragment {
                                 //Editable content = txtContent.getText();
                                 //OR
                                 String content = txtContent.getText().toString().trim();
-                                if (content.isEmpty())
-                                    content = ">";
+                                if (content.isEmpty()){
+                                    imgIndicator.setVisibility(view.VISIBLE);
+                                    txtInfo.setVisibility(view.GONE);
+                                }
+                                else{
+                                    imgIndicator.setVisibility(view.GONE);
+                                    txtInfo.setVisibility(view.VISIBLE);
+                                }
                                 items.get(position).put("info", content);
                                 simpleAdapter.notifyDataSetChanged();
                             }
@@ -323,8 +344,14 @@ public class Fragment_ViewWriteComment extends Fragment {
                                 //Editable expense = txtExpense.getText();
                                 //OR
                                 String expense = txtExpense.getText().toString().trim();
-                                if (expense.isEmpty())
-                                    expense = ">";
+                                if (expense.isEmpty()){
+                                    imgIndicator.setVisibility(view.VISIBLE);
+                                    txtInfo.setVisibility(view.GONE);
+                                }
+                                else{
+                                    imgIndicator.setVisibility(view.GONE);
+                                    txtInfo.setVisibility(view.VISIBLE);
+                                }
                                 items.get(position).put("info", expense);
                                 simpleAdapter.notifyDataSetChanged();
                             }

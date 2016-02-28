@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerVertical="true"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10dp"
         android:text="TextView"
-        android:textColor="#000"
+        android:textColor="@color/font_grey_white"
         android:textSize="18sp"/>
 
     <TextView
@@ -17,10 +22,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:text=">"
-        android:textColor="#ccc"
-        android:textSize="15sp"/>
+        android:textColor="@color/font_grey_white"
+        android:textSize="15sp"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:layout_width="12dp"
+        android:layout_height="18dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/indicator"
+        android:src="@drawable/icon_forward_arrow"/>
 
 
 </RelativeLayout>
