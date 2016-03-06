@@ -67,13 +67,13 @@
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
-        <item>@drawable/ic_icon</item>
-        <item>@drawable/ic_icon</item>
-        <item>@drawable/ic_icon</item>
-        <item>@drawable/ic_icon</item>
-        <item>@drawable/ic_icon</item>
-        <item>@drawable/ic_icon</item>
-        <item>@drawable/ic_icon</item>
+        <item>@drawable/icon_home_page</item>
+        <item>@drawable/icon_advance_search</item>
+        <item>@drawable/icon_ranking</item>
+        <item>@drawable/icon_comment</item>
+        <item>@drawable/icon_favourite</item>
+        <item>@drawable/icon_discover</item>
+        <item>@drawable/icon_setting</item>
     </array>
 
     <string name="action_refresh">重新整理</string>

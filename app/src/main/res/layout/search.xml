@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bg_grey_black_light">
 
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+
       >
 
         <TextView android:text=" 地域"
@@ -17,13 +18,15 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:textSize="26dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="@color/font_grey_white"/>
 
         <Spinner
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/spinner_lagre_district" />
+            android:id="@+id/spinner_lagre_district"
+            android:textColor="@color/font_grey_white"/>
 
     </LinearLayout>
 
@@ -31,15 +34,15 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content">
 
         <TextView android:text=" 地區"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:textSize="26dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="@color/font_grey_white"/>
 
         <Spinner
             android:layout_width="0dp"
@@ -52,15 +55,15 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content">
 
         <TextView android:text=" 類別"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:textSize="26dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="@color/font_grey_white"/>
 
         <Spinner
             android:layout_width="0dp"
@@ -72,15 +75,15 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content">
 
         <TextView android:text=" 價錢"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_margin="10dp"
             android:textSize="26dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="@color/font_grey_white"/>
 
         <!--<EditText-->
             <!--android:layout_width="157dp"-->
@@ -97,28 +100,39 @@
 
     </LinearLayout>
 
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        >
 
         <Button
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
 
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.6"
             android:text="重設"
             android:id="@+id/button_clear"
-            android:layout_gravity="left" />
+            android:layout_gravity="left"
+            android:background="@drawable/action_cell_reset"
+            android:layout_marginRight="5dp"/>
 
         <Button
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
 
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.6"
             android:text="搜尋"
             android:id="@+id/button_search"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:background="@drawable/action_cell_search"
+            android:layout_marginRight="5dp"/>
 
     </LinearLayout>
+</RelativeLayout>
 
 </LinearLayout>
