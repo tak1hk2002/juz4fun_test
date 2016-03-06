@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/view_companycomment_list_row_selector"
-    android:padding="11dp"
+    android:padding="10dp"
     >
 
     <RelativeLayout
@@ -34,8 +34,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:textSize="16dp"
+            android:textSize="@dimen/title"
             android:text="真好玩真好玩"
+            android:textColor="@color/font_red"
             android:textStyle="bold" />
 
 
@@ -47,7 +48,7 @@
             android:layout_below="@+id/title"
             android:text="$100-200"
             android:textColor="@color/font_grey_white"
-            android:textSize="14dp" />
+            android:textSize="@dimen/my_favourite_price" />
 
 
 
@@ -59,7 +60,8 @@
             android:layout_marginTop="1dip"
             android:layout_below="@+id/price_range"
             android:text="室內"
-            android:textSize="12dp" />
+            android:textColor="@color/font_grey_white"
+            android:textSize="@dimen/my_favourite_cat" />
 
 
 
@@ -68,25 +70,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/category"
-            android:layout_alignParentBottom="true"
             >
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:id="@+id/like_image"
-                android:src="@drawable/like"
+                android:src="@drawable/icon_like"
                 android:padding="1dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10dp"
+                android:textSize="@dimen/my_favourite_like_unlike"
                 android:id="@+id/like"
                 android:text="4"
-
+                android:textColor="@color/font_white"
+                android:padding ="2dp"
+                android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/like_image"
-                android:layout_toEndOf="@+id/like_image"
-                android:padding="2dp"/>
+                android:layout_toEndOf="@+id/like_image" />
 
             <ImageView
                 android:layout_width="20dp"
@@ -99,8 +101,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10dp"
-                android:textColor="#000000"
+                android:textSize="@dimen/my_favourite_like_unlike"
+                android:textColor="@color/font_white"
+                android:layout_centerVertical="true"
                 android:id="@+id/fair"
                 android:layout_toRightOf="@+id/fair_image"
                 android:text="4"
@@ -110,14 +113,15 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:id="@+id/dislike_image"
-                android:src="@drawable/dislike"
+                android:src="@drawable/icon_dislike"
                 android:layout_toRightOf="@+id/fair"
                 android:padding="1dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10dp"
-                android:textColor="#000000"
+                android:textSize="@dimen/my_favourite_like_unlike"
+                android:textColor="@color/font_white"
+                android:layout_centerVertical="true"
                 android:text="5"
                 android:id="@+id/dislike"
                 android:layout_toRightOf="@+id/dislike_image"
@@ -147,24 +151,23 @@
             android:id="@+id/average_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10dp"
+            android:textSize="@dimen/my_favourite_rating"
             android:text="3.4"
-            android:layout_below="@+id/big_like"
-            android:layout_marginTop="5dp"
-
+            android:textColor="@color/font_grey_white"
             android:paddingLeft="1dp"
-            android:layout_centerHorizontal="true"
-
-            />
-        <!--<TextView-->
-        <!--android:id="@+id/rating2"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textSize="10dp"-->
-        <!--android:text="/5"-->
-        <!--android:layout_below="@+id/big_like"-->
-        <!--android:padding="1dp"/>-->
-        <!--android:layout_centerHorizontal="true"-->
+            android:layout_below="@+id/big_like"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <TextView
+            android:id="@+id/rating2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/my_favourite_max_rating"
+            android:text="/5"
+            android:layout_below="@+id/big_like"
+            android:layout_toRightOf="@+id/average_score"
+            android:textColor="@color/font_grey_white"
+            android:padding="1dp"/>
     </RelativeLayout>
 
 

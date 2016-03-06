@@ -2,8 +2,21 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="title">17dp</dimen>
-    <dimen name="rating">15dp</dimen>
+    <dimen name="title">18sp</dimen>
+
     <dimen name="genre">13dp</dimen>
     <dimen name="year">12dp</dimen>
+    <!-- view comment-->
+    <dimen name="rating">18sp</dimen>
+    <dimen name="max_rating">15sp</dimen>
+
+    <!-- my favourite -->
+    <dimen name="my_favourite_rating">18sp</dimen>
+    <dimen name="my_favourite_max_rating">15sp</dimen>
+    <dimen name="my_favourite_price">15sp</dimen>
+    <dimen name="my_favourite_cat">15sp</dimen>
+    <dimen name="my_favourite_like_unlike">12sp</dimen>
+
+
+
 </resources>

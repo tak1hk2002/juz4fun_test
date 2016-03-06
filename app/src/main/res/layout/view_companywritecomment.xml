@@ -13,7 +13,7 @@
         android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll"
         android:background="@color/bg_grey_black_light"
-        android:divider="@color/separate_line"
+        android:divider="@drawable/list_divider"
         android:dividerHeight="1dp">
     </ListView>
 

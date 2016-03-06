@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -67,6 +68,7 @@ public class MyFavourites_adapter extends BaseAdapter {
             TextView like = (TextView) convertView.findViewById(R.id.like);
             TextView fair = (TextView) convertView.findViewById(R.id.fair);
             TextView dislike = (TextView) convertView.findViewById(R.id.dislike);
+            ImageView bigLike = (ImageView) convertView.findViewById(R.id.big_like);
 
 
             // getting movie data for the row
@@ -79,7 +81,14 @@ public class MyFavourites_adapter extends BaseAdapter {
             title.setText(m.getTitle());
 
             // rating
-            rating.setText(m.getAverageScore()+"/5");
+            rating.setText(m.getAverageScore());
+
+            /*if(Float.valueOf(m.getAverageScore()) < 1.7)
+                bigLike.setImageResource(R.drawable.mascot_send_comment);
+            else if(Float.valueOf(m.getAverageScore()) >= 1.7 && Float.valueOf(m.getAverageScore()) <= 3.3)
+                bigLike.setImageResource(R.drawable.mascot_smile_comment);
+            else if(Float.valueOf(m.getAverageScore()) > 3.3)
+                bigLike.setImageResource(R.drawable.mascot_happy_comment);*/
 
             //price_range
             price_range.setText(m.getPrice());
@@ -95,17 +104,6 @@ public class MyFavourites_adapter extends BaseAdapter {
 
             //Fair
             fair.setText(m.getFair());
-
-
-
-//        String genreStr = "";
-//        for (String str : m.getGenre()) {
-//            genreStr += str + ", ";
-//        }
-//        genreStr = genreStr.length() > 0 ? genreStr.substring(0,
-//                genreStr.length() - 2) : genreStr;
-//        genre.setText(genreStr);
-
 
 
             return convertView;

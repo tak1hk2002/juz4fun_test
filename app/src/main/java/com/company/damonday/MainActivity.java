@@ -1,11 +1,15 @@
 package com.company.damonday;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,6 +68,10 @@ public class MainActivity extends FragmentActivity {
         profileImgView = (ImageView) findViewById(R.id.profile_img);
         btn_testScorllView = (Button)findViewById(R.id.button2);
 
+        final AlertDialog.Builder ab = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK);
+        final AlertDialog[] dialog = new AlertDialog[1];
+        final EditText txtTitle = new EditText(this);
+
 
         //宣告callback Manager
         callbackManager = CallbackManager.Factory.create();
@@ -78,8 +86,31 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                // Intent i = new Intent(MainActivity.this, Ranking.class);
-                Intent i = new Intent(MainActivity.this, Home.class);  //tomc 13/10/2015 start
-                startActivity(i);
+                /*Intent i = new Intent(MainActivity.this, Home.class);  //tomc 13/10/2015 start
+                startActivity(i);*/
+                ab.setTitle(R.string.writeComment_dialog_title);
+
+                ab.setView(txtTitle);
+
+                ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //What ever you want to do with the value
+                        //Editable title = txtTitle.getText();
+                        //OR
+                    }
+                });
+
+                ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // what ever you want to do with No option.
+                    }
+                });
+
+                //when alertview is launched, the keyboard show immediately
+                dialog[0] = ab.create();
+                dialog[0].getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+                dialog[0].show();
                 
             }
         });

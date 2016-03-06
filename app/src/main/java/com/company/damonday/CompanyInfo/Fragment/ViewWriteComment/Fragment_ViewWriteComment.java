@@ -205,16 +205,16 @@ public class Fragment_ViewWriteComment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
-                final AlertDialog.Builder[] ab = {new AlertDialog.Builder(getActivity())};
+                final AlertDialog.Builder[] ab = {new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_DARK)};
                 AlertDialog dialog;
                 final EditText txtTitle = new EditText(getActivity());
                 final EditText txtContent = new EditText(getActivity());
                 final EditText txtExpense = new EditText(getActivity());
                 final String[] txtOverAllRating = new String[1];
                 final int[] selectedOverallRating = {-1};
-                View parentView = (View) view.getParent();
-                final ImageView imgIndicator = (ImageView) parentView.findViewById(R.id.indicator);
-                final TextView txtInfo = (TextView) parentView.findViewById(R.id.info);
+                final ImageView imgIndicator = (ImageView) view.findViewById(R.id.indicator);
+                final TextView txtInfo = (TextView) view.findViewById(R.id.info);
+                Log.d("txtInfo", txtInfo.getText().toString());
 
 
                 //only allow user to enter digits and "."
