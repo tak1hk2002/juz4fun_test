@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bg_grey_black_light">
 
     <ScrollView
 
@@ -12,32 +13,136 @@
         <LinearLayout
             android:orientation="vertical"
              android:layout_width="match_parent"
-            android:layout_height="match_parent">
-    <TextView
+            android:layout_height="match_parent"
+            >
+
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:textSize="30dp"
-            android:text="有關我們"
-            android:gravity="center" />
+            android:layout_marginTop="30dp"
+            >
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/font_red"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="0.4"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.15"
+                android:textSize="20dp"
+
+               android:text="目的"
+                android:textColor="@color/font_red"
+                android:gravity="center" />
 
 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <TextView
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.4"
+                android:background="@color/font_red"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="8dp"
+                android:layout_gravity="center_vertical"
+                />
+
+        </LinearLayout>
+
+
+
+
+
+            <TextView
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
 
              android:textSize="20dp"
 
              android:id="@+id/textview"
-
+            android:text="pppp"
              android:gravity="center" />
 
 
 
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                >
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/font_yellow"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="0.4"
+                    android:layout_gravity="center_vertical" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:textSize="20dp"
+
+                    android:text="聯絡我們"
+                    android:textColor="@color/font_yellow"
+                    android:gravity="center" />
+
+
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="0.4"
+                    android:background="@color/font_yellow"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_gravity="center_vertical"
+                    />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:id="@+id/textview2"
+                android:text="email: juz4fun@gmail.com"
+
+                android:textColor="@color/font_grey_white"
+                android:layout_gravity="center_horizontal" />
+
+
+            <ImageView
+                android:layout_marginTop="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/mascot_abt_us"
+                android:layout_gravity="center_horizontal" />
+
+
+
 </LinearLayout>
+
+
+
+
 
 </ScrollView>
 

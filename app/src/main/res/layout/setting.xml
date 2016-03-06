@@ -69,6 +69,8 @@
                 android:layout_height="wrap_content"
                 android:text="登出"
                 android:id="@+id/sys_logout"
+                android:background="@drawable/btn_logout"
+                android:textColor="@color/white"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"/>
         </LinearLayout>
@@ -130,7 +132,9 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
-       />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        />
 
         <!--<Button-->
         <!--android:layout_width="match_parent"-->
@@ -169,6 +173,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
        />
 
 
@@ -198,6 +204,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         />
 
 

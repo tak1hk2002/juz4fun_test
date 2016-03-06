@@ -2,6 +2,7 @@ package com.company.damonday;
 
 
 
+import android.app.ActionBar;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -13,12 +14,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.company.damonday.Home.Home;
 import com.company.damonday.LatestComment.latestcommentvolley;
@@ -27,7 +28,6 @@ import com.company.damonday.NewFoundCompany.NewFoundCompany;
 import com.company.damonday.Ranking.NavDrawerListAdapter;
 import com.company.damonday.Ranking.Ranking_try;
 import com.company.damonday.Search.search;
-import com.company.damonday.Search.search_fast;
 import com.company.damonday.Setting.Setting;
 
 import java.util.ArrayList;
@@ -112,6 +112,16 @@ public class TestActivity extends FragmentActivity {
 
         // enabling action bar app icon and behaving it as toggle button
         getActionBar().setDisplayHomeAsUpEnabled(true);     //make back button
+
+        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getActionBar().setCustomView(R.layout.actionbar_custom_layout);
+        View v=getActionBar().getCustomView();
+
+        TextView titleTxtView = (TextView) v.findViewById(R.id.actionbarTitle);
+        titleTxtView.setText("okokokokokok");
+
+
+       // getActionBar().setDisplayShowTitleEnabled(false);
         //getActionBar().setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -148,6 +158,17 @@ public class TestActivity extends FragmentActivity {
     /**
      * Slide menu item click listener
      */
+    public void AdjustActiontitle(String title){                        //tomc 6/3/2016
+        View v=getActionBar().getCustomView();
+
+        TextView titleTxtView = (TextView) v.findViewById(R.id.actionbarTitle);
+        titleTxtView.setText(title);
+    }
+
+
+
+
+
     private class SlideMenuClickListener implements
             ListView.OnItemClickListener {
         @Override
@@ -330,6 +351,8 @@ public class TestActivity extends FragmentActivity {
     public void setTitle(CharSequence title) {
         mTitle = title;
         getActionBar().setTitle(mTitle);
+        AdjustActiontitle(getActionBar().getTitle().toString());
+
     }
 
     /**
@@ -342,7 +365,6 @@ public class TestActivity extends FragmentActivity {
         Log.d("onPostCreate", "onPostCreate ");
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
-
         mDrawerToggle.syncState();
     }
 
