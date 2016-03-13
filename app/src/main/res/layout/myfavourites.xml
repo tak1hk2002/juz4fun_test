@@ -6,19 +6,13 @@
     android:background="@color/bg_grey_black_light">
 
 
-    <RelativeLayout
+    <ListView
+        android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8">
+        android:layout_height="match_parent"
+        android:divider="@drawable/list_divider"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/view_companycomment_list_row_selector"/>
 
-        <ListView
-            android:id="@+id/list"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:divider="@color/list_divider"
-            android:dividerHeight="1dp"
-            android:listSelector="@drawable/view_companycomment_list_row_selector" />
-
-    </RelativeLayout>
 
 </LinearLayout>

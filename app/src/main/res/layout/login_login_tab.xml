@@ -9,9 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp" >
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,7 +28,9 @@
             android:id="@+id/username"
             android:hint="@string/hint_username"
             android:textColor="@color/font_grey_white"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/edittext_edit_text_holo_dark"
+            android:textCursorDrawable="@drawable/color_cursor"/>
 
 
         <EditText
@@ -42,13 +42,15 @@
             android:id="@+id/password"
             android:hint="@string/hint_password"
             android:textColor="@color/font_grey_white"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/edittext_edit_text_holo_dark"
+            android:textCursorDrawable="@drawable/color_cursor" />
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
+        android:paddingTop="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingBottom="20dp">
