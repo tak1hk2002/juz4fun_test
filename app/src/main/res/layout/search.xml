@@ -119,7 +119,8 @@
             android:id="@+id/button_clear"
             android:layout_gravity="left"
             android:background="@drawable/action_cell_reset"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="5dp"
+            android:textColor="@color/white"/>
 
         <Button
 
@@ -130,7 +131,8 @@
             android:id="@+id/button_search"
             android:layout_gravity="right"
             android:background="@drawable/action_cell_search"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="5dp"
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 </RelativeLayout>

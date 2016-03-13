@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -57,6 +58,7 @@ public class TestActivity extends FragmentActivity {
     private CharSequence tempmtitle;
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
+    private LinearLayout mDrawerLinear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,7 @@ public class TestActivity extends FragmentActivity {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
+         mDrawerLinear = (LinearLayout) findViewById(R.id.drawer_linear);
 
         navDrawerItems = new ArrayList<NavDrawerItem>();
 
@@ -118,7 +121,7 @@ public class TestActivity extends FragmentActivity {
         View v=getActionBar().getCustomView();
 
         TextView titleTxtView = (TextView) v.findViewById(R.id.actionbarTitle);
-        titleTxtView.setText("okokokokokok");
+
 
 
        // getActionBar().setDisplayShowTitleEnabled(false);
@@ -259,7 +262,7 @@ public class TestActivity extends FragmentActivity {
         Log.d("onPrepareOptionsMenu", "onPrepareOptionsMenu");
 
         // if nav drawer is opened, hide the action items
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerLinear);
         //menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
 
@@ -340,7 +343,7 @@ public class TestActivity extends FragmentActivity {
 
             setTitle(navMenuTitles[position]);
             System.out.println("ordertest1");
-            mDrawerLayout.closeDrawer(mDrawerList);
+            mDrawerLayout.closeDrawer(mDrawerLinear);
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error in creating fragment");
