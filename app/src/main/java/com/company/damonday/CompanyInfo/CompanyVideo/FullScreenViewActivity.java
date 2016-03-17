@@ -1,4 +1,4 @@
-package com.company.damonday.CompanyInfo;
+package com.company.damonday.CompanyInfo.CompanyVideo;
 
 import android.app.Activity;
 import android.content.Intent;

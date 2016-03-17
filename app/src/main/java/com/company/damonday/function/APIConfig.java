@@ -12,56 +12,56 @@ public class APIConfig {
     }
 
     // Server user login url
-    public static String URL_LOGIN = "http://damonday.tk/api/user/login/";
+    public static String URL_LOGIN = "http://54.187.62.227/api/user/login/";
 
     // Server user register url
-    public static String URL_REGISTER = "http://damonday.tk/api/user/register/";
+    public static String URL_REGISTER = "http://54.187.62.227/api/user/register/";
 
     //facebook user info url
-    public static String URL_FACEBOOK_USER = "http://damonday.tk/api/user/fb_login/";
+    public static String URL_FACEBOOK_USER = "http://54.187.62.227/api/user/fb_login/";
 
     //Ranking url
-    public static String URL_RANKING = "http://damonday.tk/api/entertainment/rank/";
+    public static String URL_RANKING = "http://54.187.62.227/api/entertainment/rank/";
 
     //Home
-    public static String URL_HOME = "http://damonday.tk/api/entertainment/home/";
+    public static String URL_HOME = "http://54.187.62.227/api/entertainment/home";
 
 
     //Setting_about_us
-    public static String URL_SETTING_ABOUT_US = "http://damonday.tk/api/system/about_us";
+    public static String URL_SETTING_ABOUT_US = "http://54.187.62.227/api/system/about_us";
 
     //Setting_feedback
-    public static String URL_SETTING_feedback = "http://damonday.tk/api/system/submit_opinion";
+    public static String URL_SETTING_feedback = "http://54.187.62.227/api/system/submit_opinion";
 
     //newfound
-    public static String URL_newfound = "http://damonday.tk/api/entertainment/new_entertainment";
+    public static String URL_newfound = "http://54.187.62.227/api/entertainment/new_entertainment";
 
 
     //advance search criteria
-    public static String URL_Advance_Search_criteria="http://damonday.tk/api/entertainment/search_criteria";
+    public static String URL_Advance_Search_criteria="http://54.187.62.227/api/entertainment/search_criteria";
 
     //advance search
-    public static String URL_Advance_Search="http://damonday.tk/api/entertainment/advanced_search/";
+    public static String URL_Advance_Search="http://54.187.62.227/api/entertainment/advanced_search/";
 
     //fast search
-    public static String URL_Fast_Search="http://damonday.tk/api/entertainment/search/";
+    public static String URL_Fast_Search="http://54.187.62.227/api/entertainment/search/";
 
     //submit comment
-    public static String URL_Write_Comment = "http://damonday.tk/api/comment/submit_comment/";
+    public static String URL_Write_Comment = "http://54.187.62.227/api/comment/submit_comment/";
 
     //Detail url
     public String getUrlDetail(){
-        return "http://damonday.tk/api/entertainment/details/?ent_id="+id;
+        return "http://54.187.62.227/api/entertainment/details/?ent_id="+id;
     }
 
     //ent comment
     public String getUrlComment(){
-       return "http://damonday.tk/api/comment/ent_comment/?ent_id="+id+"&page=";
+       return "http://54.187.62.227/api/comment/ent_comment/?ent_id="+id+"&page=";
     }
 
 
     public String getUrlCommentDetail(){
-        return "http://damonday.tk/api/comment/detail/?id="+id;
+        return "http://54.187.62.227/api/comment/detail/?id="+id;
     }
 
 }

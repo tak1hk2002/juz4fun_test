@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package com.company.damonday.CompanyInfo.Lib;
+package com.company.damonday.CompanyInfo.CompanyVideo;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -31,16 +30,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.company.damonday.CompanyInfo.VideoPlayerActivity;
 import com.company.damonday.R;
 
 import java.lang.ref.WeakReference;

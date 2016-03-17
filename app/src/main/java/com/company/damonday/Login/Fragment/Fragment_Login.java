@@ -111,6 +111,21 @@ public class Fragment_Login extends Fragment {
         session = new SessionManager(getActivity().getApplicationContext());
 
 
+        txtForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment_Forget_Password fragmentForgetPassword = new Fragment_Forget_Password();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                //clear all of the fragment at the stack
+                //fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_container, fragmentForgetPassword, "forgetPassword").addToBackStack(null);
+
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.commit();
+
+            }
+        });
 
 
         btnLogin.setOnClickListener(new AdapterView.OnClickListener() {
@@ -125,7 +140,7 @@ public class Fragment_Login extends Fragment {
                 } else {
                     //Prompt user to enter credentials
                     Toast.makeText(getActivity(),
-                            "請輸入使用者名稱和密碼", Toast.LENGTH_LONG)
+                            R.string.login_warning_enter_info, Toast.LENGTH_LONG)
                             .show();
                 }
             }

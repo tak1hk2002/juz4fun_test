@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CompanyInfo.VideoPlayerActivity"
+            android:name=".CompanyInfo.CompanyVideo.VideoPlayerActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape"
             />
@@ -75,7 +75,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name" />
         <activity
-            android:name=".CompanyInfo.FullScreenViewActivity"
+            android:name=".CompanyInfo.CompanyVideo.FullScreenViewActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar"/>
 
         <meta-data

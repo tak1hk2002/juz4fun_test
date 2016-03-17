@@ -1,4 +1,4 @@
-package com.company.damonday.CompanyInfo;
+package com.company.damonday.CompanyInfo.CompanyVideo;
 
 /**
  * Created by lamtaklung on 24/1/2016.
@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.company.damonday.CompanyInfo.Lib.VideoControllerView;
 import com.company.damonday.R;
 
 public class VideoPlayerActivity extends Fragment implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener, VideoControllerView.MediaPlayerControl {

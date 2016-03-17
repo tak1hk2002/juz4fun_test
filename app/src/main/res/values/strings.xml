@@ -8,23 +8,28 @@
     <string name="or">或</string>
 
     <!-- Login and register-->
-    <string name="hint_email">請輸入電郵</string>
-    <string name="hint_password">請輸入密碼</string>
-    <string name="hint_username">請輸入使用者名稱</string>
-    <string name="hint_confirmed_password">你輸入的密碼不相符</string>
-    <string name="register_success">你會稍後收到電郵，然後請激活你的帳號</string>
-    <string name="login_success">登入成功</string>
-    <string name="logout_success">登出成功</string>
-    <string name="title_member_login">會員登入</string>
-    <string name="login_or">或</string>
-    <string name="forgot_password"><u>忘記密碼？</u></string>
-    <string name="btn_login">登入</string>
-    <string name="btn_register">注冊</string>
-    <string name="btn_logout">登出</string>
-    <string name="welcome">Welcome</string>
-    <string name="btn_facebook_login">By FACEBOOK</string>
-    <string name="btn_facebook_logout">Log out with FACEBOOK</string>
-    <string name="txt_forget_password">你的密碼將會傳送到你的電郵裡</string>
+    
+        <string name="hint_email">請輸入電郵</string>
+        <string name="hint_password">請輸入密碼</string>
+        <string name="hint_username">請輸入使用者名稱</string>
+        <string name="hint_confirmed_password">你輸入的密碼不相符</string>
+        <string name="register_success">你會稍後收到電郵，然後請激活你的帳號</string>
+        <string name="login_success">登入成功</string>
+        <string name="logout_success">登出成功</string>
+        <string name="title_member_login">會員登入</string>
+        <string name="login_or">或</string>
+        <string name="forgot_password"><u>忘記密碼？</u></string>
+        <string name="btn_login">登入</string>
+        <string name="btn_register">注冊</string>
+        <string name="btn_logout">登出</string>
+        <string name="welcome">Welcome</string>
+        <string name="btn_facebook_login">By FACEBOOK</string>
+        <string name="btn_facebook_logout">Log out with FACEBOOK</string>
+        <string name="txt_forget_password">你的密碼將會傳送到你的電郵裡</string>
+    
+        <!--warning-->
+        <string name="login_warning_enter_info">請輸入使用者名稱和密碼</string>
+        <string name="login_warning_forget_password_email">請輸入電郵</string>
     <!-- -->
 
     <!-- Button-->
