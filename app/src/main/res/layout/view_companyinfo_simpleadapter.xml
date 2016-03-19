@@ -8,17 +8,20 @@
     android:paddingTop="4dp"
     android:paddingBottom="4dp">
 
-    <ImageView
-        android:layout_height="25dp"
-        android:layout_width="25dp"
-        android:id="@+id/image" />
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/font_grey_white"
+        android:id="@+id/title" />
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:id="@+id/text"
-        android:textSize="40px"
+        android:textSize="18sp"
         android:textColor="@color/font_grey_white"
         android:layout_centerHorizontal="true" />
+
     <ImageView
         android:layout_width="12dp"
         android:layout_height="18dp"

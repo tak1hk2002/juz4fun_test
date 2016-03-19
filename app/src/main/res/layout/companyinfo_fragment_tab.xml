@@ -24,7 +24,7 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="174dp"
+                android:layout_height="220dp"
                 android:layout_above="@+id/viewPagerIndicator" />
 
             <com.viewpagerindicator.UnderlinePageIndicator
@@ -33,7 +33,7 @@
                 android:layout_height="5dp" />
 
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/bg_grey_black_deep"
@@ -45,77 +45,61 @@
                     android:textSize="17sp"
                     android:textColor="@color/font_white"
                     android:id="@+id/company_title" />
-            </LinearLayout>
+            </LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@color/bg_grey_black_deep"
-                android:layout_weight="1"
-                android:padding="3dp">
+                android:padding="10dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.25">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/like_image"
-                        android:src="@drawable/icon_like"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:id="@+id/like"
-                        android:layout_gravity="center_vertical"
-                        android:textColor="@color/font_white"
-                        android:layout_marginLeft="3dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:layout_weight="0.25">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/fair_image"/>
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:id="@+id/fair"
-                        android:layout_gravity="center_vertical"
-                        android:textColor="@color/font_white"
-                        android:layout_marginLeft="3dp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:layout_weight="0.25">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/dislike_image"
-                        android:src="@drawable/icon_dislike"/>
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:layout_gravity="center_vertical"
-                        android:textColor="@color/font_white"
-                        android:layout_marginLeft="3dp"
-                        android:id="@+id/dislike"/>
-                </LinearLayout>
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/like_image"
+                    android:src="@drawable/icon_like"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:id="@+id/like"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/font_white"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="10dp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fair_image"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:id="@+id/fair"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/font_white"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="10dp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dislike_image"
+                    android:src="@drawable/icon_dislike"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/font_white"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="20dp"
+                    android:id="@+id/dislike"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:layout_weight="0.25"
                     android:id="@+id/my_favourite" />
             </LinearLayout>
 

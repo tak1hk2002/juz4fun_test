@@ -50,6 +50,17 @@
     <string name="tab_photo">相片</string>
     <string name="heart_unclicked">已從我的最愛中移除</string>
     <string name="heart_clicked">已加入到我的最愛</string>
+    <string-array name="company_info_cat">
+        <item>公司名稱：</item>
+        <item>玩樂簡介：</item>
+        <item>地址：</item>
+        <item>電話：</item>
+        <item>類別：</item>
+        <item>價錢：</item>
+        <item>建議交通工具：</item>
+        <item>營業時間：</item>
+        <item>電郵：</item>
+    </string-array>
 
     <!-- media controller-->
     <string name="description">Media Controls</string>

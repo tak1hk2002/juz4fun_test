@@ -112,7 +112,7 @@ public class FragmentTabs_try extends Fragment{
         tvDislike = (TextView) rootView.findViewById(R.id.dislike);
         tvFair = (TextView) rootView.findViewById(R.id.fair);
         ivMyFavourite = (ImageView) rootView.findViewById(R.id.my_favourite);
-        tvCompanyTitle = (TextView) rootView.findViewById(R.id.company_title);
+        //tvCompanyTitle = (TextView) rootView.findViewById(R.id.company_title);
         ivFair = (ImageView) rootView.findViewById(R.id.fair_image);
         ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
         scrollView = (CustomScrollView) rootView.findViewById(R.id.parent_scroll);
@@ -385,7 +385,7 @@ public class FragmentTabs_try extends Fragment{
         tvLike.setText(like);
         tvDislike.setText(dislike);
         tvFair.setText(fair);
-        tvCompanyTitle.setText(companyName);
+        //tvCompanyTitle.setText(companyName);
 
         if(!companyName.equals(null));   //tomc 28/10/2015
         getActivity().getActionBar().setTitle(companyName);

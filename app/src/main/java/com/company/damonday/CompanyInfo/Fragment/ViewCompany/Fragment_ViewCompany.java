@@ -59,22 +59,7 @@ public class Fragment_ViewCompany extends Fragment {
     private APIConfig ranking;
     private double latitude, longitude;
 
-
-    private int[] image = {
-            R.drawable.tree1,
-            R.drawable.tree1,
-            R.drawable.tree1,
-            R.drawable.tree1,
-            R.drawable.tree1,
-            R.drawable.tree1,
-            R.drawable.tree1,
-            R.drawable.tree1,
-            R.drawable.tree1,
-            R.drawable.tree1,
-            R.drawable.tree1,
-            R.drawable.tree1
-
-    };
+    private String[] companyInfoCat ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,6 +76,9 @@ public class Fragment_ViewCompany extends Fragment {
         //new object for Api url
         ranking = new APIConfig(entId);
         Log.d("entId", entId);
+
+        //get the company info categories
+        companyInfoCat = getResources().getStringArray(R.array.company_info_cat);
 
 
 
@@ -114,8 +102,8 @@ public class Fragment_ViewCompany extends Fragment {
 
         listView = (ListView)v.findViewById(R.id.listView_Company);
         simpleAdapter = new SimpleAdapter(getActivity(),
-                items, R.layout.view_companyinfo_simpleadapter, new String[]{"image", "text", "indicator"},
-                new int[]{R.id.image, R.id.text, R.id.indicator});
+                items, R.layout.view_companyinfo_simpleadapter, new String[]{"title", "text", "indicator"},
+                new int[]{R.id.title, R.id.text, R.id.indicator});
         listView.setAdapter(simpleAdapter);
         setListViewHeightBasedOnChildren(listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -128,7 +116,7 @@ public class Fragment_ViewCompany extends Fragment {
                 args.putInt("position", position);
 
                 switch (position) {
-                    case 0:
+                    case 2:
                         //pass the object to MapsActivity
                         GetPreviousObject passedObject = new GetPreviousObject(-1, latitude, longitude, compayName
                         );
@@ -138,7 +126,7 @@ public class Fragment_ViewCompany extends Fragment {
                         // 啟動地圖元件
                         startActivityForResult(intentMap, 2);
                         break;
-                    case 1:
+                    case 3:
 
                         //trigger built in phone call function
                         //ACTION_DIAL => modify hardcoded number before making a call
@@ -259,9 +247,9 @@ public class Fragment_ViewCompany extends Fragment {
                         info.add(Html.fromHtml("Dummy text"));
                         info.add(Html.fromHtml("Dummy text"));
                         info.add(Html.fromHtml("Dummy text"));
-                        info.add(Html.fromHtml("Dummy text"));
-                        info.add(Html.fromHtml("Dummy text"));
-                        info.add(Html.fromHtml("Dummy text"));
+                        //info.add(Html.fromHtml("Dummy text"));
+                        //info.add(Html.fromHtml("Dummy text"));
+                        //info.add(Html.fromHtml("Dummy text"));
 
                         latitude = companyInfo.getDouble("latitude");
                         longitude = companyInfo.getDouble("longitude");
@@ -274,9 +262,9 @@ public class Fragment_ViewCompany extends Fragment {
                     info.add(companyInfo.getString("hit_rate"));*/
 
 
-                        for (int i = 0; i < image.length; i++) {
+                        for (int i = 0; i < companyInfoCat.length; i++) {
                             Map<String, Object> item = new HashMap<String, Object>();
-                            item.put("image", image[i]);
+                            item.put("title", companyInfoCat[i]);
                             item.put("text", info.get(i));
                             item.put("indicator", R.drawable.icon_forward_arrow);
                             items.add(item);
