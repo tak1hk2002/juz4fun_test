@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -53,8 +54,8 @@ public class Home extends Fragment {
     private GridView gridView;
     private MyAdapter adapter;
     private FragmentTabs_try fragmentTabs_try;
-    private View searchview;
-    private SearchView search;
+    private LinearLayout searchview;
+    //private SearchView search;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class Home extends Fragment {
 
         //init view
         View view = inflater.inflate(R.layout.home, container, false);
-        searchview = view.findViewById(R.id.searchView);
+        searchview = (LinearLayout)view.findViewById(R.id.searchView);
 
 
 

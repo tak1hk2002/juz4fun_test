@@ -15,6 +15,7 @@
             android:layout_alignParentTop="true"
             android:textSize="18dp"
             android:text="真好玩真好玩"
+            android:textColor="@color/font_grey_white"
             android:textStyle="bold" />
 
     </RelativeLayout>

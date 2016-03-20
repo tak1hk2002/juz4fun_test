@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/gridView"
-
         android:verticalSpacing="0dp"
         android:horizontalSpacing="0dp"
         android:layout_alignParentLeft="true"
@@ -19,15 +18,50 @@
         android:layout_alignParentEnd="true" />
 
 
-    <View
-        android:id="@+id/searchView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="#FFFFFF"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"/>
+        android:background="@drawable/bg_search_bar"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/searchView">
+
+
+    <ImageView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_search"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center_vertical"
+        />
+
+
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="搵野玩"
+        android:textSize="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/font_grey_white"/>
+        </LinearLayout>
+
+    <!--<View-->
+        <!--android:id="@+id/searchView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="45dp"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:background="#FFFFFF"-->
+        <!--android:src="@drawable/bg_search_bar"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--android:layout_marginRight="5dp"/>-->
 
     <!--<SearchView
         android:id="@+id/search"
