@@ -7,7 +7,6 @@
     android:clickable="true"
     android:padding="5dp"
     android:textSize="15sp"
-    android:textStyle="bold"
     android:ellipsize="marquee"
     android:singleLine="true"
     android:background="@drawable/companyinfo_fragment_tab_tabs_selector"

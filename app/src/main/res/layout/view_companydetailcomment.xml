@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@color/bg_grey_black_light">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,41 +16,51 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginLeft="5dp"/>
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/profile_pic"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:text="I am a boy"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/date"
-            android:layout_toRightOf="@+id/profile_pic"
-            android:layout_below="@+id/title"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:text="2015-20-22"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/username"
-            android:layout_toRightOf="@+id/profile_pic"
-            android:layout_below="@+id/date"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:text="Alan Lam"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/profile_pic"
+            android:layout_toLeftOf="@+id/score_info"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:text="I am a boyfdfdkslfdfdsfsdf"
+                android:textColor="@color/font_grey_white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/date"
+                android:layout_below="@+id/title"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="2015-20-22"
+                android:textColor="@color/font_grey_white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/username"
+                android:layout_below="@+id/date"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="Alan Lam"
+                android:textColor="@color/font_grey_white"/>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/title">
+            android:layout_alignParentEnd="true"
+            android:id="@+id/score_info">
 
             <ImageView
                 android:id="@+id/average_pic"
@@ -59,13 +72,15 @@
                 android:id="@+id/average_score"
                 android:layout_below="@+id/average_pic"
                 android:layout_marginLeft="8dp"
-                android:layout_alignParentBottom="false" />
+                android:layout_alignParentBottom="false"
+                android:textColor="@color/font_grey_white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/max_score"
                 android:layout_below="@+id/average_pic"
                 android:layout_toRightOf="@+id/average_score"
+                android:textColor="@color/font_grey_white"
                 android:text="@string/commentDetail_max_score" />
         </RelativeLayout>
 
@@ -79,14 +94,16 @@
         android:layout_below="@+id/top_part">
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fillViewport="false">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
-                android:text="AAAAAAAAAAAAAAAAAAAA"/>
+                android:text="AAAAAAAAAAAAAAAAAAAA"
+                android:textColor="@color/font_white"/>
 
         </ScrollView>
     </RelativeLayout>
@@ -101,31 +118,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/commentDetail_service"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textColor="@color/font_red"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/commentDetail_fun"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textColor="@color/font_red"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/commentDetail_environment"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textColor="@color/font_red"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/commentDetail_equipment"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textColor="@color/font_red"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/commentDetail_price"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textColor="@color/font_red"/>
         </TableRow>
         <TableRow>
             <TextView

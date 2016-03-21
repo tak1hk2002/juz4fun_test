@@ -13,18 +13,38 @@
         android:layout_width="wrap_content"
         android:textSize="18sp"
         android:textColor="@color/font_grey_white"
-        android:id="@+id/title" />
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:id="@+id/text"
-        android:textSize="18sp"
-        android:textColor="@color/font_grey_white"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/title"/>
 
-    <ImageView
-        android:layout_width="12dp"
-        android:layout_height="18dp"
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/abc"
+        android:layout_toRightOf="@+id/title"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:id="@+id/text"
+            android:textSize="18sp"
+            android:textColor="@color/font_grey_white"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:id="@+id/indicator" />
+        android:layout_centerVertical="true"
+        android:id="@+id/abc">
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="18dp"
+            android:id="@+id/indicator"
+            android:src="@drawable/icon_forward_arrow" />
+    </RelativeLayout>
+
 </RelativeLayout>

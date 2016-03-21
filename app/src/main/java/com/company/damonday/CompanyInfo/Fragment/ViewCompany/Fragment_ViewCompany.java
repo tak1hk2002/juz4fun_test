@@ -38,6 +38,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,7 @@ public class Fragment_ViewCompany extends Fragment {
     private List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
     private APIConfig ranking;
     private double latitude, longitude;
+    private List<Integer> showDetailIndicator = Arrays.asList(2, 3);
 
     private String[] companyInfoCat ;
 
@@ -266,7 +268,8 @@ public class Fragment_ViewCompany extends Fragment {
                             Map<String, Object> item = new HashMap<String, Object>();
                             item.put("title", companyInfoCat[i]);
                             item.put("text", info.get(i));
-                            item.put("indicator", R.drawable.icon_forward_arrow);
+                            if(showDetailIndicator.contains(i))
+                                item.put("indicator", R.drawable.icon_forward_arrow);
                             items.add(item);
                         }
                     }else{
