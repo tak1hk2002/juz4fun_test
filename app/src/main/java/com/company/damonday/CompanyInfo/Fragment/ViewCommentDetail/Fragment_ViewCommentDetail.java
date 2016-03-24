@@ -19,6 +19,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
+import com.appyvet.rangebar.RangeBar;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
@@ -32,8 +33,8 @@ import org.w3c.dom.Text;
 public class Fragment_ViewCommentDetail extends Fragment {
     NetworkImageView profilePic;
     ImageView averagePic;
-    TextView title, date, username, averageScore, content,
-            funScore, serviceScore, environmentScore, equipmentScore, priceScore;
+    TextView title, date, username, averageScore, content;
+    RangeBar funScore, serviceScore, environmentScore, equipmentScore, priceScore;
     APIConfig commentUrl;
     ProgressDialog pDialog;
 
@@ -73,11 +74,29 @@ public class Fragment_ViewCommentDetail extends Fragment {
         averagePic = (ImageView) view.findViewById(R.id.average_pic);
         averageScore = (TextView) view.findViewById(R.id.average_score);
         content = (TextView) view.findViewById(R.id.content);
-        funScore = (TextView) view.findViewById(R.id.fun_score);
-        serviceScore = (TextView) view.findViewById(R.id.service_score);
-        environmentScore = (TextView) view.findViewById(R.id.environment_score);
-        equipmentScore = (TextView) view.findViewById(R.id.equipment_score);
-        priceScore = (TextView) view.findViewById(R.id.price_score);
+
+        funScore = (RangeBar) view.findViewById(R.id.fun_bar);
+        serviceScore = (RangeBar) view.findViewById(R.id.service_bar);
+        environmentScore = (RangeBar) view.findViewById(R.id.environment_bar);
+        equipmentScore = (RangeBar) view.findViewById(R.id.equipment_bar);
+        priceScore = (RangeBar) view.findViewById(R.id.price_bar);
+        funScore.setEnabled(false);
+        funScore.setBarColor(R.color.font_red);
+        funScore.setConnectingLineColor(R.color.font_red);
+        serviceScore.setEnabled(false);
+        serviceScore.setBarColor(R.color.font_red);
+        serviceScore.setConnectingLineColor(R.color.font_red);
+        environmentScore.setEnabled(false);
+        environmentScore.setBarColor(R.color.font_red);
+        environmentScore.setConnectingLineColor(R.color.font_red);
+        equipmentScore.setEnabled(false);
+        equipmentScore.setBarColor(R.color.font_red);
+        equipmentScore.setConnectingLineColor(R.color.font_red);
+        priceScore.setEnabled(false);
+        priceScore.setBarColor(R.color.font_red);
+        priceScore.setConnectingLineColor(R.color.font_red);
+
+
 
         return view;
     }
@@ -101,10 +120,11 @@ public class Fragment_ViewCommentDetail extends Fragment {
                         username.setText(commentInfo.getString("username"));
                         content.setText(commentInfo.getString("comment"));
                         averageScore.setText(commentInfo.getString("average_score"));
-                        serviceScore.setText(commentInfo.getString("service"));
-                        environmentScore.setText(commentInfo.getString("environment"));
-                        equipmentScore.setText(commentInfo.getString("equipment"));
-                        priceScore.setText(commentInfo.getString("worth"));
+                        funScore.setSeekPinByIndex(Integer.valueOf(commentInfo.getString("interest")));
+                        serviceScore.setSeekPinByIndex(Integer.valueOf(commentInfo.getString("service")));
+                        environmentScore.setSeekPinByIndex(Integer.valueOf(commentInfo.getString("environment")));
+                        equipmentScore.setSeekPinByIndex(Integer.valueOf(commentInfo.getString("equipment")));
+                        priceScore.setSeekPinByIndex(Integer.valueOf(commentInfo.getString("worth")));
 
                     } else {
                         String errorMsg = commentInfo.getString("msg");
