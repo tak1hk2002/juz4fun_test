@@ -5,7 +5,7 @@ package com.company.damonday.CompanyInfo.Fragment.ViewWriteComment;
  */
 public class RowModel {
     String label;           //存储entry的当前文本显示内容，通过调用toString()给出，如果三星将提供大写显示。
-    float rating = 1.0f; //存储entry的星级数据，对应RatingBar的星级显示
+    int range = 0;
 
     RowModel(String label){
         this.label = label;
@@ -14,7 +14,7 @@ public class RowModel {
         return label;
     }
 
-    public float getRating(){
-        return rating;
+    public int getRange(){
+        return range;
     }
 }

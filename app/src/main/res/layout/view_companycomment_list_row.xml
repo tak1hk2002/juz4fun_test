@@ -67,7 +67,8 @@
             android:id="@+id/rating1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dip"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="6dp"
             android:layout_below="@+id/like"
             android:textSize="@dimen/rating"
             android:textColor="@color/font_grey_white"
@@ -76,12 +77,12 @@
             android:id="@+id/rating2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dip"
+            android:layout_marginTop="4dp"
             android:layout_below="@+id/like"
             android:layout_toRightOf="@+id/rating1"
             android:textSize="@dimen/max_rating"
             android:textColor="@color/font_grey_white"
-            android:text="/5"/>
+            android:text="@string/commentDetail_max_score"/>
 
     </RelativeLayout>
 

@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.appyvet.rangebar.RangeBar;
 import com.company.damonday.R;
 
 /**
@@ -12,17 +13,17 @@ import com.company.damonday.R;
 public class ViewWrapper {
 
     View base;
-    RatingBar rate = null;
     TextView label = null;
+    RangeBar rangeBar = null;
 
     ViewWrapper(View base){
         this.base = base;
     }
 
-    RatingBar getRatingBar(){
-        if(rate == null)
-            rate =(RatingBar) base.findViewById(R.id.dialog_ratingbar);
-        return rate;
+    RangeBar getRangeBar(){
+        if(rangeBar == null)
+            rangeBar = (RangeBar) base.findViewById(R.id.dialog_rangebar);
+        return rangeBar;
     }
 
     TextView getLabel(){

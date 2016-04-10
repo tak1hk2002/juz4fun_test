@@ -7,17 +7,43 @@
     android:padding="10dp">
 
     <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/font_red"
+            android:layout_weight="0.4"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:textSize="20dp"
+            android:text="@string/title_member_login"
+            android:textColor="@color/font_red"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.4"
+            android:background="@color/font_red"
+            android:layout_gravity="center_vertical"
+            />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_member_login"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/font_red"
-            android:layout_marginBottom="15dp"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -70,7 +96,7 @@
             android:id="@+id/register"
             android:layout_alignParentLeft="true"
             android:textSize="18sp"
-            android:text="@string/btn_register"
+            android:text="@string/title_register"
             android:textColor="@color/font_grey_white"/>
 
 
@@ -81,18 +107,40 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp" >
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" >
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/login_or"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/font_yellow"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/textView" />
+            android:layout_marginTop="30dp"
+            android:id="@+id/liner_or">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/font_yellow"
+                android:layout_weight="0.4"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.15"
+                android:textSize="20sp"
+                android:text="@string/login_or"
+                android:textColor="@color/font_yellow"
+                android:gravity="center" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.4"
+                android:background="@color/font_yellow"
+                android:layout_gravity="center_vertical" />
+
+        </LinearLayout>
 
         <com.facebook.login.widget.LoginButton
             xmlns:facebook="http://schemas.android.com/apk/res-auto"
@@ -102,7 +150,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:background="@drawable/btn_fb_login"
-            android:layout_below="@+id/textView"
+            android:layout_below="@+id/liner_or"
             android:layout_centerHorizontal="true"
             facebook:com_facebook_login_text="@string/btn_facebook_login"/>
 

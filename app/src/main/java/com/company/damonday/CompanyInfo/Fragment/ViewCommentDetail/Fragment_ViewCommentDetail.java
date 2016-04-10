@@ -33,8 +33,7 @@ import org.w3c.dom.Text;
 public class Fragment_ViewCommentDetail extends Fragment {
     NetworkImageView profilePic;
     ImageView averagePic;
-    TextView title, date, username, averageScore, content;
-    RangeBar funScore, serviceScore, environmentScore, equipmentScore, priceScore;
+    TextView title, date, username, averageScore, content, funScore, serviceScore, environmentScore, equipmentScore, priceScore;
     APIConfig commentUrl;
     ProgressDialog pDialog;
 
@@ -75,11 +74,12 @@ public class Fragment_ViewCommentDetail extends Fragment {
         averageScore = (TextView) view.findViewById(R.id.average_score);
         content = (TextView) view.findViewById(R.id.content);
 
-        funScore = (RangeBar) view.findViewById(R.id.fun_bar);
-        serviceScore = (RangeBar) view.findViewById(R.id.service_bar);
-        environmentScore = (RangeBar) view.findViewById(R.id.environment_bar);
-        equipmentScore = (RangeBar) view.findViewById(R.id.equipment_bar);
-        priceScore = (RangeBar) view.findViewById(R.id.price_bar);
+        funScore = (TextView) view.findViewById(R.id.fun_score);
+        serviceScore = (TextView) view.findViewById(R.id.service_score);
+        environmentScore = (TextView) view.findViewById(R.id.environment_score);
+        equipmentScore = (TextView) view.findViewById(R.id.equipment_score);
+        priceScore = (TextView) view.findViewById(R.id.price_score);
+/*
         funScore.setEnabled(false);
         funScore.setBarColor(R.color.font_red);
         funScore.setConnectingLineColor(R.color.font_red);
@@ -95,7 +95,7 @@ public class Fragment_ViewCommentDetail extends Fragment {
         priceScore.setEnabled(false);
         priceScore.setBarColor(R.color.font_red);
         priceScore.setConnectingLineColor(R.color.font_red);
-
+*/
 
 
         return view;
@@ -120,11 +120,18 @@ public class Fragment_ViewCommentDetail extends Fragment {
                         username.setText(commentInfo.getString("username"));
                         content.setText(commentInfo.getString("comment"));
                         averageScore.setText(commentInfo.getString("average_score"));
-                        funScore.setSeekPinByIndex(Integer.valueOf(commentInfo.getString("interest")));
-                        serviceScore.setSeekPinByIndex(Integer.valueOf(commentInfo.getString("service")));
-                        environmentScore.setSeekPinByIndex(Integer.valueOf(commentInfo.getString("environment")));
-                        equipmentScore.setSeekPinByIndex(Integer.valueOf(commentInfo.getString("equipment")));
-                        priceScore.setSeekPinByIndex(Integer.valueOf(commentInfo.getString("worth")));
+                        funScore.setText(commentInfo.getString("interest"));
+                        serviceScore.setText(commentInfo.getString("service"));
+                        environmentScore.setText(commentInfo.getString("environment"));
+                        equipmentScore.setText(commentInfo.getString("equipment"));
+                        priceScore.setText(commentInfo.getString("worth"));
+
+                        if(Float.parseFloat(commentInfo.getString("average_score")) < 1.7)
+                            averagePic.setImageResource(R.drawable.mascot_send_comment);
+                        else if (Float.parseFloat(commentInfo.getString("average_score")) >= 1.7 && Float.parseFloat(commentInfo.getString("average_score")) <= 3.3)
+                            averagePic.setImageResource(R.drawable.mascot_smile_comment);
+                        else if (Float.parseFloat(commentInfo.getString("average_score")) > 3.3)
+                            averagePic.setImageResource(R.drawable.mascot_happy_comment);
 
                     } else {
                         String errorMsg = commentInfo.getString("msg");

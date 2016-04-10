@@ -1,6 +1,8 @@
 package com.company.damonday.CompanyInfo.Fragment.ViewComment;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +53,7 @@ public class Fragment_ViewComment_CustomListAdapter extends BaseAdapter {
             inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
-            convertView = inflater.inflate(R.layout.view_companycomment_list_row, null);
+            convertView = inflater.inflate(R.layout.view_companycomment_list_row, parent);
 
         if (imageLoader == null)
             imageLoader = AppController.getInstance().getImageLoader();
@@ -60,9 +62,8 @@ public class Fragment_ViewComment_CustomListAdapter extends BaseAdapter {
         TextView title = (TextView) convertView.findViewById(R.id.title);
         TextView username = (TextView) convertView.findViewById(R.id.username);
         TextView postedDate = (TextView) convertView.findViewById(R.id.posted_date);
-        ImageView like = (ImageView) convertView.findViewById(R.id.like);
+        ImageView averagePic = (ImageView) convertView.findViewById(R.id.average_pic);
         TextView rating1 = (TextView) convertView.findViewById(R.id.rating1);
-        TextView rating2 = (TextView) convertView.findViewById(R.id.rating2);
 
         // getting movie data for the row
         Fragment_ViewComment_Comment m = commentItems.get(position);
@@ -79,17 +80,18 @@ public class Fragment_ViewComment_CustomListAdapter extends BaseAdapter {
         // posted date
         postedDate.setText(m.getPostedDate());
 
+        Log.d("getRating", m.getRating());
+
         //like icon
-        if(Float.valueOf(m.getRating()) < 1.7)
-            like.setImageResource(R.drawable.mascot_send_comment);
-        else if (Float.valueOf(m.getRating()) >= 1.7 && Float.valueOf(m.getRating()) <= 3.3)
-            like.setImageResource(R.drawable.mascot_smile_comment);
-        else if (Float.valueOf(m.getRating()) > 3.3)
-            like.setImageResource(R.drawable.mascot_happy_comment);
+        if(Float.parseFloat(m.getRating()) < 1.7)
+            averagePic.setImageDrawable(context.getResources().getDrawable(R.drawable.mascot_send_comment));
+        else if (Float.parseFloat(m.getRating()) >= 1.7 && Float.parseFloat(m.getRating()) <= 3.3)
+            averagePic.setImageDrawable(context.getResources().getDrawable(R.drawable.mascot_smile_comment));
+        else if (Float.parseFloat(m.getRating()) > 3.3)
+            averagePic.setBackgroundResource(R.drawable.mascot_happy_comment);
 
         //rating
         rating1.setText(m.getRating());
-        rating2.setText(R.string.commentDetail_max_score);
 
 
         return convertView;

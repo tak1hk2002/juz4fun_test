@@ -31,6 +31,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.appyvet.rangebar.RangeBar;
 import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.R;
@@ -175,7 +176,7 @@ public class Fragment_ViewWriteComment extends Fragment {
 
                 //get rating bar value
                 for(int i =0; i < titleDetailRating.length; i++){
-                    rating.add(Float.toString(getModel(i).getRating()));
+                    rating.add(Integer.toString(getModel(i).getRange()));
                 }
 
                 if(passChecking){
@@ -215,6 +216,11 @@ public class Fragment_ViewWriteComment extends Fragment {
                 final ImageView imgIndicator = (ImageView) view.findViewById(R.id.indicator);
                 final TextView txtInfo = (TextView) view.findViewById(R.id.info);
                 Log.d("txtInfo", txtInfo.getText().toString());
+
+                //set the edit text color
+                txtTitle.setTextColor(getResources().getColor(R.color.font_white));
+                txtContent.setTextColor(getResources().getColor(R.color.font_white));
+                txtExpense.setTextColor(getResources().getColor(R.color.font_white));
 
 
                 //only allow user to enter digits and "."
@@ -419,7 +425,6 @@ public class Fragment_ViewWriteComment extends Fragment {
 
                         builderDetailRating.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                System.out.println(getModel(1).getRating());
                                 ratingBarClicked[0] = true;
 
                             }
@@ -488,7 +493,7 @@ public class Fragment_ViewWriteComment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             View row = convertView;
             ViewWrapper wrapper;
-            RatingBar ratebar = null;
+            RangeBar rangeBar = null;
             //步骤2.3：如果没有创建View，根据layout创建之，并将widget的存储类的对象与之捆绑为tag
             if(row == null){
                 LayoutInflater inflater=(LayoutInflater) context
@@ -497,28 +502,29 @@ public class Fragment_ViewWriteComment extends Fragment {
                 wrapper = new ViewWrapper(row);
                 row.setTag(wrapper);
                 //步骤2.4：在生成View的时候，添加将widget的触发处理
-                ratebar = wrapper.getRatingBar();
-                ratebar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                rangeBar = wrapper.getRangeBar();
+                rangeBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+                    @Override
+                    public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
                         //步骤2.4.1：存储变化的数据
-                        Integer index = (Integer)ratingBar.getTag();
+                        Integer index = (Integer) rangeBar.getTag();
                         RowModel model = getModel(index);
-                        model.rating = rating;
+                        model.range = rightPinIndex;
                         //步骤2.4.2：设置变化
-                        LinearLayout parent = (LinearLayout)ratingBar.getParent();
-                        TextView label = (TextView)parent.findViewById(R.id.title_ranking);
+                        LinearLayout parent = (LinearLayout) rangeBar.getParent();
+                        TextView label = (TextView) parent.findViewById(R.id.title_ranking);
                         label.setText(model.getLabel());
                     }
                 });
             }else{ //步骤2.4：利用已有的View，获得相应的widget
                 wrapper = (ViewWrapper) row.getTag();
-                ratebar = wrapper.getRatingBar();
+                rangeBar = wrapper.getRangeBar();
             }
             //步骤2.5：设置显示的内容，同时设置ratingbar捆绑tag为list的位置，因为setTag()是View的方法，因此我们不能降至加在ViewWrapper，所以需要加载ViewWrapper中的widget中，这里选择了ratebar进行捆绑。
             RowModel model= getModel(position);
             wrapper.getLabel().setText(model.getLabel());
-            ratebar.setTag(new Integer(position));
-            ratebar.setRating(model.rating);
+            rangeBar.setTag(new Integer(position));
+            rangeBar.setSeekPinByIndex(model.range);
             return row;
         }
 

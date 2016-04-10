@@ -24,7 +24,8 @@
             android:layout_toRightOf="@id/profile_pic"
             android:layout_toLeftOf="@+id/score_info"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:paddingRight="10dp"
+            android:id="@+id/relativeLayout">
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
@@ -74,6 +75,7 @@
                 android:layout_below="@+id/average_pic"
                 android:layout_marginLeft="8dp"
                 android:layout_alignParentBottom="false"
+                android:textSize="18sp"
                 android:textColor="@color/font_grey_white"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -81,11 +83,18 @@
                 android:id="@+id/max_score"
                 android:layout_below="@+id/average_pic"
                 android:layout_toRightOf="@+id/average_score"
+                android:layout_marginTop="4dp"
                 android:textColor="@color/font_grey_white"
                 android:text="@string/commentDetail_max_score" />
         </RelativeLayout>
 
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/font_grey_white"
+            android:layout_below="@+id/relativeLayout"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
 
     </RelativeLayout>
 
@@ -109,211 +118,85 @@
                 android:layout_marginTop="5dp"
                 android:textColor="@color/font_white"
                 android:paddingBottom="10dp"/>
-            <LinearLayout
-                android:layout_width="wrap_content"
+
+            <TableLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                android:stretchColumns="0,1,2,3,4"
+                android:layout_alignParentBottom="true">
+                <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/fun"
-                        android:text="@string/commentDetail_fun"
-                        android:textColor="@color/font_red"/>
-                    <com.appyvet.rangebar.RangeBar
-                        android:id="@+id/fun_bar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        custom:tickStart="0"
-                        custom:tickInterval="1"
-                        custom:tickEnd="5"
-                        custom:rangeBar="false"
-                        custom:tickHeight = "1dp"
-                        custom:rangeBarColor="@color/font_grey_white"
-                        custom:connectingLineColor="@color/font_red"
-                        custom:tickColor="@color/font_white"
-                        android:layout_toRightOf="@+id/fun"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/price"
-                        android:text="@string/commentDetail_price"
-                        android:textColor="@color/font_red"/>
-                    <com.appyvet.rangebar.RangeBar
-                        android:id="@+id/price_bar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        custom:tickStart="0"
-                        custom:tickInterval="1"
-                        custom:tickEnd="5"
-                        custom:rangeBar="false"
-                        custom:tickHeight = "1dp"
-                        custom:rangeBarColor="@color/font_grey_white"
-                        custom:connectingLineColor="@color/font_red"
-                        custom:tickColor="@color/font_white"
-                        android:layout_toRightOf="@+id/price"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/equipment"
-                        android:text="@string/commentDetail_equipment"
-                        android:textColor="@color/font_red"/>
-                    <com.appyvet.rangebar.RangeBar
-                        android:id="@+id/equipment_bar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        custom:tickStart="0"
-                        custom:tickInterval="1"
-                        custom:tickEnd="5"
-                        custom:rangeBar="false"
-                        custom:tickHeight = "1dp"
-                        custom:rangeBarColor="@color/font_grey_white"
-                        custom:connectingLineColor="@color/font_red"
-                        custom:tickColor="@color/font_white"
-                        android:layout_toRightOf="@+id/equipment"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/service"
                         android:text="@string/commentDetail_service"
+                        android:gravity="center"
                         android:textColor="@color/font_red"/>
-                    <com.appyvet.rangebar.RangeBar
-                        android:id="@+id/service_bar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        custom:tickStart="0"
-                        custom:tickInterval="1"
-                        custom:tickEnd="5"
-                        custom:rangeBar="false"
-                        custom:tickHeight = "1dp"
-                        custom:rangeBarColor="@color/font_grey_white"
-                        custom:connectingLineColor="@color/font_red"
-                        custom:tickColor="@color/font_white"
-                        android:layout_toRightOf="@+id/service"/>
-                </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/environment"
-                        android:text="@string/commentDetail_environment"
+                        android:text="@string/commentDetail_fun"
+                        android:gravity="center"
                         android:textColor="@color/font_red"/>
-                    <com.appyvet.rangebar.RangeBar
-                        android:id="@+id/environment_bar"
+
+                    <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        custom:tickStart="0"
-                        custom:tickInterval="1"
-                        custom:tickEnd="5"
-                        custom:rangeBar="false"
-                        custom:tickHeight = "1dp"
-                        custom:rangeBarColor="@color/font_grey_white"
-                        custom:connectingLineColor="@color/font_red"
-                        custom:tickColor="@color/font_white"
-                        android:layout_toRightOf="@+id/environment"/>
-                </RelativeLayout>
-            </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:text="@string/commentDetail_environment"
+                        android:gravity="center"
+                        android:textColor="@color/font_red"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/commentDetail_equipment"
+                        android:gravity="center"
+                        android:textColor="@color/font_red"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/commentDetail_price"
+                        android:gravity="center"
+                        android:textColor="@color/font_red"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/service_score"
+                        android:gravity="center"
+                        android:textColor="@color/font_red"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/fun_score"
+                        android:gravity="center"
+                        android:textColor="@color/font_red"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/environment_score"
+                        android:gravity="center"
+                        android:textColor="@color/font_red"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/equipment_score"
+                        android:gravity="center"
+                        android:textColor="@color/font_red"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/price_score"
+                        android:gravity="center"
+                        android:textColor="@color/font_red"/>
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
     </ScrollView>
-    <!--<TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="0,1,2,3,4"
-        android:layout_alignParentBottom="true">
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/commentDetail_service"
-                android:gravity="center"
-                android:textColor="@color/font_red"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/commentDetail_fun"
-                android:gravity="center"
-                android:textColor="@color/font_red"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/commentDetail_environment"
-                android:gravity="center"
-                android:textColor="@color/font_red"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/commentDetail_equipment"
-                android:gravity="center"
-                android:textColor="@color/font_red"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/commentDetail_price"
-                android:gravity="center"
-                android:textColor="@color/font_red"/>
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/service_score"
-                android:text="4"
-                android:gravity="center"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/fun_score"
-                android:text="4"
-                android:gravity="center"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/environment_score"
-                android:text="4"
-                android:gravity="center"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/equipment_score"
-                android:text="4"
-                android:gravity="center"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/price_score"
-                android:text="4"
-                android:gravity="center"/>
-        </TableRow>
-    </TableLayout>-->
-
-
 </RelativeLayout>
