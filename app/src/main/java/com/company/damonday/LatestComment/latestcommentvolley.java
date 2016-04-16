@@ -25,6 +25,7 @@ import com.company.damonday.R;
 import com.company.damonday.LatestComment.latestcomment_Adapter;
 import com.company.damonday.function.AppController;
 import com.company.damonday.LatestComment.latestcomment;
+import com.company.damonday.function.APIConfig;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,7 +39,7 @@ public class latestcommentvolley extends Fragment {
     private static final String TAG = latestcommentvolley.class.getSimpleName();
 
     // Movies json url
-    private static final String url = "http://damonday.tk/api/comment/latest_comments/?page=1";
+    //private static final String url = "http://damonday.tk/api/comment/latest_comments/?page=1";
     private ProgressDialog pDialog;
     private List<latestcomment> latestcommentList = new ArrayList<latestcomment>();
     private ListView listView;
@@ -70,7 +71,7 @@ public class latestcommentvolley extends Fragment {
                 new ColorDrawable(Color.parseColor("#1b1b1b")));*/
 
         // Creating volley request obj
-        StringRequest latestcommentReq = new StringRequest(url,
+        StringRequest latestcommentReq = new StringRequest( APIConfig.URL_Latest_Comment,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

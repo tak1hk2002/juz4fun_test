@@ -3,6 +3,8 @@ package com.company.damonday;
 
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -18,18 +20,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.company.damonday.Home.Home;
 import com.company.damonday.LatestComment.latestcommentvolley;
+import com.company.damonday.Login.Fragment.Fragment_Login;
+import com.company.damonday.Login.Fragment.Fragment_Registration;
+import com.company.damonday.Login.LoginSQLiteHandler;
+import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MyFavourites.MyFavourites;
 import com.company.damonday.NewFoundCompany.NewFoundCompany;
 import com.company.damonday.Ranking.NavDrawerListAdapter;
 import com.company.damonday.Ranking.Ranking_try;
 import com.company.damonday.Search.search;
 import com.company.damonday.Setting.Setting;
+import com.facebook.FacebookSdk;
 
 import java.util.ArrayList;
 
@@ -59,12 +68,21 @@ public class TestActivity extends FragmentActivity {
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
     private LinearLayout mDrawerLinear;
+    private Button btn_login,btn_register,btn_logout;
+    private SessionManager session;         //tomc 10/4/2016        login
+    private LoginSQLiteHandler db;           //tomc 10/4/2016       login
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("onCreate", "onCreate");
+        FacebookSdk.sdkInitialize(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer);
+
+        //tomc 10/4/2016   login
+        session = new SessionManager(this);
+        db = new LoginSQLiteHandler(this);          //tomc 10/4/2016       login
+
 
         mTitle = mDrawerTitle = getTitle();
 
@@ -78,7 +96,9 @@ public class TestActivity extends FragmentActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
          mDrawerLinear = (LinearLayout) findViewById(R.id.drawer_linear);
-
+        btn_logout =(Button) findViewById(R.id.btn_logout);
+        btn_login = (Button) findViewById(R.id.btn_login);
+        btn_register= (Button)findViewById(R.id.btn_register);
         navDrawerItems = new ArrayList<NavDrawerItem>();
 
         // adding nav drawer items to array
@@ -118,6 +138,31 @@ public class TestActivity extends FragmentActivity {
 
         getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getActionBar().setCustomView(R.layout.actionbar_custom_layout);
+
+        getActionBar().getCustomView().findViewById(R.id.button_setting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(TestActivity.this, "hello", Toast.LENGTH_SHORT).show();
+                if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {//tomc 31/8/2015
+                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                } else {
+                    mDrawerLayout.openDrawer(Gravity.RIGHT);
+                }
+
+            }
+        });
+
+        getActionBar().getCustomView().findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(TestActivity.this , "back" , Toast.LENGTH_SHORT).show();
+                onBackPressed();
+
+            }
+        });
+
+
+
         View v=getActionBar().getCustomView();
 
         TextView titleTxtView = (TextView) v.findViewById(R.id.actionbarTitle);
@@ -150,12 +195,92 @@ public class TestActivity extends FragmentActivity {
                 invalidateOptionsMenu();
             }
         };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+
+        //mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
             displayView(0);
         }
+
+        //tomc 10/4/2016
+        Log.d("yyyyyyyy", Boolean.toString(session.isLoggedIn()));
+        if(session.isLoggedIn()){
+            btn_login.setVisibility(View.GONE);
+
+                 btn_logout.setOnClickListener(new View.OnClickListener() {
+                                                   @Override
+                                                   public void onClick(View v) {
+                                                       session.setLogin(false);
+                                                       db.deleteUsers();
+
+                                                       //display message login successfully
+                                                       AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
+                                                       ab.setTitle(R.string.logout_success);
+                                                       ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+
+                                                           @Override
+                                                           public void onClick(DialogInterface dialog, int which) {
+                                                               Setting setting = new Setting();
+                                                               FragmentManager fragmentManager = getSupportFragmentManager();
+                                                               //clear all of the fragment at the stack
+                                                               fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                                                               FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                                               fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null);
+
+                                                               fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                                               fragmentTransaction.commit();
+
+                                                           }
+                                                       });
+                                                       ab.create().show();
+                                                   }
+
+        });
+        }
+        else {
+
+            btn_logout.setVisibility(View.GONE);
+
+            btn_login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("lastFragment", "setting");
+
+                    Fragment_Login fragment_login = new Fragment_Login();
+                    fragment_login.setArguments(bundle);
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_container, fragment_login, "login").addToBackStack(null);
+
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
+                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
+
+                }
+            });
+
+            btn_register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Fragment_Registration fragment_registration = new Fragment_Registration();
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_container, fragment_registration, "register").addToBackStack(null);
+
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
+                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
+
+                }
+            });
+        }
+
+
+
+
     }
 
     /**
@@ -186,7 +311,7 @@ public class TestActivity extends FragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {                 //action bar 出現
 
         Log.d("onCreateOptionsMenu", "onCreateOptionsMenu");
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+       // getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
         // return true;
     }

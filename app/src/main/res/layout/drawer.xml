@@ -21,7 +21,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:orientation="vertical"
-        android:background="@color/black">
+        android:background="@color/black"
+        android:clickable="true">
 
         <LinearLayout
 
@@ -29,10 +30,25 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_logout"
+                android:id="@+id/btn_logout"
+                android:text="登出"
+                android:textColor="@color/white"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="20dp"
+                />
+
+
+
      <Button
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:background="@drawable/btn_login_setting_bar"
+         android:id="@+id/btn_login"
          android:text="登入"
          android:textColor="@color/white"
          android:layout_gravity="bottom"
@@ -44,6 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_register_setting_bar"
+                android:id="@+id/btn_register"
                 android:text="注冊"
                 android:textColor="@color/white"
                 android:layout_gravity="bottom"

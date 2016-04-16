@@ -32,6 +32,7 @@ package com.company.damonday.Search;
         import android.widget.ListView;
         import android.widget.SearchView;
         import android.widget.SearchView.OnQueryTextListener;
+        import android.widget.SearchView.OnCloseListener;
         import android.widget.TextView;
         import android.widget.Toast;
 
@@ -42,6 +43,7 @@ package com.company.damonday.Search;
         import com.android.volley.toolbox.JsonObjectRequest;
         import com.android.volley.toolbox.StringRequest;
         import com.company.damonday.CompanyInfo.FragmentTabs_try;
+        import com.company.damonday.Home.Home;
         import com.company.damonday.R;
         import com.company.damonday.function.APIConfig;
         import com.company.damonday.function.AppController;
@@ -90,7 +92,7 @@ public class search_fast extends Fragment {
         view = inflater.inflate(R.layout.search, container, false);     //tomc
         getActivity().getActionBar().setTitle(R.string.advance_search);     //tomc
         //define a typeface for formatting text fields and listview.
-
+        final Fragment Home = new Home();
         FragmentManager fragmentManager = getFragmentManager();
         System.out.println("time0:" + fragmentManager.getBackStackEntryCount());
 
@@ -99,7 +101,7 @@ public class search_fast extends Fragment {
         myFragmentView = inflater.inflate(R.layout.search_fast, container, false);
 
         search = (SearchView) myFragmentView.findViewById(R.id.searchView1);
-        search.setQueryHint("Start typing to search...");
+        search.setQueryHint("搵野玩");                 //tomc 16/4/2016
 
         searchResults = (ListView) myFragmentView.findViewById(R.id.listview_search);
         search.setIconified(false);
@@ -112,6 +114,30 @@ public class search_fast extends Fragment {
         //this part of the code is to handle the situation when user enters any search criteria, how should the
         //application behave?
 
+        search.setOnCloseListener(new OnCloseListener() {
+            @Override
+            public boolean onClose() {
+
+
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                //System.out.println("time3"+fragmentManager.getBackStackEntryCount());
+                // System.out.println(fragmentManager.getBackStackEntryCount());
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                //fragmentTransaction.remove(getFragmentManager().findFragmentById(R.id.frame_container));
+                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("search_fast"));
+                fragmentTransaction.add(R.id.frame_container, Home, "Home").addToBackStack(null);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.commit();
+                System.out.println("time4:" + fragmentManager.getBackStackEntryCount());
+                getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+
+
+                return false;
+
+
+            }
+        });
         search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
@@ -175,7 +201,7 @@ public class search_fast extends Fragment {
 
 
                 FragmentManager fragmentManager = getFragmentManager();
-                System.out.println("time3"+fragmentManager.getBackStackEntryCount());
+                System.out.println("time3" + fragmentManager.getBackStackEntryCount());
                 // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.hide(getFragmentManager().findFragmentById(R.id.frame_container));
@@ -183,7 +209,7 @@ public class search_fast extends Fragment {
                 fragmentTransaction.add(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
-                System.out.println("time4" + fragmentManager.getBackStackEntryCount());
+                //System.out.println("time4" + fragmentManager.getBackStackEntryCount());
 
             }
         });

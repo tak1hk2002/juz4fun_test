@@ -49,6 +49,11 @@ public class APIConfig {
     //submit comment
     public static String URL_Write_Comment = "http://54.187.62.227/api/comment/submit_comment/";
 
+    //latest comment
+
+    public static String URL_Latest_Comment = "http://54.187.62.227/api/comment/latest_comments/?page=1";
+
+
     //Detail url
     public String getUrlDetail(){
         return "http://54.187.62.227/api/entertainment/details/?ent_id="+id;

@@ -22,7 +22,8 @@
         android:layout_alignTop="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
         android:textSize="@dimen/title"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@color/font_red"/>
 
     <!-- Rating -->
     <TextView
