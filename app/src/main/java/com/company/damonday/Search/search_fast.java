@@ -130,7 +130,7 @@ public class search_fast extends Fragment {
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
                 System.out.println("time4:" + fragmentManager.getBackStackEntryCount());
-                getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+             //   getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 
 
                 return false;

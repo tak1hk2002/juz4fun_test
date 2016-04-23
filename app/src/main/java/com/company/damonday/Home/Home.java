@@ -27,6 +27,7 @@ import com.company.damonday.Ranking.CompanyInfo;
 import com.company.damonday.Ranking.MyAdapter;
 import com.company.damonday.Ranking.Ranking;
 import com.company.damonday.Search.search_fast;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.company.damonday.function.ConnectionDetector;
@@ -73,14 +74,13 @@ public class Home extends Fragment {
 
 
 
-
         //search =(SearchView)view.findViewById(R.id.search);
         gridView = (GridView) view.findViewById(R.id.gridView);
 
 
         getActivity().getActionBar().setTitle(R.string.home);
         //System.out.println("ordertest2");
-
+        ((TestActivity)getActivity()).hideBackButton();             //very important tomc 23/4/2016
 
 
         FragmentManager fragmentManager = getFragmentManager();
@@ -91,9 +91,9 @@ public class Home extends Fragment {
             public void onClick(View v) {
 
 
-
+                ((TestActivity)getActivity()).showBackButton();
                 // Intent i = new Intent(MainActivity.this, Ranking.class);
-                getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+                //getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
                Fragment fragment_search_fast = new search_fast();
 
 
@@ -126,7 +126,8 @@ public class Home extends Fragment {
                 /*Intent i = new Intent(Ranking.this, FragmentTabs.class);
                 i.putExtra("Ent_id", companyInfoItems.get(position).getEnt_id());
                 startActivity(i);*/
-                getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+                ((TestActivity)getActivity()).showBackButton();
+               // getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
                 //pass object to next fragment
                 Bundle bundle = new Bundle();
                 bundle.putString("ent_id", Integer.toString(companyInfoItems.get(position).getEnt_id()));

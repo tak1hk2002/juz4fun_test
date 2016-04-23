@@ -134,15 +134,16 @@ public class TestActivity extends FragmentActivity {
         mDrawerList.setAdapter(adapter);
 
         // enabling action bar app icon and behaving it as toggle button
-        getActionBar().setDisplayHomeAsUpEnabled(true);     //make back button
+       // getActionBar().setDisplayHomeAsUpEnabled(true);     //make back button
 
         getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getActionBar().setCustomView(R.layout.actionbar_custom_layout);
 
+        //sliding menu   tomc 23/4/2016
         getActionBar().getCustomView().findViewById(R.id.button_setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TestActivity.this, "hello", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(TestActivity.this, "hello", Toast.LENGTH_SHORT).show();
                 if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {//tomc 31/8/2015
                     mDrawerLayout.closeDrawer(Gravity.RIGHT);
                 } else {
@@ -152,10 +153,11 @@ public class TestActivity extends FragmentActivity {
             }
         });
 
+        //back button tomc 23/4/2016
         getActionBar().getCustomView().findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TestActivity.this , "back" , Toast.LENGTH_SHORT).show();
+               // Toast.makeText(TestActivity.this , "back" , Toast.LENGTH_SHORT).show();
                 onBackPressed();
 
             }
@@ -293,6 +295,19 @@ public class TestActivity extends FragmentActivity {
         titleTxtView.setText(title);
     }
 
+    public void hideBackButton(){                        //tomc 6/3/2016
+
+
+        View v=getActionBar().getCustomView().findViewById(R.id.button_back);
+       v.setVisibility(View.INVISIBLE);
+    }
+
+    public void showBackButton(){                        //tomc 6/3/2016
+
+
+        View v=getActionBar().getCustomView().findViewById(R.id.button_back);
+        v.setVisibility(View.VISIBLE);
+    }
 
 
 
@@ -400,13 +415,14 @@ public class TestActivity extends FragmentActivity {
         // update the main content by replacing fragments
         Fragment fragment = null;
         String tag = null;
-        getActionBar().setDisplayHomeAsUpEnabled(true);     //make back button
-
+        //getActionBar().setDisplayHomeAsUpEnabled(true);     //make back button
+        showBackButton();
         switch (position) {
             case 0:
                 //主頁
-                getActionBar().setDisplayHomeAsUpEnabled(false);     //make back button
+                //getActionBar().setDisplayHomeAsUpEnabled(false);     //make back button
                      //make back button
+                hideBackButton();
                 fragment = new Home();
                 tag = "home";
                 break;

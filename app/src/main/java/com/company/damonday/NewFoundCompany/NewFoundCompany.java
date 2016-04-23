@@ -161,7 +161,7 @@ public class NewFoundCompany extends Fragment {
                                 fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack(null);
                                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                                 fragmentTransaction.commit();
-                                getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+                             //   getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 
 
                             }
