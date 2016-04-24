@@ -49,14 +49,11 @@ public class Fragment_ViewComment_CustomListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        if (inflater == null)
-            inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (convertView == null)
-            convertView = inflater.inflate(R.layout.view_companycomment_list_row, parent);
+        inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = inflater.inflate(R.layout.view_companycomment_list_row, parent, false);
 
-        if (imageLoader == null)
-            imageLoader = AppController.getInstance().getImageLoader();
+        imageLoader = AppController.getInstance().getImageLoader();
         NetworkImageView profilePic = (NetworkImageView) convertView
                 .findViewById(R.id.profile_pic);
         TextView title = (TextView) convertView.findViewById(R.id.title);
@@ -83,12 +80,12 @@ public class Fragment_ViewComment_CustomListAdapter extends BaseAdapter {
         Log.d("getRating", m.getRating());
 
         //like icon
-        if(Float.parseFloat(m.getRating()) < 1.7)
+/*        if(Float.parseFloat(m.getRating()) < 1.7)
             averagePic.setImageDrawable(context.getResources().getDrawable(R.drawable.mascot_send_comment));
         else if (Float.parseFloat(m.getRating()) >= 1.7 && Float.parseFloat(m.getRating()) <= 3.3)
             averagePic.setImageDrawable(context.getResources().getDrawable(R.drawable.mascot_smile_comment));
         else if (Float.parseFloat(m.getRating()) > 3.3)
-            averagePic.setBackgroundResource(R.drawable.mascot_happy_comment);
+            averagePic.setBackgroundResource(R.drawable.mascot_happy_comment);*/
 
         //rating
         rating1.setText(m.getRating());

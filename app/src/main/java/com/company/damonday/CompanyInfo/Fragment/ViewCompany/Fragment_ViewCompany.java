@@ -180,7 +180,7 @@ public class Fragment_ViewCompany extends Fragment {
             return;
         }
 
-        /*int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
         int totalHeight = 0;
         View view = null;
         for (int i = 0; i < (listAdapter.getCount()); i++)
@@ -196,8 +196,8 @@ public class Fragment_ViewCompany extends Fragment {
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
-        listView.requestLayout();*/
-        int totalHeight = listView.getPaddingTop() + listView.getPaddingBottom();;
+        listView.requestLayout();
+        /*int totalHeight = listView.getPaddingTop() + listView.getPaddingBottom();;
         for (int i = 0; i < listAdapter.getCount(); i++) {
             View listItem = listAdapter.getView(i, null, listView);
             listItem.measure(0, 0);
@@ -207,7 +207,7 @@ public class Fragment_ViewCompany extends Fragment {
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight
                 + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
+        listView.setLayoutParams(params);*/
     }
 
 

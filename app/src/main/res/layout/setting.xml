@@ -14,25 +14,42 @@
     android:padding="25dp"
     android:background="@color/bg_grey_black_light">
 
-        <Button
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:text="登入"
-            android:textSize="13dp"
-            android:background="@drawable/btn_login"
-            android:layout_margin="10dp"
-            android:id="@+id/login"
-            android:textColor="@color/white"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+            <Button
+                android:layout_width="@dimen/btn_top_width"
+                android:layout_height="@dimen/btn_top_height"
+                android:text="登入"
+                android:textSize="13dp"
+                android:background="@drawable/btn_hamburger_login_topbg"
+                android:id="@+id/login"
+                android:textColor="@color/white"/>
+            <Button
+                android:layout_width="@dimen/btn_down_width"
+                android:layout_height="@dimen/btn_down_height"
+                android:background="@drawable/btn_hamburger_login_downbg"/>
+        </LinearLayout>
 
-        <Button
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:text="注冊"
-            android:textSize="13dp"
-            android:background="@drawable/btn_register"
-            android:id="@+id/register"
-            android:textColor="@color/white"/>
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <Button
+                android:layout_width="@dimen/btn_top_width"
+                android:layout_height="@dimen/btn_top_height"
+                android:text="注冊"
+                android:textSize="13dp"
+                android:background="@drawable/btn_hamburger_reg_topbg"
+                android:id="@+id/register"
+                android:textColor="@color/white"/>
+            <Button
+                android:layout_width="@dimen/btn_down_width"
+                android:layout_height="@dimen/btn_down_height"
+                android:background="@drawable/btn_hamburger_reg_downbg"/>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

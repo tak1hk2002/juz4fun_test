@@ -17,6 +17,12 @@
     <dimen name="my_favourite_cat">15sp</dimen>
     <dimen name="my_favourite_like_unlike">12sp</dimen>
 
+    <!-- button-->
+    <dimen name="btn_top_height">40dp</dimen>
+    <dimen name="btn_down_height">5dp</dimen>
+    <dimen name="btn_top_width">100dp</dimen>
+    <dimen name="btn_down_width">100dp</dimen>
+
 
 
 </resources>
