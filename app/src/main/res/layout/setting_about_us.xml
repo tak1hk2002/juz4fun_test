@@ -65,9 +65,8 @@
             <TextView
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-
              android:textSize="20dp"
-
+            android:textColor="@color/font_grey_white"
              android:id="@+id/textview"
             android:text="pppp"
              android:gravity="center" />

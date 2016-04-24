@@ -93,6 +93,10 @@ import java.util.Map;
                 @Override
                 public void onClick(View v) {
 
+                    EditText_Subject.setText("");
+                    EditText_Content.setText("");
+                    EditText_Email.setText("");
+
 
                 }
             });

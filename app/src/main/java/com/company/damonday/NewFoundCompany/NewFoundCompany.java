@@ -104,6 +104,14 @@ public class NewFoundCompany extends Fragment {
 
             @Override
             public void onClick(View v) {
+               EditText_company_name.setText("");
+                EditText_company_tel.setText("");
+                EditText_company_type.setText("");
+                EditText_company_address.setText("");
+                EditText_cost.setText("");
+                EditText_business_hour.setText("");
+
+
 
 
             }
