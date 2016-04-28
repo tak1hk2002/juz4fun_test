@@ -30,66 +30,90 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_logout"
-                android:id="@+id/btn_logout"
-                android:text="登出"
-                android:textColor="@color/white"
+                android:orientation="vertical"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="bottom"
+                android:id="@+id/linear_logout">
+                <Button
+                    android:layout_width="@dimen/btn_drawer_login_width"
+                    android:layout_height="@dimen/btn_top_height"
+                    android:text="@string/btn_logout"
+                    android:background="@drawable/btn_hamburger_logout_topbg"
+                    android:id="@+id/btn_logout"
+                    android:textColor="@color/white"/>
+                <Button
+                    android:layout_width="@dimen/btn_drawer_login_width"
+                    android:layout_height="@dimen/btn_down_height"
+                    android:background="@drawable/btn_hamburger_logout_downbg"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="30dp"
                 android:layout_marginBottom="20dp"
-                />
+                android:id="@+id/linear_login">
+                <Button
+                    android:layout_width="@dimen/btn_drawer_login_width"
+                    android:layout_height="@dimen/btn_top_height"
+                    android:text="@string/btn_login"
+                    android:background="@drawable/btn_hamburger_login_topbg"
+                    android:id="@+id/btn_login"
+                    android:textColor="@color/white"/>
+                <Button
+                    android:layout_width="@dimen/btn_drawer_login_width"
+                    android:layout_height="@dimen/btn_down_height"
+                    android:background="@drawable/btn_hamburger_login_downbg"/>
+            </LinearLayout>
 
-
-
-     <Button
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:background="@drawable/btn_login_setting_bar"
-         android:id="@+id/btn_login"
-         android:text="登入"
-         android:textColor="@color/white"
-         android:layout_gravity="bottom"
-         android:layout_marginLeft="30dp"
-         android:layout_marginBottom="20dp"
-            />
-
-            <Button
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_register_setting_bar"
-                android:id="@+id/btn_register"
-                android:text="注冊"
-                android:textColor="@color/white"
+                android:orientation="vertical"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="20dp"
                 android:layout_marginBottom="20dp"
-                />
+                android:id="@+id/linear_register">
+                <Button
+                    android:layout_width="@dimen/btn_drawer_login_width"
+                    android:layout_height="@dimen/btn_top_height"
+                    android:text="@string/btn_register"
+                    android:background="@drawable/btn_hamburger_reg_topbg"
+                    android:id="@+id/btn_register"
+                    android:textColor="@color/white"/>
+                <Button
+                    android:layout_width="@dimen/btn_drawer_login_width"
+                    android:layout_height="@dimen/btn_down_height"
+                    android:background="@drawable/btn_hamburger_reg_downbg"/>
+            </LinearLayout>
 
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/mascot_setting_bar"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-            android:layout_marginBottom="20dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mascot_setting_bar"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                    android:layout_marginBottom="20dp"/>
 
         </LinearLayout>
 
 
-    <ListView
-        android:id="@+id/list_slidermenu"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:choiceMode="singleChoice"
-        android:listSelector="@drawable/slide_menu_list_selector"
-        android:background="@color/black"/>
-
-
-
+        <ListView
+            android:id="@+id/list_slidermenu"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:choiceMode="singleChoice"
+            android:listSelector="@drawable/slide_menu_list_selector"
+            android:background="@color/black"/>
 
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

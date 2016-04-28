@@ -67,7 +67,7 @@ public class TestActivity extends FragmentActivity {
     private CharSequence tempmtitle;
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
-    private LinearLayout mDrawerLinear;
+    private LinearLayout mDrawerLinear, linearLogout, linearLogin, linearRegister;
     private Button btn_login,btn_register,btn_logout;
     private SessionManager session;         //tomc 10/4/2016        login
     private LoginSQLiteHandler db;           //tomc 10/4/2016       login
@@ -95,10 +95,13 @@ public class TestActivity extends FragmentActivity {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
-         mDrawerLinear = (LinearLayout) findViewById(R.id.drawer_linear);
+        mDrawerLinear = (LinearLayout) findViewById(R.id.drawer_linear);
         btn_logout =(Button) findViewById(R.id.btn_logout);
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_register= (Button)findViewById(R.id.btn_register);
+        linearLogin = (LinearLayout) findViewById(R.id.linear_login);
+        linearLogout = (LinearLayout) findViewById(R.id.linear_logout);
+        linearRegister = (LinearLayout) findViewById(R.id.linear_register);
         navDrawerItems = new ArrayList<NavDrawerItem>();
 
         // adding nav drawer items to array
@@ -209,7 +212,7 @@ public class TestActivity extends FragmentActivity {
         //tomc 10/4/2016
         Log.d("yyyyyyyy", Boolean.toString(session.isLoggedIn()));
         if(session.isLoggedIn()){
-            btn_login.setVisibility(View.GONE);
+            linearLogin.setVisibility(View.GONE);
 
                  btn_logout.setOnClickListener(new View.OnClickListener() {
                                                    @Override
@@ -243,7 +246,7 @@ public class TestActivity extends FragmentActivity {
         }
         else {
 
-            btn_logout.setVisibility(View.GONE);
+            linearLogout.setVisibility(View.GONE);
 
             btn_login.setOnClickListener(new View.OnClickListener() {
                 @Override

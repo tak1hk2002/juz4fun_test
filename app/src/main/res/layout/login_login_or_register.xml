@@ -1,31 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="50dp">
+    android:layout_marginTop="50dp"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
 
-    <Button
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/login"
-        android:text="@string/btn_login"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/btn_login"
-        android:textColor="@color/font_white"/>
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+        <Button
+            android:layout_width="@dimen/btn_top_width"
+            android:layout_height="@dimen/btn_top_height"
+            android:text="@string/btn_login"
+            android:background="@drawable/btn_hamburger_login_topbg"
+            android:id="@+id/login"
+            android:textColor="@color/white"/>
+        <Button
+            android:layout_width="@dimen/btn_down_width"
+            android:layout_height="@dimen/btn_down_height"
+            android:background="@drawable/btn_hamburger_login_downbg"/>
+    </LinearLayout>
 
-    <Button
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/register"
-        android:text="@string/btn_register"
-        android:background="@drawable/btn_register"
-        android:textColor="@color/font_white"
-        android:layout_below="@+id/login"
-        android:layout_alignLeft="@+id/login"
-        android:layout_alignStart="@+id/login"
-        android:layout_marginTop="15dp" />
+        android:orientation="vertical">
+        <Button
+            android:layout_width="@dimen/btn_top_width"
+            android:layout_height="@dimen/btn_top_height"
+            android:text="@string/btn_register"
+            android:background="@drawable/btn_hamburger_reg_topbg"
+            android:id="@+id/register"
+            android:textColor="@color/white"/>
+        <Button
+            android:layout_width="@dimen/btn_down_width"
+            android:layout_height="@dimen/btn_down_height"
+            android:background="@drawable/btn_hamburger_reg_downbg"/>
+    </LinearLayout>
 
 
 
-</RelativeLayout>
+</LinearLayout>

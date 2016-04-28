@@ -22,6 +22,7 @@
     <dimen name="btn_down_height">5dp</dimen>
     <dimen name="btn_top_width">100dp</dimen>
     <dimen name="btn_down_width">100dp</dimen>
+    <dimen name="btn_drawer_login_width">70dp</dimen>
 
 
 

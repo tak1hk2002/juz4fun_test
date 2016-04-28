@@ -103,28 +103,48 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:weightSum="1"
         android:gravity="bottom">
 
-        <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/action_cell_cancel"
-            android:text="@string/btn_cancel"
-            android:textColor="@color/font_white"
-            android:layout_weight="0.50"
-            android:layout_gravity="bottom"
-            android:layout_marginRight="3dp"/>
+            android:layout_weight="0.6"
+            android:orientation="vertical"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp">
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_top_height"
+                android:background="@drawable/btn_actioncell_reset_topbg"
+                android:text="@string/btn_cancel"
+                android:textColor="@color/font_white"
+                android:layout_gravity="bottom"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_down_height"
+                android:background="@drawable/btn_actioncell_reset_downbg"/>
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/btnRegister"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/action_cell_login"
-            android:text="@string/btn_login"
-            android:textColor="@color/font_white"
-            android:layout_weight="0.50" />
+            android:layout_weight="0.6"
+            android:orientation="vertical"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp">
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_top_height"
+                android:background="@drawable/btn_actioncell_send_topbg"
+                android:text="@string/btn_login"
+                android:textColor="@color/font_white"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_down_height"
+                android:background="@drawable/btn_actioncell_send_downbg"/>
+        </LinearLayout>
 
     </LinearLayout>
 
