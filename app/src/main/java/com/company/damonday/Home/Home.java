@@ -120,7 +120,7 @@ public class Home extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
 
-                FragmentManager fragmentManager = getFragmentManager();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 System.out.println("time_grid:"+fragmentManager.getBackStackEntryCount());
                 //pass the following object to next activity
                 /*Intent i = new Intent(Ranking.this, FragmentTabs.class);
@@ -134,7 +134,7 @@ public class Home extends Fragment {
                 fragmentTabs_try = new FragmentTabs_try();
                 fragmentTabs_try.setArguments(bundle);
 
-                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);   //important to clear repeat fragment in the stack //tomc 24/1/2016
+                //fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);   //important to clear repeat fragment in the stack //tomc 24/1/2016
                 //FragmentManager fragmentManager = getFragmentManager();
                 // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

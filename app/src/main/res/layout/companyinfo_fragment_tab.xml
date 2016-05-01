@@ -58,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/like_image"
-                    android:src="@drawable/icon_like"/>
+                    android:src="@drawable/btn_like_unselect"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -72,12 +72,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/fair_image"/>
+                    android:id="@+id/ok_image"
+                    android:src = "@drawable/btn_ok_unselect"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
-                    android:id="@+id/fair"
+                    android:id="@+id/ok"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/font_white"
                     android:layout_marginLeft="3dp"
@@ -86,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/dislike_image"
-                    android:src="@drawable/icon_dislike"/>
+                    android:src="@drawable/btn_dislike_unselect"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

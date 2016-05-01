@@ -357,6 +357,7 @@ public class Fragment_Login extends Fragment {
                                 try {
                                     //last fragment is from detail
                                     if (entId != null) {
+                                        System.out.println("HIHIHIHIHHHI");
                                         Bundle bundle = new Bundle();
                                         FragmentTabs_try fragmentTabs_try = new FragmentTabs_try();
                                         bundle.putString("ent_id", entId);

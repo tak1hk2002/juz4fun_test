@@ -32,6 +32,7 @@ import com.company.damonday.CompanyInfo.Fragment.ViewComment.Fragment_ViewCommen
 import com.company.damonday.CompanyInfo.Fragment.ViewCompany.Fragment_ViewCompany;
 import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment;
 import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_login_register;
+import com.company.damonday.Login.Fragment.Fragment_Login;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MyFavourites.MyFavouritesObject;
 import com.company.damonday.R;
@@ -55,16 +56,14 @@ public class FragmentTabs_try extends Fragment{
     private FragmentTabHost mTabHost;
     private MyViewPagerAdapter myViewPagerAdapter;
     private ArrayList<String> listOfItems = new ArrayList<String>();;
-    private String videoUrl;
-    private String entId;
     private ProgressDialog pDialog;
     private static String TAG = FragmentTabs_try.class.getSimpleName();
     private ArrayList<String> coverPage = new ArrayList<String>();
     private ArrayList<String> categories = new ArrayList<String>();
     private TextView tvLike, tvDislike, tvFair, tvCompanyTitle;
-    private String like, dislike, fair, companyName, averageScore, cat, price;
+    private String like, dislike, fair, companyName, averageScore, cat, price, entId, videoUrl;
     private APIConfig details;
-    private ImageView ivMyFavourite, ivFair;
+    private ImageView ivMyFavourite, imgLike, imgOk, imgDislike;
     private CompanySQLiteHandler myfavouriteDB;
     private SessionManager session;
     private MyFavouritesObject myFavouritesObject;
@@ -110,18 +109,17 @@ public class FragmentTabs_try extends Fragment{
 
         tvLike = (TextView) rootView.findViewById(R.id.like);
         tvDislike = (TextView) rootView.findViewById(R.id.dislike);
-        tvFair = (TextView) rootView.findViewById(R.id.fair);
+        tvFair = (TextView) rootView.findViewById(R.id.ok);
         ivMyFavourite = (ImageView) rootView.findViewById(R.id.my_favourite);
+        imgLike = (ImageView) rootView.findViewById(R.id.like_image);
+        imgOk = (ImageView) rootView.findViewById(R.id.ok_image);
+        imgDislike = (ImageView) rootView.findViewById(R.id.dislike_image);
         //tvCompanyTitle = (TextView) rootView.findViewById(R.id.company_title);
-        ivFair = (ImageView) rootView.findViewById(R.id.fair_image);
         ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
         scrollView = (CustomScrollView) rootView.findViewById(R.id.parent_scroll);
 
         //get the scroll Y position
         scrollView.setScrollChangedListener(mScrollChangedListener);
-
-        //config the view
-        ivFair.setImageResource(R.drawable.fair);
 
         myViewPagerAdapter = new MyViewPagerAdapter(listOfItems);  //call Class to create Object
         viewPager.setAdapter(myViewPagerAdapter);
@@ -132,9 +130,85 @@ public class FragmentTabs_try extends Fragment{
 
         //get row count
         int myFavouriteCount = myfavouriteDB.getRowCount(Integer.parseInt(entId));
-        Log.d("myFavouriteCount", Integer.toString(myFavouriteCount));
 
         final boolean[] heartUnclicked = {true};
+
+        //Clicking like function
+        imgLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AccessToken.getCurrentAccessToken() != null || session.isLoggedIn()) {
+                    imgLike.setImageResource(R.drawable.btn_like_select);
+                }
+                else{
+                    //pass variable to next fragment
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ent_id", entId);
+                    Fragment_Login fragment_login = new Fragment_Login();
+                    fragment_login.setArguments(bundle);
+
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    System.out.println(fragmentManager.getBackStackEntryCount());
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail"));
+                    fragmentTransaction.add(R.id.frame_container, fragment_login, "login").addToBackStack(null);
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
+                }
+            }
+        });
+
+
+        //Clicking OK function
+        imgOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AccessToken.getCurrentAccessToken() != null || session.isLoggedIn()) {
+
+                }
+                else{
+                    //pass variable to next fragment
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ent_id", entId);
+                    Fragment_Login fragment_login = new Fragment_Login();
+                    fragment_login.setArguments(bundle);
+
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    System.out.println(fragmentManager.getBackStackEntryCount());
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail"));
+                    fragmentTransaction.add(R.id.frame_container, fragment_login, "login").addToBackStack(null);
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
+                }
+            }
+        });
+
+        //Clicking dislike function
+        imgDislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AccessToken.getCurrentAccessToken() != null || session.isLoggedIn()) {
+
+                }
+                else{
+                    //pass variable to next fragment
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ent_id", entId);
+                    Fragment_Login fragment_login = new Fragment_Login();
+                    fragment_login.setArguments(bundle);
+
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    System.out.println(fragmentManager.getBackStackEntryCount());
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail"));
+                    fragmentTransaction.add(R.id.frame_container, fragment_login, "login").addToBackStack(null);
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
+                }
+            }
+        });
+
         if(myFavouriteCount > 0) {
             heartUnclicked[0] = false;
             ivMyFavourite.setImageResource(R.drawable.btn_favourite_selected);
@@ -164,8 +238,6 @@ public class FragmentTabs_try extends Fragment{
             }
         });
 
-
-
         //viewPage
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -185,19 +257,14 @@ public class FragmentTabs_try extends Fragment{
             }
         });
 
-
         //it will pre-load all video and images.
         viewPager.setOffscreenPageLimit(10);
-
 
         // ViewPager Indicator
         UnderlinePageIndicator mIndicator = (UnderlinePageIndicator) rootView.findViewById(R.id.indicator);
         mIndicator.setFades(false);
         mIndicator.setViewPager(viewPager);
         mIndicator.setSelectedColor(R.color.bg_grey_black_light);
-
-
-
 
         //pass entId to fragment
         Bundle bundle = new Bundle();
@@ -227,12 +294,6 @@ public class FragmentTabs_try extends Fragment{
                     mTabHost.newTabSpec("我要評論").setIndicator(createTabView(getActivity(), "我要評論")),
                     Fragment_login_register.class, bundle);
         }
-
-
-
-
-
-
         return rootView;
     }
 
@@ -271,8 +332,6 @@ public class FragmentTabs_try extends Fragment{
         }
     };
 
-
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -285,7 +344,6 @@ public class FragmentTabs_try extends Fragment{
         scrollView.smoothScrollTo(0, SCROLL_Y);
     }
 
-
     private void makeJsonArrayRequest() {
         showpDialog();
 
@@ -296,8 +354,6 @@ public class FragmentTabs_try extends Fragment{
                 Log.d(TAG, response.toString());
 
                 try {
-
-
                     String status = response.getString("status");
                     JSONObject companyInfo = response.getJSONObject("data");
                     if (status.equals("success")){
@@ -325,10 +381,7 @@ public class FragmentTabs_try extends Fragment{
                         price = companyInfo.getString("price");
                         averageScore = score.getString("average_score");
 
-
-
                         initViews();
-
 
                     }else{
                         String errorMsg = companyInfo.getString("msg");
@@ -336,9 +389,6 @@ public class FragmentTabs_try extends Fragment{
                                 errorMsg,
                                 Toast.LENGTH_LONG).show();
                     }
-
-
-
                 } catch (JSONException e) {
                     Log.d("error", "error");
                     e.printStackTrace();
@@ -378,7 +428,6 @@ public class FragmentTabs_try extends Fragment{
             pDialog.dismiss();
     }
 
-
     //initial after getting jason
     private void initViews() {
         //set score of company
@@ -399,9 +448,6 @@ public class FragmentTabs_try extends Fragment{
         }
         myFavouritesObject = new MyFavouritesObject(entId, coverPageUrl, companyName, price, like, fair, dislike, averageScore, categories);
 
-
-
-
         if(videoUrl != null)
             listOfItems.add(videoUrl);
         for(int i = 0; i < coverPage.size(); i++) {
@@ -412,10 +458,6 @@ public class FragmentTabs_try extends Fragment{
         listOfItems.add("http://cdn.inside.com.tw/wp-content/uploads/2012/05/Chrome.jpg");
 
     }
-
-
-
-
 
     //	adapter
     public class MyViewPagerAdapter extends PagerAdapter {
@@ -449,25 +491,6 @@ public class FragmentTabs_try extends Fragment{
                 VideoPreviewPlayButton.setVisibility(view.VISIBLE);
 
 
-
-                /*view = layoutInflater.inflate(R.layout.companyinfo_fragment_tab_video, container,false);
-                controller.setAnchorView((FrameLayout) view.findViewById(R.id.videoSurfaceContainer));
-
-
-
-                videoSurface = (SurfaceView) view.findViewById(R.id.videoSurface);
-                SurfaceHolder videoHolder = videoSurface.getHolder();
-                //videoHolder.addCallback(FragmentTabs_try.this);
-                try{
-                    //set media player
-                    player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    player.setDataSource(getActivity(), Uri.parse(listOfItems.get(position)));
-                    player.seekTo(20);
-                }catch (Exception e){
-                    Toast.makeText(getActivity(), e.getMessage(),Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }*/
-
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -484,8 +507,6 @@ public class FragmentTabs_try extends Fragment{
                         fragmentTransaction.commit();
                     }
                 });
-
-
             }
             //show company images except for first page
             else {
@@ -511,10 +532,6 @@ public class FragmentTabs_try extends Fragment{
 
 
             }
-
-
-
-
             container.addView(view);
 
             return view;
@@ -537,10 +554,6 @@ public class FragmentTabs_try extends Fragment{
             View view = (View)object;
             container.removeView(view);
         }
-
-
-
-
 
     }
 
