@@ -27,28 +27,32 @@
         android:layout_toRightOf="@+id/left"
         android:layout_toLeftOf="@+id/right"
         android:layout_marginRight="10dp"
-        android:layout_marginLeft="30dp">
+        android:layout_marginLeft="10dp">
         <!-- Title -->
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:textSize="@dimen/title"
             android:text="真好玩真好玩"
             android:textColor="@color/font_red"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_toLeftOf="@+id/relativeLayout2"
+            android:layout_toStartOf="@+id/relativeLayout2" />
 
 
         <!-- price range -->
         <TextView
             android:id="@+id/price_range"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"
             android:text="$100-200"
             android:textColor="@color/font_grey_white"
-            android:textSize="@dimen/my_favourite_price" />
+            android:textSize="@dimen/my_favourite_price"
+            android:layout_toLeftOf="@+id/relativeLayout2"
+            android:layout_toStartOf="@+id/relativeLayout2" />
 
 
 
@@ -61,20 +65,23 @@
             android:layout_below="@+id/price_range"
             android:text="室內"
             android:textColor="@color/font_grey_white"
-            android:textSize="@dimen/my_favourite_cat" />
+            android:textSize="@dimen/my_favourite_cat"
+            android:layout_toLeftOf="@+id/relativeLayout2"
+            android:layout_toStartOf="@+id/relativeLayout2" />
 
 
 
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/category"
-            >
+            android:layout_toLeftOf="@+id/relativeLayout2"
+            android:layout_toStartOf="@+id/relativeLayout2">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:id="@+id/like_image"
                 android:src="@drawable/icon_like"
                 android:padding="1dp"/>
@@ -91,10 +98,10 @@
                 android:layout_toEndOf="@+id/like_image" />
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:id="@+id/fair_image"
-                android:src="@drawable/fair"
+                android:src="@drawable/btn_ok_select"
                 android:layout_toRightOf="@+id/like"
                 android:padding="1dp"/>
 
@@ -110,8 +117,8 @@
                 android:padding="2dp"/>
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:id="@+id/dislike_image"
                 android:src="@drawable/icon_dislike"
                 android:layout_toRightOf="@+id/fair"
@@ -129,6 +136,46 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeLayout2"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true">
+
+            <ImageView
+                android:layout_marginTop="8dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imageView"
+                android:src="@drawable/like" />
+
+            <TextView
+                android:id="@+id/average_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/my_favourite_rating"
+                android:text="3.4"
+                android:textColor="@color/font_grey_white"
+                android:paddingLeft="1dp"
+                android:layout_below="@+id/imageView"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/my_favourite_max_rating"
+                android:text="/5"
+                android:layout_below="@+id/imageView"
+                android:layout_toRightOf="@+id/average_score"
+                android:textColor="@color/font_grey_white"
+                android:padding="1dp" />
+
+        </RelativeLayout>
+
 
     </RelativeLayout>
 
@@ -136,38 +183,20 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/right"
         android:layout_alignParentRight="true">
 
 
         <ImageView
-            android:layout_marginTop="8dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/big_like"
-            android:src="@drawable/like"/>
-        <TextView
-            android:id="@+id/average_score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/my_favourite_rating"
-            android:text="3.4"
-            android:textColor="@color/font_grey_white"
-            android:paddingLeft="1dp"
-            android:layout_below="@+id/big_like"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/my_favourite"
+            android:src="@drawable/btn_favourite_selected"
+            android:padding="1dp"
+            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
-        <TextView
-            android:id="@+id/rating2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/my_favourite_max_rating"
-            android:text="/5"
-            android:layout_below="@+id/big_like"
-            android:layout_toRightOf="@+id/average_score"
-            android:textColor="@color/font_grey_white"
-            android:padding="1dp"/>
     </RelativeLayout>
 
 

@@ -1,10 +1,10 @@
 package com.company.damonday.CompanyInfo.Fragment.ViewCompany;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.text.Spanned;
@@ -14,12 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -27,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.company.damonday.CompanyInfo.Fragment.ViewCompany.FeeDetail.Fee_Detail;
 import com.company.damonday.MapsActivity;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
@@ -35,7 +32,6 @@ import com.company.damonday.function.AppController;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,7 +55,7 @@ public class Fragment_ViewCompany extends Fragment {
     private List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
     private APIConfig ranking;
     private double latitude, longitude;
-    private List<Integer> showDetailIndicator = Arrays.asList(2, 3);
+    private List<Integer> showDetailIndicator = Arrays.asList(2, 3, 5);
 
     private String[] companyInfoCat ;
 
@@ -142,6 +138,23 @@ public class Fragment_ViewCompany extends Fragment {
                             Toast.makeText(v.getContext(),
                                     "Call faild, please try again later.", Toast.LENGTH_SHORT).show();
                         }
+                        break;
+                    case 5:
+                        Bundle bundle = new Bundle();
+                        bundle.putString("ent_id", entId);
+                        Fee_Detail fee_detail = new Fee_Detail();
+                        fee_detail.setArguments(bundle);
+
+                /*getFragmentManager().beginTransaction()
+                        .add(R.id.frame_container, fragment_ViewCommentDetail)
+                        .commit();*/
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        System.out.println(fragmentManager.getBackStackEntryCount());
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail"));
+                        fragmentTransaction.add(R.id.frame_container, fee_detail, "feeDetail").addToBackStack(null);
+                        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        fragmentTransaction.commit();
                         break;
                 }
                 Log.d("position", Integer.toString(position));
