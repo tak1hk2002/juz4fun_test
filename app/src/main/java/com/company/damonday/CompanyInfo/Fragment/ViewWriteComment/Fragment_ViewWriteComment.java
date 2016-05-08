@@ -419,7 +419,7 @@ public class Fragment_ViewWriteComment extends Fragment {
                     //Detail rating
                     case 4:
 
-                        final AlertDialog.Builder builderDetailRating = new AlertDialog.Builder(getActivity());
+                        final AlertDialog.Builder builderDetailRating = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_DARK);
                         //builderSingle.setIcon(R.drawable.ic_launcher);
                         builderDetailRating.setTitle(R.string.writeComment_dialog_detailrating);
 
@@ -489,7 +489,7 @@ public class Fragment_ViewWriteComment extends Fragment {
             return position;
         }
 
-        //步骤2.2： 编写ListView中每个单元的呈现
+        //编写ListView中每个单元的呈现
         public View getView(int position, View convertView, ViewGroup parent) {
             View row = convertView;
             ViewWrapper wrapper;

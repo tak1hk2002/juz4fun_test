@@ -12,9 +12,10 @@
     <TextView
         android:text=""
         android:id="@+id/title_ranking"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textColor="@color/font_grey_white"/>
 
     <com.appyvet.rangebar.RangeBar
         android:id="@+id/dialog_rangebar"
