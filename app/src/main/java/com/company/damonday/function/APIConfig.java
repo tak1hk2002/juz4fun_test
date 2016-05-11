@@ -51,7 +51,7 @@ public class APIConfig {
 
     //latest comment
 
-    public static String URL_Latest_Comment = "http://54.187.62.227/api/comment/latest_comments/?page=1";
+    public static String URL_Latest_Comment = "http://54.187.62.227/api/comment/latest_comments/?page=";
 
 
     //Detail url

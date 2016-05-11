@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@color/bg_grey_black_light">
 
     <!-- Table Row 1 -->
     <TableRow
         android:layout_width="match_parent"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:background="@color/font_yellow">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"
+            android:layout_weight="0.25"
             android:layout_marginLeft="5dp"
-            android:text="User Name:"
-            android:textColor="#180000"
-            android:background="@color/font_yellow"
-            android:textSize="16dp"/>
+            android:text="學生優惠"
+            android:textColor="@color/font_white"
+            android:padding="10dp"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
+            android:layout_weight="0.75"
             android:layout_marginLeft="5dp"
-            android:text="User Name:"
-            android:textColor="#180000"
-            android:background="@color/font_yellow"
-            android:textSize="16dp"/>
+            android:text="HKD 116/1局"
+            android:textColor="@color/font_white"
+            android:padding="10dp"/>
     </TableRow>
 
     <TableRow
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:background="@drawable/row_color"
+        android:padding="10dp">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="5dp"
-            android:text="UserName:dsfsdfsdfdsfdsfsdfdsfdsfsdfdsfdsf"
-            android:textColor="#180000"
-            android:textSize="16dp"/>
+            android:text="每場上限 12人 如未達每局遊戲人數上限，將有機會與其他玩家對戰"
+            android:textColor="@color/font_grey_white"/>
 
     </TableRow>
 
