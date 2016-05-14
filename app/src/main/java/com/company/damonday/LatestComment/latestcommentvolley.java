@@ -5,26 +5,25 @@ package com.company.damonday.LatestComment;
  */
 
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.company.damonday.CompanyInfo.Fragment.ViewCommentDetail.Fragment_ViewCommentDetail;
 import com.company.damonday.R;
-import com.company.damonday.LatestComment.latestcomment_Adapter;
 import com.company.damonday.function.AppController;
-import com.company.damonday.LatestComment.latestcomment;
 import com.company.damonday.function.APIConfig;
 
 import org.json.JSONArray;
@@ -38,8 +37,6 @@ public class latestcommentvolley extends Fragment {
     // Log tag
     private static final String TAG = latestcommentvolley.class.getSimpleName();
 
-    // Movies json url
-    //private static final String url = "http://damonday.tk/api/comment/latest_comments/?page=1";
     private ProgressDialog pDialog;
     private List<latestcomment> latestcommentList = new ArrayList<latestcomment>();
     private ListView listView;
@@ -60,6 +57,36 @@ public class latestcommentvolley extends Fragment {
         listView = (ListView)view.findViewById(R.id.list);
         adapter = new latestcomment_Adapter(getActivity(), latestcommentList);
         listView.setAdapter(adapter);
+        listView.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to your AdapterView
+                Log.d("page", Integer.toString(page));
+                customLoadMoreDataFromApi(page);
+                // or customLoadMoreDataFromApi(totalItemsCount);
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle bundle = new Bundle();
+                bundle.putString("comment_id", latestcommentList.get(position).getId());
+                Fragment_ViewCommentDetail fragment_ViewCommentDetail = new Fragment_ViewCommentDetail();
+                fragment_ViewCommentDetail.setArguments(bundle);
+
+                /*getFragmentManager().beginTransaction()
+                        .add(R.id.frame_container, fragment_ViewCommentDetail)
+                        .commit();*/
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("latestcommentvolley"));
+                fragmentTransaction.add(R.id.frame_container, fragment_ViewCommentDetail, "commentDetail").addToBackStack(null);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.commit();
+            }
+        });
 
         pDialog = new ProgressDialog(getActivity());
         // Showing progress dialog before making http request
@@ -70,8 +97,18 @@ public class latestcommentvolley extends Fragment {
     /*    getActionBar().setBackgroundDrawable(
                 new ColorDrawable(Color.parseColor("#1b1b1b")));*/
 
+
+        return view;
+    }
+
+    // Append more data into the adapter
+    public void customLoadMoreDataFromApi(int offset) {
+        // This method probably sends out a network request and appends new data items to your adapter.
+        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
+        // Deserialize API response and then construct new objects to append to the adapter
         // Creating volley request obj
-        StringRequest latestcommentReq = new StringRequest( APIConfig.URL_Latest_Comment,
+        Log.d("Link", APIConfig.URL_Latest_Comment+offset);
+        StringRequest latestcommentReq = new StringRequest( APIConfig.URL_Latest_Comment+Integer.toString(offset),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -94,18 +131,24 @@ public class latestcommentvolley extends Fragment {
 
                                     // JSONObject obj = response.getJSONObject(i);
                                     latestcomment latestcomment = new latestcomment();
+                                    latestcomment.setId(oneObject.getString("ID"));
                                     latestcomment.setTitle(oneObject.getString("title"));
-                                    latestcomment.setThumbnailUrl(oneObject.getString("profile_picture"));
-                                    latestcomment.setAveage_scrore(oneObject.getString("average_score"));
+                                    latestcomment.setProfilePic(oneObject.getString("profile_picture"));
+                                    latestcomment.setRating(oneObject.getString("average_score"));
+                                    latestcomment.setEntName("Bubble Soccer");
+                                    latestcomment.setCompanyName("Party Home");
+                                    latestcomment.setUsername(oneObject.getString("username"));
 
-                                    Log.d("1112", oneObject.getString("days_before"));
-                                    latestcomment.setDay_before(oneObject.getString("days_before"));
-                                    latestcomment.setComment(oneObject.getString("comment"));
-                                    Log.d("1113", oneObject.getString("comment"));
+                                    latestcomment.setPostedDate(oneObject.getString("days_before"));
+                                    //latestcomment.setComment(oneObject.getString("comment"));
 
 
                                     // adding movie to movies array
                                     latestcommentList.add(latestcomment);
+
+                                    // notifying list adapter about data changes
+                                    // so that it renders the list view with updated data
+                                    adapter.notifyDataSetChanged();
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -117,9 +160,6 @@ public class latestcommentvolley extends Fragment {
                             Log.e("log_tag", "Error parsing data " + e.toString());
                         }
 
-                        // notifying list adapter about data changes
-                        // so that it renders the list view with updated data
-                        adapter.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -132,12 +172,8 @@ public class latestcommentvolley extends Fragment {
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(latestcommentReq);
-
-
-
-
-        return view;
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

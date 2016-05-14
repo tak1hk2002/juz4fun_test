@@ -174,7 +174,6 @@ public class Fragment_ViewComment extends Fragment {
                 ranking.getUrlComment().concat(Integer.toString(offset)), null, new Response.Listener<JSONObject>() {
 
             public void onResponse(JSONObject response) {
-                Log.d("json_loadmore", response.toString());
 
 
                 try {

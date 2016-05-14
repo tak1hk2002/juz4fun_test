@@ -6,36 +6,23 @@ package com.company.damonday.LatestComment;
 import java.util.ArrayList;
 
 public class latestcomment {
-    private String title;
-    private String thumbnailUrl;
-    private String username;
-    private String user_id;
-    private String comment;
-    private String day_before;
-    private String aveage_scrore;
-
-
+    private String title, profilePic, postedDate, username, rating, id, entName, companyName;
 
 
     public latestcomment() {
     }
 
 
-
-    public latestcomment(String user_id, String thumbnailUrl, String day_before, String aveage_scrore,String username,
-                         String comment,String title
-                        ) {
+    public latestcomment(String title, String profilePic, String postedDate, String username, String rating, String id, String entName, String companyName) {
         this.title = title;
-        this.user_id=user_id;
-        this.thumbnailUrl = thumbnailUrl;
-        this.day_before = day_before;
-        this.aveage_scrore = aveage_scrore;
-        this.username =username;
-        this.comment = comment;
-        this.title = title;
+        this.profilePic = profilePic;
+        this.postedDate = postedDate;
+        this.entName = entName;
+        this.companyName = companyName;
+        this.username = username;
+        this.rating = rating;
+        this.id = id;
     }
-
-
 
     public String getTitle() {
         return title;
@@ -45,12 +32,36 @@ public class latestcomment {
         this.title = title;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public String getProfilePic() {
+        return profilePic;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
+    public String getPostedDate() {
+        return postedDate;
+    }
+
+    public String getEntName() {
+        return entName;
+    }
+
+    public void setEntName(String entName) {
+        this.entName = entName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public void setPostedDate(String postedDate) {
+        this.postedDate = postedDate;
     }
 
     public String getUsername() {
@@ -61,37 +72,19 @@ public class latestcomment {
         this.username = username;
     }
 
-    public String getComment() {
-        return comment;
+    public String getRating() {
+        return rating;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 
-    public String getDay_before() {
-        return day_before;
+    public String getId() {
+        return id;
     }
 
-    public void setDay_before(String day_before) {
-        this.day_before = day_before;
+    public void setId(String id) {
+        this.id = id;
     }
-
-    public String getAveage_scrore() {
-        return aveage_scrore;
-    }
-
-    public void setAveage_scrore(String aveage_scrore) {
-        this.aveage_scrore = aveage_scrore;
-    }
-
-    public String getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
-    }
-
-
 }
