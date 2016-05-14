@@ -26,6 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.company.damonday.CompanyInfo.CompanySQLiteHandler;
 import com.company.damonday.Home.Home;
 import com.company.damonday.LatestComment.latestcommentvolley;
 import com.company.damonday.Login.Fragment.Fragment_Login;
@@ -38,6 +39,7 @@ import com.company.damonday.Ranking.NavDrawerListAdapter;
 import com.company.damonday.Ranking.Ranking_try;
 import com.company.damonday.Search.search;
 import com.company.damonday.Setting.Setting;
+import com.company.damonday.function.ConnectionDetector;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 
@@ -80,6 +82,11 @@ public class TestActivity extends FragmentActivity {
         FacebookSdk.sdkInitialize(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer);
+
+
+
+        //check if the network is connected      Alan 14/5/2016
+        DialogForNetworkChecking();
 
         //tomc 10/4/2016   login
         session = new SessionManager(this);
@@ -221,6 +228,25 @@ public class TestActivity extends FragmentActivity {
 
 
 
+    }
+
+    public void DialogForNetworkChecking(){
+        Boolean isInternetPresent = ConnectionDetector.isConnectingToInternet(this); // true or false
+        if(isInternetPresent == false) {
+            AlertDialog.Builder ab = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK);
+            AlertDialog dialog;
+            ab.setTitle(R.string.connection_fail_warning);
+            ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            dialog = ab.create();
+            dialog.show();
+        }
+        Log.d("Network", "bool=" + isInternetPresent);
+        Toast.makeText(this, "network = " + isInternetPresent, Toast.LENGTH_SHORT).show();
     }
 
     /**

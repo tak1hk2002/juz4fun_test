@@ -242,27 +242,8 @@ public class Home extends Fragment {
 
             public void onErrorResponse(VolleyError error) {
 
-              //  ConnectionDetector cd = new ConnectionDetector(getActivity().getApplicationContext());
-
-                Boolean isInternetPresent = ConnectionDetector.isConnectingToInternet(getActivity()); // true or falsew
 
 
-                Log.d("Network","bool="+isInternetPresent);
-               // String body="";
-                //get status code here
-                //String statusCode = String.valueOf(error.networkResponse.statusCode);
-                //get response body and parse with appropriate encoding
-//                if(error.networkResponse.data!=null) {
-//                    try {
-//                        body = new String(error.networkResponse.data,"UTF-8");
-//                    } catch (UnsupportedEncodingException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//
-                Toast.makeText(getActivity(),
-                        "newwork="+isInternetPresent  , Toast.LENGTH_SHORT).show();
 
 
                 //do stuff with the body...

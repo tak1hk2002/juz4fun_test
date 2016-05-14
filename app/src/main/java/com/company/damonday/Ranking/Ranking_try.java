@@ -185,8 +185,10 @@ public class Ranking_try extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
+/*
                 Toast.makeText(getActivity(),
                         error.getMessage(), Toast.LENGTH_SHORT).show();
+*/
                 hidepDialog();
             }
         });
