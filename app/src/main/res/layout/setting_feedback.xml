@@ -1,159 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_grey_black_light">
-
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-       >
-
-
-        <TextView
-            android:text="主題"
-            android:textSize="20dp"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.35"
-            android:textColor="@color/font_grey_white"/>
-
-       <EditText
-           android:layout_width="0dp"
-           android:layout_height="match_parent"
-           android:id="@+id/subject"
-           android:textColor="@color/font_grey_white"
-           android:layout_weight="0.65"
-           />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp">
-
-
-        <TextView
-            android:text="你的電郵"
-            android:textSize="20dp"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.35"
-            android:textColor="@color/font_grey_white"/>
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.65"
-            android:textColor="@color/font_grey_white"
-            android:id="@+id/email"/>
-
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp">
-
-
-        <TextView
-            android:text="內容"
-            android:textSize="20dp"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.35"
-            android:textColor="@color/font_grey_white"/>
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.65"
-            android:textColor="@color/font_grey_white"
-            android:id="@+id/content"/>
-
-
-    </LinearLayout>
-
-
-    <ImageView
-
-        android:layout_marginTop="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/mascot_cry_comment"
-        android:layout_gravity="center_horizontal"/>
-
-
+    android:background="@color/bg_grey_black_light"
+    android:gravity="bottom">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
+        android:id="@+id/button_bottom"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp">
+        android:layout_alignParentBottom="true">
 
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:orientation="vertical">
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_top_height"
-                android:text="重設"
-                android:id="@+id/button_reset"
-                android:layout_gravity="left"
-                android:background="@drawable/btn_actioncell_reset_topbg"
-                android:textColor="@color/font_white"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_down_height"
-                android:background="@drawable/btn_actioncell_reset_downbg"/>
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/button_reset"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_top_height"
+                    android:layout_gravity="left"
+                    android:background="@drawable/btn_actioncell_reset_topbg"
+                    android:text="重設"
+                    android:textColor="@color/font_white" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_down_height"
+                    android:background="@drawable/btn_actioncell_reset_downbg" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.6"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/button_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_top_height"
+                    android:layout_gravity="right"
+                    android:background="@drawable/btn_actioncell_send_topbg"
+                    android:text="提交"
+                    android:textColor="@color/font_white" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_down_height"
+                    android:background="@drawable/btn_actioncell_send_downbg" />
+            </LinearLayout>
+
+
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:orientation="vertical"
-            android:layout_marginLeft="5dp">
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_top_height"
-                android:text="提交"
-                android:id="@+id/button_submit"
-                android:layout_gravity="right"
-                android:background="@drawable/btn_actioncell_send_topbg"
-                android:textColor="@color/font_white"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_down_height"
-                android:background="@drawable/btn_actioncell_send_downbg"/>
-        </LinearLayout>
-
-
-
-    </LinearLayout>
 
     </RelativeLayout>
 
-</LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/button_bottom"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.35"
+                    android:text="主題"
+                    android:textColor="@color/font_grey_white"
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/subject"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.65"
+                    android:textColor="@color/font_grey_white" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.35"
+                    android:text="你的電郵"
+                    android:textColor="@color/font_grey_white"
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.65"
+                    android:textColor="@color/font_grey_white" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.35"
+                    android:text="內容"
+                    android:textColor="@color/font_grey_white"
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.65"
+                    android:textColor="@color/font_grey_white" />
+
+
+            </LinearLayout>
+
+
+            <ImageView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/mascot_cry_comment" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

@@ -68,7 +68,7 @@
              android:textSize="20dp"
             android:textColor="@color/font_grey_white"
              android:id="@+id/textview"
-            android:text="pppp"
+            android:text="世界和平"
              android:gravity="center" />
 
 

@@ -112,9 +112,9 @@ TextView textview;
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("json", "Error: " + error.getMessage());
-                Toast.makeText(getActivity(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
+//                VolleyLog.d("json", "Error: " + error.getMessage());
+//                Toast.makeText(getActivity(),
+//                        error.getMessage(), Toast.LENGTH_SHORT).show();
                 //hidePDialog();
             }
         });
