@@ -40,14 +40,14 @@
                 android:layout_gravity="bottom"
                 android:id="@+id/linear_logout">
                 <Button
-                    android:layout_width="@dimen/btn_drawer_login_width"
+                    android:layout_width="@dimen/btn_top_width_long"
                     android:layout_height="@dimen/btn_top_height"
                     android:text="@string/btn_logout"
                     android:background="@drawable/btn_hamburger_logout_topbg"
                     android:id="@+id/btn_logout"
                     android:textColor="@color/white"/>
                 <Button
-                    android:layout_width="@dimen/btn_drawer_login_width"
+                    android:layout_width="@dimen/btn_down_width_long"
                     android:layout_height="@dimen/btn_down_height"
                     android:background="@drawable/btn_hamburger_logout_downbg"/>
             </LinearLayout>

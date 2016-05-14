@@ -42,6 +42,7 @@ import com.company.damonday.Setting.Setting;
 import com.company.damonday.function.ConnectionDetector;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 
 import java.util.ArrayList;
 
@@ -274,45 +275,74 @@ public class TestActivity extends FragmentActivity {
     }
 
     public void checkLogin(){
-        Log.d("eeeeeer","eeeeeer");
-        if(session.isLoggedIn()|| AccessToken.getCurrentAccessToken() != null){
+        Log.d("eeeeeer", "eeeeeer");
+        if(session.isLoggedIn()|| AccessToken.getCurrentAccessToken() != null) {
             linear_login.setVisibility(View.GONE);
             linear_register.setVisibility(View.GONE);
             linear_logout.setVisibility(View.VISIBLE);
 
-            btn_logout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    session.setLogin(false);
-                    db.deleteUsers();
 
-                    //display message login successfully
-                    AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
-                    ab.setTitle(R.string.logout_success);
-                    ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+            if (session.isLoggedIn()) {
+                btn_logout.setOnClickListener(new View.OnClickListener() {
+                    @Override
 
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Setting setting = new Setting();
-                            FragmentManager fragmentManager = getSupportFragmentManager();
-                            //clear all of the fragment at the stack
-                            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null);
 
-                            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                            fragmentTransaction.commit();
-                            mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                    public void onClick(View v) {
+                        session.setLogin(false);
+                        db.deleteUsers();
+
+                        //display message login successfully
+                        AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
+                        ab.setTitle(R.string.logout_success);
+                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+//                                Setting setting = new Setting();
+//                                FragmentManager fragmentManager = getSupportFragmentManager();
+//                                //clear all of the fragment at the stack
+//                                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                                fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null);
+//
+//                                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                                fragmentTransaction.commit();
+                                mDrawerLayout.closeDrawer(Gravity.RIGHT);
 //                            linear_login.setVisibility(View.VISIBLE);
 //                            linear_register.setVisibility(View.VISIBLE);
 //                            linear_logout.setVisibility(View.GONE);
 
-                        }
-                    });
-                    ab.create().show();
-                }
+                            }
+                        });
+                        ab.create().show();
+                    }
 
-            });
+
+                });
+            } else if (AccessToken.getCurrentAccessToken() != null) {
+                btn_logout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        LoginManager.getInstance().logOut();
+                        AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
+                        ab.setTitle(R.string.logout_success);
+                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+//
+                                mDrawerLayout.closeDrawer(Gravity.RIGHT);
+
+
+                            }
+                        });
+                        ab.create().show();
+
+                    }
+                });
+
+
+            }
         }
         else {
 
