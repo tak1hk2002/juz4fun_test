@@ -7,6 +7,9 @@
     <!--common use-->
     <string name="or">或</string>
 
+    <!--Initial-->
+    <string name="connection_fail_warning">喂！你斷左線WOR（好似係）</string>
+
     <!-- Login and register-->
     
         <string name="hint_email">請輸入電郵</string>
