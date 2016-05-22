@@ -81,8 +81,8 @@ public class MyAdapter extends BaseAdapter
             title.setText(c.getTitle());
             mProgress.setVisibility(View.INVISIBLE);
         }
-        companyImage.setDefaultImageResId(R.drawable.ic_launcher);
-        companyImage.setErrorImageResId(R.drawable.ic_launcher);
+        companyImage.setDefaultImageResId(R.drawable.mascot_die_pic);
+        companyImage.setErrorImageResId(R.drawable.mascot_die_pic);
         ranking.setImageResource(c.getMoscotId());
 
 
