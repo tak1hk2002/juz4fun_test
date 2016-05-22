@@ -22,6 +22,7 @@ import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.ProgressImage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +40,7 @@ public class Ranking_try extends Fragment {
     private static String TAG = Ranking.class.getSimpleName();
 
     // Progress dialog
-    private ProgressDialog pDialog;
+    private ProgressImage pDialog;
     private List<CompanyInfo> companyInfoItems = new ArrayList<CompanyInfo>();
     private GridView gridView;
     private MyAdapter adapter;
@@ -49,9 +50,9 @@ public class Ranking_try extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        pDialog = new ProgressDialog(getActivity());
+        pDialog = new ProgressImage(getActivity());
         // Showing progress dialog before making http request
-        pDialog.setMessage("Loading...");
+        //pDialog.setMessage("Loading...");
         pDialog.show();
 
         makeJsonArrayRequest();
@@ -185,10 +186,8 @@ public class Ranking_try extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-/*
                 Toast.makeText(getActivity(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
-*/
+                        R.string.connection_server_warning, Toast.LENGTH_SHORT).show();
                 hidepDialog();
             }
         });
@@ -198,13 +197,11 @@ public class Ranking_try extends Fragment {
     }
 
     private void showpDialog() {
-        if (!pDialog.isShowing())
             pDialog.show();
     }
 
     private void hidepDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
+            pDialog.hide();
     }
 
 }

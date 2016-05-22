@@ -247,7 +247,6 @@ public class TestActivity extends FragmentActivity {
             dialog.show();
         }
         Log.d("Network", "bool=" + isInternetPresent);
-        Toast.makeText(this, "network = " + isInternetPresent, Toast.LENGTH_SHORT).show();
     }
 
     /**

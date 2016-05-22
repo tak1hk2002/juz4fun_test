@@ -25,6 +25,7 @@ import com.company.damonday.Login.FragmentTabs;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.Ranking.Ranking;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.ProgressImage;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -36,6 +37,7 @@ import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+//import com.felipecsl.gifimageview.library.GifImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,7 +52,7 @@ public class MainActivity extends FragmentActivity {
     CallbackManager callbackManager;
     private AccessToken accessToken;
     private TextView info;
-    private ImageView profileImgView;
+    private ImageView profileImgView, progress;
     private Button btn;
     private Button btn_map;
     private Button btn_login;
@@ -67,6 +69,8 @@ public class MainActivity extends FragmentActivity {
         info = (TextView) findViewById(R.id.info);
         profileImgView = (ImageView) findViewById(R.id.profile_img);
         btn_testScorllView = (Button)findViewById(R.id.button2);
+        progress = (ImageView)findViewById(R.id.imageView);
+        //GifImageView gifImageView = (GifImageView) findViewById(R.id.imageView);
 
         final AlertDialog.Builder ab = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK);
         final AlertDialog[] dialog = new AlertDialog[1];
@@ -80,6 +84,7 @@ public class MainActivity extends FragmentActivity {
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
 
         Log.v("context", getApplicationContext().toString());
+
 
         btn.setOnClickListener(new Button.OnClickListener() {
 

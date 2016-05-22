@@ -28,4 +28,8 @@
 
     <dimen name="icon_forward_arrow_dp">13dp</dimen>
 
+    <!--progress image-->
+    <dimen name="progress_image_width">200dp</dimen>
+    <dimen name="progress_image_height">200dp</dimen>
+
 </resources>
