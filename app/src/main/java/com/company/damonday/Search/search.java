@@ -32,6 +32,7 @@ import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.ProgressImage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,7 +70,7 @@ public class search extends Fragment {
     private String category_id;
 
     private Button button_search;
-    private ProgressDialog pDialog;
+    private ProgressImage pDialog;
     private View view;
 
     @Override

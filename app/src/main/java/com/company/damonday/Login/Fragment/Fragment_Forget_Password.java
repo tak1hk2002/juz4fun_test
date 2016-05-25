@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.company.damonday.R;
+import com.company.damonday.function.ProgressImage;
 
 public class Fragment_Forget_Password extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -27,7 +28,7 @@ public class Fragment_Forget_Password extends Fragment {
     private String mParam2;
 
     private View view;
-    private ProgressDialog pDialog;
+    private ProgressImage pDialog;
 
 
     /**
@@ -61,8 +62,7 @@ public class Fragment_Forget_Password extends Fragment {
         }
 
         // Progress dialog
-        pDialog = new ProgressDialog(getActivity());
-        pDialog.setCancelable(false);
+        pDialog = new ProgressImage(getActivity());
     }
 
     @Override

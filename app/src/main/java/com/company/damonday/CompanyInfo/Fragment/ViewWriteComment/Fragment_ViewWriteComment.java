@@ -37,6 +37,7 @@ import com.company.damonday.Login.SessionManager;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.ProgressImage;
 import com.facebook.AccessToken;
 
 import org.json.JSONException;
@@ -59,7 +60,7 @@ public class Fragment_ViewWriteComment extends Fragment {
     private String entId;
     private String[] title, titleDetailRating, titleOverAllRating;
     private RatingAdapter ratingAdapter;
-    private ProgressDialog pDialog;
+    private ProgressImage pDialog;
     private static final String TAG = Fragment_ViewWriteComment.class.getSimpleName();
     private SessionManager session;
     private LoginSQLiteHandler DB;
@@ -111,8 +112,7 @@ public class Fragment_ViewWriteComment extends Fragment {
         DB = new LoginSQLiteHandler(getActivity());
 
         // Progress dialog
-        pDialog = new ProgressDialog(getActivity());
-        pDialog.setCancelable(false);
+        pDialog = new ProgressImage(getActivity());
 
 
 
@@ -539,7 +539,6 @@ public class Fragment_ViewWriteComment extends Fragment {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
         final String detailRatingDB[] = getResources().getStringArray(R.array.writeComment_dialog_rating_detail_db);
-        pDialog.setMessage("提交中 ...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,

@@ -151,7 +151,7 @@
             android:layout_centerHorizontal="true">
             <com.facebook.login.widget.LoginButton
                 xmlns:facebook="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/login_button"
+                android:id="@+id/btn_fb_login"
                 android:layout_width="@dimen/btn_down_width_long"
                 android:layout_height="@dimen/btn_top_height"
                 android:background="@drawable/btn_fblogin_topbg"
@@ -179,7 +179,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp">
             <Button
-                android:id="@+id/btnCancel"
+                android:id="@+id/btn_cancel"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/btn_top_height"
                 android:background="@drawable/btn_actioncell_reset_topbg"
@@ -200,7 +200,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp">
             <Button
-                android:id="@+id/btnLogin"
+                android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/btn_top_height"
                 android:background="@drawable/btn_actioncell_send_topbg"

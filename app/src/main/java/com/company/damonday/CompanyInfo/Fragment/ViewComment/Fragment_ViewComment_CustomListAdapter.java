@@ -67,6 +67,8 @@ public class Fragment_ViewComment_CustomListAdapter extends BaseAdapter {
 
         // profilePic image
         profilePic.setImageUrl(m.getProfilePic(), imageLoader);
+        profilePic.setDefaultImageResId(R.drawable.mascot_die_pic);
+        profilePic.setErrorImageResId(R.drawable.mascot_die_pic);
 
         // title
         title.setText(m.getTitle());

@@ -56,6 +56,7 @@
     <string name="tab_photo">相片</string>
     <string name="heart_unclicked">已從我的最愛中移除</string>
     <string name="heart_clicked">已加入到我的最愛</string>
+    <string name="not_has_score_yet">未有分住</string>
     <string-array name="company_info_cat">
         <item>公司名稱：</item>
         <item>玩樂簡介：</item>

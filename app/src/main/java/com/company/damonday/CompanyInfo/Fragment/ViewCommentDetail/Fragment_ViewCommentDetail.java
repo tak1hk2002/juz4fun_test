@@ -23,6 +23,7 @@ import com.appyvet.rangebar.RangeBar;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.ProgressImage;
 
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -35,7 +36,7 @@ public class Fragment_ViewCommentDetail extends Fragment {
     ImageView averagePic;
     TextView title, date, username, averageScore, content, funScore, serviceScore, environmentScore, equipmentScore, priceScore;
     APIConfig commentUrl;
-    ProgressDialog pDialog;
+    ProgressImage pDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,9 +47,7 @@ public class Fragment_ViewCommentDetail extends Fragment {
             String commentId = getArguments().getString("comment_id");
             //new object for Api url
             commentUrl = new APIConfig(commentId);
-            pDialog = new ProgressDialog(getActivity());
-            // Showing progress dialog before making http request
-            pDialog.setMessage("Loading...");
+            pDialog = new ProgressImage(getActivity());
             pDialog.show();
             Log.d("comment_id", commentId);
         }catch(Exception e){
@@ -79,6 +78,9 @@ public class Fragment_ViewCommentDetail extends Fragment {
         environmentScore = (TextView) view.findViewById(R.id.environment_score);
         equipmentScore = (TextView) view.findViewById(R.id.equipment_score);
         priceScore = (TextView) view.findViewById(R.id.price_score);
+
+        profilePic.setDefaultImageResId(R.drawable.mascot_die_pic);
+        profilePic.setErrorImageResId(R.drawable.mascot_die_pic);
 /*
         funScore.setEnabled(false);
         funScore.setBarColor(R.color.font_red);

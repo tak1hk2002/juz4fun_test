@@ -113,7 +113,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp">
             <Button
-                android:id="@+id/btnCancel"
+                android:id="@+id/btn_cancel"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/btn_top_height"
                 android:background="@drawable/btn_actioncell_reset_topbg"
@@ -134,7 +134,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp">
             <Button
-                android:id="@+id/btnRegister"
+                android:id="@+id/btn_register"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/btn_top_height"
                 android:background="@drawable/btn_actioncell_send_topbg"

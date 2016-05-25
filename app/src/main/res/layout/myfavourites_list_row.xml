@@ -14,7 +14,7 @@
         >
 
         <com.android.volley.toolbox.NetworkImageView
-            android:id="@+id/thumbnail"
+            android:id="@+id/user_icon"
             android:layout_width="80dp"
             android:layout_height="80dp"/>
     </RelativeLayout>
@@ -145,11 +145,12 @@
             android:layout_alignParentEnd="true">
 
             <ImageView
-                android:layout_marginTop="8dp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:id="@+id/imageView"
-                android:src="@drawable/like" />
+                android:id="@+id/score_icon"
+                android:src="@drawable/like"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
 
             <TextView
                 android:id="@+id/average_score"
@@ -159,17 +160,17 @@
                 android:text="3.4"
                 android:textColor="@color/font_grey_white"
                 android:paddingLeft="1dp"
-                android:layout_below="@+id/imageView"
+                android:layout_below="@+id/score_icon"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/average_score2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/my_favourite_max_rating"
                 android:text="/5"
-                android:layout_below="@+id/imageView"
+                android:layout_below="@+id/score_icon"
                 android:layout_toRightOf="@+id/average_score"
                 android:textColor="@color/font_grey_white"
                 android:padding="1dp" />

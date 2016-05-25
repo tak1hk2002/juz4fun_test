@@ -47,6 +47,7 @@ package com.company.damonday.Search;
         import com.company.damonday.R;
         import com.company.damonday.function.APIConfig;
         import com.company.damonday.function.AppController;
+        import com.company.damonday.function.ProgressImage;
         import com.google.android.gms.analytics.ecommerce.Product;
 
 
@@ -60,7 +61,7 @@ public class search_fast extends Fragment {
     ListView searchResults;
     private List<CompanyObject> companyObjects = new ArrayList<CompanyObject>();
     String found = "N";
-    private ProgressDialog pDialog;
+    private ProgressImage pDialog;
     private SearchResultsAdapter adapter;
 
 

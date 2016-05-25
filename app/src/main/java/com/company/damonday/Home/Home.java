@@ -50,7 +50,6 @@ public class Home extends Fragment {
     private static String TAG = Ranking.class.getSimpleName();
 
     // Progress dialog
-    private ProgressDialog pDialog;
     private List<CompanyInfo> companyInfoItems = new ArrayList<CompanyInfo>();
     private GridView gridView;
     private MyAdapter adapter;

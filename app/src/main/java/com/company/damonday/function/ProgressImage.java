@@ -19,6 +19,7 @@ import com.company.damonday.R;
 public class ProgressImage{
 
     private Context mContext;
+    private boolean mShowing = false;
     Dialog dialog;
 
     public ProgressImage(Context context) {
@@ -40,11 +41,17 @@ public class ProgressImage{
 
 
     public void show() {
+        mShowing = true;
         dialog.show();
     }
 
-    public void hide() {
+    public void dismiss() {
+        mShowing = false;
         dialog.dismiss();
+    }
+
+    public boolean isShowing() {
+        return mShowing;
     }
 
 }

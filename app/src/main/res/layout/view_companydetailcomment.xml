@@ -67,25 +67,31 @@
             <ImageView
                 android:id="@+id/average_pic"
                 android:layout_width="40dp"
-                android:layout_height="40dp"/>
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/average_score"
-                android:layout_below="@+id/average_pic"
-                android:layout_marginLeft="8dp"
-                android:layout_alignParentBottom="false"
-                android:textSize="18sp"
-                android:textColor="@color/font_grey_white"/>
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/my_favourite_rating"
+                android:text="3.4"
+                android:textColor="@color/font_grey_white"
+                android:paddingLeft="1dp"
+                android:layout_below="@+id/average_pic"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
                 android:id="@+id/max_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/my_favourite_max_rating"
+                android:text="/5"
                 android:layout_below="@+id/average_pic"
                 android:layout_toRightOf="@+id/average_score"
-                android:layout_marginTop="4dp"
                 android:textColor="@color/font_grey_white"
-                android:text="@string/commentDetail_max_score" />
+                android:padding="1dp" />
         </RelativeLayout>
 
         <View

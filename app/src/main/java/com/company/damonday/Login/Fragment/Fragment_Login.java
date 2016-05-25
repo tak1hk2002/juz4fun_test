@@ -30,6 +30,7 @@ import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MainActivity;
 import com.company.damonday.R;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.ProgressImage;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -53,11 +54,10 @@ import java.util.Map;
  */
 public class Fragment_Login extends Fragment {
     private static final String TAG = Fragment_Registration.class.getSimpleName();
-    private Button btnLogin;
-    private Button btnLinkToRegister;
+    private Button btnLogin, btnCancel;
     private EditText inputUsername;
     private EditText inputPassword;
-    private ProgressDialog pDialog;
+    private ProgressImage pDialog;
     private SessionManager session;
     private LoginSQLiteHandler loginSQLiteHandler;
     private View v;
@@ -91,11 +91,12 @@ public class Fragment_Login extends Fragment {
         v = inflater.inflate(R.layout.login_login_tab, container, false);
         inputUsername = (EditText)v.findViewById(R.id.username);
         inputPassword = (EditText)v.findViewById(R.id.password);
-        btnLogin = (Button) v.findViewById(R.id.btnLogin);
+        btnLogin = (Button) v.findViewById(R.id.btn_login);
+        btnCancel = (Button) v.findViewById(R.id.btn_cancel);
         TextView txtRegister = (TextView) v.findViewById(R.id.register);
         TextView txtForgotPassword = (TextView) v.findViewById(R.id.forgot_password);
         //找到login button
-        LoginButton loginButton = (LoginButton) v.findViewById(R.id.login_button);
+        LoginButton loginButton = (LoginButton) v.findViewById(R.id.btn_fb_login);
         loginButton.setFragment(this);
         loginButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 
@@ -104,11 +105,10 @@ public class Fragment_Login extends Fragment {
 
 
         // Progress dialog
-        pDialog = new ProgressDialog(v.getContext());
-        pDialog.setCancelable(false);
+        pDialog = new ProgressImage(getActivity());
 
         // Session manager
-        session = new SessionManager(getActivity().getApplicationContext());
+        session = new SessionManager(getActivity());
 
 
         txtForgotPassword.setOnClickListener(new View.OnClickListener() {
@@ -128,8 +128,8 @@ public class Fragment_Login extends Fragment {
         });
 
 
-        btnLogin.setOnClickListener(new AdapterView.OnClickListener() {
-
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
                 String username = inputUsername.getText().toString();
                 String password = inputPassword.getText().toString();
@@ -145,6 +145,14 @@ public class Fragment_Login extends Fragment {
                 }
             }
 
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                fm.popBackStack();
+            }
         });
 
         txtRegister.setOnClickListener(new View.OnClickListener() {
@@ -318,7 +326,6 @@ public class Fragment_Login extends Fragment {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
-        pDialog.setMessage("提交中 ...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,

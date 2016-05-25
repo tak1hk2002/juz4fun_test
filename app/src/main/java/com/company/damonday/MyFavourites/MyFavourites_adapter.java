@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import com.company.damonday.CompanyInfo.CompanySQLiteHandler;
 import com.company.damonday.R;
 import com.company.damonday.Search.CompanyObject;
 import com.company.damonday.function.AppController;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -64,16 +67,17 @@ public class MyFavourites_adapter extends BaseAdapter {
 
             if (imageLoader == null)
                 imageLoader = AppController.getInstance().getImageLoader();
-            NetworkImageView thumbNail = (NetworkImageView) convertView
-                    .findViewById(R.id.thumbnail);
+            NetworkImageView userIcon = (NetworkImageView) convertView
+                    .findViewById(R.id.user_icon);
             TextView title = (TextView) convertView.findViewById(R.id.title);
             TextView rating = (TextView) convertView.findViewById(R.id.average_score);
+            TextView rating2 = (TextView) convertView.findViewById(R.id.average_score2);
             TextView price_range = (TextView) convertView.findViewById(R.id.price_range);
             TextView category = (TextView) convertView.findViewById(R.id.category);
             TextView like = (TextView) convertView.findViewById(R.id.like);
             TextView fair = (TextView) convertView.findViewById(R.id.fair);
             TextView dislike = (TextView) convertView.findViewById(R.id.dislike);
-            ImageView bigLike = (ImageView) convertView.findViewById(R.id.big_like);
+            ImageView scoreIcon = (ImageView) convertView.findViewById(R.id.score_icon);
             final ImageView myFavourite = (ImageView) convertView.findViewById(R.id.my_favourite);
 
 
@@ -81,7 +85,9 @@ public class MyFavourites_adapter extends BaseAdapter {
             MyFavouritesObject m = myFavouritesObjects.get(position);
 
             // thumbnail image
-            thumbNail.setImageUrl(m.getPicUrl(), imageLoader);
+            userIcon.setImageUrl(m.getPicUrl(), imageLoader);
+            userIcon.setDefaultImageResId(R.drawable.mascot_die_pic);
+            userIcon.setErrorImageResId(R.drawable.mascot_die_pic);
 
             // title
             title.setText(m.getTitle());
@@ -89,12 +95,18 @@ public class MyFavourites_adapter extends BaseAdapter {
             // rating
             rating.setText(m.getAverageScore());
 
-            /*if(Float.valueOf(m.getAverageScore()) < 1.7)
-                bigLike.setImageResource(R.drawable.mascot_send_comment);
+            Log.d("m.getAverageScore()", m.getAverageScore());
+
+            if(m.getAverageScore().equals(activity.getResources().getString(R.string.not_has_score_yet))) {
+                scoreIcon.setImageResource(R.drawable.mascot_send_comment);
+                rating2.setVisibility(View.GONE);
+            }
+            else if(Float.valueOf(m.getAverageScore()) < 1.7)
+                scoreIcon.setImageResource(R.drawable.mascot_send_comment);
             else if(Float.valueOf(m.getAverageScore()) >= 1.7 && Float.valueOf(m.getAverageScore()) <= 3.3)
-                bigLike.setImageResource(R.drawable.mascot_smile_comment);
+                scoreIcon.setImageResource(R.drawable.mascot_smile_comment);
             else if(Float.valueOf(m.getAverageScore()) > 3.3)
-                bigLike.setImageResource(R.drawable.mascot_happy_comment);*/
+                scoreIcon.setImageResource(R.drawable.mascot_happy_comment);
 
             //price_range
             price_range.setText(m.getPrice());

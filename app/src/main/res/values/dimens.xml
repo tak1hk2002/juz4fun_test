@@ -11,7 +11,7 @@
     <dimen name="max_rating">15sp</dimen>
 
     <!-- my favourite -->
-    <dimen name="my_favourite_rating">18sp</dimen>
+    <dimen name="my_favourite_rating">17sp</dimen>
     <dimen name="my_favourite_max_rating">15sp</dimen>
     <dimen name="my_favourite_price">15sp</dimen>
     <dimen name="my_favourite_cat">15sp</dimen>

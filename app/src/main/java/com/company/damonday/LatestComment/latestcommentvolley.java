@@ -25,6 +25,7 @@ import com.company.damonday.CompanyInfo.Fragment.ViewCommentDetail.Fragment_View
 import com.company.damonday.R;
 import com.company.damonday.function.AppController;
 import com.company.damonday.function.APIConfig;
+import com.company.damonday.function.ProgressImage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +38,7 @@ public class latestcommentvolley extends Fragment {
     // Log tag
     private static final String TAG = latestcommentvolley.class.getSimpleName();
 
-    private ProgressDialog pDialog;
+    private ProgressImage pDialog;
     private List<latestcomment> latestcommentList = new ArrayList<latestcomment>();
     private ListView listView;
     private latestcomment_Adapter adapter;
@@ -88,9 +89,8 @@ public class latestcommentvolley extends Fragment {
             }
         });
 
-        pDialog = new ProgressDialog(getActivity());
+        pDialog = new ProgressImage(getActivity());
         // Showing progress dialog before making http request
-        pDialog.setMessage("Loading...");
         pDialog.show();
 
         // changing action bar color

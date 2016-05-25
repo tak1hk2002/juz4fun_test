@@ -28,6 +28,7 @@ import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MainActivity;
 import com.company.damonday.R;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.ProgressImage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,12 +41,12 @@ import java.util.Map;
  */
 public class Fragment_Registration extends Fragment {
     private static final String TAG = Fragment_Registration.class.getSimpleName();
-    private Button btnRegister;
+    private Button btnRegister, btnCancel;
     private EditText inputUsername;
     private EditText inputEmail;
     private EditText inputPassword;
     private EditText inputConfirmedPassword;
-    private ProgressDialog pDialog;
+    private ProgressImage pDialog;
     private SessionManager session;
     private LoginSQLiteHandler db;
     private View v;
@@ -65,12 +66,12 @@ public class Fragment_Registration extends Fragment {
         inputEmail = (EditText) v.findViewById(R.id.email);
         inputPassword = (EditText) v.findViewById(R.id.password);
         inputConfirmedPassword = (EditText) v.findViewById(R.id.confirmed_password);
-        btnRegister = (Button) v.findViewById(R.id.btnRegister);
+        btnRegister = (Button) v.findViewById(R.id.btn_register);
+        btnCancel = (Button) v.findViewById(R.id.btn_cancel);
 
 
         // Progress dialog
-        pDialog = new ProgressDialog(v.getContext());
-        pDialog.setCancelable(false);
+        pDialog = new ProgressImage(getActivity());
 
         // Session manager
         session = new SessionManager(getActivity());
@@ -123,6 +124,14 @@ public class Fragment_Registration extends Fragment {
             }
         });
 
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                fm.popBackStack();
+            }
+        });
+
 
         return v;
     }
@@ -136,7 +145,6 @@ public class Fragment_Registration extends Fragment {
         // Tag used to cancel the request
         String tag_string_req = "req_register";
 
-        pDialog.setMessage("Registering ...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,

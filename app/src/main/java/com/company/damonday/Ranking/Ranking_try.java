@@ -201,7 +201,7 @@ public class Ranking_try extends Fragment {
     }
 
     private void hidepDialog() {
-            pDialog.hide();
+            pDialog.dismiss();
     }
 
 }

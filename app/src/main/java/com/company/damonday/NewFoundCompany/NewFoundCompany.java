@@ -26,6 +26,7 @@ import com.company.damonday.function.APIConfig;
 
 import com.company.damonday.R;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.ProgressImage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +40,7 @@ import java.util.Map;
 public class NewFoundCompany extends Fragment {
     private View view;
 
-    private ProgressDialog pDialog;
+    private ProgressImage pDialog;
     EditText EditText_company_name;
     EditText EditText_company_tel;
     EditText EditText_company_type;
@@ -77,8 +78,7 @@ public class NewFoundCompany extends Fragment {
         EditText_business_hour = (EditText) view.findViewById(R.id.company_business_hour);
         btn_submit = (Button) view.findViewById(R.id.button_submit);
         btn_reset = (Button) view.findViewById(R.id.button_reset);
-        pDialog = new ProgressDialog(view.getContext());
-        pDialog.setCancelable(false);
+        pDialog = new ProgressImage(view.getContext());
 
         btn_submit.setOnClickListener(new Button.OnClickListener() {
 
@@ -126,7 +126,6 @@ public class NewFoundCompany extends Fragment {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
-        pDialog.setMessage("提交中 ...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,

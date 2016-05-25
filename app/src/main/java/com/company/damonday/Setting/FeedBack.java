@@ -26,6 +26,7 @@ import com.company.damonday.R;
 import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.ProgressImage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +51,7 @@ import java.util.Map;
     Button btn_reset;
     private View view;
 
-    private ProgressDialog pDialog;
+    private ProgressImage pDialog;
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -69,8 +70,7 @@ import java.util.Map;
             EditText_Email=(EditText)view.findViewById(R.id.email);
             btn_submit = (Button)view.findViewById(R.id.button_submit);
             btn_reset = (Button)view.findViewById(R.id.button_reset);
-            pDialog = new ProgressDialog(view.getContext());
-            pDialog.setCancelable(false);
+            pDialog = new ProgressImage(view.getContext());
 
             btn_submit.setOnClickListener(new Button.OnClickListener() {
 
@@ -110,7 +110,6 @@ import java.util.Map;
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
-        pDialog.setMessage("提交中 ...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,

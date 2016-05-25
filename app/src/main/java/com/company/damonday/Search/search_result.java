@@ -31,6 +31,7 @@ import com.company.damonday.LatestComment.latestcomment_Adapter;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.ProgressImage;
 //import com.company.damonday.adapter.CustomListAdapter;
 //import com.company.damonday.app.AppController;
 //import com.company.damonday.model.Movie;
@@ -62,7 +63,7 @@ public class search_result extends Fragment {
 
     // Movies json url
     // private static final String url = "http://damonday.tk/api/comment/latest_comments/?page=1";
-    private ProgressDialog pDialog;
+    private ProgressImage pDialog;
     private List<CompanyObject> companyObjects = new ArrayList<CompanyObject>();
     private ListView listView;
     private search_adapter adapter;
@@ -98,9 +99,7 @@ Log.d("geturl",geturl);
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.search_result, container, false);
         getActivity().getActionBar().setTitle(R.string.advance_search_result);
-        pDialog = new ProgressDialog(getActivity());
-        // Showing progress dialog before making http request
-        pDialog.setMessage("Loading...");
+        pDialog = new ProgressImage(getActivity());
         pDialog.show();
         //setContentView(R.layout.latestcomment);
         submitting(category_id, district_id, large_district_id, price_id);
@@ -219,7 +218,6 @@ Log.d("geturl",geturl);
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
-        pDialog.setMessage("提交中 ...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.GET,

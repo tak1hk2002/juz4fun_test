@@ -38,6 +38,7 @@ import com.company.damonday.MyFavourites.MyFavouritesObject;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.ProgressImage;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.viewpagerindicator.UnderlinePageIndicator;
@@ -56,7 +57,7 @@ public class FragmentTabs_try extends Fragment{
     private FragmentTabHost mTabHost;
     private MyViewPagerAdapter myViewPagerAdapter;
     private ArrayList<String> listOfItems = new ArrayList<String>();;
-    private ProgressDialog pDialog;
+    private ProgressImage pDialog;
     private static String TAG = FragmentTabs_try.class.getSimpleName();
     private ArrayList<String> coverPage = new ArrayList<String>();
     private ArrayList<String> categories = new ArrayList<String>();
@@ -86,9 +87,7 @@ public class FragmentTabs_try extends Fragment{
         session = new SessionManager(getActivity());
 
 
-        pDialog = new ProgressDialog(getActivity());
-        // Showing progress dialog before making http request
-        pDialog.setMessage("Loading...");
+        pDialog = new ProgressImage(getActivity());
         pDialog.show();
         details = new APIConfig(entId);
 
@@ -379,7 +378,8 @@ public class FragmentTabs_try extends Fragment{
                             categories.add((String) cat.get(i));
                         }
                         price = companyInfo.getString("price");
-                        averageScore = score.getString("average_score");
+                        averageScore = score.getString("average_score").equals("null") ? getResources().getString(R.string.not_has_score_yet) : score.getString("average_score");
+
 
                         initViews();
 
