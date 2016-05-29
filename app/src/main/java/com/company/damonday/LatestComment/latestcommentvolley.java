@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -42,10 +43,17 @@ public class latestcommentvolley extends Fragment {
     private List<latestcomment> latestcommentList = new ArrayList<latestcomment>();
     private ListView listView;
     private latestcomment_Adapter adapter;
+    private String api;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            api = getArguments().getString("api");
+        }catch(Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "No API loaded", Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -107,8 +115,8 @@ public class latestcommentvolley extends Fragment {
         // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
         // Deserialize API response and then construct new objects to append to the adapter
         // Creating volley request obj
-        Log.d("Link", APIConfig.URL_Latest_Comment+offset);
-        StringRequest latestcommentReq = new StringRequest( APIConfig.URL_Latest_Comment+Integer.toString(offset),
+        Log.d("Link", api+offset);
+        StringRequest latestcommentReq = new StringRequest( api+Integer.toString(offset),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

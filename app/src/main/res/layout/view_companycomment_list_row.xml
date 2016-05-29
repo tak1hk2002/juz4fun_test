@@ -47,7 +47,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="5dp"
             android:textSize="@dimen/genre"
             android:textColor="@color/font_grey_white"
             android:text="Alan Lam"/>

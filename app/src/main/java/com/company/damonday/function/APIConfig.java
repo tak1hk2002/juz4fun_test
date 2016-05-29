@@ -50,8 +50,9 @@ public class APIConfig {
     public static String URL_Write_Comment = "http://52.32.220.112/api/comment/submit_comment/";
 
     //latest comment
-
     public static String URL_Latest_Comment = "http://52.32.220.112/api/comment/latest_comments/?page=";
+
+    //My comment
 
 
     //Detail url

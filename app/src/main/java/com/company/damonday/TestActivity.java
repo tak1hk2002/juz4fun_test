@@ -39,6 +39,7 @@ import com.company.damonday.Ranking.NavDrawerListAdapter;
 import com.company.damonday.Ranking.Ranking_try;
 import com.company.damonday.Search.search;
 import com.company.damonday.Setting.Setting;
+import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.ConnectionDetector;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
@@ -495,6 +496,7 @@ public class TestActivity extends FragmentActivity {
         // update the main content by replacing fragments
         Fragment fragment = null;
         String tag = null;
+        String api = null;
         //getActionBar().setDisplayHomeAsUpEnabled(true);     //make back button
         showBackButton();
         switch (position) {
@@ -519,6 +521,7 @@ public class TestActivity extends FragmentActivity {
             case 3:
                 //最新評論
                 fragment = new latestcommentvolley();
+                api = APIConfig.URL_Latest_Comment;
                 tag = "latestcommentvolley";
                 break;
             case 4:
@@ -543,6 +546,9 @@ public class TestActivity extends FragmentActivity {
         }
 
         if (fragment != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("api", api);
+            fragment.setArguments(bundle);
             FragmentManager fragmentManager = getSupportFragmentManager();
              System.out.println("testActivity_backstackEntryCount:="+fragmentManager.getBackStackEntryCount());
             //clear all of the fragment at the stack

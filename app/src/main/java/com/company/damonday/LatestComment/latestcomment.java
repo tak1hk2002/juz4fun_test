@@ -6,7 +6,7 @@ package com.company.damonday.LatestComment;
 import java.util.ArrayList;
 
 public class latestcomment {
-    private String title, profilePic, postedDate, username, rating, id, entName, companyName;
+    private String entName, companyName, title, profilePic, postedDate, username, rating, id;
 
 
     public latestcomment() {

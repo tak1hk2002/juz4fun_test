@@ -29,12 +29,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_login_register;
+import com.company.damonday.LatestComment.latestcommentvolley;
 import com.company.damonday.Login.Fragment.Fragment_Login;
 import com.company.damonday.Login.Fragment.Fragment_Registration;
 import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.R;
 import com.company.damonday.Setting.Lib.RoundedTransformation;
+import com.company.damonday.function.APIConfig;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -92,6 +94,9 @@ public class Setting extends Fragment {
         ImageView imgProfile = (ImageView) view.findViewById(R.id.profile_img);
         TextView txtUsername = (TextView) view.findViewById(R.id.username);
         TextView txtEmail = (TextView) view.findViewById(R.id.email);
+        RelativeLayout onClick_aboutus =(RelativeLayout)view.findViewById(R.id.RA_aboutus);
+        RelativeLayout onClick_feedback =(RelativeLayout)view.findViewById(R.id.RA_feedback);
+        RelativeLayout onClickMyComment = (RelativeLayout)view.findViewById(R.id.RA_my_comment);
         //already logined
         if(session.isLoggedIn()){
             islogouted.setVisibility(View.GONE);
@@ -266,11 +271,25 @@ public class Setting extends Fragment {
         }
 
 
+        //click my comment list
+        onClickMyComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                latestcommentvolley latestcomment = new latestcommentvolley();
+                Bundle bundle = new Bundle();
+                bundle.putString("api", APIConfig.URL_Latest_Comment);
+                latestcomment.setArguments(bundle);
 
+                FragmentManager fragmentManager = getFragmentManager();
+                System.out.println(fragmentManager.getBackStackEntryCount());
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("setting"));
+                fragmentTransaction.add(R.id.frame_container, latestcomment, "my_comment").addToBackStack(null);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.commit();
+            }
+        });
 
-
-        RelativeLayout onClick_aboutus =(RelativeLayout)view.findViewById(R.id.RA_aboutus);
-        RelativeLayout onClick_feedback =(RelativeLayout)view.findViewById(R.id.RA_feedback);
         onClick_aboutus.setOnClickListener(new Button.OnClickListener() {
 
             @Override

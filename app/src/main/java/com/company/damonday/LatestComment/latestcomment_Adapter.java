@@ -58,7 +58,7 @@ public class latestcomment_Adapter extends BaseAdapter {
 
         inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.view_companycomment_list_row, parent, false);
+        convertView = inflater.inflate(R.layout.latestcomment_list_row, parent, false);
 
         imageLoader = AppController.getInstance().getImageLoader();
         NetworkImageView profilePic = (NetworkImageView) convertView
@@ -68,6 +68,7 @@ public class latestcomment_Adapter extends BaseAdapter {
         TextView postedDate = (TextView) convertView.findViewById(R.id.posted_date);
         ImageView averagePic = (ImageView) convertView.findViewById(R.id.average_pic);
         TextView rating1 = (TextView) convertView.findViewById(R.id.rating1);
+        TextView rating2 = (TextView) convertView.findViewById(R.id.rating2);
         TextView entNameAndCompanyName = (TextView) convertView.findViewById(R.id.ent_name_company_name);
 
         // getting movie data for the row
@@ -82,7 +83,7 @@ public class latestcomment_Adapter extends BaseAdapter {
         title.setText(m.getTitle());
 
         //Ent name and Company Name
-        //entNameAndCompanyName.setText(m.getEntName()+"@"+m.getCompanyName());
+        entNameAndCompanyName.setText(m.getEntName()+"@"+m.getCompanyName());
 
         //username
         username.setText(m.getUsername());
@@ -90,13 +91,17 @@ public class latestcomment_Adapter extends BaseAdapter {
         // posted date
         postedDate.setText(m.getPostedDate());
 
-/*        //like icon
+        //like icon
+        if(m.getRating().equals("null")) {
+            averagePic.setImageResource(R.drawable.mascot_send_comment);
+            rating2.setVisibility(View.GONE);
+        }
         if(Float.parseFloat(m.getRating()) < 1.7)
             averagePic.setImageResource(R.drawable.mascot_send_comment);
         else if (Float.parseFloat(m.getRating()) >= 1.7 && Float.parseFloat(m.getRating()) <= 3.3)
             averagePic.setImageResource(R.drawable.mascot_smile_comment);
         else if (Float.parseFloat(m.getRating()) > 3.3)
-            averagePic.setImageResource(R.drawable.mascot_happy_comment);*/
+            averagePic.setImageResource(R.drawable.mascot_happy_comment);
 
         //rating
         rating1.setText(m.getRating());
