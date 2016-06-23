@@ -150,13 +150,14 @@ import java.util.Map;
                                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);  //tomc 31/1/2016  To disable the back button in home
 
                              //   System.out.println("testtom31/1=" + fragmentManager.getBackStackEntryCount());
-
+                                getActivity().getActionBar().setTitle(R.string.home);
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("feedback"));
 
                                 fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack(null);
                                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                                 fragmentTransaction.commit();
+                                getActivity().getActionBar().setTitle(R.string.home);
                                // this.getActionBar().setDisplayHomeAsUpEnabled(false);
                                // getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);      //tomc 31/1/2016  To disable the back button in home
 

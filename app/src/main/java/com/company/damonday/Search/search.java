@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -70,6 +72,7 @@ public class search extends Fragment {
     private String category_id;
 
     private Button button_search;
+    private Button button_reset;
     private ProgressImage pDialog;
     private View view;
 
@@ -90,6 +93,18 @@ public class search extends Fragment {
         spinner_category = (Spinner) view.findViewById(R.id.spinner_category);
 
         button_search = (Button) view.findViewById(R.id.button_search);
+        button_reset = (Button) view.findViewById(R.id.button_reset);
+
+        array_district.add("全選");
+        //arrayPrice.add("全選");
+       // array_category.add("全選");
+        array_area_all.add("全選");
+        array_Islands_District.add("全選");
+        array_New_Territories.add("全選");
+        array_Kowloon.add("全選");
+        array_HK_Island.add("全選");
+
+
         makeJsonArrayRequest();
 
 
@@ -109,18 +124,18 @@ public class search extends Fragment {
         spinner_district.setAdapter(adapter_district);
         spinner_lagre_district.setAdapter(adapter_lagre_district);
 
-        arrayPrice.add("全選");
-        array_category.add("全選");
-        array_area_all.add("全選");
-        array_Islands_District.add("全選");
-        array_New_Territories.add("全選");
-        array_Kowloon.add("全選");
-        array_HK_Island.add("全選");
+
         //選中時
         spinner_lagre_district.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             public void onItemSelected(AdapterView adapterView, View view, int position, long id) {
                 //Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
                 Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
+
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+               // ((TextView) adapterView.getChildAt(0)).setTextSize(5);
+
+
+
                 if (adapterView.getSelectedItem().toString().equals("全選")) {
                     array_district = array_area_all;
                     Log.d("tom", "all");
@@ -167,6 +182,7 @@ public class search extends Fragment {
             public void onItemSelected(AdapterView adapterView, View view, int position, long id) {
                 //Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
                 Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //拎番個id
                 if (!adapterView.getSelectedItem().toString().equals("全選")) {
                     price_id = hash_Price.get(adapterView.getSelectedItem().toString());
@@ -184,7 +200,9 @@ public class search extends Fragment {
         spinner_district.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             public void onItemSelected(AdapterView adapterView, View view, int position, long id) {
                 //Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+              //  ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //拎番個id
                 if (!adapterView.getSelectedItem().toString().equals("全選")) {
                     district_id = hash_area_all.get(adapterView.getSelectedItem().toString());
@@ -203,6 +221,8 @@ public class search extends Fragment {
             public void onItemSelected(AdapterView adapterView, View view, int position, long id) {
                 //Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
                 Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
+                Log.d("weqweqweqwe","qweqweqweqwe");
+                         ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //拎番個id
                 if (!adapterView.getSelectedItem().toString().equals("全選")) {
                     category_id = hash_category.get(adapterView.getSelectedItem().toString());
@@ -264,12 +284,31 @@ public class search extends Fragment {
         });
 
 
+
+        button_reset.setOnClickListener(new Button.OnClickListener(){
+            public void onClick(View v) {
+                spinner_lagre_district.setSelection(0);
+                spinner_category.setSelection(0);
+               // spinner_district.setSelection(0);
+                spinnerPrice.setSelection(0);
+
+            }
+
+        });
+
+
+
+
         return view;
     }
 
 
+
+
     //從server 拿資料
     private void makeJsonArrayRequest() {
+
+
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 APIConfig.URL_Advance_Search_criteria, null, new Response.Listener<JSONObject>() {
@@ -293,6 +332,10 @@ public class search extends Fragment {
                         JSONObject price = criteria.getJSONObject("price_range");
                         JSONObject district = criteria.getJSONObject("district");
                         //JSONArray lagre_distinct = criteria.getJSONArray("category");
+
+
+                        arrayPrice.add("全選");               //solve text color bug      2016/6/23 tomc
+                        array_category.add("全選");           //solve text color bug     2016/6/23 tomc
                         for (int i = 0; i < category.length(); i++) {
 
                             JSONObject categoryDetail = (JSONObject) category.get(i);
@@ -358,6 +401,7 @@ public class search extends Fragment {
                     adapter_district.notifyDataSetChanged();
                     adapter_lagre_district.notifyDataSetChanged();
                     adapter_category.notifyDataSetChanged();
+//                    ((TextView) adapterPrice.getChildAt(0)).setTextColor(Color.WHITE);
 
 
                 } catch (JSONException e) {

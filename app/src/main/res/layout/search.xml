@@ -26,8 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/spinner_lagre_district"
-            android:backgroundTint="@color/font_grey_white"
-            />
+            android:backgroundTint="@color/white" />
 
     </LinearLayout>
 
@@ -50,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/spinner_district"
-            android:backgroundTint="@color/font_grey_white"
+            android:backgroundTint="@color/white"
 
             />
 
@@ -74,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/spinner_category"
-            android:backgroundTint="@color/font_grey_white"/>
+            android:backgroundTint="@color/white"/>
 
     </LinearLayout>
     <LinearLayout
@@ -102,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/spinner_price"
-            android:backgroundTint="@color/font_grey_white"/>
+            android:backgroundTint="@color/white"/>
 
     </LinearLayout>
 
@@ -126,7 +125,7 @@
                 android:layout_height="@dimen/btn_top_height"
                 android:layout_width="match_parent"
                 android:text="重設"
-                android:id="@+id/button_clear"
+                android:id="@+id/button_reset"
                 android:layout_gravity="left"
                 android:background="@drawable/btn_actioncell_reset_topbg"
                 android:textColor="@color/white"/>
