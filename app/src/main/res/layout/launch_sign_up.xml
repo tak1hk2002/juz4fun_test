@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/launch"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="30dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:layout_gravity="center">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/font_red"
+            android:layout_weight="0.4"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:textSize="20dp"
+            android:text="@string/title_member_login"
+            android:textColor="@color/font_red"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.4"
+            android:background="@color/font_red"
+            android:layout_gravity="center_vertical"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/liner_or"
+        android:layout_gravity="center"
+        android:paddingBottom="10dp">
+        <com.facebook.login.widget.LoginButton
+            xmlns:facebook="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/btn_fb_login"
+            android:layout_width="@dimen/btn_down_width_super_long"
+            android:layout_height="@dimen/btn_top_height"
+            android:background="@drawable/btn_fblogin_topbg"
+            android:layout_gravity="center_horizontal"
+            facebook:com_facebook_login_text="@string/btn_facebook_login"/>
+        <Button
+            android:layout_width="@dimen/btn_down_width_super_long"
+            android:layout_height="@dimen/btn_down_height"
+            android:background="@drawable/btn_fblogin_downbg"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp">
+            <Button
+                android:id="@+id/btn_email"
+                android:layout_width="@dimen/btn_top_width_long"
+                android:layout_height="@dimen/btn_top_height"
+                android:background="@drawable/btn_actioncell_send_topbg"
+                android:text="@string/btn_email_login"
+                android:textColor="@color/font_white"/>
+            <Button
+                android:layout_width="@dimen/btn_down_width_long"
+                android:layout_height="@dimen/btn_down_height"
+                android:background="@drawable/btn_actioncell_send_downbg"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp">
+            <Button
+                android:id="@+id/btn_skip"
+                android:layout_width="@dimen/btn_top_width"
+                android:layout_height="@dimen/btn_top_height"
+                android:background="@drawable/btn_actioncell_reset_topbg"
+                android:text="@string/btn_skip_login"
+                android:textColor="@color/font_white"
+                android:layout_gravity="bottom"/>
+            <Button
+                android:layout_width="@dimen/btn_down_width"
+                android:layout_height="@dimen/btn_down_height"
+                android:background="@drawable/btn_actioncell_reset_downbg"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+</LinearLayout>

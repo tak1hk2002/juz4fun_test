@@ -82,12 +82,12 @@ public class Fragment_ViewComment_CustomListAdapter extends BaseAdapter {
         Log.d("getRating", m.getRating());
 
         //like icon
-/*        if(Float.parseFloat(m.getRating()) < 1.7)
-            averagePic.setImageDrawable(context.getResources().getDrawable(R.drawable.mascot_send_comment));
+        if(Float.parseFloat(m.getRating()) < 1.7)
+            averagePic.setImageResource(R.drawable.mascot_send_comment);
         else if (Float.parseFloat(m.getRating()) >= 1.7 && Float.parseFloat(m.getRating()) <= 3.3)
-            averagePic.setImageDrawable(context.getResources().getDrawable(R.drawable.mascot_smile_comment));
+            averagePic.setImageResource(R.drawable.mascot_smile_comment);
         else if (Float.parseFloat(m.getRating()) > 3.3)
-            averagePic.setBackgroundResource(R.drawable.mascot_happy_comment);*/
+            averagePic.setImageResource(R.drawable.mascot_happy_comment);
 
         //rating
         rating1.setText(m.getRating());

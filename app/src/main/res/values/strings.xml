@@ -29,7 +29,9 @@
         <string name="btn_register">注冊</string>
         <string name="btn_logout">登出</string>
         <string name="welcome">Welcome</string>
-        <string name="btn_facebook_login">By FACEBOOK</string>
+        <string name="btn_facebook_login">BY FACEBOOK</string>
+        <string name="btn_email_login">BY EMAIL</string>
+        <string name="btn_skip_login">SKIP</string>
         <string name="btn_facebook_logout">Log out with FACEBOOK</string>
         <string name="txt_forget_password">你的密碼將會傳送到你的電郵裡</string>
     

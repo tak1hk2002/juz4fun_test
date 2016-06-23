@@ -24,6 +24,8 @@
     <dimen name="btn_down_width">100dp</dimen>
     <dimen name="btn_top_width_long">150dp</dimen>
     <dimen name="btn_down_width_long">150dp</dimen>
+    <dimen name="btn_top_width_super_long">260dp</dimen>
+    <dimen name="btn_down_width_super_long">260dp</dimen>
     <dimen name="btn_drawer_login_width">70dp</dimen>
 
     <dimen name="icon_forward_arrow_dp">13dp</dimen>

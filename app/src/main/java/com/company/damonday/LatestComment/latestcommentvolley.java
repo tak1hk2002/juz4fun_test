@@ -43,13 +43,14 @@ public class latestcommentvolley extends Fragment {
     private List<latestcomment> latestcommentList = new ArrayList<latestcomment>();
     private ListView listView;
     private latestcomment_Adapter adapter;
-    private String api;
+    private String api, lastFragmentTag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
             api = getArguments().getString("api");
+            lastFragmentTag = getArguments().getString("last_fragment_tag");
         }catch(Exception e) {
             e.printStackTrace();
             Toast.makeText(getActivity(), "No API loaded", Toast.LENGTH_LONG).show();
@@ -90,7 +91,7 @@ public class latestcommentvolley extends Fragment {
                         .commit();*/
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("latestcommentvolley"));
+                fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
                 fragmentTransaction.add(R.id.frame_container, fragment_ViewCommentDetail, "commentDetail").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();

@@ -278,6 +278,7 @@ public class Setting extends Fragment {
                 latestcommentvolley latestcomment = new latestcommentvolley();
                 Bundle bundle = new Bundle();
                 bundle.putString("api", APIConfig.URL_Latest_Comment);
+                bundle.putString("last_fragment_tag", "my_comment");
                 latestcomment.setArguments(bundle);
 
                 FragmentManager fragmentManager = getFragmentManager();

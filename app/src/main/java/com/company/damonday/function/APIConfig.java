@@ -12,7 +12,7 @@ public class APIConfig {
     }
 
     // Server user login url
-    public static String URL_LOGIN = "http://52.32.220.11252.32.220.112/api/user/login/";
+    public static String URL_LOGIN = "http://52.32.220.112/api/user/login/";
 
     // Server user register url
     public static String URL_REGISTER = "http://52.32.220.112/api/user/register/";
