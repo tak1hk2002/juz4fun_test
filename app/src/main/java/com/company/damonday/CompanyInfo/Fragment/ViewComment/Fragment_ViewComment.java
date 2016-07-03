@@ -43,6 +43,7 @@ public class Fragment_ViewComment extends Fragment {
     public  List<Fragment_ViewComment_Comment> commentList = new ArrayList<Fragment_ViewComment_Comment>();
     private String entId;
     private APIConfig ranking;
+    private Boolean APILoading = false;
 
 
     @Override
@@ -67,7 +68,6 @@ public class Fragment_ViewComment extends Fragment {
         customLoadMoreDataFromApi(1);
 
 
-
     }
 
     @Override
@@ -81,11 +81,12 @@ public class Fragment_ViewComment extends Fragment {
         txtNoComment = (TextView) v.findViewById(R.id.no_comment);
         customListAdapter = new Fragment_ViewComment_CustomListAdapter(getActivity(), commentList);
         commentListView.setAdapter(customListAdapter);
+        //if no comment, show warning to user
+        commentListView.setEmptyView(txtNoComment);
         //customListAdapter.notifyDataSetChanged();
         setListViewHeightBasedOnChildren(commentListView);
         commentListView.deferNotifyDataSetChanged();
-
-
+        customListAdapter.notifyDataSetChanged();
 
         /*// Attach the listener to the AdapterView onCreate
         commentListView.setOnScrollListener(new EndlessScrollListener() {
@@ -183,25 +184,20 @@ public class Fragment_ViewComment extends Fragment {
                     String status = response.getString("status");
                     if(status.equals("success")){
                         JSONArray data = response.getJSONArray("data");
-                        if (data.isNull(0)){
-                            txtNoComment.setVisibility(View.VISIBLE);
-                            commentListView.setVisibility(View.GONE);
-                        }else {
-
-                            System.out.println("emptyemptyemptyempty");
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject commentContent = data.getJSONObject(i);
-                                Fragment_ViewComment_Comment comment = new Fragment_ViewComment_Comment();
-                                comment.setProfilePic("http://www.suggymoto.com/Blog/wp-content/uploads/2013/03/Android-Icon-50x50.png");
-                                comment.setTitle(commentContent.getString("title"));
-                                comment.setPostedDate(commentContent.getString("time"));
-                                comment.setUsername("Alan Lam");
-                                comment.setRating(commentContent.getString("worth"));
-                                comment.setId(commentContent.getString("ID"));
-                                commentList.add(comment);
-                            }
+                        txtNoComment.setVisibility(View.GONE);
+                        commentListView.setVisibility(View.VISIBLE);
+                        txtNoComment.setText(R.string.comment_no_comment);
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject commentContent = data.getJSONObject(i);
+                            Fragment_ViewComment_Comment comment = new Fragment_ViewComment_Comment();
+                            comment.setProfilePic("http://www.suggymoto.com/Blog/wp-content/uploads/2013/03/Android-Icon-50x50.png");
+                            comment.setTitle(commentContent.getString("title"));
+                            comment.setPostedDate(commentContent.getString("time"));
+                            comment.setUsername("Alan Lam");
+                            comment.setRating(commentContent.getString("worth"));
+                            comment.setId(commentContent.getString("ID"));
+                            commentList.add(comment);
                         }
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -216,6 +212,7 @@ public class Fragment_ViewComment extends Fragment {
                 //hidepDialog();
                 setListViewHeightBasedOnChildren(commentListView);
                 commentListView.deferNotifyDataSetChanged();
+                customListAdapter.notifyDataSetChanged();
 
                 // notifying list adapter about data changes
                 // so that it renders the list view with updated data

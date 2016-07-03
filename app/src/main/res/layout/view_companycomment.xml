@@ -10,7 +10,6 @@
         android:id="@+id/no_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/comment_no_comment"
         android:textColor="@color/font_grey_white"
         android:gravity="center"
         android:paddingTop="30dp"

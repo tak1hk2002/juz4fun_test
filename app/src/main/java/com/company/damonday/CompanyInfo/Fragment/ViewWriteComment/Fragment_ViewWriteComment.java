@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
 import android.text.method.DigitsKeyListener;
 import android.util.Log;
@@ -32,6 +34,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.appyvet.rangebar.RangeBar;
+import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.R;
@@ -44,6 +47,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.sql.SQLSyntaxErrorException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -215,12 +220,15 @@ public class Fragment_ViewWriteComment extends Fragment {
                 final int[] selectedOverallRating = {-1};
                 final ImageView imgIndicator = (ImageView) view.findViewById(R.id.indicator);
                 final TextView txtInfo = (TextView) view.findViewById(R.id.info);
-                Log.d("txtInfo", txtInfo.getText().toString());
 
                 //set the edit text color
                 txtTitle.setTextColor(getResources().getColor(R.color.font_white));
                 txtContent.setTextColor(getResources().getColor(R.color.font_white));
                 txtExpense.setTextColor(getResources().getColor(R.color.font_white));
+
+                //set only single line
+                txtTitle.setSingleLine(true);
+                txtExpense.setSingleLine(true);
 
 
                 //only allow user to enter digits and "."
@@ -378,9 +386,8 @@ public class Fragment_ViewWriteComment extends Fragment {
                         break;
                     //Overall Rating
                     case 3:
-                        final AlertDialog.Builder builderOverALlRating = new AlertDialog.Builder(getActivity());
-                        builderOverALlRating.setTitle(R.string.writeComment_dialog_overallrating);
-                        builderOverALlRating.setSingleChoiceItems(titleOverAllRating, selectedOverallRating[0], new DialogInterface.OnClickListener() {
+                        ab[0].setTitle(R.string.writeComment_dialog_overallrating);
+                        ab[0].setSingleChoiceItems(titleOverAllRating, selectedOverallRating[0], new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -401,43 +408,68 @@ public class Fragment_ViewWriteComment extends Fragment {
 
                             }
                         });
-                        builderOverALlRating.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                        ab[0].setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
+                                if (txtOverAllRating[0].isEmpty()){
+                                    imgIndicator.setVisibility(view.VISIBLE);
+                                    txtInfo.setVisibility(view.GONE);
+                                }
+                                else{
+                                    imgIndicator.setVisibility(view.GONE);
+                                    txtInfo.setVisibility(view.VISIBLE);
+                                }
                                 items.get(position).put("info", txtOverAllRating[0]);
                                 simpleAdapter.notifyDataSetChanged();
                             }
                         });
 
-                        builderOverALlRating.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                        ab[0].setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
                         });
-                        builderOverALlRating.show();
+                        ab[0].show();
                         break;
                     //Detail rating
                     case 4:
+                        ab[0].setTitle(R.string.writeComment_dialog_detailrating);
 
-                        final AlertDialog.Builder builderDetailRating = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_DARK);
-                        //builderSingle.setIcon(R.drawable.ic_launcher);
-                        builderDetailRating.setTitle(R.string.writeComment_dialog_detailrating);
-
-                        builderDetailRating.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                        ab[0].setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 ratingBarClicked[0] = true;
 
+                                //Calculate average of detail rating
+                                int total_rank = 0;
+                                for (int i = 0; i < titleDetailRating.length; i++) {
+                                    total_rank = total_rank + getModel(i).getRange();
+                                }
+                                NumberFormat nf = NumberFormat.getInstance();
+                                nf.setMaximumFractionDigits(1);
+                                String average = String.format("%.1f", (double) total_rank / (double) titleDetailRating.length);
+
+                                if (average.isEmpty()) {
+                                    imgIndicator.setVisibility(view.VISIBLE);
+                                    txtInfo.setVisibility(view.GONE);
+                                } else {
+                                    imgIndicator.setVisibility(view.GONE);
+                                    txtInfo.setVisibility(view.VISIBLE);
+                                }
+
+                                //Store the average to items
+                                items.get(position).put("info", average);
+                                simpleAdapter.notifyDataSetChanged();
                             }
                         });
 
-                        builderDetailRating.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                        ab[0].setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
                         });
 
-                        builderDetailRating.setAdapter(
+                        ab[0].setAdapter(
                                 ratingAdapter,
                                 new DialogInterface.OnClickListener() {
                                     @Override
@@ -445,7 +477,7 @@ public class Fragment_ViewWriteComment extends Fragment {
                                     }
                                 });
 
-                        builderDetailRating.show();
+                        ab[0].show();
                         break;
                     default:
                 }
@@ -556,16 +588,22 @@ public class Fragment_ViewWriteComment extends Fragment {
                     if (error.equals("success")) {
 
 
-                        //display message that the submission is successful
-                        AlertDialog.Builder ab = new AlertDialog.Builder(getActivity());
-                        ab.setTitle(R.string.writeComment_submit_success);
-                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                        //(refresh)go to company detail
+                        Bundle bundle = new Bundle();
+                        bundle.putString("ent_id", entId);
+                        FragmentTabs_try fragmentTabs_try = new FragmentTabs_try();
+                        fragmentTabs_try.setArguments(bundle);
 
-                            }
-                        });
-                        ab.create().show();
+
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        // System.out.println(fragmentManager.getBackStackEntryCount());
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentManager.popBackStack();
+                        fragmentTransaction.replace(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
+                        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        fragmentTransaction.commit();
+
+                        Toast.makeText(getActivity(), R.string.writeComment_submit_success, Toast.LENGTH_SHORT).show();
 
 
                     }else {

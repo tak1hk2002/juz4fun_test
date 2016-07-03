@@ -19,11 +19,14 @@
 
     <TextView
         android:id="@+id/info"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:textColor="@color/font_grey_white"
         android:textSize="15sp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:gravity="right"
         android:visibility="gone"/>
 
     <ImageView

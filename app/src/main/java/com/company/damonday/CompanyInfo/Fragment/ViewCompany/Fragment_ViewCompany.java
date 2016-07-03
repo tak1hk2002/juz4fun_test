@@ -185,7 +185,7 @@ public class Fragment_ViewCompany extends Fragment {
     }
 
 
-    //doulbe scrollView
+    //Double scrollView
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         SimpleAdapter listAdapter = (SimpleAdapter) listView.getAdapter();
         if (listAdapter == null) {

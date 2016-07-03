@@ -15,6 +15,6 @@ public class RowModel {
     }
 
     public int getRange(){
-        return range;
+        return range + 1;
     }
 }
