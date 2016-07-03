@@ -145,9 +145,9 @@ public class search_fast extends Fragment {
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
 
-                Toast.makeText(getActivity(), String.valueOf(hasFocus), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity(), String.valueOf(hasFocus), Toast.LENGTH_SHORT).show();
             }
-        });
+});
 
         search.setOnQueryTextListener(new OnQueryTextListener() {
 
