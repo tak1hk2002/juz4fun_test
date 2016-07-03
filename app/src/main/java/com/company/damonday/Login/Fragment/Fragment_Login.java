@@ -87,6 +87,9 @@ public class Fragment_Login extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        getActivity().setTitle(R.string.login);
+
         // TODO Auto-generated method stub
         v = inflater.inflate(R.layout.login_login_tab, container, false);
         inputUsername = (EditText)v.findViewById(R.id.username);

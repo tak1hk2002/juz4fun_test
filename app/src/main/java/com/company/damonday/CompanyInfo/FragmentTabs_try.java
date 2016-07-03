@@ -361,7 +361,8 @@ public class FragmentTabs_try extends Fragment{
         //tvCompanyTitle.setText(companyName);
 
         if(!companyName.equals(null));   //tomc 28/10/2015
-        getActivity().getActionBar().setTitle(companyName);
+       // getActivity().getActionBar().setTitle(companyName);
+        getActivity().setTitle(companyName);
 
 
         String coverPageUrl;

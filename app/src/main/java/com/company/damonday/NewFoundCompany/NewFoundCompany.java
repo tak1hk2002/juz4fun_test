@@ -67,7 +67,8 @@ public class NewFoundCompany extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.newfound, container, false);
-        getActivity().getActionBar().setTitle(R.string.newfound);
+       // getActivity().getActionBar().setTitle(R.string.newfound);
+        getActivity().setTitle(R.string.newfound);
 
         EditText_company_name = (EditText) view.findViewById(R.id.company_name);
         EditText_company_tel = (EditText) view.findViewById(R.id.company_tel);

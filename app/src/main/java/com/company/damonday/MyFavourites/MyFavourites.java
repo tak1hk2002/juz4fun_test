@@ -40,7 +40,8 @@ public class MyFavourites extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.myfavourites, container, false);
-        getActivity().getActionBar().setTitle(R.string.myfavourite);
+        //getActivity().getActionBar().setTitle(R.string.myfavourite);
+        getActivity().setTitle(R.string.myfavourite);
 
         db = new CompanySQLiteHandler(getActivity());
         myFavouritesObjects = db.getAll();

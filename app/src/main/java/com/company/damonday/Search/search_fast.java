@@ -91,7 +91,8 @@ public class search_fast extends Fragment {
         //get the context of the HomeScreen Activity
         // final HomeScreen activity = (HomeScreen) getActivity();
         view = inflater.inflate(R.layout.search, container, false);     //tomc
-        getActivity().getActionBar().setTitle(R.string.advance_search);     //tomc
+       // getActivity().getActionBar().setTitle(R.string.advance_search);     //tomc
+        getActivity().setTitle(R.string.advance_search);     //tomc
         //define a typeface for formatting text fields and listview.
         final Fragment Home = new Home();
         FragmentManager fragmentManager = getFragmentManager();

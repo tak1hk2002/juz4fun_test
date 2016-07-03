@@ -76,8 +76,9 @@ public class Home extends Fragment {
         //search =(SearchView)view.findViewById(R.id.search);
         gridView = (GridView) view.findViewById(R.id.gridView);
 
+        getActivity().setTitle(R.string.home);
 
-        getActivity().getActionBar().setTitle(R.string.home);
+        //getActivity().getActionBar().setTitle(R.string.home);
         //System.out.println("ordertest2");
         ((TestActivity)getActivity()).hideBackButton();             //very important tomc 23/4/2016
 

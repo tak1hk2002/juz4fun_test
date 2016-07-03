@@ -64,7 +64,8 @@ public class Ranking_try extends Fragment {
         //init view
         View view = inflater.inflate(R.layout.ranking, container, false);
 
-        getActivity().getActionBar().setTitle(R.string.ranking);
+        //getActivity().getActionBar().setTitle(R.string.ranking);
+        getActivity().setTitle(R.string.ranking);
 
         gridView = (GridView) view.findViewById(R.id.gridView);
 

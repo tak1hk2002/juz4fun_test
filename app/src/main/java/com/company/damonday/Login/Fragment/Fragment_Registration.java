@@ -60,6 +60,8 @@ public class Fragment_Registration extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+Log.d("tomtomtomtom","register");
+        getActivity().setTitle(R.string.register);
         // TODO Auto-generated method stub
         v = inflater.inflate(R.layout.login_register_tab, container, false);
         inputUsername = (EditText) v.findViewById(R.id.username);

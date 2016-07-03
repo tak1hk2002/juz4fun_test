@@ -86,7 +86,8 @@ public class search extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.search, container, false);
-        getActivity().getActionBar().setTitle(R.string.advance_search);
+        //getActivity().getActionBar().setTitle(R.string.advance_search);
+        getActivity().setTitle(R.string.advance_search);
         spinnerPrice = (Spinner) view.findViewById(R.id.spinner_price);
         spinner_lagre_district = (Spinner) view.findViewById(R.id.spinner_lagre_district);
         spinner_district = (Spinner) view.findViewById(R.id.spinner_district);
@@ -430,6 +431,28 @@ public class search extends Fragment {
         AppController.getInstance().addToRequestQueue(jsonObjReq);
 
     }
+
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//
+//        Log.d("search", "resume");
+//        // Set title
+//        getActivity()
+//                .setTitle(R.string.advance_search);
+//    }
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//
+//        Log.d("search", "setUserVisibleHint");
+//        if(isVisibleToUser) {
+//            // Set title
+//            getActivity()
+//                    .setTitle(R.string.advance_search);
+//        }
+//    }
+
 
 
 //    //交資料上server

@@ -63,6 +63,8 @@ public class Fragment_ViewCommentDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+        getActivity().setTitle(R.string.latestcomment);
         View view = inflater.inflate(R.layout.view_companydetailcomment, container, false);
 
         profilePic = (NetworkImageView) view.findViewById(R.id.profile_pic);

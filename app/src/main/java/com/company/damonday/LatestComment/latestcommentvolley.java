@@ -64,6 +64,7 @@ public class latestcommentvolley extends Fragment {
         View view = inflater.inflate(R.layout.latestcomment, container, false);
         //setContentView(R.layout.latestcomment);
 
+        getActivity().setTitle(R.string.latestcomment);
         listView = (ListView)view.findViewById(R.id.list);
         adapter = new latestcomment_Adapter(getActivity(), latestcommentList);
         listView.setAdapter(adapter);

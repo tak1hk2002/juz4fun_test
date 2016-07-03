@@ -25,6 +25,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_margin="5dp"
             android:id="@+id/spinner_lagre_district"
             android:backgroundTint="@color/white" />
 
@@ -48,6 +49,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_margin="5dp"
             android:id="@+id/spinner_district"
             android:backgroundTint="@color/white"
 
@@ -72,6 +74,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_margin="5dp"
             android:id="@+id/spinner_category"
             android:backgroundTint="@color/white"/>
 
@@ -100,6 +103,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_margin="5dp"
             android:id="@+id/spinner_price"
             android:backgroundTint="@color/white"/>
 

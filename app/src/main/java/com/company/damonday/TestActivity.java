@@ -71,6 +71,7 @@ public class TestActivity extends FragmentActivity {
     private TypedArray navMenuIcons;
     private CharSequence tempmtitle;
     private ArrayList<NavDrawerItem> navDrawerItems;
+    private ArrayList<String> tempTitle;
     private NavDrawerListAdapter adapter;
     private LinearLayout mDrawerLinear;
     private Button btn_login,btn_register,btn_logout;
@@ -116,6 +117,7 @@ public class TestActivity extends FragmentActivity {
         btn_register= (Button)findViewById(R.id.btn_register);
 
         navDrawerItems = new ArrayList<NavDrawerItem>();
+        tempTitle = new ArrayList<String>();
 
         // adding nav drawer items to array
         // Home
@@ -201,7 +203,7 @@ public class TestActivity extends FragmentActivity {
 
 
                // getActionBar().setTitle(mTitle);
-                System.out.println("onDrawerClosed");
+               // System.out.println("onDrawerClosed");
                 // calling onPrepareOptionsMenu() to show action bar icons
                 invalidateOptionsMenu();
             }
@@ -224,7 +226,7 @@ public class TestActivity extends FragmentActivity {
         }
 
         //tomc 10/4/2016
-        Log.d("yyyyyyyy", Boolean.toString(session.isLoggedIn()));
+       // Log.d("yyyyyyyy", Boolean.toString(session.isLoggedIn()));
 
 
 
@@ -247,7 +249,7 @@ public class TestActivity extends FragmentActivity {
             dialog = ab.create();
             dialog.show();
         }
-        Log.d("Network", "bool=" + isInternetPresent);
+       // Log.d("Network", "bool=" + isInternetPresent);
     }
 
     /**
@@ -275,7 +277,6 @@ public class TestActivity extends FragmentActivity {
     }
 
     public void checkLogin(){
-        Log.d("eeeeeer", "eeeeeer");
         if(session.isLoggedIn()|| AccessToken.getCurrentAccessToken() != null) {
             linear_login.setVisibility(View.GONE);
             linear_register.setVisibility(View.GONE);
@@ -535,11 +536,11 @@ public class TestActivity extends FragmentActivity {
                 mDrawerList.setSelection(position);
 
 
-                tempmtitle = mTitle;
-                System.out.println("tempmtitle=" + tempmtitle);
+               // tempmtitle = mTitle;
+               // System.out.println("tempmtitle=" + tempmtitle);
 
 
-                setTitle(navMenuTitles[position]);
+               // setTitle(navMenuTitles[position]);
             }
             System.out.println("ordertest1");
             mDrawerLayout.closeDrawer(mDrawerLinear);
@@ -551,9 +552,30 @@ public class TestActivity extends FragmentActivity {
 
     @Override
     public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
+      //  Log.d("setTitle", "setTitle old ");
+        //imageView != null;
+        if (getActionBar().getTitle()!= null) {
+            tempTitle.add(getActionBar().getTitle().toString());
+        }
+
+       // mTitle = ((getActionBar().getTitle()).toString());}
+        getActionBar().setTitle(title);
         AdjustActiontitle(getActionBar().getTitle().toString());
+        System.out.println(tempTitle);
+
+    }
+
+    public void setTitle(CharSequence title,boolean back) {
+
+        //imageView != null;
+//        if (getActionBar().getTitle()!= null) {
+//            tempTitle.add(getActionBar().getTitle().toString());
+//        }
+      //  Log.d("setTitle", "setTitle new ");
+        // mTitle = ((getActionBar().getTitle()).toString());}
+        getActionBar().setTitle(title);
+        AdjustActiontitle(getActionBar().getTitle().toString());
+        System.out.println(tempTitle);
 
     }
 
@@ -595,13 +617,23 @@ public class TestActivity extends FragmentActivity {
 
         if (fragmentManager.getBackStackEntryCount() == 0) {
             //如果返主頁
+            tempTitle.clear();
+
+
+            tempTitle.add(getResources().getString(R.string.home));
             setTitle(R.string.home);
             displayView(0);
             System.out.println("case1");
         } else {
             //如果不是返主頁
-            setTitle(mTitle);
+            //setTitle(mTitle);
+            if (!tempTitle.isEmpty()) {
+                setTitle(tempTitle.get(tempTitle.size() - 1),true);
+                tempTitle.remove(tempTitle.size() - 1);
+            }
+
             System.out.println("case2");
+          //  System.out.println(tempTitle);
         }
 
 

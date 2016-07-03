@@ -86,7 +86,9 @@ public class Setting extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getActivity().getActionBar().setTitle(R.string.setting);
+        //getActivity().getActionBar().setTitle(R.string.setting);
+       // Log.d("setting","rr");
+        getActivity().setTitle(R.string.setting);
         View view = inflater.inflate(R.layout.setting, container, false);
         islogined = (LinearLayout) view.findViewById(R.id.logined);
         islogouted = (LinearLayout)view.findViewById(R.id.logouted);
@@ -238,7 +240,10 @@ public class Setting extends Fragment {
                     fragment_login.setArguments(bundle);
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frame_container, fragment_login, "login").addToBackStack(null);
+                   // fragmentTransaction.replace(R.id.frame_container, fragment_login, "login").addToBackStack(null);
+
+                    fragmentTransaction.hide(getFragmentManager().findFragmentByTag("setting"));
+                    fragmentTransaction.add(R.id.frame_container, fragment_login, "login").addToBackStack(null);
 
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     fragmentTransaction.commit();
@@ -252,7 +257,10 @@ public class Setting extends Fragment {
                     Fragment_Registration fragment_registration = new Fragment_Registration();
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frame_container, fragment_registration, "register").addToBackStack(null);
+                   // fragmentTransaction.replace(R.id.frame_container, fragment_registration, "register").addToBackStack(null);
+                    fragmentTransaction.hide(getFragmentManager().findFragmentByTag("setting"));
+                    fragmentTransaction.add(R.id.frame_container, fragment_registration, "register").addToBackStack(null);
+
 
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     fragmentTransaction.commit();
@@ -271,9 +279,9 @@ public class Setting extends Fragment {
                 bundle.putString("api", APIConfig.URL_Latest_Comment);
                 bundle.putString("last_fragment_tag", "my_comment");
                 latestcomment.setArguments(bundle);
-
+                //getActivity().setTitle(R.string.my_comment);
                 FragmentManager fragmentManager = getFragmentManager();
-                System.out.println(fragmentManager.getBackStackEntryCount());
+               // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("setting"));
                 fragmentTransaction.add(R.id.frame_container, latestcomment, "my_comment").addToBackStack(null);

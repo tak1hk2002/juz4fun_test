@@ -69,7 +69,9 @@ public class Fragment_Forget_Password extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         view = inflater.inflate(R.layout.login_forget_password, container, false);
+        getActivity().setTitle(R.string.forget_password);
         final EditText edEmail= (EditText) view.findViewById(R.id.email);
         Button cancel = (Button) view.findViewById(R.id.btnCancel);
         Button confirm = (Button) view.findViewById(R.id.btnComfirm);
