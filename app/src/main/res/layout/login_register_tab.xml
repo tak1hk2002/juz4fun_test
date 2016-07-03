@@ -89,7 +89,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:hint="@string/hint_password"
+        android:hint="@string/hint_password_again"
         android:inputType="textPassword"
         android:padding="10dp"
         android:singleLine="true"
@@ -138,7 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/btn_top_height"
                 android:background="@drawable/btn_actioncell_send_topbg"
-                android:text="@string/btn_login"
+                android:text="@string/btn_register"
                 android:textColor="@color/font_white"/>
             <Button
                 android:layout_width="match_parent"

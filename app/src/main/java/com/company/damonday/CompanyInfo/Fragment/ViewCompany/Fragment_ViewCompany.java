@@ -243,7 +243,7 @@ public class Fragment_ViewCompany extends Fragment {
                     JSONObject companyInfo = response.getJSONObject("data");
 
                     if (status.equals("success")) {
-                        compayName = companyInfo.getString("name");
+                        info.add(Html.fromHtml(companyInfo.getString("name")));
                         info.add((Html.fromHtml(companyInfo.getString("description"))));
                         info.add(Html.fromHtml(companyInfo.getString("address")));
                         info.add(Html.fromHtml(companyInfo.getString("contact_number")));
@@ -318,7 +318,7 @@ public class Fragment_ViewCompany extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("error", "Error: " + error.getMessage());
                 Toast.makeText(getActivity(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                        R.string.connection_server_warning, Toast.LENGTH_SHORT).show();
                 //hidepDialog();
             }
         });

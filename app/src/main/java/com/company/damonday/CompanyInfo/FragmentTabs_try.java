@@ -41,6 +41,7 @@ import com.company.damonday.function.AppController;
 import com.company.damonday.function.ProgressImage;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
+import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 
@@ -132,81 +133,6 @@ public class FragmentTabs_try extends Fragment{
 
         final boolean[] heartUnclicked = {true};
 
-        //Clicking like function
-        imgLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (AccessToken.getCurrentAccessToken() != null || session.isLoggedIn()) {
-                    imgLike.setImageResource(R.drawable.btn_like_select);
-                }
-                else{
-                    //pass variable to next fragment
-                    Bundle bundle = new Bundle();
-                    bundle.putString("ent_id", entId);
-                    Fragment_Login fragment_login = new Fragment_Login();
-                    fragment_login.setArguments(bundle);
-
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    System.out.println(fragmentManager.getBackStackEntryCount());
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail"));
-                    fragmentTransaction.add(R.id.frame_container, fragment_login, "login").addToBackStack(null);
-                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    fragmentTransaction.commit();
-                }
-            }
-        });
-
-
-        //Clicking OK function
-        imgOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (AccessToken.getCurrentAccessToken() != null || session.isLoggedIn()) {
-
-                }
-                else{
-                    //pass variable to next fragment
-                    Bundle bundle = new Bundle();
-                    bundle.putString("ent_id", entId);
-                    Fragment_Login fragment_login = new Fragment_Login();
-                    fragment_login.setArguments(bundle);
-
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    System.out.println(fragmentManager.getBackStackEntryCount());
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail"));
-                    fragmentTransaction.add(R.id.frame_container, fragment_login, "login").addToBackStack(null);
-                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    fragmentTransaction.commit();
-                }
-            }
-        });
-
-        //Clicking dislike function
-        imgDislike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (AccessToken.getCurrentAccessToken() != null || session.isLoggedIn()) {
-
-                }
-                else{
-                    //pass variable to next fragment
-                    Bundle bundle = new Bundle();
-                    bundle.putString("ent_id", entId);
-                    Fragment_Login fragment_login = new Fragment_Login();
-                    fragment_login.setArguments(bundle);
-
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    System.out.println(fragmentManager.getBackStackEntryCount());
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail"));
-                    fragmentTransaction.add(R.id.frame_container, fragment_login, "login").addToBackStack(null);
-                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    fragmentTransaction.commit();
-                }
-            }
-        });
 
         if(myFavouriteCount > 0) {
             heartUnclicked[0] = false;
@@ -260,10 +186,8 @@ public class FragmentTabs_try extends Fragment{
         viewPager.setOffscreenPageLimit(10);
 
         // ViewPager Indicator
-        UnderlinePageIndicator mIndicator = (UnderlinePageIndicator) rootView.findViewById(R.id.indicator);
-        mIndicator.setFades(false);
+        CirclePageIndicator mIndicator = (CirclePageIndicator) rootView.findViewById(R.id.indicator);
         mIndicator.setViewPager(viewPager);
-        mIndicator.setSelectedColor(R.color.bg_grey_black_light);
 
         //pass entId to fragment
         Bundle bundle = new Bundle();
@@ -409,7 +333,7 @@ public class FragmentTabs_try extends Fragment{
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 Toast.makeText(getActivity(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                        R.string.connection_server_warning, Toast.LENGTH_SHORT).show();
                 hidepDialog();
             }
         });

@@ -352,33 +352,24 @@ public class Fragment_Login extends Fragment {
                         Log.d("username", username);
                         loginSQLiteHandler.addUser(token, "Wait for Ryo to add email field", username);
 
-
-                        //display message login successfully
-                        AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
-                        ab.setTitle(R.string.login_success);
-                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                try {
-                                    //last fragment is from detail
-                                    if (entId != null) {
-                                        System.out.println("HIHIHIHIHHHI");
-                                        Bundle bundle = new Bundle();
-                                        FragmentTabs_try fragmentTabs_try = new FragmentTabs_try();
-                                        bundle.putString("ent_id", entId);
-                                        fragmentTabs_try.setArguments(bundle);
+                        try {
+                            //last fragment is from detail
+                            if (entId != null) {
+                                System.out.println("HIHIHIHIHHHI");
+                                Bundle bundle = new Bundle();
+                                FragmentTabs_try fragmentTabs_try = new FragmentTabs_try();
+                                bundle.putString("ent_id", entId);
+                                fragmentTabs_try.setArguments(bundle);
 
 
-                                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                        System.out.println(fragmentManager.getBackStackEntryCount());
-                                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                        //delete last fragment
-                                        fragmentManager.popBackStack();
-                                        //delete last fragment
-                                        fragmentManager.popBackStack();
-                                        //delete loginfragment
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                System.out.println(fragmentManager.getBackStackEntryCount());
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                //delete last fragment
+                                fragmentManager.popBackStack();
+                                //delete last fragment
+                                fragmentManager.popBackStack();
+                                //delete loginfragment
                                     /*Fragment loginFragment = getActivity().getSupportFragmentManager().findFragmentByTag("login");
                                     Fragment companyDetailFragment = getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail");
                                     if(loginFragment != null)
@@ -387,49 +378,46 @@ public class Fragment_Login extends Fragment {
                                         fragmentTransaction.remove(companyDetailFragment);*/
 
 
-                                        //hide the fragment which is to jump to company detail page
-                                        String hideFragment = "";
-                                        if(getActivity().getSupportFragmentManager().findFragmentByTag("home") != null)
-                                            hideFragment = "home";
-                                        else if (getActivity().getSupportFragmentManager().findFragmentByTag("ranking") != null)
-                                            hideFragment = "ranking";
-                                        else if (getActivity().getSupportFragmentManager().findFragmentByTag("search_result") != null)
-                                            hideFragment = "search_result";
+                                //hide the fragment which is to jump to company detail page
+                                String hideFragment = "";
+                                if(getActivity().getSupportFragmentManager().findFragmentByTag("home") != null)
+                                    hideFragment = "home";
+                                else if (getActivity().getSupportFragmentManager().findFragmentByTag("ranking") != null)
+                                    hideFragment = "ranking";
+                                else if (getActivity().getSupportFragmentManager().findFragmentByTag("search_result") != null)
+                                    hideFragment = "search_result";
 
-                                        fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag(hideFragment));
-                                        fragmentTransaction.add(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
+                                fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag(hideFragment));
+                                fragmentTransaction.add(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
 
-                                        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                                        fragmentTransaction.commit();
+                                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                fragmentTransaction.commit();
 
 
-                                    }
-                                    //last fragment is from setting
-                                    else if (lastFragment != null){
-                                        switch (lastFragment){
-                                            case "setting":
-                                                Setting setting = new Setting();
-                                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                                //clear all of the fragment at the stack
-                                                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                                fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null)
-                                                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                                                        .commit();
+                            }
+                            //last fragment is from setting
+                            else if (lastFragment != null){
+                                switch (lastFragment){
+                                    case "setting":
+                                        Setting setting = new Setting();
+                                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                        //clear all of the fragment at the stack
+                                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                        fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null)
+                                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                                                .commit();
 
-                                                break;
-                                        }
-                                    }
-                                    else {
-                                        Intent in = new Intent(v.getContext(), MainActivity.class);
-                                        v.getContext().startActivity(in);
-                                    }
-                                }catch (Exception e){
-                                    e.printStackTrace();
+                                        break;
                                 }
                             }
-                        });
-                        ab.create().show();
+                            else {
+                                Intent in = new Intent(v.getContext(), MainActivity.class);
+                                v.getContext().startActivity(in);
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
 
 
                     } else {
@@ -451,7 +439,7 @@ public class Fragment_Login extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Login Error: " + error.getMessage());
                 Toast.makeText(getActivity(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        R.string.connection_server_warning, Toast.LENGTH_LONG).show();
                 hideDialog();
             }
         }) {
@@ -592,7 +580,7 @@ public class Fragment_Login extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 //Log.e(TAG, "Registration Error: " + error.getMessage());
                 Toast.makeText(getActivity(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        R.string.connection_server_warning, Toast.LENGTH_LONG).show();
                 //hideDialog();
             }
         }) {

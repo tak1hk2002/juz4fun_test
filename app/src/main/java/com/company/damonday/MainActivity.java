@@ -451,7 +451,7 @@ public class MainActivity extends FragmentActivity {
             public void onErrorResponse(VolleyError error) {
                 //Log.e(TAG, "Registration Error: " + error.getMessage());
                 Toast.makeText(MainActivity.this,
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        R.string.connection_server_warning, Toast.LENGTH_LONG).show();
                 //hideDialog();
             }
         }) {

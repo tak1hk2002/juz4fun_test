@@ -208,7 +208,7 @@ public class Fragment_Registration extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Registration Error: " + error.getMessage());
                 Toast.makeText(getActivity(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        R.string.connection_server_warning, Toast.LENGTH_LONG).show();
                 hideDialog();
             }
         }) {

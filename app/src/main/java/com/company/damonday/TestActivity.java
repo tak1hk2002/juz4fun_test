@@ -291,30 +291,7 @@ public class TestActivity extends FragmentActivity {
                         session.setLogin(false);
                         db.deleteUsers();
 
-                        //display message login successfully
-                        AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
-                        ab.setTitle(R.string.logout_success);
-                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-//                                Setting setting = new Setting();
-//                                FragmentManager fragmentManager = getSupportFragmentManager();
-//                                //clear all of the fragment at the stack
-//                                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                                fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null);
-//
-//                                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-//                                fragmentTransaction.commit();
-                                mDrawerLayout.closeDrawer(Gravity.RIGHT);
-//                            linear_login.setVisibility(View.VISIBLE);
-//                            linear_register.setVisibility(View.VISIBLE);
-//                            linear_logout.setVisibility(View.GONE);
-
-                            }
-                        });
-                        ab.create().show();
+                        mDrawerLayout.closeDrawer(Gravity.RIGHT);
                     }
 
 
@@ -323,20 +300,7 @@ public class TestActivity extends FragmentActivity {
                 btn_logout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        LoginManager.getInstance().logOut();
-                        AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
-                        ab.setTitle(R.string.logout_success);
-                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-//
-                                mDrawerLayout.closeDrawer(Gravity.RIGHT);
-
-
-                            }
-                        });
-                        ab.create().show();
+                        mDrawerLayout.closeDrawer(Gravity.RIGHT);
 
                     }
                 });
@@ -540,6 +504,10 @@ public class TestActivity extends FragmentActivity {
                 fragment = new Setting();
                 tag = "setting";
                 break;
+            case 7:
+                //launch page
+                fragment = new LaunchPage();
+                tag = "launchpage";
 
             default:
                 break;
@@ -548,6 +516,7 @@ public class TestActivity extends FragmentActivity {
         if (fragment != null) {
             Bundle bundle = new Bundle();
             bundle.putString("api", api);
+            bundle.putString("last_fragment_tag", tag);
             fragment.setArguments(bundle);
             FragmentManager fragmentManager = getSupportFragmentManager();
              System.out.println("testActivity_backstackEntryCount:="+fragmentManager.getBackStackEntryCount());
@@ -560,15 +529,18 @@ public class TestActivity extends FragmentActivity {
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
 
-            // update selected item and title, then close the drawer
-            mDrawerList.setItemChecked(position, true);
-            mDrawerList.setSelection(position);
-
-            tempmtitle = mTitle;
-            System.out.println("tempmtitle=" + tempmtitle);
+            if(position != 7) {
+                // update selected item and title, then close the drawer
+                mDrawerList.setItemChecked(position, true);
+                mDrawerList.setSelection(position);
 
 
-            setTitle(navMenuTitles[position]);
+                tempmtitle = mTitle;
+                System.out.println("tempmtitle=" + tempmtitle);
+
+
+                setTitle(navMenuTitles[position]);
+            }
             System.out.println("ordertest1");
             mDrawerLayout.closeDrawer(mDrawerLinear);
         } else {

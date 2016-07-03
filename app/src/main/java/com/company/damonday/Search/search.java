@@ -422,7 +422,7 @@ public class search extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("json", "Error: " + error.getMessage());
                 Toast.makeText(getActivity(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                        R.string.connection_server_warning, Toast.LENGTH_SHORT).show();
                 //hidePDialog();
             }
         });

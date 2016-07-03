@@ -3,7 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/no_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/comment_no_comment"
+        android:textColor="@color/font_grey_white"
+        android:gravity="center"
+        android:paddingTop="30dp"
+        android:textSize="15sp"
+        android:visibility="gone"/>
 
     <ListView
         android:id="@+id/list"

@@ -148,7 +148,7 @@ public class Ranking extends Activity {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                        R.string.connection_server_warning, Toast.LENGTH_SHORT).show();
                 //hidePDialog();
             }
         });

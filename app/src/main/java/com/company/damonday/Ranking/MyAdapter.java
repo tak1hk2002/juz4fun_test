@@ -62,10 +62,9 @@ public class MyAdapter extends BaseAdapter
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
             convertView = inflater.inflate(R.layout.ranking_charts_gridview, null);
-        ProgressBar mProgress=(ProgressBar) convertView.findViewById(R.id.pb);
 
 
-        final TextView title = (TextView) convertView.findViewById(R.id.text);
+        final TextView title = (TextView) convertView.findViewById(R.id.ent_name);
         final NetworkImageView companyImage = (NetworkImageView) convertView
                 .findViewById(R.id.picture);
         ImageView ranking = (ImageView) convertView.findViewById(R.id.ranking);
@@ -79,7 +78,6 @@ public class MyAdapter extends BaseAdapter
             companyImage.setImageUrl(c.getUrl(), imageLoader);
             // title
             title.setText(c.getTitle());
-            mProgress.setVisibility(View.INVISIBLE);
         }
         companyImage.setDefaultImageResId(R.drawable.mascot_die_pic);
         companyImage.setErrorImageResId(R.drawable.mascot_die_pic);

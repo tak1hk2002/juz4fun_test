@@ -9,12 +9,13 @@
 
     <!--network problem-->
     <string name="connection_fail_warning">喂！你斷左線喎（好似係）</string>
-    <string name="connection_server_warning">依家伺服器好繁忙，陣間再黎啦！！</string>
+    <string name="connection_server_warning">唔好意思，伺服器好繁忙，陣間再試啦！！</string>
 
     <!-- Login and register-->
 
         <string name="hint_email">請輸入電郵</string>
         <string name="hint_password">請輸入密碼</string>
+        <string name="hint_password_again">請再輸入密碼</string>
         <string name="hint_username">請輸入使用者名稱</string>
         <string name="hint_confirmed_password">你輸入的密碼不相符</string>
         <string name="register_success">你會稍後收到電郵，然後請激活你的帳號</string>
@@ -113,6 +114,8 @@
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
 
+    <!--comment-->
+    <string name="comment_no_comment">依家無評論，快D寫第一個評論啦！</string>
 
     <!--comment detail-->
     <string name="commentDetail_max_score">/5</string>

@@ -125,26 +125,17 @@ public class Setting extends Fragment {
                     session.setLogin(false);
                     db.deleteUsers();
 
-                    //display message login successfully
-                    AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
-                    ab.setTitle(R.string.logout_success);
-                    ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
 
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Setting setting = new Setting();
-                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                            //clear all of the fragment at the stack
-                            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null);
+                    //refresh setting page
+                    Setting setting = new Setting();
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    //clear all of the fragment at the stack
+                    fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null);
 
-                            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                            fragmentTransaction.commit();
-
-                        }
-                    });
-                    ab.create().show();
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
 
 
 

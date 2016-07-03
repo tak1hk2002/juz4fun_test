@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -37,6 +38,7 @@ public class Fragment_ViewComment extends Fragment {
 
     private View v;
     public  ListView commentListView;
+    private TextView txtNoComment;
     private Fragment_ViewComment_CustomListAdapter customListAdapter;
     public  List<Fragment_ViewComment_Comment> commentList = new ArrayList<Fragment_ViewComment_Comment>();
     private String entId;
@@ -76,6 +78,7 @@ public class Fragment_ViewComment extends Fragment {
         v = inflater.inflate(R.layout.view_companycomment, container, false);
 
         commentListView = (ListView) v.findViewById(R.id.list);
+        txtNoComment = (TextView) v.findViewById(R.id.no_comment);
         customListAdapter = new Fragment_ViewComment_CustomListAdapter(getActivity(), commentList);
         commentListView.setAdapter(customListAdapter);
         //customListAdapter.notifyDataSetChanged();
@@ -180,16 +183,23 @@ public class Fragment_ViewComment extends Fragment {
                     String status = response.getString("status");
                     if(status.equals("success")){
                         JSONArray data = response.getJSONArray("data");
-                        for(int i = 0; i < data.length(); i++){
-                            JSONObject commentContent = data.getJSONObject(i);
-                            Fragment_ViewComment_Comment comment = new Fragment_ViewComment_Comment();
-                            comment.setProfilePic("http://www.suggymoto.com/Blog/wp-content/uploads/2013/03/Android-Icon-50x50.png");
-                            comment.setTitle(commentContent.getString("title"));
-                            comment.setPostedDate(commentContent.getString("time"));
-                            comment.setUsername("Alan Lam");
-                            comment.setRating(commentContent.getString("worth"));
-                            comment.setId(commentContent.getString("ID"));
-                            commentList.add(comment);
+                        if (data.isNull(0)){
+                            txtNoComment.setVisibility(View.VISIBLE);
+                            commentListView.setVisibility(View.GONE);
+                        }else {
+
+                            System.out.println("emptyemptyemptyempty");
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject commentContent = data.getJSONObject(i);
+                                Fragment_ViewComment_Comment comment = new Fragment_ViewComment_Comment();
+                                comment.setProfilePic("http://www.suggymoto.com/Blog/wp-content/uploads/2013/03/Android-Icon-50x50.png");
+                                comment.setTitle(commentContent.getString("title"));
+                                comment.setPostedDate(commentContent.getString("time"));
+                                comment.setUsername("Alan Lam");
+                                comment.setRating(commentContent.getString("worth"));
+                                comment.setId(commentContent.getString("ID"));
+                                commentList.add(comment);
+                            }
                         }
 
                     }
@@ -218,7 +228,7 @@ public class Fragment_ViewComment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("error", "Error: " + error.getMessage());
                 Toast.makeText(getActivity(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                        R.string.connection_server_warning, Toast.LENGTH_SHORT).show();
                 //hidepDialog();
             }
         });
