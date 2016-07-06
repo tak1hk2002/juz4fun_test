@@ -78,6 +78,7 @@ public class TestActivity extends FragmentActivity {
     private LinearLayout linear_logout,linear_login,linear_register;
     private SessionManager session;         //tomc 10/4/2016        login
     private LoginSQLiteHandler db;           //tomc 10/4/2016       login
+    private Boolean HOME_FLAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -462,6 +463,7 @@ public class TestActivity extends FragmentActivity {
         Fragment fragment = null;
         String tag = null;
         String api = null;
+        HOME_FLAG = false;
         //getActionBar().setDisplayHomeAsUpEnabled(true);     //make back button
         showBackButton();
         switch (position) {
@@ -471,6 +473,7 @@ public class TestActivity extends FragmentActivity {
                      //make back button
                 hideBackButton();
                 fragment = new Home();
+                HOME_FLAG = true;
                 tag = "home";
                 break;
             case 1:
@@ -520,13 +523,22 @@ public class TestActivity extends FragmentActivity {
             bundle.putString("last_fragment_tag", tag);
             fragment.setArguments(bundle);
             FragmentManager fragmentManager = getSupportFragmentManager();
+            Fragment homeFragment = fragmentManager.findFragmentByTag("home");
              System.out.println("testActivity_backstackEntryCount:="+fragmentManager.getBackStackEntryCount());
             //clear all of the fragment at the stack
-            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            //only the "main" stack, "empty" stack remains
+            fragmentManager.popBackStack("main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
             //System.out.println(fragmentManager.getBackStackEntryCount());
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame_container, fragment, tag).addToBackStack("main");
+            //add the home fragment to empty stack
+            if(tag.equals("home")) {
+                if (homeFragment == null) {
+                    fragmentTransaction.replace(R.id.frame_container, fragment, tag).addToBackStack("empty");
+                }
+            }
+            else
+                fragmentTransaction.replace(R.id.frame_container, fragment, tag).addToBackStack("main");
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
 
@@ -606,7 +618,6 @@ public class TestActivity extends FragmentActivity {
     @Override
     public void onBackPressed() {
 
-        super.onBackPressed();
         System.out.println("onBackPressed");
 
         mDrawerLayout.closeDrawer(Gravity.RIGHT);
@@ -615,20 +626,28 @@ public class TestActivity extends FragmentActivity {
 
         System.out.println(fragmentManager.getBackStackEntryCount());
 
-        if (fragmentManager.getBackStackEntryCount() == 0) {
-            //如果返主頁
-            tempTitle.clear();
+        if (fragmentManager.getBackStackEntryCount() == 1) {
+            finish();
+            /*//如果返主頁
+            if(!HOME_FLAG) {
+                tempTitle.clear();
 
 
-            tempTitle.add(getResources().getString(R.string.home));
-            setTitle(R.string.home);
-            displayView(0);
-            System.out.println("case1");
-        } else {
+                tempTitle.add(getResources().getString(R.string.home));
+                setTitle(R.string.home);
+                //displayView(0);
+                System.out.println("case1");
+            }
+            else{
+
+            }*/
+        }
+        else {
+            fragmentManager.popBackStack();
             //如果不是返主頁
             //setTitle(mTitle);
             if (!tempTitle.isEmpty()) {
-                setTitle(tempTitle.get(tempTitle.size() - 1),true);
+                setTitle(tempTitle.get(tempTitle.size() - 1), true);
                 tempTitle.remove(tempTitle.size() - 1);
             }
 

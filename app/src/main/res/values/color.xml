@@ -37,6 +37,7 @@
     <!--font color-->
     <color name="font_white">#ffffff</color>
     <color name="font_grey_white">#a0a0a0</color>
+    <color name="font_light_white">#c7c7cc</color>
     <color name="font_red">#f06932</color>
     <color name="font_yellow">#ffc300</color>
 
