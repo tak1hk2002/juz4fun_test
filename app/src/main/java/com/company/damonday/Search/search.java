@@ -222,7 +222,6 @@ public class search extends Fragment {
             public void onItemSelected(AdapterView adapterView, View view, int position, long id) {
                 //Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
                 Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
-                Log.d("weqweqweqwe","qweqweqweqwe");
                          ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //拎番個id
                 if (!adapterView.getSelectedItem().toString().equals("全選")) {

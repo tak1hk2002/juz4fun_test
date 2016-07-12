@@ -98,17 +98,6 @@ public class search_adapter extends BaseAdapter {
             fair.setText(m.getFair());
 
 
-
-//        String genreStr = "";
-//        for (String str : m.getGenre()) {
-//            genreStr += str + ", ";
-//        }
-//        genreStr = genreStr.length() > 0 ? genreStr.substring(0,
-//                genreStr.length() - 2) : genreStr;
-//        genre.setText(genreStr);
-
-
-
             return convertView;
         }
 

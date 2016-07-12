@@ -113,10 +113,6 @@ Log.d("geturl",geturl);
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
 
-                //pass the following object to next activity
-                /*Intent i = new Intent(Ranking.this, FragmentTabs.class);
-                i.putExtra("Ent_id", companyInfoItems.get(position).getEnt_id());
-                startActivity(i);*/
 
                 //pass object to next fragment
                 Bundle bundle = new Bundle();
@@ -140,79 +136,6 @@ Log.d("geturl",geturl);
         return view;
     }
 
-    // changing action bar color
-    /*    getActionBar().setBackgroundDrawable(
-                new ColorDrawable(Color.parseColor("#1b1b1b")));*/
-
-
-    // Creating volley request obj
-//            StringRequest latestcommentReq = new StringRequest(APIConfig.URL_Advance_Search,
-//                    new Response.Listener<String>() {
-//                        @Override
-//                        public void onResponse(String response) {
-//                            Log.d("TAG", response);
-//                            hideDialog();
-//
-//                            try{
-//                                JSONObject jObject = new JSONObject(response);
-//                                // String aJsonString = jObject.getString("result");
-//                                //String bJsonString = jObject.getString("timestamp");
-//                                JSONArray jArray = jObject.getJSONArray("data");
-//                                // Parsing json
-//                                for (int i = 0; i < jArray.length(); i++) {
-//                                    try {
-//                                        JSONObject oneObject = jArray.getJSONObject(i);
-//                                        //JSONObject jObject = new JSONObject(response);
-//                                        // String aJsonString = jObject.getString("result");
-//                                        //String bJsonString = jObject.getString("timestamp");
-//                                        // JSONArray jArray = jObject.getJSONArray("data");
-//
-//                                        // JSONObject obj = response.getJSONObject(i);
-//                                        latestcomment latestcomment = new latestcomment();
-//                                        latestcomment.setTitle(oneObject.getString("title"));
-//                                        latestcomment.setThumbnailUrl(oneObject.getString("profile_picture"));
-//                                        latestcomment.setAveage_scrore(oneObject.getString("average_score"));
-//
-//                                        Log.d("1112", oneObject.getString("days_before"));
-//                                        latestcomment.setDay_before(oneObject.getString("days_before"));
-//                                        latestcomment.setComment(oneObject.getString("comment"));
-//                                        Log.d("1113", oneObject.getString("comment"));
-//
-//
-//                                        // adding movie to movies array
-//                                        latestcommentList.add(latestcomment);
-//
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-//
-//                                }
-//                            }
-//                            catch (JSONException e) {
-//                                Log.e("log_tag", "Error parsing data " + e.toString());
-//                            }
-//
-//                            // notifying list adapter about data changes
-//                            // so that it renders the list view with updated data
-//                            adapter.notifyDataSetChanged();
-//                        }
-//                    }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    VolleyLog.d(TAG, "Error: " + error.getMessage());
-//                    hideDialog();
-//
-//                }
-//            });
-//
-//            // Adding request to request queue
-//            AppController.getInstance().addToRequestQueue(latestcommentReq);
-//
-//
-//
-//
-//            return view;
-//        }
 
 
     private void submitting(final String category_id, final String district_id, final String large_district_id, final String price_id) {
@@ -285,33 +208,6 @@ Log.d("geturl",geturl);
                         }
 
 
-                        //display message login successfully
-//                        AlertDialog.Builder ab = new AlertDialog.Builder(view.getContext());
-//                        ab.setTitle(R.string.submit_success);
-//                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
-//
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//
-////                                Intent in = new Intent(view.getContext(), MainActivity.class);
-////                                view.getContext().startActivity(in);
-//
-//                                Home home_fragment = new Home();
-//
-//                                FragmentManager fragmentManager = getFragmentManager();
-//                                System.out.println(fragmentManager.getBackStackEntryCount());
-//                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("newfound"));
-//                                fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack(null);
-//                                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-//                                fragmentTransaction.commit();
-//
-//
-//
-//
-//                            }
-//                        });
-//                        ab.create().show();
 
 
                     } else {
