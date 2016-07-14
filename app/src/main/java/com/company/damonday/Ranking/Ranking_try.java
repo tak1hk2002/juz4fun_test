@@ -124,7 +124,7 @@ public class Ranking_try extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        adapter = new MyAdapter(getActivity(), companyInfoItems);
+        adapter = new MyAdapter(getActivity(), companyInfoItems, false);
         gridView.setAdapter(adapter);
     }
 

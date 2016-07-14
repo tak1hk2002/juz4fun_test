@@ -99,7 +99,7 @@ public class Home extends Fragment {
 
 
                 FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);   //important to clear repeat fragment in the stack //tomc 24/1/2016
+                //fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);   //important to clear repeat fragment in the stack //tomc 24/1/2016
                 // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 //fragmentTransaction.hide(getFragmentManager().findFragmentByTag("home"));
@@ -170,8 +170,9 @@ public class Home extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        adapter = new MyAdapter(getActivity(), companyInfoItems);
+        adapter = new MyAdapter(getActivity(), companyInfoItems, true);
         gridView.setAdapter(adapter);
+
     }
 
 

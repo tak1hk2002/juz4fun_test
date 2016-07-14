@@ -29,28 +29,28 @@
         android:id="@+id/searchView">
 
 
-    <ImageView
+        <ImageView
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/icon_search"
-        android:layout_marginLeft="10dp"
-        android:layout_gravity="center_vertical"
-        />
-
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_search"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
+            />
 
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="搵野玩"
-        android:textSize="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_gravity="center_vertical"
-        android:textColor="@color/font_grey_white"/>
-        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="搵野玩"
+            android:textSize="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/font_grey_white"/>
+    </LinearLayout>
 
     <!--<View-->
         <!--android:id="@+id/searchView"-->

@@ -83,7 +83,7 @@ public class Ranking extends Activity {
     @Override
     public void onStart(){
         super.onStart();
-        adapter = new MyAdapter(this, companyInfoItems);
+        adapter = new MyAdapter(this, companyInfoItems, false);
         gridView.setAdapter(adapter);
 
     }

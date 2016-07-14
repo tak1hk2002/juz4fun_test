@@ -4,17 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="#E6E6E6">
+    android:background="@color/bg_grey_black_light">
 
-    <View
-        android:id="@+id/view1"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentTop="true"
-        android:background="#FFFFFF"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"/>
 
     <SearchView
         android:id="@+id/searchView1"
@@ -22,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="3dp"
+        android:background="@color/font_white"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp">
 
@@ -55,7 +47,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/searchView1"
         android:layout_marginTop="25dp"
-        android:dividerHeight="1dp"
-        android:divider="@color/font_grey_white"/>
+        android:divider="@drawable/list_divider"
+        android:dividerHeight="1dp"/>
 
 </RelativeLayout>

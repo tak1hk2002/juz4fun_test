@@ -466,17 +466,19 @@ public class TestActivity extends FragmentActivity {
         HOME_FLAG = false;
         //getActionBar().setDisplayHomeAsUpEnabled(true);     //make back button
         showBackButton();
+        Log.d("POSITION", Integer.toString(position));
         switch (position) {
             case 0:
                 //主頁
                 //getActionBar().setDisplayHomeAsUpEnabled(false);     //make back button
                      //make back button
-                hideBackButton();
+                //hideBackButton();
                 fragment = new Home();
                 HOME_FLAG = true;
                 tag = "home";
                 break;
             case 1:
+                //showBackButton();
                 //進階搜尋
                 fragment = new search();
                 tag = "search";
@@ -527,7 +529,7 @@ public class TestActivity extends FragmentActivity {
              System.out.println("testActivity_backstackEntryCount:="+fragmentManager.getBackStackEntryCount());
             //clear all of the fragment at the stack
             //only the "main" stack, "empty" stack remains
-            fragmentManager.popBackStack("main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            //fragmentManager.popBackStack("main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
             //System.out.println(fragmentManager.getBackStackEntryCount());
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -537,8 +539,10 @@ public class TestActivity extends FragmentActivity {
                     fragmentTransaction.replace(R.id.frame_container, fragment, tag).addToBackStack("empty");
                 }
             }
-            else
+            else {
+                fragmentManager.popBackStack("main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentTransaction.replace(R.id.frame_container, fragment, tag).addToBackStack("main");
+            }
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
 
@@ -624,7 +628,7 @@ public class TestActivity extends FragmentActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        System.out.println(fragmentManager.getBackStackEntryCount());
+        Log.d("EntryCount", Integer.toString(fragmentManager.getBackStackEntryCount()));
 
         if (fragmentManager.getBackStackEntryCount() == 1) {
             finish();
@@ -644,6 +648,9 @@ public class TestActivity extends FragmentActivity {
         }
         else {
             fragmentManager.popBackStack();
+            if(fragmentManager.getBackStackEntryCount() == 2){
+                hideBackButton();
+            }
             //如果不是返主頁
             //setTitle(mTitle);
             if (!tempTitle.isEmpty()) {

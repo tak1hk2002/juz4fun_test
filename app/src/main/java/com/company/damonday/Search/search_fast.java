@@ -14,6 +14,7 @@ package com.company.damonday.Search;
         import android.annotation.SuppressLint;
         import android.app.ProgressDialog;
         import android.content.Context;
+        import android.graphics.Color;
         import android.graphics.Typeface;
         import android.os.AsyncTask;
         import android.os.Bundle;
@@ -104,6 +105,13 @@ public class search_fast extends Fragment {
 
         search = (SearchView) myFragmentView.findViewById(R.id.searchView1);
         search.setQueryHint("搵野玩");                 //tomc 16/4/2016
+
+        int searchPlateId = search.getContext().getResources()
+                .getIdentifier("android:id/search_plate", null, null);
+        View searchPlateView = search.findViewById(searchPlateId);
+        if (searchPlateView != null) {
+            searchPlateView.setBackgroundResource(R.color.font_white);
+        }
 
         searchResults = (ListView) myFragmentView.findViewById(R.id.listview_search);
         search.setIconified(false);
