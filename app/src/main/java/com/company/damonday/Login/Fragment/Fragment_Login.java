@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
+import com.company.damonday.Home.Home;
 import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.Setting.Setting;
 import com.company.damonday.function.APIConfig;
@@ -46,6 +47,7 @@ import com.facebook.login.widget.LoginButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -171,10 +173,14 @@ public class Fragment_Login extends Fragment {
             }
         });
 
+
+        //get permission of facebook
+        loginButton.setReadPermissions(Arrays.asList(
+                "email", "user_birthday"));
+
         //幫loginButton增加callback function
 
         //這邊為了方便 直接寫成inner class
-
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
             //登入成功
@@ -189,7 +195,6 @@ public class Fragment_Login extends Fragment {
                 //get user ID and display his profile pic
                 String userId = loginResult.getAccessToken().getUserId();
                 String profileImgUrl = "https://graph.facebook.com/" + userId + "/picture?type=large";
-
 
 
                 Log.d("FB", "access token got.");
@@ -218,6 +223,7 @@ public class Fragment_Login extends Fragment {
                                 Log.d("FB", object.optString("name"));
                                 Log.d("FB", object.optString("link"));
                                 Log.d("FB", object.optString("id"));
+                                Log.d("FB", object.optString("email"));
 
                             }
                         });
@@ -225,7 +231,7 @@ public class Fragment_Login extends Fragment {
                 //包入你想要得到的資料 送出request
 
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,link");
+                parameters.putString("fields", "id,name,link,email");
                 request.setParameters(parameters);
                 request.executeAsync();
 
@@ -313,8 +319,23 @@ public class Fragment_Login extends Fragment {
                 fragmentTransaction.commit();
             }
             else {
-                /*Intent in = new Intent(v.getContext(), MainActivity.class);
-                v.getContext().startActivity(in);*/
+                Fragment fragment = null;
+                fragment = new Home();
+                getActivity().getActionBar().show();
+                // This method will be executed once the timer is over
+                // Start your app main activity
+                                /*Intent i = new Intent(SplashActivity.this, TestActivity.class);
+                                startActivity(i);*/
+                if (fragment != null) {
+                    FragmentManager fragmentManager = getFragmentManager();
+                    //clear all of the fragment at the stack
+                    fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    //System.out.println(fragmentManager.getBackStackEntryCount());
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_container, fragment, "home").addToBackStack("main");
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
+                }
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -356,7 +377,8 @@ public class Fragment_Login extends Fragment {
                         loginSQLiteHandler.addUser(token, "Wait for Ryo to add email field", username);
 
                         try {
-                            //last fragment is from detail
+                            redirectToDetail();
+                            /*//last fragment is from detail
                             if (entId != null) {
                                 System.out.println("HIHIHIHIHHHI");
                                 Bundle bundle = new Bundle();
@@ -373,12 +395,12 @@ public class Fragment_Login extends Fragment {
                                 //delete last fragment
                                 fragmentManager.popBackStack();
                                 //delete loginfragment
-                                    /*Fragment loginFragment = getActivity().getSupportFragmentManager().findFragmentByTag("login");
+                                    *//*Fragment loginFragment = getActivity().getSupportFragmentManager().findFragmentByTag("login");
                                     Fragment companyDetailFragment = getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail");
                                     if(loginFragment != null)
                                         fragmentTransaction.remove(loginFragment);
                                     if(companyDetailFragment != null)
-                                        fragmentTransaction.remove(companyDetailFragment);*/
+                                        fragmentTransaction.remove(companyDetailFragment);*//*
 
 
                                 //hide the fragment which is to jump to company detail page
@@ -415,9 +437,24 @@ public class Fragment_Login extends Fragment {
                                 }
                             }
                             else {
-                                Intent in = new Intent(v.getContext(), MainActivity.class);
-                                v.getContext().startActivity(in);
-                            }
+                                Fragment fragment = null;
+                                fragment = new Home();
+                                getActivity().getActionBar().show();
+                                // This method will be executed once the timer is over
+                                // Start your app main activity
+                                *//*Intent i = new Intent(SplashActivity.this, TestActivity.class);
+                                startActivity(i);*//*
+                                if (fragment != null) {
+                                    FragmentManager fragmentManager = getFragmentManager();
+                                    //clear all of the fragment at the stack
+                                    fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                                    //System.out.println(fragmentManager.getBackStackEntryCount());
+                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                    fragmentTransaction.replace(R.id.frame_container, fragment, "home").addToBackStack("main");
+                                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                    fragmentTransaction.commit();
+                                }
+                            }*/
                         }catch (Exception e){
                             e.printStackTrace();
                         }

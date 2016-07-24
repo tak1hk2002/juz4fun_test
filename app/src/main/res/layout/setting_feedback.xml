@@ -83,6 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
@@ -97,10 +98,14 @@
 
                 <EditText
                     android:id="@+id/subject"
+                    android:singleLine="true"
+                    android:nextFocusDown="@id/email"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.65"
-                    android:textColor="@color/font_grey_white" />
+                    android:textColor="@color/font_grey_white"
+                    android:background="@drawable/textbox_white_border"
+                    android:textCursorDrawable="@drawable/color_cursor"/>
 
 
             </LinearLayout>
@@ -110,6 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
                 android:orientation="horizontal">
 
 
@@ -123,10 +129,13 @@
 
                 <EditText
                     android:id="@+id/email"
+                    android:singleLine="true"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.65"
-                    android:textColor="@color/font_grey_white" />
+                    android:textColor="@color/font_grey_white"
+                    android:background="@drawable/textbox_white_border"
+                    android:textCursorDrawable="@drawable/color_cursor"/>
 
 
             </LinearLayout>
@@ -136,6 +145,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
@@ -153,7 +163,13 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.65"
-                    android:textColor="@color/font_grey_white" />
+                    android:textColor="@color/font_grey_white"
+                    android:lines="10"
+                    android:minLines="5"
+                    android:maxLines="15"
+                    android:gravity="top|left"
+                    android:background="@drawable/textbox_white_border"
+                    android:textCursorDrawable="@drawable/color_cursor"/>
 
 
             </LinearLayout>
@@ -171,5 +187,6 @@
 
     </ScrollView>
 
+    <View android:layout_width="fill_parent" android:id="@+id/focus_view" android:layout_height="0dp" android:focusable="true" android:focusableInTouchMode="true"><requestFocus/></View>
 
 </RelativeLayout>

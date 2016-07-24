@@ -223,7 +223,7 @@ public class TestActivity extends FragmentActivity {
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
-            displayView(0);
+            displayView(7);
         }
 
         //tomc 10/4/2016
@@ -514,6 +514,7 @@ public class TestActivity extends FragmentActivity {
                 //launch page
                 fragment = new LaunchPage();
                 tag = "launchpage";
+                getActionBar().hide();
 
             default:
                 break;

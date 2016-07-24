@@ -348,7 +348,7 @@ public class MainActivity extends FragmentActivity {
 
         // Logs 'install' and 'app activate' App Events.
         Profile profile = Profile.getCurrentProfile();
-        info.setText(message(profile));
+        /*info.setText(message(profile));
         try {
             String profileImgUrl = "https://graph.facebook.com/" + profile.getId() + "/picture?type=large";
 
@@ -359,7 +359,7 @@ public class MainActivity extends FragmentActivity {
         catch (Exception e){
             e.printStackTrace();
         }
-        AppEventsLogger.activateApp(this);
+        AppEventsLogger.activateApp(this);*/
     }
 
     @Override

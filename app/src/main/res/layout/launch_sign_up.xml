@@ -48,18 +48,18 @@
         android:layout_below="@+id/liner_or"
         android:layout_gravity="center"
         android:paddingBottom="10dp">
-        <com.facebook.login.widget.LoginButton
-            xmlns:facebook="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/btn_fb_login"
+        <Button
+            android:id="@+id/btn_login"
             android:layout_width="@dimen/btn_down_width_super_long"
             android:layout_height="@dimen/btn_top_height"
-            android:background="@drawable/btn_fblogin_topbg"
+            android:background="@drawable/btn_actioncell_send_topbg"
+            android:text="@string/btn_login"
             android:layout_gravity="center_horizontal"
-            facebook:com_facebook_login_text="@string/btn_facebook_login"/>
+            android:textColor="@color/font_white"/>
         <Button
             android:layout_width="@dimen/btn_down_width_super_long"
             android:layout_height="@dimen/btn_down_height"
-            android:background="@drawable/btn_fblogin_downbg"/>
+            android:background="@drawable/btn_actioncell_send_downbg"/>
     </LinearLayout>
 
     <LinearLayout
@@ -74,16 +74,16 @@
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp">
             <Button
-                android:id="@+id/btn_email"
+                android:id="@+id/btn_register"
                 android:layout_width="@dimen/btn_top_width_long"
                 android:layout_height="@dimen/btn_top_height"
-                android:background="@drawable/btn_actioncell_send_topbg"
-                android:text="@string/btn_email_login"
+                android:background="@drawable/btn_gameshare_reg_topbg"
+                android:text="@string/btn_register"
                 android:textColor="@color/font_white"/>
             <Button
                 android:layout_width="@dimen/btn_down_width_long"
                 android:layout_height="@dimen/btn_down_height"
-                android:background="@drawable/btn_actioncell_send_downbg"/>
+                android:background="@drawable/btn_gameshare_reg_downbg"/>
         </LinearLayout>
 
         <LinearLayout

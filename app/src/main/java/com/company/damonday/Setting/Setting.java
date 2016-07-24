@@ -161,11 +161,10 @@ public class Setting extends Fragment {
                         .transform(new RoundedTransformation(200, 0))
                         .fit()
                         .into(imgProfile);
+                //username
+                txtUsername.setText(profile.getName());
 
 
-                /*Glide.with(getActivity())
-                        .load(profileImgUrl)
-                        .into(imgProfile);*/
             }
             catch (Exception e){
                 e.printStackTrace();

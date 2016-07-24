@@ -75,6 +75,8 @@ public class Home extends Fragment {
 
         //search =(SearchView)view.findViewById(R.id.search);
         gridView = (GridView) view.findViewById(R.id.gridView);
+        adapter = new MyAdapter(getActivity(), companyInfoItems, true);
+        gridView.setAdapter(adapter);
 
         getActivity().setTitle(R.string.home);
 
@@ -170,8 +172,6 @@ public class Home extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        adapter = new MyAdapter(getActivity(), companyInfoItems, true);
-        gridView.setAdapter(adapter);
 
     }
 
