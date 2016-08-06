@@ -25,7 +25,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.company.damonday.CompanyInfo.CompanySQLiteHandler;
 import com.company.damonday.Home.Home;
 import com.company.damonday.LatestComment.latestcommentvolley;
@@ -44,7 +43,6 @@ import com.company.damonday.function.ConnectionDetector;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
-
 import java.util.ArrayList;
 
 /**
@@ -87,16 +85,12 @@ public class TestActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer);
 
-
-
         //check if the network is connected      Alan 14/5/2016
         DialogForNetworkChecking();
 
         //tomc 10/4/2016   login
         session = new SessionManager(this);
         db = new LoginSQLiteHandler(this);          //tomc 10/4/2016       login
-
-
         mTitle = mDrawerTitle = getTitle();
 
         // load slide menu items
@@ -125,8 +119,6 @@ public class TestActivity extends FragmentActivity {
 
         //Special handel, as （Juz4fun and 主頁） tomc 26/1/2016
         navDrawerItems.add(new NavDrawerItem("主頁", navMenuIcons.getResourceId(0, -1)));
-
-
 
         // Find People
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
@@ -202,7 +194,6 @@ public class TestActivity extends FragmentActivity {
             public void onDrawerClosed(View view) {
                 //calling when Drawer is closed tomc 26/1/2016
 
-
                // getActionBar().setTitle(mTitle);
                // System.out.println("onDrawerClosed");
                 // calling onPrepareOptionsMenu() to show action bar icons
@@ -225,13 +216,6 @@ public class TestActivity extends FragmentActivity {
             // on first time display view for first nav item
             displayView(7);
         }
-
-        //tomc 10/4/2016
-       // Log.d("yyyyyyyy", Boolean.toString(session.isLoggedIn()));
-
-
-
-
 
     }
 
@@ -264,17 +248,27 @@ public class TestActivity extends FragmentActivity {
     }
 
     public void hideBackButton(){                        //tomc 6/3/2016
-
-
+//use by the fragment
         View v=getActionBar().getCustomView().findViewById(R.id.button_back);
-       v.setVisibility(View.INVISIBLE);
+        v.setVisibility(View.INVISIBLE);
     }
 
     public void showBackButton(){                        //tomc 6/3/2016
-
-
+//use by the fragment
         View v=getActionBar().getCustomView().findViewById(R.id.button_back);
         v.setVisibility(View.VISIBLE);
+    }
+
+    public void showMenuButton(){                        //tomc 6/8/2016
+//use by the fragment
+        View v=getActionBar().getCustomView().findViewById(R.id.button_setting);
+        v.setVisibility(View.VISIBLE);
+    }
+
+    public void hideMenuButton(){                        //tomc 6/8/2016
+//use by the fragment
+        View v=getActionBar().getCustomView().findViewById(R.id.button_setting);
+        v.setVisibility(View.INVISIBLE);
     }
 
     public void checkLogin(){
@@ -282,7 +276,6 @@ public class TestActivity extends FragmentActivity {
             linear_login.setVisibility(View.GONE);
             linear_register.setVisibility(View.GONE);
             linear_logout.setVisibility(View.VISIBLE);
-
 
             if (session.isLoggedIn()) {
                 btn_logout.setOnClickListener(new View.OnClickListener() {
@@ -311,7 +304,6 @@ public class TestActivity extends FragmentActivity {
             }
         }
         else {
-
             linear_logout.setVisibility(View.GONE);
             linear_login.setVisibility(View.VISIBLE);
             linear_register.setVisibility(View.VISIBLE);
@@ -332,8 +324,6 @@ public class TestActivity extends FragmentActivity {
                     fragmentTransaction.commit();
                     mDrawerLayout.closeDrawer(Gravity.RIGHT);
 
-
-
                 }
             });
 
@@ -344,7 +334,6 @@ public class TestActivity extends FragmentActivity {
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frame_container, fragment_registration, "register").addToBackStack(null);
-
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     fragmentTransaction.commit();
                     mDrawerLayout.closeDrawer(Gravity.RIGHT);
@@ -399,22 +388,10 @@ public class TestActivity extends FragmentActivity {
 
                 return true;
 
-//            case R.id.btnMyMenu:
-//                Log.d("btn","btn");
-//                if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {//tomc 31/8/2015
-//                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
-//                } else {
-//                    mDrawerLayout.openDrawer(Gravity.RIGHT);
-//                }
-//
-//                return true;
-
 
             default:                        //tomc 13/10/2015 press back button in menu
 
 //                mDrawerLayout.closeDrawer(Gravity.RIGHT);
-//
-//
 //                //finish();
 //                // onKeyDown(KeyEvent.KEYCODE_BACK, null);     //tomc 13/10/2015 call
 //
@@ -465,7 +442,8 @@ public class TestActivity extends FragmentActivity {
         String api = null;
         HOME_FLAG = false;
         //getActionBar().setDisplayHomeAsUpEnabled(true);     //make back button
-        showBackButton();
+        hideBackButton();
+        //showBackButton();                                     //6/8/2016  tomc ,follow ios back button logic
         Log.d("POSITION", Integer.toString(position));
         switch (position) {
             case 0:
@@ -531,19 +509,28 @@ public class TestActivity extends FragmentActivity {
             //clear all of the fragment at the stack
             //only the "main" stack, "empty" stack remains
             //fragmentManager.popBackStack("main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
             //System.out.println(fragmentManager.getBackStackEntryCount());
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             //add the home fragment to empty stack
-            if(tag.equals("home")) {
-                if (homeFragment == null) {
-                    fragmentTransaction.replace(R.id.frame_container, fragment, tag).addToBackStack("empty");
-                }
-            }
-            else {
-                fragmentManager.popBackStack("main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                fragmentTransaction.replace(R.id.frame_container, fragment, tag).addToBackStack("main");
-            }
+            System.out.println("tag="+tag);
+            fragmentManager.popBackStack("emply", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fragmentManager.popBackStack("main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);   //important to clear repeat fragment in the stack //Alan 9/2/2016
+//            if(tag.equals("home")) {
+//                //System.out.println("homecase1");
+//                //if (homeFragment == null) {
+//                    System.out.println("homecase2");
+//                    fragmentTransaction.replace(R.id.frame_container, fragment, tag).addToBackStack("empty");
+//               // }
+//            }
+//            else {
+//                System.out.println("homecase3");
+//                fragmentManager.popBackStack("main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+               fragmentTransaction.replace(R.id.frame_container, fragment, tag).addToBackStack("main");
+//                fragmentTransaction.hide(fragmentManager.findFragmentByTag("home"));
+//                fragmentTransaction.add(R.id.frame_container, fragment, "tag").addToBackStack("main");
+
+       //     }
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
 
@@ -551,12 +538,8 @@ public class TestActivity extends FragmentActivity {
                 // update selected item and title, then close the drawer
                 mDrawerList.setItemChecked(position, true);
                 mDrawerList.setSelection(position);
-
-
                // tempmtitle = mTitle;
                // System.out.println("tempmtitle=" + tempmtitle);
-
-
                // setTitle(navMenuTitles[position]);
             }
             System.out.println("ordertest1");
@@ -574,7 +557,6 @@ public class TestActivity extends FragmentActivity {
         if (getActionBar().getTitle()!= null) {
             tempTitle.add(getActionBar().getTitle().toString());
         }
-
        // mTitle = ((getActionBar().getTitle()).toString());}
         getActionBar().setTitle(title);
         AdjustActiontitle(getActionBar().getTitle().toString());
@@ -583,12 +565,10 @@ public class TestActivity extends FragmentActivity {
     }
 
     public void setTitle(CharSequence title,boolean back) {
-
         //imageView != null;
 //        if (getActionBar().getTitle()!= null) {
 //            tempTitle.add(getActionBar().getTitle().toString());
 //        }
-      //  Log.d("setTitle", "setTitle new ");
         // mTitle = ((getActionBar().getTitle()).toString());}
         getActionBar().setTitle(title);
         AdjustActiontitle(getActionBar().getTitle().toString());
@@ -624,33 +604,33 @@ public class TestActivity extends FragmentActivity {
     public void onBackPressed() {
 
         System.out.println("onBackPressed");
-
         mDrawerLayout.closeDrawer(Gravity.RIGHT);
-
         FragmentManager fragmentManager = getSupportFragmentManager();
-
         Log.d("EntryCount", Integer.toString(fragmentManager.getBackStackEntryCount()));
-
-        if (fragmentManager.getBackStackEntryCount() == 1) {
+        if (fragmentManager.getBackStackEntryCount() == 0) {
             finish();
+        }
+      //  if (fragmentManager.getBackStackEntryCount() == 1) {
+           // finish();
             /*//如果返主頁
             if(!HOME_FLAG) {
                 tempTitle.clear();
-
-
                 tempTitle.add(getResources().getString(R.string.home));
                 setTitle(R.string.home);
                 //displayView(0);
                 System.out.println("case1");
             }
             else{
-
             }*/
-        }
+       // }
         else {
+
+            System.out.println("fragmentManager.getBackStackEntryCount()="+fragmentManager.getBackStackEntryCount());
             fragmentManager.popBackStack();
-            if(fragmentManager.getBackStackEntryCount() == 2){
+            System.out.println("fragmentManager.getBackStackEntryCount2()=" + fragmentManager.getBackStackEntryCount());
+            if(fragmentManager.getBackStackEntryCount() == 1){
                 hideBackButton();
+                System.out.println("case1");
             }
             //如果不是返主頁
             //setTitle(mTitle);
@@ -659,11 +639,8 @@ public class TestActivity extends FragmentActivity {
                 tempTitle.remove(tempTitle.size() - 1);
             }
 
-            System.out.println("case2");
           //  System.out.println(tempTitle);
         }
-
-
         //moveTaskToBack(true);
       //  super.onBackPressed(); // allows standard use of backbutton for page 1
     }

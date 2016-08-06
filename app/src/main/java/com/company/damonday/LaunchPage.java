@@ -47,7 +47,8 @@ public class LaunchPage extends Fragment {
                     fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     //System.out.println(fragmentManager.getBackStackEntryCount());
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frame_container, fragment, "launchsignup").addToBackStack("main");
+                   // fragmentTransaction.replace(R.id.frame_container, fragment, "launchsignup").addToBackStack("main");
+                    fragmentTransaction.replace(R.id.frame_container, fragment, "launchsignup");
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     fragmentTransaction.commit();
                 }

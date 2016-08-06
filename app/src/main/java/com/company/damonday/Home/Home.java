@@ -44,11 +44,7 @@ import java.util.List;
  */
 public class Home extends Fragment {
 
-    // json array response url
-   // private String urlJsonObj = "http://damonday.tk/api/entertainment/home/";
-
     private static String TAG = Ranking.class.getSimpleName();
-
     // Progress dialog
     private List<CompanyInfo> companyInfoItems = new ArrayList<CompanyInfo>();
     private GridView gridView;
@@ -61,7 +57,6 @@ public class Home extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         makeJsonArrayRequest();
-
     }
 
     @Override
@@ -71,22 +66,17 @@ public class Home extends Fragment {
         View view = inflater.inflate(R.layout.home, container, false);
         searchview = (LinearLayout)view.findViewById(R.id.searchView);
 
-
-
         //search =(SearchView)view.findViewById(R.id.search);
         gridView = (GridView) view.findViewById(R.id.gridView);
         adapter = new MyAdapter(getActivity(), companyInfoItems, true);
         gridView.setAdapter(adapter);
-
         getActivity().setTitle(R.string.home);
 
         //getActivity().getActionBar().setTitle(R.string.home);
         //System.out.println("ordertest2");
         ((TestActivity)getActivity()).hideBackButton();             //very important tomc 23/4/2016
-
-
         FragmentManager fragmentManager = getFragmentManager();
-        System.out.println("time0:" + fragmentManager.getBackStackEntryCount());
+        System.out.println("homeOnCreateView:" + fragmentManager.getBackStackEntryCount());
         //search.setIconified(false);
         searchview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,9 +87,6 @@ public class Home extends Fragment {
                 // Intent i = new Intent(MainActivity.this, Ranking.class);
                 //getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
                Fragment fragment_search_fast = new search_fast();
-
-
-
                 FragmentManager fragmentManager = getFragmentManager();
                 //fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);   //important to clear repeat fragment in the stack //tomc 24/1/2016
                 // System.out.println(fragmentManager.getBackStackEntryCount());
@@ -111,7 +98,6 @@ public class Home extends Fragment {
                 //fragmentTransaction.add(R.id.frame_container, fragment_search_fast, "search_fast").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
-
 
             }
         });
@@ -149,7 +135,6 @@ public class Home extends Fragment {
             }
         });
 
-
         /*fragmentTabs_try.getView().setFocusableInTouchMode(true);
         fragmentTabs_try.getView().requestFocus();
         fragmentTabs_try.getView().setOnKeyListener( new View.OnKeyListener()
@@ -164,15 +149,12 @@ public class Home extends Fragment {
                 return false;
             }
         } );*/
-
         return view;
-
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 
 
@@ -184,10 +166,7 @@ public class Home extends Fragment {
             public void onResponse(JSONObject response) {
                 Log.d(TAG, response.toString());
 
-
                 try {
-
-
                     // loop through each json object
                     String status = response.getString("status");
                     JSONArray rank = response.getJSONArray("data");
@@ -201,7 +180,6 @@ public class Home extends Fragment {
                             // companyInfo.setTitle(company.getString("name"));
                             companyInfo.setUrl(company.getString("cover_image"));
                             companyInfo.setEnt_id(company.getInt("ID"));
-
                             companyInfoItems.add(companyInfo);
 
                         }
@@ -242,9 +220,6 @@ public class Home extends Fragment {
 //            }
 
             public void onErrorResponse(VolleyError error) {
-
-
-
 
 
                 //do stuff with the body...

@@ -29,6 +29,7 @@ import com.company.damonday.Home.Home;
 import com.company.damonday.LatestComment.latestcomment;
 import com.company.damonday.LatestComment.latestcomment_Adapter;
 import com.company.damonday.R;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.company.damonday.function.ProgressImage;
@@ -100,6 +101,8 @@ Log.d("geturl",geturl);
         view = inflater.inflate(R.layout.search_result, container, false);
         //getActivity().getActionBar().setTitle(R.string.advance_search_result);
         getActivity().setTitle(R.string.advance_search_result);
+        ((TestActivity)getActivity()).showBackButton();             //showbackbutton tomc 23/4/2016
+        ((TestActivity)getActivity()).hideMenuButton();             //hideMenuButton tomc 23/4/2016
         pDialog = new ProgressImage(getActivity());
         pDialog.show();
         //setContentView(R.layout.latestcomment);
