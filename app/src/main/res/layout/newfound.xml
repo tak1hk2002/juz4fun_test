@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_grey_black_light"
-    android:gravity="bottom">
+    android:orientation="vertical">
 
-    <ScrollView
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:cacheColorHint="#00000000"
+        android:layout_height="283dp"
+        android:background="@color/bg_grey_black_light"
+        android:divider="@drawable/list_divider"
+        android:dividerHeight="1dp">
+    </ListView>
+
+    <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/button_bottom">
@@ -63,12 +73,12 @@
                     android:textSize="20dp"
                     android:textColor="@color/font_grey_white" />
 
-                <!--<EditText
+                &lt;!&ndash;<EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:id="@+id/company_type"
-                    android:textColor="@color/font_grey_white" />-->
+                    android:textColor="@color/font_grey_white" />&ndash;&gt;
                 <LinearLayout
                     android:id="@+id/cat_checkbox"
                     android:orientation="vertical"
@@ -155,12 +165,12 @@
                     android:textSize="20dp"
                     android:textColor="@color/font_grey_white" />
 
-                <!--<EditText
+                &lt;!&ndash;<EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:id="@+id/company_cost"
-                    android:textColor="@color/font_grey_white" />-->
+                    android:textColor="@color/font_grey_white" />&ndash;&gt;
                 <Spinner
                     android:id="@+id/company_cost"
                     android:layout_width="0dp"
@@ -208,28 +218,26 @@
 
 
 
-            <ImageView
 
-                android:layout_marginTop="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/mascot_discover"
-                android:layout_gravity="center_horizontal"/>
 
         </LinearLayout>
-    </ScrollView>
+    </ScrollView>-->
 
-    <RelativeLayout
-        android:id="@+id/button_bottom"
-        android:layout_width="match_parent"
+    <ImageView
+
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:background="@drawable/mascot_discover"
+        android:layout_gravity="center_horizontal"/>
 
         <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:gravity="bottom">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -273,5 +281,4 @@
             </LinearLayout>
         </LinearLayout>
 
-    </RelativeLayout>
-</RelativeLayout>
+</LinearLayout>

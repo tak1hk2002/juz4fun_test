@@ -124,7 +124,7 @@ public class LaunchSignUp extends Fragment {
                     fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     //System.out.println(fragmentManager.getBackStackEntryCount());
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frame_container, fragment, "home").addToBackStack("emply");
+                    fragmentTransaction.replace(R.id.frame_container, fragment, "home").addToBackStack("main");
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     fragmentTransaction.commit();
                 }

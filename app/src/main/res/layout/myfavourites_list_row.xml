@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="1dip"
             android:layout_below="@+id/price_range"
-            android:text="室內"
+            android:text="室內, 室內, 室內, 室內, 室內, 室內"
             android:textColor="@color/font_grey_white"
             android:textSize="@dimen/my_favourite_cat"
             android:layout_toLeftOf="@+id/relativeLayout2"

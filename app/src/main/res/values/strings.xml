@@ -182,8 +182,17 @@
     <string name="newFound_company_cat">公司類別 *</string>
     <string name="newFound_company_address">公司地址 *</string>
     <string name="newFound_expense">平均消費</string>
-    <string name="newFound_business_hour">營業時間</string>
+    <string name="newFound_business_hour_start">開始時間</string>
+    <string name="newFound_business_hour_end">結束時間</string>
     <string name="newFound_expense_prompt">簡返個價錢先</string>
+    <string-array name="newFound_title">
+        <item>公司名稱 *</item>
+        <item>公司類別 *</item>
+        <item>公司地址</item>
+        <item>公司電話</item>
+        <item>平均消費</item>
+        <item>營業時間</item>
+    </string-array>
 
 
     <!--title-->
