@@ -36,6 +36,7 @@ import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.R;
 import com.company.damonday.Setting.Lib.RoundedTransformation;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -77,30 +78,27 @@ public class Setting extends Fragment {
         session = new SessionManager(getActivity());
         // SqLite database handler
         db = new LoginSQLiteHandler(getActivity());
-
         //宣告callback Manager
         callbackManager = CallbackManager.Factory.create();
-
-
 
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //getActivity().getActionBar().setTitle(R.string.setting);
-       // Log.d("setting","rr");
+        // Log.d("setting","rr");
         getActivity().setTitle(R.string.setting);
         View view = inflater.inflate(R.layout.setting, container, false);
         islogined = (LinearLayout) view.findViewById(R.id.logined);
-        islogouted = (LinearLayout)view.findViewById(R.id.logouted);
+        islogouted = (LinearLayout) view.findViewById(R.id.logouted);
         Button btnSysLogout = (Button) view.findViewById(R.id.sys_logout);
         ImageView imgProfile = (ImageView) view.findViewById(R.id.profile_img);
         TextView txtUsername = (TextView) view.findViewById(R.id.username);
         TextView txtEmail = (TextView) view.findViewById(R.id.email);
-        RelativeLayout onClick_aboutus =(RelativeLayout)view.findViewById(R.id.RA_aboutus);
-        RelativeLayout onClick_feedback =(RelativeLayout)view.findViewById(R.id.RA_feedback);
-        RelativeLayout onClickMyComment = (RelativeLayout)view.findViewById(R.id.RA_my_comment);
+        RelativeLayout onClick_aboutus = (RelativeLayout) view.findViewById(R.id.RA_aboutus);
+        RelativeLayout onClick_feedback = (RelativeLayout) view.findViewById(R.id.RA_feedback);
+        RelativeLayout onClickMyComment = (RelativeLayout) view.findViewById(R.id.RA_my_comment);
         //already logined
-        if(session.isLoggedIn()){
+        if (session.isLoggedIn()) {
             islogouted.setVisibility(View.GONE);
             // Fetching user details from sqlite
             HashMap<String, String> user = db.getUserDetails();
@@ -108,8 +106,6 @@ public class Setting extends Fragment {
             String email = user.get("email");
             txtUsername.setText(name);
             txtEmail.setText(email);
-
-
             Resources res = getResources();
             Bitmap originalProfilePic = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
             imgProfile.setImageBitmap(getRoundedShape(originalProfilePic));
@@ -127,7 +123,6 @@ public class Setting extends Fragment {
                     session.setLogin(false);
                     db.deleteUsers();
 
-
                     //refresh setting page
                     Setting setting = new Setting();
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -135,18 +130,13 @@ public class Setting extends Fragment {
                     fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null);
-
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     fragmentTransaction.commit();
-
-
-
                 }
             });
 
 
-        }
-        else if(AccessToken.getCurrentAccessToken() != null){
+        } else if (AccessToken.getCurrentAccessToken() != null) {
             islogouted.setVisibility(View.GONE);
             //btnSysLogout.setVisibility(View.GONE);
             //LoginButton btnFBLogout = (LoginButton) view.findViewById(R.id.fb_logout);
@@ -165,8 +155,7 @@ public class Setting extends Fragment {
                 txtUsername.setText(profile.getName());
 
 
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -175,12 +164,12 @@ public class Setting extends Fragment {
                 public void onClick(View v) {
                     LoginManager.getInstance().logOut();
                     Setting setting = new Setting();
+
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     //clear all of the fragment at the stack
                     fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null);
-
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     fragmentTransaction.commit();
 
@@ -224,7 +213,7 @@ public class Setting extends Fragment {
 
         }
         //ready for login
-        else{
+        else {
             islogined.setVisibility(View.GONE);
             Button btnLogin = (Button) view.findViewById(R.id.login);
             Button btnRegister = (Button) view.findViewById(R.id.register);
@@ -234,16 +223,15 @@ public class Setting extends Fragment {
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putString("lastFragment", "setting");
-
+                    ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                    ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                     Fragment_Login fragment_login = new Fragment_Login();
                     fragment_login.setArguments(bundle);
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                   // fragmentTransaction.replace(R.id.frame_container, fragment_login, "login").addToBackStack(null);
-
+                    // fragmentTransaction.replace(R.id.frame_container, fragment_login, "login").addToBackStack(null);
                     fragmentTransaction.hide(getFragmentManager().findFragmentByTag("setting"));
                     fragmentTransaction.add(R.id.frame_container, fragment_login, "login").addToBackStack(null);
-
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     fragmentTransaction.commit();
 
@@ -253,14 +241,14 @@ public class Setting extends Fragment {
             btnRegister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                    ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                     Fragment_Registration fragment_registration = new Fragment_Registration();
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                   // fragmentTransaction.replace(R.id.frame_container, fragment_registration, "register").addToBackStack(null);
+                    // fragmentTransaction.replace(R.id.frame_container, fragment_registration, "register").addToBackStack(null);
                     fragmentTransaction.hide(getFragmentManager().findFragmentByTag("setting"));
                     fragmentTransaction.add(R.id.frame_container, fragment_registration, "register").addToBackStack(null);
-
-
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     fragmentTransaction.commit();
 
@@ -279,8 +267,10 @@ public class Setting extends Fragment {
                 bundle.putString("last_fragment_tag", "my_comment");
                 latestcomment.setArguments(bundle);
                 //getActivity().setTitle(R.string.my_comment);
+                ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                 FragmentManager fragmentManager = getFragmentManager();
-               // System.out.println(fragmentManager.getBackStackEntryCount());
+                // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("setting"));
                 fragmentTransaction.add(R.id.frame_container, latestcomment, "my_comment").addToBackStack(null);
@@ -300,7 +290,8 @@ public class Setting extends Fragment {
                 //              fragmentTabs_try = new FragmentTabs_try();
 //                fragmentTabs_try.setArguments(bundle);
                 AboutUs about_us_fragment = new AboutUs();
-
+                ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                 FragmentManager fragmentManager = getFragmentManager();
                 System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -314,9 +305,6 @@ public class Setting extends Fragment {
         });
 
 
-
-
-
         onClick_feedback.setOnClickListener(new Button.OnClickListener() {
 
             @Override
@@ -328,7 +316,8 @@ public class Setting extends Fragment {
                 //              fragmentTabs_try = new FragmentTabs_try();
 //                fragmentTabs_try.setArguments(bundle);
                 FeedBack feedback_fragment = new FeedBack();
-
+                ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                 FragmentManager fragmentManager = getFragmentManager();
                 System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -355,12 +344,12 @@ public class Setting extends Fragment {
         paint.setStrokeWidth(5);
         Canvas c = new Canvas(circleBitmap);
         //This draw a circle of Gerycolor which will be the border of image.
-        c.drawCircle(scaleBitmapImage.getWidth()/2, scaleBitmapImage.getHeight()/2, scaleBitmapImage.getWidth()/2, paint);
+        c.drawCircle(scaleBitmapImage.getWidth() / 2, scaleBitmapImage.getHeight() / 2, scaleBitmapImage.getWidth() / 2, paint);
         BitmapShader shader = new BitmapShader(scaleBitmapImage, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         paint.setAntiAlias(true);
         paint.setShader(shader);
 // This will draw the image.
-        c.drawCircle(scaleBitmapImage.getWidth()/2, scaleBitmapImage.getHeight()/2, scaleBitmapImage.getWidth()/2-2, paint);
+        c.drawCircle(scaleBitmapImage.getWidth() / 2, scaleBitmapImage.getHeight() / 2, scaleBitmapImage.getWidth() / 2 - 2, paint);
         return circleBitmap;
     }
 
@@ -380,11 +369,9 @@ public class Setting extends Fragment {
     }
 
 
-
     @Override
     public void onResume() {
         super.onResume();
-
 
 
         // Logs 'install' and 'app activate' App Events.

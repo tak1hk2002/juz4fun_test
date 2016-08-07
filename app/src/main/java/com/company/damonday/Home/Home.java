@@ -64,7 +64,7 @@ public class Home extends Fragment {
 
         //init view
         View view = inflater.inflate(R.layout.home, container, false);
-        searchview = (LinearLayout)view.findViewById(R.id.searchView);
+        searchview = (LinearLayout) view.findViewById(R.id.searchView);
 
         //search =(SearchView)view.findViewById(R.id.search);
         gridView = (GridView) view.findViewById(R.id.gridView);
@@ -74,7 +74,7 @@ public class Home extends Fragment {
 
         //getActivity().getActionBar().setTitle(R.string.home);
         //System.out.println("ordertest2");
-        ((TestActivity)getActivity()).hideBackButton();             //very important tomc 23/4/2016
+        ((TestActivity) getActivity()).hideBackButton();             //very important tomc 23/4/2016
         FragmentManager fragmentManager = getFragmentManager();
         System.out.println("homeOnCreateView:" + fragmentManager.getBackStackEntryCount());
         //search.setIconified(false);
@@ -83,18 +83,18 @@ public class Home extends Fragment {
             public void onClick(View v) {
 
 
-                ((TestActivity)getActivity()).showBackButton();
-                // Intent i = new Intent(MainActivity.this, Ranking.class);
+                ((TestActivity) getActivity()).showBackButton();
+                ((TestActivity) getActivity()).hideMenuButton();
                 //getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-               Fragment fragment_search_fast = new search_fast();
+                Fragment fragment_search_fast = new search_fast();
                 FragmentManager fragmentManager = getFragmentManager();
                 //fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);   //important to clear repeat fragment in the stack //tomc 24/1/2016
                 // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 //fragmentTransaction.hide(getFragmentManager().findFragmentByTag("home"));
                 fragmentTransaction.replace(R.id.frame_container, fragment_search_fast, "search_fast").addToBackStack("main");  //tomc 24/1/2016
-                        //fragmentTransaction.hide(getFragmentManager().findFragmentById(R.id.frame_container));
-                        //fragmentTransaction.replace(R.id.frame_container, fragment_search_fast, "search_fast").addToBackStack("main");
+                //fragmentTransaction.hide(getFragmentManager().findFragmentById(R.id.frame_container));
+                //fragmentTransaction.replace(R.id.frame_container, fragment_search_fast, "search_fast").addToBackStack("main");
                 //fragmentTransaction.add(R.id.frame_container, fragment_search_fast, "search_fast").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
@@ -109,13 +109,13 @@ public class Home extends Fragment {
                                     long id) {
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                System.out.println("time_grid:"+fragmentManager.getBackStackEntryCount());
+                System.out.println("time_grid:" + fragmentManager.getBackStackEntryCount());
                 //pass the following object to next activity
                 /*Intent i = new Intent(Ranking.this, FragmentTabs.class);
                 i.putExtra("Ent_id", companyInfoItems.get(position).getEnt_id());
                 startActivity(i);*/
-                ((TestActivity)getActivity()).showBackButton();
-               // getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+                ((TestActivity) getActivity()).showBackButton();
+                // getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
                 //pass object to next fragment
                 Bundle bundle = new Bundle();
                 bundle.putString("ent_id", Integer.toString(companyInfoItems.get(position).getEnt_id()));
@@ -130,7 +130,7 @@ public class Home extends Fragment {
                 fragmentTransaction.add(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
-                System.out.println("time_grid_end:"+fragmentManager.getBackStackEntryCount());
+                System.out.println("time_grid_end:" + fragmentManager.getBackStackEntryCount());
 
             }
         });
@@ -185,7 +185,7 @@ public class Home extends Fragment {
                         }
                     } else {
                         String errorMsg = response.getString("msg");
-                        Log.d("error1","error1");
+                        Log.d("error1", "error1");
                         Toast.makeText(getActivity(),
                                 errorMsg,
                                 Toast.LENGTH_LONG).show();
@@ -224,7 +224,6 @@ public class Home extends Fragment {
 
                 //do stuff with the body...
             }
-
 
 
         });

@@ -24,6 +24,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.company.damonday.CompanyInfo.Fragment.ViewCommentDetail.Fragment_ViewCommentDetail;
 import com.company.damonday.R;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.AppController;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.ProgressImage;
@@ -38,7 +39,6 @@ import java.util.List;
 public class latestcommentvolley extends Fragment {
     // Log tag
     private static final String TAG = latestcommentvolley.class.getSimpleName();
-
     private ProgressImage pDialog;
     private List<latestcomment> latestcommentList = new ArrayList<latestcomment>();
     private ListView listView;
@@ -51,7 +51,7 @@ public class latestcommentvolley extends Fragment {
         try {
             api = getArguments().getString("api");
             lastFragmentTag = getArguments().getString("last_fragment_tag");
-        }catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(getActivity(), "No API loaded", Toast.LENGTH_LONG).show();
         }
@@ -59,13 +59,11 @@ public class latestcommentvolley extends Fragment {
     }
 
 
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.latestcomment, container, false);
         //setContentView(R.layout.latestcomment);
-
         getActivity().setTitle(R.string.latestcomment);
-        listView = (ListView)view.findViewById(R.id.list);
+        listView = (ListView) view.findViewById(R.id.list);
         adapter = new latestcomment_Adapter(getActivity(), latestcommentList);
         listView.setAdapter(adapter);
         listView.setOnScrollListener(new EndlessScrollListener() {
@@ -86,10 +84,11 @@ public class latestcommentvolley extends Fragment {
                 bundle.putString("comment_id", latestcommentList.get(position).getId());
                 Fragment_ViewCommentDetail fragment_ViewCommentDetail = new Fragment_ViewCommentDetail();
                 fragment_ViewCommentDetail.setArguments(bundle);
-
                 /*getFragmentManager().beginTransaction()
                         .add(R.id.frame_container, fragment_ViewCommentDetail)
                         .commit();*/
+                ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
@@ -102,12 +101,6 @@ public class latestcommentvolley extends Fragment {
         pDialog = new ProgressImage(getActivity());
         // Showing progress dialog before making http request
         pDialog.show();
-
-        // changing action bar color
-    /*    getActionBar().setBackgroundDrawable(
-                new ColorDrawable(Color.parseColor("#1b1b1b")));*/
-
-
         return view;
     }
 
@@ -117,15 +110,15 @@ public class latestcommentvolley extends Fragment {
         // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
         // Deserialize API response and then construct new objects to append to the adapter
         // Creating volley request obj
-        Log.d("Link", api+offset);
-        StringRequest latestcommentReq = new StringRequest( api+Integer.toString(offset),
+        Log.d("Link", api + offset);
+        StringRequest latestcommentReq = new StringRequest(api + Integer.toString(offset),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.d("TAG", response);
                         hidePDialog();
 
-                        try{
+                        try {
                             JSONObject jObject = new JSONObject(response);
                             // String aJsonString = jObject.getString("result");
                             //String bJsonString = jObject.getString("timestamp");
@@ -148,11 +141,8 @@ public class latestcommentvolley extends Fragment {
                                     latestcomment.setEntName("Bubble Soccer");
                                     latestcomment.setCompanyName("Party Home");
                                     latestcomment.setUsername(oneObject.getString("username"));
-
                                     latestcomment.setPostedDate(oneObject.getString("days_before"));
                                     //latestcomment.setComment(oneObject.getString("comment"));
-
-
                                     // adding movie to movies array
                                     latestcommentList.add(latestcomment);
 
@@ -165,8 +155,7 @@ public class latestcommentvolley extends Fragment {
                                 }
 
                             }
-                        }
-                        catch (JSONException e) {
+                        } catch (JSONException e) {
                             Log.e("log_tag", "Error parsing data " + e.toString());
                         }
 

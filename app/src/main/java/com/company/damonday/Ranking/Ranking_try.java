@@ -20,6 +20,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.R;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.company.damonday.function.ProgressImage;
@@ -38,7 +39,6 @@ public class Ranking_try extends Fragment {
 
 
     private static String TAG = Ranking.class.getSimpleName();
-
     // Progress dialog
     private ProgressImage pDialog;
     private List<CompanyInfo> companyInfoItems = new ArrayList<CompanyInfo>();
@@ -54,7 +54,6 @@ public class Ranking_try extends Fragment {
         // Showing progress dialog before making http request
         //pDialog.setMessage("Loading...");
         pDialog.show();
-
         makeJsonArrayRequest();
     }
 
@@ -68,9 +67,6 @@ public class Ranking_try extends Fragment {
         getActivity().setTitle(R.string.ranking);
 
         gridView = (GridView) view.findViewById(R.id.gridView);
-
-
-
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -89,7 +85,8 @@ public class Ranking_try extends Fragment {
                 fragmentTabs_try = new FragmentTabs_try();
                 fragmentTabs_try.setArguments(bundle);
 
-
+                ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                 FragmentManager fragmentManager = getFragmentManager();
                 // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -139,8 +136,6 @@ public class Ranking_try extends Fragment {
 
 
                 try {
-
-
                     // loop through each json object
                     String status = response.getString("status");
                     JSONArray rank = response.getJSONArray("data");
@@ -154,11 +149,8 @@ public class Ranking_try extends Fragment {
                             companyInfo.setTitle(company.getString("name"));
                             companyInfo.setUrl(company.getString("cover_image"));
                             companyInfo.setEnt_id(3);
-
-                            int resID = getResources().getIdentifier("mascot_rank"+Integer.toString(i + 1) , "drawable", getActivity().getPackageName());
+                            int resID = getResources().getIdentifier("mascot_rank" + Integer.toString(i + 1), "drawable", getActivity().getPackageName());
                             companyInfo.setMoscotId(resID);
-
-
                             companyInfoItems.add(companyInfo);
 
                         }
@@ -198,11 +190,11 @@ public class Ranking_try extends Fragment {
     }
 
     private void showpDialog() {
-            pDialog.show();
+        pDialog.show();
     }
 
     private void hidepDialog() {
-            pDialog.dismiss();
+        pDialog.dismiss();
     }
 
 }

@@ -16,6 +16,7 @@ import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.R;
 import com.company.damonday.Search.CompanyObject;
 import com.company.damonday.Search.search_adapter;
+import com.company.damonday.TestActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,6 @@ public class MyFavourites extends Fragment {
         myFavouritesObjects = db.getAll();
         if (myFavouritesObjects.size() == 0) {
             Toast.makeText(getActivity(), "你還沒有收藏，快點去收藏吧！", Toast.LENGTH_LONG).show();
-
         }
 
         listView = (ListView) view.findViewById(R.id.list);
@@ -70,7 +70,8 @@ public class MyFavourites extends Fragment {
                 fragmentTabs_try = new FragmentTabs_try();
                 fragmentTabs_try.setArguments(bundle);
 
-
+                ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                 FragmentManager fragmentManager = getFragmentManager();
                 // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

@@ -26,6 +26,7 @@ import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.Home.Home;
 import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.Setting.Setting;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MainActivity;
@@ -76,7 +77,7 @@ public class Fragment_Login extends Fragment {
             entId = getArguments().getString("ent_id");
             //get last fragment name
             lastFragment = getArguments().getString("lastFragment");
-        }catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -94,8 +95,8 @@ public class Fragment_Login extends Fragment {
 
         // TODO Auto-generated method stub
         v = inflater.inflate(R.layout.login_login_tab, container, false);
-        inputUsername = (EditText)v.findViewById(R.id.username);
-        inputPassword = (EditText)v.findViewById(R.id.password);
+        inputUsername = (EditText) v.findViewById(R.id.username);
+        inputPassword = (EditText) v.findViewById(R.id.password);
         btnLogin = (Button) v.findViewById(R.id.btn_login);
         btnCancel = (Button) v.findViewById(R.id.btn_cancel);
         TextView txtRegister = (TextView) v.findViewById(R.id.register);
@@ -125,7 +126,6 @@ public class Fragment_Login extends Fragment {
                 //fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame_container, fragmentForgetPassword, "forgetPassword").addToBackStack(null);
-
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
 
@@ -157,6 +157,7 @@ public class Fragment_Login extends Fragment {
             public void onClick(View v) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 fm.popBackStack();
+                ((TestActivity) getActivity()).tempTitle.remove(((TestActivity) getActivity()).tempTitle.size() - 1);
             }
         });
 
@@ -198,8 +199,6 @@ public class Fragment_Login extends Fragment {
 
 
                 Log.d("FB", "access token got.");
-
-
                 //accessToken之後或許還會用到 先存起來
                 accessToken = loginResult.getAccessToken();
 
@@ -242,7 +241,6 @@ public class Fragment_Login extends Fragment {
 
                 userFacebook(accessToken.getToken(), profile.getName(), accessToken.getUserId(), ImgUrl);
 
-
             }
 
             //登入取消
@@ -265,15 +263,12 @@ public class Fragment_Login extends Fragment {
         });
 
 
-
-
-
         return v;
 
     }
 
     //redirect to the page before login
-    private void redirectToDetail(){
+    private void redirectToDetail() {
         try {
             //if the user login via Detail
             if (entId != null) {
@@ -288,12 +283,16 @@ public class Fragment_Login extends Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 //delete last fragment
                 fragmentManager.popBackStack();
+                ((TestActivity) getActivity()).tempTitle.remove(((TestActivity) getActivity()).tempTitle.size() - 1);
+                //System.out.println("tomyyd"+((TestActivity) getActivity()).tempTitle);
                 //delete last fragment
                 fragmentManager.popBackStack();
+                //getActivity().setTitle(((TestActivity) getActivity()).tempTitle.size() - 1);
+                ((TestActivity) getActivity()).tempTitle.remove(((TestActivity) getActivity()).tempTitle.size() - 1);
 
                 //hide the fragment which is to jump to company detail page
                 String hideFragment = "";
-                if(getActivity().getSupportFragmentManager().findFragmentByTag("home") != null)
+                if (getActivity().getSupportFragmentManager().findFragmentByTag("home") != null)
                     hideFragment = "home";
                 else if (getActivity().getSupportFragmentManager().findFragmentByTag("ranking") != null)
                     hideFragment = "ranking";
@@ -306,19 +305,20 @@ public class Fragment_Login extends Fragment {
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
 
-            //if the user login through setting
-            } else if (getActivity().getSupportFragmentManager().findFragmentByTag("setting") != null){
+                //if the user login through setting
+            } else if (getActivity().getSupportFragmentManager().findFragmentByTag("setting") != null) {
                 Setting setting = new Setting();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 //clear all of the fragment at the stack
+                ((TestActivity) getActivity()).hideBackButton();        //tomc 7/8/2016 actionbar button
+                ((TestActivity) getActivity()).showMenuButton();        //tomc 7/8/2016 actionbar button
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null);
 
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
-            }
-            else {
+            } else {
                 Fragment fragment = null;
                 fragment = new Home();
                 getActivity().getActionBar().show();
@@ -337,7 +337,7 @@ public class Fragment_Login extends Fragment {
                     fragmentTransaction.commit();
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -345,7 +345,7 @@ public class Fragment_Login extends Fragment {
 
     /**
      * function to verify login details in mysql db
-     * */
+     */
     private void checkLogin(final String username, final String password) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
@@ -455,7 +455,7 @@ public class Fragment_Login extends Fragment {
                                     fragmentTransaction.commit();
                                 }
                             }*/
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -502,13 +502,9 @@ public class Fragment_Login extends Fragment {
     }
 
 
-
-
-
     @Override
     public void onResume() {
         super.onResume();
-
 
 
         // Logs 'install' and 'app activate' App Events.

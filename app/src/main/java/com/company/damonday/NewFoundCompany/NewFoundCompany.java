@@ -84,8 +84,6 @@ public class NewFoundCompany extends Fragment implements AdapterView.OnItemSelec
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.setting);
-        //hi
-
 
     }
 
@@ -93,7 +91,7 @@ public class NewFoundCompany extends Fragment implements AdapterView.OnItemSelec
 
         getOptionDetail();
         view = inflater.inflate(R.layout.newfound, container, false);
-       // getActivity().getActionBar().setTitle(R.string.newfound);
+        // getActivity().getActionBar().setTitle(R.string.newfound);
         getActivity().setTitle(R.string.newfound);
 
         EditText_company_name = (EditText) view.findViewById(R.id.company_name);
@@ -108,27 +106,19 @@ public class NewFoundCompany extends Fragment implements AdapterView.OnItemSelec
         pDialog = new ProgressImage(view.getContext());
         linearCat = (LinearLayout) view.findViewById(R.id.cat_checkbox);
 
-
         // Spinner click listener
         EditText_cost.setOnItemSelectedListener(this);
-
-
         // Creating adapter for spinner
         adapterPrice = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, arrayPrice);
-
         // Drop down layout style - list view with radio button
         adapterPrice.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         // attaching data adapter to spinner
         EditText_cost.setAdapter(adapterPrice);
-
-
 
         btn_submit.setOnClickListener(new Button.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
 
                 company_name = EditText_company_name.getText().toString();
                 company_tel = EditText_company_tel.getText().toString();
@@ -136,10 +126,7 @@ public class NewFoundCompany extends Fragment implements AdapterView.OnItemSelec
                 company_address = EditText_company_address.getText().toString();
                 //company_cost = EditText_cost.getText().toString();
                 company_business_hour = EditText_business_hour.getText().toString();
-
                 submitting(company_name, company_tel, company_type, company_address, company_cost, company_business_hour);
-
-
             }
         });
 
@@ -148,19 +135,14 @@ public class NewFoundCompany extends Fragment implements AdapterView.OnItemSelec
 
             @Override
             public void onClick(View v) {
-               EditText_company_name.setText("");
+                EditText_company_name.setText("");
                 EditText_company_tel.setText("");
                 //EditText_company_type.setText("");
                 EditText_company_address.setText("");
                 //EditText_cost.setText("");
                 EditText_business_hour.setText("");
-
-
-
-
             }
         });
-
 
         return view;
     }
@@ -186,7 +168,6 @@ public class NewFoundCompany extends Fragment implements AdapterView.OnItemSelec
     private void submitting(final String company_name, final String company_tel, final String company_type, final String company_address, final String company_cost, final String company_business_hour) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
-
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -207,7 +188,6 @@ public class NewFoundCompany extends Fragment implements AdapterView.OnItemSelec
                         // Create login session
                         //session.setLogin(true);
 
-
                         //display message login successfully
                         AlertDialog.Builder ab = new AlertDialog.Builder(view.getContext());
                         ab.setTitle(R.string.submit_success);
@@ -218,9 +198,7 @@ public class NewFoundCompany extends Fragment implements AdapterView.OnItemSelec
 
 //                                Intent in = new Intent(view.getContext(), MainActivity.class);
 //                                view.getContext().startActivity(in);
-
                                 Home home_fragment = new Home();
-
                                 FragmentManager fragmentManager = getFragmentManager();
                                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);  //tomc 31/1/2016  To disable the back button in home
                                 //System.out.println(fragmentManager.getBackStackEntryCount());
@@ -229,8 +207,7 @@ public class NewFoundCompany extends Fragment implements AdapterView.OnItemSelec
                                 fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack(null);
                                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                                 fragmentTransaction.commit();
-                             //   getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
-
+                                //   getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 
                             }
                         });
@@ -241,7 +218,6 @@ public class NewFoundCompany extends Fragment implements AdapterView.OnItemSelec
                         // Error in login. Get the error message
                         JSONObject data = jObj.getJSONObject("data");
                         String errorMsg = data.getString("msg");
-
                         Toast.makeText(getActivity(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
@@ -325,7 +301,7 @@ public class NewFoundCompany extends Fragment implements AdapterView.OnItemSelec
                         ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(
                                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-                        for(int i=0;i<array_category.size();i++){
+                        for (int i = 0; i < array_category.size(); i++) {
 
                             CheckBox checkBox = new CheckBox(getActivity());
                             checkBox.setText(array_category.get(i));
@@ -338,9 +314,7 @@ public class NewFoundCompany extends Fragment implements AdapterView.OnItemSelec
                         }
 
 
-
-
-                    }else{
+                    } else {
                         String errorMsg = criteria.getString("msg");
                         Toast.makeText(getActivity(),
                                 errorMsg,
@@ -348,7 +322,6 @@ public class NewFoundCompany extends Fragment implements AdapterView.OnItemSelec
                     }
 
                     adapterPrice.notifyDataSetChanged();
-
 
 
                 } catch (JSONException e) {

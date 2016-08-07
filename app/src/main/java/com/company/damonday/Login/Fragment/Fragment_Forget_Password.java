@@ -72,7 +72,7 @@ public class Fragment_Forget_Password extends Fragment {
 
         view = inflater.inflate(R.layout.login_forget_password, container, false);
         getActivity().setTitle(R.string.forget_password);
-        final EditText edEmail= (EditText) view.findViewById(R.id.email);
+        final EditText edEmail = (EditText) view.findViewById(R.id.email);
         Button cancel = (Button) view.findViewById(R.id.btnCancel);
         Button confirm = (Button) view.findViewById(R.id.btnComfirm);
 
@@ -87,7 +87,7 @@ public class Fragment_Forget_Password extends Fragment {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if((edEmail.getText().toString()).isEmpty())
+                if ((edEmail.getText().toString()).isEmpty())
                     Toast.makeText(getActivity(),
                             R.string.login_warning_forget_password_email, Toast.LENGTH_SHORT)
                             .show();

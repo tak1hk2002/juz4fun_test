@@ -1,67 +1,64 @@
 
 package com.company.damonday.Search;
 
-        import java.util.ArrayList;
-        import java.util.HashMap;
-        import java.util.List;
-        import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
-        import org.json.JSONArray;
-        import org.json.JSONException;
-        import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-        import android.annotation.SuppressLint;
-        import android.app.ProgressDialog;
-        import android.content.Context;
-        import android.graphics.Color;
-        import android.graphics.Typeface;
-        import android.os.AsyncTask;
-        import android.os.Bundle;
-        import android.support.v4.app.Fragment;
-        import android.support.v4.app.FragmentManager;
-        import android.support.v4.app.FragmentTransaction;
-        import android.util.Log;
-        import android.view.Gravity;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.AdapterView;
-        import android.widget.BaseAdapter;
-        import android.widget.Button;
-        import android.widget.ImageButton;
-        import android.widget.ListView;
-        import android.widget.SearchView;
-        import android.widget.SearchView.OnQueryTextListener;
-        import android.widget.SearchView.OnCloseListener;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
+import android.widget.SearchView.OnCloseListener;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import com.android.volley.Request;
-        import com.android.volley.Response;
-        import com.android.volley.VolleyError;
-        import com.android.volley.VolleyLog;
-        import com.android.volley.toolbox.JsonObjectRequest;
-        import com.android.volley.toolbox.StringRequest;
-        import com.company.damonday.CompanyInfo.FragmentTabs_try;
-        import com.company.damonday.Home.Home;
-        import com.company.damonday.R;
-        import com.company.damonday.function.APIConfig;
-        import com.company.damonday.function.AppController;
-        import com.company.damonday.function.ProgressImage;
-        import com.google.android.gms.analytics.ecommerce.Product;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.company.damonday.CompanyInfo.FragmentTabs_try;
+import com.company.damonday.Home.Home;
+import com.company.damonday.R;
+import com.company.damonday.function.APIConfig;
+import com.company.damonday.function.AppController;
+import com.company.damonday.function.ProgressImage;
+import com.google.android.gms.analytics.ecommerce.Product;
 
 
 public class search_fast extends Fragment {
     View view;
     View myFragmentView;
     SearchView search;
-    ImageButton buttonBarcode;
-    ImageButton buttonAudio;
     Typeface type;
     ListView searchResults;
     private List<CompanyObject> companyObjects = new ArrayList<CompanyObject>();
-    String found = "N";
     private ProgressImage pDialog;
     private SearchResultsAdapter adapter;
 
@@ -77,10 +74,10 @@ public class search_fast extends Fragment {
     }
 
 
-    public String geturl(String keyword){
-       String geturl=APIConfig.URL_Fast_Search;
+    public String geturl(String keyword) {
+        String geturl = APIConfig.URL_Fast_Search;
 
-        geturl=geturl+"?keyword="+keyword;
+        geturl = geturl + "?keyword=" + keyword;
 
         Log.d("geturl", geturl);
         return geturl;
@@ -92,20 +89,15 @@ public class search_fast extends Fragment {
         //get the context of the HomeScreen Activity
         // final HomeScreen activity = (HomeScreen) getActivity();
         view = inflater.inflate(R.layout.search, container, false);     //tomc
-       // getActivity().getActionBar().setTitle(R.string.advance_search);     //tomc
+        // getActivity().getActionBar().setTitle(R.string.advance_search);     //tomc
         getActivity().setTitle(R.string.advance_search);     //tomc
         //define a typeface for formatting text fields and listview.
         final Fragment Home = new Home();
         FragmentManager fragmentManager = getFragmentManager();
-        System.out.println("time0:" + fragmentManager.getBackStackEntryCount());
-
-
-   //     type = Typeface.createFromAsset(getActivity().getAssets(), "fonts/book.TTF");
+        //     type = Typeface.createFromAsset(getActivity().getAssets(), "fonts/book.TTF");
         myFragmentView = inflater.inflate(R.layout.search_fast, container, false);
-
         search = (SearchView) myFragmentView.findViewById(R.id.searchView1);
         search.setQueryHint("搵野玩");                 //tomc 16/4/2016
-
         int searchPlateId = search.getContext().getResources()
                 .getIdentifier("android:id/search_plate", null, null);
         View searchPlateView = search.findViewById(searchPlateId);
@@ -115,12 +107,6 @@ public class search_fast extends Fragment {
 
         searchResults = (ListView) myFragmentView.findViewById(R.id.listview_search);
         search.setIconified(false);
-
-
-        // buttonBarcode = (ImageButton) myFragmentView.findViewById(R.id.imageButton2);
-        // buttonAudio = (ImageButton) myFragmentView.findViewById(R.id.imageButton1);
-
-
         //this part of the code is to handle the situation when user enters any search criteria, how should the
         //application behave?
 
@@ -131,17 +117,13 @@ public class search_fast extends Fragment {
 
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                //System.out.println("time3"+fragmentManager.getBackStackEntryCount());
-                // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                //fragmentTransaction.remove(getFragmentManager().findFragmentById(R.id.frame_container));
                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("search_fast"));
                 fragmentTransaction.add(R.id.frame_container, Home, "Home").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
-                System.out.println("time4:" + fragmentManager.getBackStackEntryCount());
-             //   getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
-
+                System.out.println("time4_home:" + fragmentManager.getBackStackEntryCount());
+                //   getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 
                 return false;
 
@@ -154,9 +136,9 @@ public class search_fast extends Fragment {
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
 
-               // Toast.makeText(getActivity(), String.valueOf(hasFocus), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getActivity(), String.valueOf(hasFocus), Toast.LENGTH_SHORT).show();
             }
-});
+        });
 
         search.setOnQueryTextListener(new OnQueryTextListener() {
 
@@ -174,7 +156,6 @@ public class search_fast extends Fragment {
                     Log.d("arraylen1", String.valueOf(filteredProductResults.size()));
                     searchResults.setVisibility(myFragmentView.VISIBLE);
                     Log.d("keyword", newText);
-
 
                     submitting(newText);
 
@@ -206,7 +187,7 @@ public class search_fast extends Fragment {
                 //pass object to next fragment
                 Bundle bundle = new Bundle();
                 bundle.putString("ent_id", filteredProductResults.get(position).getUser_id());
-               Fragment fragmentTabs_try = new FragmentTabs_try();
+                Fragment fragmentTabs_try = new FragmentTabs_try();
                 fragmentTabs_try.setArguments(bundle);
 
 
@@ -223,7 +204,6 @@ public class search_fast extends Fragment {
 
             }
         });
-
 
 
         return myFragmentView;
@@ -255,7 +235,7 @@ public class search_fast extends Fragment {
         String tag_string_req = "req_login";
 
 //        pDialog.setMessage("提交中 ...");
- //       showDialog();
+        //       showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.GET,
                 geturl(keyword), new Response.Listener<String>() {
@@ -290,7 +270,7 @@ public class search_fast extends Fragment {
 
 
                             // adding movie to movies array
-                           // productResults.add(model);  filteredProductResults.clear();
+                            // productResults.add(model);  filteredProductResults.clear();
                             filteredProductResults.add(model);
                         }
 
@@ -308,7 +288,7 @@ public class search_fast extends Fragment {
                     e.printStackTrace();
                 }
 
-                adapter=new SearchResultsAdapter(getActivity(), filteredProductResults);
+                adapter = new SearchResultsAdapter(getActivity(), filteredProductResults);
 
                 searchResults.setAdapter(adapter);
 
@@ -322,7 +302,7 @@ public class search_fast extends Fragment {
                 Log.e("FeedBack", "Login Error: " + error.getMessage());
                 Toast.makeText(getActivity(),
                         R.string.connection_server_warning, Toast.LENGTH_LONG).show();
-         //       hideDialog();
+                //       hideDialog();
             }
         }) {
 
@@ -375,14 +355,13 @@ public class search_fast extends Fragment {
     }
 
 
-
-//
+    //
     class SearchResultsAdapter extends BaseAdapter {
         private LayoutInflater layoutInflater;
 
         private ArrayList<search_fast_model> productDetails = new ArrayList<search_fast_model>();
         int count;
-       // Typeface type;
+        // Typeface type;
         Context context;
 
         //constructor method
@@ -416,23 +395,18 @@ public class search_fast extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
 
 
-
-
             if (convertView == null) {
-                convertView = layoutInflater.inflate(R.layout.search_fast_list_row, null);}
+                convertView = layoutInflater.inflate(R.layout.search_fast_list_row, null);
+            }
 
             TextView title = (TextView) convertView.findViewById(R.id.title);
-
-
 
             search_fast_model m = productDetails.get(position);
 
             title.setText(m.getTitle());
 
-
             return convertView;
         }
-
 
 
     }

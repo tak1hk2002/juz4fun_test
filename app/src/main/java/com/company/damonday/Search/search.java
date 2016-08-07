@@ -32,6 +32,7 @@ import com.company.damonday.LatestComment.latestcommentvolley;
 import com.company.damonday.Search.search;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.R;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.company.damonday.function.ProgressImage;
@@ -98,7 +99,7 @@ public class search extends Fragment {
 
         array_district.add("全選");
         //arrayPrice.add("全選");
-       // array_category.add("全選");
+        // array_category.add("全選");
         array_area_all.add("全選");
         array_Islands_District.add("全選");
         array_New_Territories.add("全選");
@@ -133,8 +134,7 @@ public class search extends Fragment {
                 Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
 
                 ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
-               // ((TextView) adapterView.getChildAt(0)).setTextSize(5);
-
+                // ((TextView) adapterView.getChildAt(0)).setTextSize(5);
 
 
                 if (adapterView.getSelectedItem().toString().equals("全選")) {
@@ -201,7 +201,7 @@ public class search extends Fragment {
         spinner_district.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             public void onItemSelected(AdapterView adapterView, View view, int position, long id) {
                 //Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-              //  ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+                //  ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
                 ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //拎番個id
@@ -222,7 +222,7 @@ public class search extends Fragment {
             public void onItemSelected(AdapterView adapterView, View view, int position, long id) {
                 //Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
                 Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
-                         ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //拎番個id
                 if (!adapterView.getSelectedItem().toString().equals("全選")) {
                     category_id = hash_category.get(adapterView.getSelectedItem().toString());
@@ -271,7 +271,10 @@ public class search extends Fragment {
                 search_result_fragment.setArguments(bundle);
                 //傳送數據去下一個fragment
 
-                FragmentManager fragmentManager = getFragmentManager();
+                ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                // FragmentManager fragmentManager = getFragmentManager();
                 System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("search"));
@@ -284,12 +287,11 @@ public class search extends Fragment {
         });
 
 
-
-        button_reset.setOnClickListener(new Button.OnClickListener(){
+        button_reset.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 spinner_lagre_district.setSelection(0);
                 spinner_category.setSelection(0);
-               // spinner_district.setSelection(0);
+                // spinner_district.setSelection(0);
                 spinnerPrice.setSelection(0);
 
             }
@@ -297,17 +299,12 @@ public class search extends Fragment {
         });
 
 
-
-
         return view;
     }
 
 
-
-
     //從server 拿資料
     private void makeJsonArrayRequest() {
-
 
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
@@ -452,115 +449,6 @@ public class search extends Fragment {
 //        }
 //    }
 
-
-
-//    //交資料上server
-//    private void submitting(final String category_id, final String district_id, final String large_district_id, final String price_id) {
-//        // Tag used to cancel the request
-//        String tag_string_req = "req_login";
-//
-//        pDialog.setMessage("提交中 ...");
-//        showDialog();
-//
-//        StringRequest strReq = new StringRequest(Request.Method.GET,
-//                APIConfig.URL_Advance_Search, new Response.Listener<String>() {
-//
-//            @Override
-//            public void onResponse(String response) {
-//                Log.d("FeedBack", "Login Response: " + response.toString());
-//                hideDialog();
-//
-//                try {
-//                    JSONObject jObj = new JSONObject(response);
-//                    String error = jObj.getString("status");
-//
-//                    // Check for error node in json
-//                    if (error.equals("success")) {
-//                        // user successfully logged in
-//                        // Create login session
-//                        //session.setLogin(true);
-//
-//
-//                        //display message login successfully
-//                        AlertDialog.Builder ab = new AlertDialog.Builder(view.getContext());
-//                        ab.setTitle(R.string.submit_success);
-//                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
-//
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//
-////                                Intent in = new Intent(view.getContext(), MainActivity.class);
-////                                view.getContext().startActivity(in);
-//
-//                                Home home_fragment = new Home();
-//
-//                                FragmentManager fragmentManager = getFragmentManager();
-//                                System.out.println(fragmentManager.getBackStackEntryCount());
-//                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("newfound"));
-//                                fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack(null);
-//                                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-//                                fragmentTransaction.commit();
-//
-//
-//                            }
-//                        });
-//                        ab.create().show();
-//
-//
-//                    } else {
-//                        // Error in login. Get the error message
-//                        JSONObject data = jObj.getJSONObject("data");
-//                        String errorMsg = data.getString("msg");
-//
-//                        Toast.makeText(getActivity(),
-//                                errorMsg, Toast.LENGTH_LONG).show();
-//                    }
-//                } catch (JSONException e) {
-//                    // JSON error
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        }, new Response.ErrorListener() {
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.e("FeedBack", "Login Error: " + error.getMessage());
-//                Toast.makeText(getActivity(),
-//                        error.getMessage(), Toast.LENGTH_LONG).show();
-//                hideDialog();
-//            }
-//        }) {
-//
-//            @Override
-//            protected Map<String, String> getParams() {
-//                // Posting parameters to login url
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("company_name", company_name);
-//                params.put("company_tel", company_tel);
-//                params.put("company_type", company_type);
-//                params.put("company_address", company_address);
-//                params.put("cost", company_cost);
-//                params.put("business_hour", company_business_hour);
-//                return params;
-//            }
-//
-//        };
-//        // Adding request to request queue
-//        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-//
-//    }
-//
-//    private void showDialog() {
-//        if (!pDialog.isShowing())
-//            pDialog.show();
-//    }
-//
-//    private void hideDialog() {
-//        if (pDialog.isShowing())
-//            pDialog.dismiss();
-//    }
 
 }
 

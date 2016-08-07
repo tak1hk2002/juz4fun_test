@@ -60,16 +60,14 @@ public class TestActivity extends FragmentActivity {
 
     // nav drawer title
     private CharSequence mDrawerTitle;
-
     // used to store app title
     private CharSequence mTitle;
-
     // slide menu items
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
-    private CharSequence tempmtitle;
+    //private CharSequence tempmtitle;
     private ArrayList<NavDrawerItem> navDrawerItems;
-    private ArrayList<String> tempTitle;
+    public ArrayList<String> tempTitle;
     private NavDrawerListAdapter adapter;
     private LinearLayout mDrawerLinear;
     private Button btn_login,btn_register,btn_logout;
@@ -556,11 +554,12 @@ public class TestActivity extends FragmentActivity {
         //imageView != null;
         if (getActionBar().getTitle()!= null) {
             tempTitle.add(getActionBar().getTitle().toString());
+           // System.out.println("tomgg0" + getActionBar().getTitle().toString());
         }
        // mTitle = ((getActionBar().getTitle()).toString());}
         getActionBar().setTitle(title);
         AdjustActiontitle(getActionBar().getTitle().toString());
-        System.out.println(tempTitle);
+        //System.out.println("tomgg"+tempTitle);
 
     }
 
@@ -607,7 +606,7 @@ public class TestActivity extends FragmentActivity {
         mDrawerLayout.closeDrawer(Gravity.RIGHT);
         FragmentManager fragmentManager = getSupportFragmentManager();
         Log.d("EntryCount", Integer.toString(fragmentManager.getBackStackEntryCount()));
-        if (fragmentManager.getBackStackEntryCount() == 0) {
+        if (fragmentManager.getBackStackEntryCount() == 1) {
             finish();
         }
       //  if (fragmentManager.getBackStackEntryCount() == 1) {
@@ -625,11 +624,13 @@ public class TestActivity extends FragmentActivity {
        // }
         else {
 
-            System.out.println("fragmentManager.getBackStackEntryCount()="+fragmentManager.getBackStackEntryCount());
-            fragmentManager.popBackStack();
+            System.out.println("fragmentManager.getBackStackEntryCount()=" + fragmentManager.getBackStackEntryCount());
+           // fragmentManager.popBackStack();
+            fragmentManager.popBackStackImmediate();
             System.out.println("fragmentManager.getBackStackEntryCount2()=" + fragmentManager.getBackStackEntryCount());
             if(fragmentManager.getBackStackEntryCount() == 1){
                 hideBackButton();
+                showMenuButton();
                 System.out.println("case1");
             }
             //如果不是返主頁
