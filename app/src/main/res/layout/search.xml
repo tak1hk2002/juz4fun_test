@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_grey_black_light">
+    android:background="@color/bg_grey_black_light"
+    android:orientation="vertical">
 
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
 
-      >
+        >
 
-        <TextView android:text=" 地域"
+        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:textSize="26dp"
             android:layout_weight="1"
-            android:textColor="@color/font_grey_white"/>
+            android:text=" 地域"
+            android:textColor="@color/font_grey_white"
+            android:textSize="26dp" />
 
         <Spinner
+            android:id="@+id/spinner_lagre_district"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_margin="5dp"
-            android:id="@+id/spinner_lagre_district"
+            android:layout_weight="1"
             android:backgroundTint="@color/white" />
         <!--<RelativeLayout
             android:layout_width="0dp"
@@ -61,24 +62,25 @@
 
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <TextView android:text=" 地區"
+        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:textSize="26dp"
             android:layout_weight="1"
-            android:textColor="@color/font_grey_white"/>
+            android:text=" 地區"
+            android:textColor="@color/font_grey_white"
+            android:textSize="26dp" />
 
         <Spinner
+            android:id="@+id/spinner_district"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_margin="5dp"
-            android:id="@+id/spinner_district"
+            android:layout_weight="1"
             android:backgroundTint="@color/white"
 
             />
@@ -86,109 +88,117 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <TextView android:text=" 類別"
+        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:textSize="26dp"
             android:layout_weight="1"
-            android:textColor="@color/font_grey_white"/>
+            android:text=" 類別"
+            android:textColor="@color/font_grey_white"
+            android:textSize="26dp" />
 
         <Spinner
+            android:id="@+id/spinner_category"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_margin="5dp"
-            android:id="@+id/spinner_category"
-            android:backgroundTint="@color/white"/>
+            android:layout_weight="1"
+            android:backgroundTint="@color/white" />
 
     </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
 
-        <TextView android:text=" 價錢"
-            android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:textSize="26dp"
             android:layout_weight="1"
-            android:textColor="@color/font_grey_white"/>
+            android:text=" 價錢"
+            android:textColor="@color/font_grey_white"
+            android:textSize="26dp" />
 
         <!--<EditText-->
-            <!--android:layout_width="157dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:id="@+id/editText4"-->
-             <!--/>-->
+        <!--android:layout_width="157dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:id="@+id/editText4"-->
+        <!--/>-->
 
         <Spinner
+            android:id="@+id/spinner_price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_margin="5dp"
-            android:id="@+id/spinner_price"
-            android:backgroundTint="@color/white"/>
+            android:layout_weight="1"
+            android:backgroundTint="@color/white" />
 
     </LinearLayout>
 
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_alignParentBottom="true"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:orientation="vertical"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp">
-            <Button
-                android:layout_height="@dimen/btn_top_height"
-                android:layout_width="match_parent"
-                android:text="重設"
-                android:id="@+id/button_reset"
-                android:layout_gravity="left"
-                android:background="@drawable/btn_actioncell_reset_topbg"
-                android:textColor="@color/white"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_down_height"
-                android:background="@drawable/btn_actioncell_reset_downbg"/>
-        </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:orientation="vertical"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp">
-            <Button
-                android:layout_height="@dimen/btn_top_height"
-                android:layout_width="match_parent"
-                android:text="搜尋"
-                android:id="@+id/button_search"
-                android:layout_gravity="right"
-                android:background="@drawable/btn_actioncell_send_topbg"
-                android:textColor="@color/white"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_down_height"
-                android:background="@drawable/btn_actioncell_send_downbg"/>
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="0.6"
+                android:orientation="vertical">
 
-    </LinearLayout>
-</RelativeLayout>
+                <Button
+                    android:id="@+id/button_reset"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_top_height"
+                    android:layout_gravity="left"
+                    android:background="@drawable/btn_actioncell_reset_topbg"
+                    android:text="重設"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_down_height"
+                    android:background="@drawable/btn_actioncell_reset_downbg" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="0.6"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/button_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_top_height"
+                    android:layout_gravity="right"
+                    android:background="@drawable/btn_actioncell_send_topbg"
+                    android:text="搜尋"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_down_height"
+                    android:background="@drawable/btn_actioncell_send_downbg" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

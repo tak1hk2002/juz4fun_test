@@ -282,14 +282,11 @@ public class Fragment_Login extends Fragment {
                 System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 //delete last fragment
-                fragmentManager.popBackStack();
                 ((TestActivity) getActivity()).tempTitle.remove(((TestActivity) getActivity()).tempTitle.size() - 1);
-                //System.out.println("tomyyd"+((TestActivity) getActivity()).tempTitle);
+                fragmentManager.popBackStackImmediate();
                 //delete last fragment
-                fragmentManager.popBackStack();
-                //getActivity().setTitle(((TestActivity) getActivity()).tempTitle.size() - 1);
                 ((TestActivity) getActivity()).tempTitle.remove(((TestActivity) getActivity()).tempTitle.size() - 1);
-
+                fragmentManager.popBackStackImmediate();
                 //hide the fragment which is to jump to company detail page
                 String hideFragment = "";
                 if (getActivity().getSupportFragmentManager().findFragmentByTag("home") != null)

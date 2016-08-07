@@ -21,16 +21,14 @@ import java.util.List;
 /**
  * Created by lamtaklung on 27/6/15.
  */
-public class MyAdapter extends BaseAdapter
-{
+public class MyAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context context;
     private Boolean isHomePage;
     private List<CompanyInfo> companyInfoItems;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
-    public MyAdapter(Context context, List<CompanyInfo> companyInfoItems, Boolean isHomePage)
-    {
+    public MyAdapter(Context context, List<CompanyInfo> companyInfoItems, Boolean isHomePage) {
         this.context = context;
         this.companyInfoItems = companyInfoItems;
         this.isHomePage = isHomePage;
@@ -46,20 +44,17 @@ public class MyAdapter extends BaseAdapter
     }
 
     @Override
-    public Object getItem(int location)
-    {
+    public Object getItem(int location) {
         return companyInfoItems.get(location);
     }
 
     @Override
-    public long getItemId(int position)
-    {
+    public long getItemId(int position) {
         return position;
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent)
-    {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         if (inflater == null)
             inflater = (LayoutInflater) context
@@ -68,9 +63,9 @@ public class MyAdapter extends BaseAdapter
             convertView = inflater.inflate(R.layout.ranking_charts_gridview, null);
 
         //set the height higher of first photo if home page
-        if(isHomePage && position == 0){
+        if (isHomePage && position == 0) {
             convertView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, 700));
-        }else{
+        } else {
             convertView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, 500));
             //convertView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT));
         }
@@ -84,7 +79,7 @@ public class MyAdapter extends BaseAdapter
         // company image
 
 
-        if(c.getUrl().length()>0) {
+        if (c.getUrl().length() > 0) {
             companyImage.setImageUrl(c.getUrl(), imageLoader);
             // title
             title.setText(c.getTitle());
@@ -92,8 +87,6 @@ public class MyAdapter extends BaseAdapter
         companyImage.setDefaultImageResId(R.drawable.mascot_die_pic);
         companyImage.setErrorImageResId(R.drawable.mascot_die_pic);
         ranking.setImageResource(c.getMoscotId());
-
-
 
 
         return convertView;

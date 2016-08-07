@@ -68,7 +68,8 @@ public class search_result extends Fragment {
     private List<CompanyObject> companyObjects = new ArrayList<CompanyObject>();
     private ListView listView;
     private search_adapter adapter;
-    private String geturl="";
+    private String geturl = "";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,20 +81,19 @@ public class search_result extends Fragment {
         district_id = bundle.getString("district_id");
         large_district_id = bundle.getString("large_district_id");
         category_id = bundle.getString("category_id");
-geturl();
-
+        geturl();
 
         Log.d("search", price_id + "+" + district_id + "+" + large_district_id + "+" + category_id);
 
     }
 
 
-    public String geturl(){
-        geturl=APIConfig.URL_Advance_Search;
+    public String geturl() {
+        geturl = APIConfig.URL_Advance_Search;
 
-            geturl=String.format(geturl+"?price_range="+price_id+"&cat_id="+category_id+"&area_id="+district_id+"&district_id="+large_district_id);
+        geturl = String.format(geturl + "?price_range=" + price_id + "&cat_id=" + category_id + "&area_id=" + district_id + "&district_id=" + large_district_id);
 
-Log.d("geturl",geturl);
+        Log.d("geturl", geturl);
         return geturl;
     }
 
@@ -101,8 +101,8 @@ Log.d("geturl",geturl);
         view = inflater.inflate(R.layout.search_result, container, false);
         //getActivity().getActionBar().setTitle(R.string.advance_search_result);
         getActivity().setTitle(R.string.advance_search_result);
-        ((TestActivity)getActivity()).showBackButton();             //showbackbutton tomc 23/4/2016
-        ((TestActivity)getActivity()).hideMenuButton();             //hideMenuButton tomc 23/4/2016
+        ((TestActivity) getActivity()).showBackButton();             //showbackbutton tomc 23/4/2016
+        ((TestActivity) getActivity()).hideMenuButton();             //hideMenuButton tomc 23/4/2016
         pDialog = new ProgressImage(getActivity());
         pDialog.show();
         //setContentView(R.layout.latestcomment);
@@ -140,7 +140,6 @@ Log.d("geturl",geturl);
     }
 
 
-
     private void submitting(final String category_id, final String district_id, final String large_district_id, final String price_id) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
@@ -169,17 +168,17 @@ Log.d("geturl",geturl);
 
                             JSONObject oneObject = jArray.getJSONObject(i);
                             JSONObject score = oneObject.getJSONObject("score");
-                            String price_range=oneObject.getString("price_range");
+                            String price_range = oneObject.getString("price_range");
                             String average_score = score.getString("average_score");
                             JSONArray category = oneObject.getJSONArray("category");
                             String name = oneObject.getString("name");
-                            String category_name="";
-                            for (int j=0;j<category.length();j++){
-                                JSONObject cat_object =category.getJSONObject(j);
+                            String category_name = "";
+                            for (int j = 0; j < category.length(); j++) {
+                                JSONObject cat_object = category.getJSONObject(j);
                                 String cat = cat_object.getString("name");
-                                if(category_name != "")
+                                if (category_name != "")
                                     category_name += ", ";
-                                category_name+=cat;
+                                category_name += cat;
                             }
 
 
@@ -194,7 +193,7 @@ Log.d("geturl",geturl);
 
 
                             CompanyObject companyObject = new CompanyObject();
-                             companyObject.setTitle(name);
+                            companyObject.setTitle(name);
                             companyObject.setCategory(category_name);
                             companyObject.setUser_id(oneObject.getString("ID"));
                             companyObject.setThumbnailUrl(oneObject.getString("cover_image"));
@@ -205,12 +204,9 @@ Log.d("geturl",geturl);
                             companyObject.setPrice_range(price_range);
 
 
-
                             // adding movie to movies array
                             companyObjects.add(companyObject);
                         }
-
-
 
 
                     } else {
@@ -243,9 +239,9 @@ Log.d("geturl",geturl);
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                 params.put("category_id", category_id);
-                 params.put("district_id", district_id);
-                 params.put("large_district_id", large_district_id);
+                params.put("category_id", category_id);
+                params.put("district_id", district_id);
+                params.put("large_district_id", large_district_id);
                 params.put("price_range", price_id);
 
                 return params;

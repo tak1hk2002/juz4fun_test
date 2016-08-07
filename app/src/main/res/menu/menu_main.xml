@@ -1,18 +1,15 @@
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--xmlns:appr="http://schemas.android.com/apk/res-auto"-->
-
-
 
 
     <item
         android:id="@+id/btnMyMenu"
         android:icon="@drawable/btn_setting"
-        android:showAsAction="ifRoom"/>
+        android:showAsAction="ifRoom" />
 
-        <!--app:showAsAction="ifRoom"/>-->
-        <!--好奇怪，用這句button會放在overflow-->
+    <!--app:showAsAction="ifRoom"/>-->
+    <!--好奇怪，用這句button會放在overflow-->
 
 
 </menu>

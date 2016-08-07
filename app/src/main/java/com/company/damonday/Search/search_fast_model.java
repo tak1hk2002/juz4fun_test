@@ -21,28 +21,19 @@ public class search_fast_model {
     }
 
     private String title;
-        private String user_id;
+    private String user_id;
+
+    public search_fast_model() {
+    }
 
 
-
-
-        public search_fast_model() {
-        }
-
-
-
-        public search_fast_model(String user_id, String title
-        ) {
-            this.title = title;
-            this.user_id=user_id;
-
-        }
-
-
-
-
-
-
+    public search_fast_model(String user_id, String title
+    ) {
+        this.title = title;
+        this.user_id = user_id;
 
     }
+
+
+}
 

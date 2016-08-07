@@ -46,6 +46,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.Home.Home;
 import com.company.damonday.R;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.company.damonday.function.ProgressImage;
@@ -90,7 +91,7 @@ public class search_fast extends Fragment {
         // final HomeScreen activity = (HomeScreen) getActivity();
         view = inflater.inflate(R.layout.search, container, false);     //tomc
         // getActivity().getActionBar().setTitle(R.string.advance_search);     //tomc
-        getActivity().setTitle(R.string.advance_search);     //tomc
+        getActivity().setTitle(R.string.fast_search);     //tomc
         //define a typeface for formatting text fields and listview.
         final Fragment Home = new Home();
         FragmentManager fragmentManager = getFragmentManager();
@@ -114,15 +115,15 @@ public class search_fast extends Fragment {
             @Override
             public boolean onClose() {
 
-
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("search_fast"));
-                fragmentTransaction.add(R.id.frame_container, Home, "Home").addToBackStack(null);
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                fragmentTransaction.commit();
-                System.out.println("time4_home:" + fragmentManager.getBackStackEntryCount());
+                ((TestActivity) getActivity()).onBackPressed();
+//                FragmentManager fragmentManager = getFragmentManager();
+//                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("search_fast"));
+//                fragmentTransaction.add(R.id.frame_container, Home, "Home").addToBackStack(null);
+//                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                fragmentTransaction.commit();
+//                System.out.println("time4_home:" + fragmentManager.getBackStackEntryCount());
                 //   getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
 
                 return false;

@@ -27,17 +27,13 @@ import org.json.JSONObject;
  * Created by lamtaklung on 28/9/15.
  */
 public class AboutUs extends Fragment {
-TextView textview;
-    String data="";
+    TextView textview;
+    String data = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
     }
-
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,8 +41,8 @@ TextView textview;
         //getActivity().getActionBar().setTitle(R.string.about_us);
         getActivity().setTitle(R.string.about_us);
         makeJsonArrayRequest();
-        textview= (TextView)view.findViewById(R.id.textview);
-       // textview.setText(data);
+        textview = (TextView) view.findViewById(R.id.textview);
+        // textview.setText(data);
         Log.d("JSON1", data);
         return view;
     }
@@ -67,9 +63,9 @@ TextView textview;
                     String status = response.getString("status");
                     JSONObject rank = response.getJSONObject("data");
 
-                    if(status.equals("success")) {
+                    if (status.equals("success")) {
 
-                       data = rank.getString("value");
+                        data = rank.getString("value");
                         Log.d("JSON", data);
                         //textview= (TextView)view.findViewById(R.id.textview);
                         textview.setText(data);
@@ -86,15 +82,12 @@ TextView textview;
 //                            companyInfoItems.add(companyInfo);
 //
 //                        }
-                    }else{
+                    } else {
                         String errorMsg = response.getString("msg");
                         Toast.makeText(getActivity(),
                                 errorMsg,
                                 Toast.LENGTH_LONG).show();
                     }
-
-
-
 
 
                 } catch (JSONException e) {
@@ -108,7 +101,7 @@ TextView textview;
                 // notifying list adapter about data changes
                 // so that it renders the list view with updated data
 
-              //  adapter.notifyDataSetChanged();
+                //  adapter.notifyDataSetChanged();
             }
         }, new Response.ErrorListener() {
             @Override

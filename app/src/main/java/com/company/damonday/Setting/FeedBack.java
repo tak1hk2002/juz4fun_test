@@ -39,8 +39,7 @@ import java.util.Map;
  */
 
 
-
-    public class FeedBack extends Fragment {
+public class FeedBack extends Fragment {
     EditText EditText_Subject;
     EditText EditText_Content;
     EditText EditText_Email;
@@ -52,62 +51,61 @@ import java.util.Map;
     private View view;
 
     private ProgressImage pDialog;
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
 
-
-        }
-
+    }
 
 
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-             view = inflater.inflate(R.layout.setting_feedback, container, false);
-            //getActivity().getActionBar().setTitle(R.string.feedback);
-            getActivity().setTitle(R.string.feedback);
-            EditText_Subject=(EditText)view.findViewById(R.id.subject);
-            EditText_Content=(EditText)view.findViewById(R.id.content);
-            EditText_Email=(EditText)view.findViewById(R.id.email);
-            btn_submit = (Button)view.findViewById(R.id.button_submit);
-            btn_reset = (Button)view.findViewById(R.id.button_reset);
-            pDialog = new ProgressImage(view.getContext());
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.setting_feedback, container, false);
+        //getActivity().getActionBar().setTitle(R.string.feedback);
+        getActivity().setTitle(R.string.feedback);
+        EditText_Subject = (EditText) view.findViewById(R.id.subject);
+        EditText_Content = (EditText) view.findViewById(R.id.content);
+        EditText_Email = (EditText) view.findViewById(R.id.email);
+        btn_submit = (Button) view.findViewById(R.id.button_submit);
+        btn_reset = (Button) view.findViewById(R.id.button_reset);
+        pDialog = new ProgressImage(view.getContext());
 
-            btn_submit.setOnClickListener(new Button.OnClickListener() {
+        btn_submit.setOnClickListener(new Button.OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
-                    Subject=EditText_Subject.getText().toString();
-                    Content=EditText_Content.getText().toString();
-                    Email=EditText_Email.getText().toString();
-
-
-                    submitting(Subject,Content,Email);
+            @Override
+            public void onClick(View v) {
+                Subject = EditText_Subject.getText().toString();
+                Content = EditText_Content.getText().toString();
+                Email = EditText_Email.getText().toString();
 
 
-                }
-            });
+                submitting(Subject, Content, Email);
 
 
-            btn_reset.setOnClickListener(new Button.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
-                    EditText_Subject.setText("");
-                    EditText_Content.setText("");
-                    EditText_Email.setText("");
+            }
+        });
 
 
-                }
-            });
+        btn_reset.setOnClickListener(new Button.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                EditText_Subject.setText("");
+                EditText_Content.setText("");
+                EditText_Email.setText("");
 
 
-            return view;
-        }
+            }
+        });
 
 
-    private void submitting(final String subject, final String content,final String email) {
+        return view;
+    }
+
+
+    private void submitting(final String subject, final String content, final String email) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
@@ -149,20 +147,16 @@ import java.util.Map;
 
 
                                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);  //tomc 31/1/2016  To disable the back button in home
-
-                             //   System.out.println("testtom31/1=" + fragmentManager.getBackStackEntryCount());
-                              //  getActivity().getActionBar().setTitle(R.string.home);
+                                //  getActivity().getActionBar().setTitle(R.string.home);
                                 getActivity().setTitle(R.string.home);
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("feedback"));
-
                                 fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack(null);
                                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                                 fragmentTransaction.commit();
 
-                               // this.getActionBar().setDisplayHomeAsUpEnabled(false);
-                               // getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);      //tomc 31/1/2016  To disable the back button in home
-
+                                // this.getActionBar().setDisplayHomeAsUpEnabled(false);
+                                // getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);      //tomc 31/1/2016  To disable the back button in home
 
 
                             }
@@ -213,7 +207,6 @@ import java.util.Map;
     }
 
 
-
     private void showDialog() {
         if (!pDialog.isShowing())
             pDialog.show();
@@ -224,7 +217,7 @@ import java.util.Map;
             pDialog.dismiss();
     }
 
-    }
+}
 
 
 

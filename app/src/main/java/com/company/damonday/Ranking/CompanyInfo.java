@@ -13,7 +13,6 @@ public class CompanyInfo {
     }
 
 
-
     public CompanyInfo(String name, String url, int ent_id, int moscotId) {
         this.title = name;
         this.url = url;

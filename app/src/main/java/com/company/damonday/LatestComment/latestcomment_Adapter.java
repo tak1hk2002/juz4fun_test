@@ -83,7 +83,7 @@ public class latestcomment_Adapter extends BaseAdapter {
         title.setText(m.getTitle());
 
         //Ent name and Company Name
-        entNameAndCompanyName.setText(m.getEntName()+"@"+m.getCompanyName());
+        entNameAndCompanyName.setText(m.getEntName() + "@" + m.getCompanyName());
 
         //username
         username.setText(m.getUsername());
@@ -92,11 +92,11 @@ public class latestcomment_Adapter extends BaseAdapter {
         postedDate.setText(m.getPostedDate());
 
         //like icon
-        if(m.getRating().equals("null")) {
+        if (m.getRating().equals("null")) {
             averagePic.setImageResource(R.drawable.mascot_send_comment);
             rating2.setVisibility(View.GONE);
         }
-        if(Float.parseFloat(m.getRating()) < 1.7)
+        if (Float.parseFloat(m.getRating()) < 1.7)
             averagePic.setImageResource(R.drawable.mascot_send_comment);
         else if (Float.parseFloat(m.getRating()) >= 1.7 && Float.parseFloat(m.getRating()) <= 3.3)
             averagePic.setImageResource(R.drawable.mascot_smile_comment);

@@ -1,70 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
     <LinearLayout
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/logouted"
-    android:gravity="center_horizontal"
-    android:padding="25dp"
-    android:background="@color/bg_grey_black_light">
+        android:id="@+id/logouted"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_grey_black_light"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="25dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
             <Button
+                android:id="@+id/login"
                 android:layout_width="@dimen/btn_top_width"
                 android:layout_height="@dimen/btn_top_height"
-                android:text="登入"
                 android:background="@drawable/btn_hamburger_login_topbg"
-                android:id="@+id/login"
-                android:textColor="@color/white"/>
+                android:text="登入"
+                android:textColor="@color/white" />
+
             <Button
                 android:layout_width="@dimen/btn_down_width"
                 android:layout_height="@dimen/btn_down_height"
-                android:background="@drawable/btn_hamburger_login_downbg"/>
+                android:background="@drawable/btn_hamburger_login_downbg" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <Button
+                android:id="@+id/register"
                 android:layout_width="@dimen/btn_top_width"
                 android:layout_height="@dimen/btn_top_height"
-                android:text="注冊"
                 android:background="@drawable/btn_hamburger_reg_topbg"
-                android:id="@+id/register"
-                android:textColor="@color/white"/>
+                android:text="注冊"
+                android:textColor="@color/white" />
+
             <Button
                 android:layout_width="@dimen/btn_down_width"
                 android:layout_height="@dimen/btn_down_height"
-                android:background="@drawable/btn_hamburger_reg_downbg"/>
+                android:background="@drawable/btn_hamburger_reg_downbg" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/logined"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/logined"
+        android:background="@color/bg_grey_black_light"
         android:gravity="center_horizontal"
-        android:padding="20dp"
-        android:background="@color/bg_grey_black_light">
+        android:orientation="horizontal"
+        android:padding="20dp">
 
         <ImageView
             android:id="@+id/profile_img"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"/>
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -72,33 +76,36 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/font_light_white"
-                android:id="@+id/username"/>
+                android:textColor="@color/font_light_white" />
 
             <TextView
+                android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/font_light_white"
-                android:id="@+id/email"/>
+                android:textColor="@color/font_light_white" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
                 <Button
+                    android:id="@+id/sys_logout"
                     android:layout_width="@dimen/btn_top_width"
                     android:layout_height="@dimen/btn_top_height"
-                    android:text="登出"
-                    android:id="@+id/sys_logout"
                     android:background="@drawable/btn_hamburger_logout_topbg"
+                    android:text="登出"
                     android:textColor="@color/white" />
+
                 <Button
                     android:layout_width="@dimen/btn_down_width"
                     android:layout_height="@dimen/btn_down_height"
-                    android:background="@drawable/btn_hamburger_logout_downbg"/>
+                    android:background="@drawable/btn_hamburger_logout_downbg" />
 
             </LinearLayout>
         </LinearLayout>
@@ -108,9 +115,9 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/bg_grey_black_deep">
-    <!--<ListView-->
+        android:background="@color/bg_grey_black_deep"
+        android:orientation="vertical">
+        <!--<ListView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:id="@+id/list"-->
@@ -119,159 +126,157 @@
         <!--android:dividerHeight="1dp"/>-->
 
         <RelativeLayout
+            android:id="@+id/RA_my_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@color/bg_grey_black_deep"
-            android:onClick="onClick_my_comment"
             android:clickable="true"
-            android:id="@+id/RA_my_comment"
-            >
+            android:onClick="onClick_my_comment">
+
             <TextView
+                android:id="@+id/onClick_my_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/onClick_my_comment"
-                android:textSize="20dp"
                 android:text="我的評論"
                 android:textColor="@color/separate_line"
-                />
+                android:textSize="20dp" />
+
             <ImageView
                 android:layout_width="@dimen/icon_forward_arrow_dp"
                 android:layout_height="@dimen/icon_forward_arrow_dp"
-                android:src="@drawable/icon_forward_arrow"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_forward_arrow" />
 
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            />
+            android:background="@android:color/darker_gray" />
 
         <RelativeLayout
+            android:id="@+id/RA_aboutus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@color/bg_grey_black_deep"
-            android:onClick="onClick_aboutus"
             android:clickable="true"
-            android:id="@+id/RA_aboutus"
-           >
+            android:onClick="onClick_aboutus">
+
             <TextView
+                android:id="@+id/onClick_aboutus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/onClick_aboutus"
-                android:textSize="20dp"
                 android:text="有關我們"
                 android:textColor="@color/separate_line"
-                />
+                android:textSize="20dp" />
+
             <ImageView
                 android:layout_width="@dimen/icon_forward_arrow_dp"
                 android:layout_height="@dimen/icon_forward_arrow_dp"
-                android:src="@drawable/icon_forward_arrow"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_forward_arrow" />
 
         </RelativeLayout>
 
 
         <!--<Button-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/button_aboutus"-->
-                <!--android:textSize="20dp"-->
-                <!--android:text="有關我們"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/button_aboutus"-->
+        <!--android:textSize="20dp"-->
+        <!--android:text="有關我們"-->
 
-                <!--android:gravity="center" />-->
+        <!--android:gravity="center" />-->
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            />
+            android:background="@android:color/darker_gray" />
 
-            <!--<Button-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/button_feedback"-->
-            <!--android:textSize="20dp"-->
-            <!--android:text="提交意見"-->
-            <!--android:gravity="center" />-->
+        <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/button_feedback"-->
+        <!--android:textSize="20dp"-->
+        <!--android:text="提交意見"-->
+        <!--android:gravity="center" />-->
 
         <RelativeLayout
+            android:id="@+id/RA_feedback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:onClick="onClick_feedback"
             android:clickable="true"
-            android:id="@+id/RA_feedback">
+            android:onClick="onClick_feedback">
+
             <TextView
+                android:id="@+id/onClick_feedback"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/onClick_feedback"
-                android:textSize="20dp"
                 android:text="提交意見"
                 android:textColor="@color/separate_line"
-
+                android:textSize="20dp"
 
 
                 />
+
             <ImageView
                 android:layout_width="@dimen/icon_forward_arrow_dp"
                 android:layout_height="@dimen/icon_forward_arrow_dp"
-                android:src="@drawable/icon_forward_arrow"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_forward_arrow" />
 
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-           />
+            android:background="@android:color/darker_gray" />
 
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-           >
+            android:layout_margin="10dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
                 android:text="版本"
                 android:textColor="@color/separate_line"
+                android:textSize="20dp"
 
                 />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:text="1.1"
-                android:textSize="20dp"
                 android:textColor="@color/separate_line"
-                android:layout_alignParentRight="true"/>
+                android:textSize="20dp" />
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            />
+            android:background="@android:color/darker_gray" />
 
 
-    <!--<Button-->
+        <!--<Button-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
 

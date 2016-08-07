@@ -3,8 +3,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="@color/bg_grey_black_light">
+    android:background="@color/bg_grey_black_light"
+    android:orientation="vertical">
 
 
     <SearchView
@@ -12,42 +12,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="3dp"
-        android:background="@color/font_white"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="3dp"
+        android:background="@color/font_white">
 
     </SearchView>
 
     <!--<ImageButton-->
-        <!--android:id="@+id/imageButton1"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_marginRight="0dp"-->
-        <!--android:layout_marginTop="3dp"-->
-        <!--android:layout_toLeftOf="@+id/imageButton2"-->
-        <!--android:src="@android:drawable/ic_btn_speak_now" />-->
+    <!--android:id="@+id/imageButton1"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_marginRight="0dp"-->
+    <!--android:layout_marginTop="3dp"-->
+    <!--android:layout_toLeftOf="@+id/imageButton2"-->
+    <!--android:src="@android:drawable/ic_btn_speak_now" />-->
 
     <!--<ImageButton-->
-        <!--android:id="@+id/imageButton2"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_marginRight="5dp"-->
-        <!--android:layout_marginTop="3dp"-->
-        <!--android:src="@drawable/powered_by_google_dark"/>-->
+    <!--android:id="@+id/imageButton2"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_marginRight="5dp"-->
+    <!--android:layout_marginTop="3dp"-->
+    <!--android:src="@drawable/powered_by_google_dark"/>-->
 
 
     <ListView
         android:id="@+id/listview_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/searchView1"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:divider="@drawable/list_divider"
-        android:dividerHeight="1dp"/>
+        android:dividerHeight="1dp" />
 
 </RelativeLayout>

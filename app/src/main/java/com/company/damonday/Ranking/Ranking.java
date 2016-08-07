@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -18,9 +19,11 @@ import com.company.damonday.CompanyInfo.FragmentTabs;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,19 +48,17 @@ public class Ranking extends Activity {
     private MyAdapter adapter;
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ranking);
-        gridView = (GridView)findViewById(R.id.gridView);
+        gridView = (GridView) findViewById(R.id.gridView);
 
 
         //wait for displaying ranking
         //pDialog = new ProgressDialog(this);
         //pDialog.setMessage("Loading...");
         //pDialog.show();
-
 
 
         makeJsonArrayRequest();
@@ -81,7 +82,7 @@ public class Ranking extends Activity {
 
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         adapter = new MyAdapter(this, companyInfoItems, false);
         gridView.setAdapter(adapter);
@@ -89,61 +90,57 @@ public class Ranking extends Activity {
     }
 
 
-
     private void makeJsonArrayRequest() {
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 APIConfig.URL_RANKING, null, new Response.Listener<JSONObject>() {
 
-                    public void onResponse(JSONObject response) {
-                        Log.d(TAG, response.toString());
+            public void onResponse(JSONObject response) {
+                Log.d(TAG, response.toString());
 
 
-                        try {
+                try {
 
 
-                            // loop through each json object
-                            String status = response.getString("status");
-                            JSONArray rank = response.getJSONArray("data");
+                    // loop through each json object
+                    String status = response.getString("status");
+                    JSONArray rank = response.getJSONArray("data");
 
-                            if(status.equals("success")) {
+                    if (status.equals("success")) {
 
-                                for (int i = 0; i < rank.length(); i++) {
-                                    CompanyInfo companyInfo = new CompanyInfo();
-                                    JSONObject company = (JSONObject) rank
-                                            .get(i);
-                                    companyInfo.setTitle(company.getString("name"));
-                                    companyInfo.setUrl(company.getString("cover_image"));
-                                    companyInfo.setEnt_id(company.getInt("ID"));
+                        for (int i = 0; i < rank.length(); i++) {
+                            CompanyInfo companyInfo = new CompanyInfo();
+                            JSONObject company = (JSONObject) rank
+                                    .get(i);
+                            companyInfo.setTitle(company.getString("name"));
+                            companyInfo.setUrl(company.getString("cover_image"));
+                            companyInfo.setEnt_id(company.getInt("ID"));
 
-                                    companyInfoItems.add(companyInfo);
+                            companyInfoItems.add(companyInfo);
 
-                                }
-                            }else{
-                                String errorMsg = response.getString("msg");
-                                Toast.makeText(getApplicationContext(),
-                                        errorMsg,
-                                        Toast.LENGTH_LONG).show();
-                            }
-
-
-
-
-
-                        } catch (JSONException e) {
-                            Log.d("error", "error");
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),
-                                    "Error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG).show();
                         }
-                        //hidePDialog();
-                        // notifying list adapter about data changes
-                        // so that it renders the list view with updated data
-
-                        adapter.notifyDataSetChanged();
+                    } else {
+                        String errorMsg = response.getString("msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg,
+                                Toast.LENGTH_LONG).show();
                     }
-                }, new Response.ErrorListener() {
+
+
+                } catch (JSONException e) {
+                    Log.d("error", "error");
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),
+                            "Error: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+                //hidePDialog();
+                // notifying list adapter about data changes
+                // so that it renders the list view with updated data
+
+                adapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());

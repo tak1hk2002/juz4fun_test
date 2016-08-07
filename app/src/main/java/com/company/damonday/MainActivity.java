@@ -68,8 +68,8 @@ public class MainActivity extends FragmentActivity {
         btn_login = (Button) findViewById(R.id.login);
         info = (TextView) findViewById(R.id.info);
         profileImgView = (ImageView) findViewById(R.id.profile_img);
-        btn_testScorllView = (Button)findViewById(R.id.button2);
-        progress = (ImageView)findViewById(R.id.imageView);
+        btn_testScorllView = (Button) findViewById(R.id.button2);
+        progress = (ImageView) findViewById(R.id.imageView);
         //GifImageView gifImageView = (GifImageView) findViewById(R.id.imageView);
 
         final AlertDialog.Builder ab = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK);
@@ -90,7 +90,7 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onClick(View v) {
-               // Intent i = new Intent(MainActivity.this, Ranking.class);
+                // Intent i = new Intent(MainActivity.this, Ranking.class);
                 /*Intent i = new Intent(MainActivity.this, Home.class);  //tomc 13/10/2015 start
                 startActivity(i);*/
                 ab.setTitle(R.string.writeComment_dialog_title);
@@ -116,7 +116,7 @@ public class MainActivity extends FragmentActivity {
                 dialog[0].getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
                 dialog[0].show();
-                
+
             }
         });
 
@@ -141,7 +141,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        btn_testScorllView.setOnClickListener(new Button.OnClickListener(){
+        btn_testScorllView.setOnClickListener(new Button.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -174,11 +174,6 @@ public class MainActivity extends FragmentActivity {
                 Glide.with(MainActivity.this)
                         .load(profileImgUrl)
                         .into(profileImgView);
-
-
-
-
-
 
 
                 Log.d("FB", "access token got.");
@@ -248,7 +243,6 @@ public class MainActivity extends FragmentActivity {
         });
 
 
-
 //        getJson abc = new getJson();
 //        abc.execute("");
 //        try {
@@ -271,8 +265,8 @@ public class MainActivity extends FragmentActivity {
             obj = new JSONObject(JsonText);
             //宣告字串data來存放剛剛撈到的字串，剛剛的物件叫obj因此對他下obj.getString(“data”)，
             //而裡面的data則是因為在上圖中最外層的物件裡包的JSON陣列叫做data。
-           // String data = obj.getString("data");
-           // JSONArray data = obj.getJSONArray("data");
+            // String data = obj.getString("data");
+            // JSONArray data = obj.getJSONArray("data");
             JSONObject data = new JSONObject(obj.getString("data"));
 
 
@@ -286,12 +280,12 @@ public class MainActivity extends FragmentActivity {
             JSONArray promotion_images = data.getJSONArray("promotion_images");
             String d = data.getString("title");
 
-           // String abc =obj.getString("result");
+            // String abc =obj.getString("result");
             //這裡是宣告我們要繼續拆解的JSON陣列，所以要把剛剛撈到的字串轉換為JSON陣列
-           // JSONArray dataArray = new JSONArray(data);
+            // JSONArray dataArray = new JSONArray(data);
             //先宣告name跟id的字串陣列來存放等等要拆解的資料
             //String [] rating = new String [dataArray.length()];
-           // String [] title = new String [data.length()];
+            // String [] title = new String [data.length()];
             /*String [] start_date = new String [dataArray.length()];
             String [] end_date = new String [dataArray.length()];
             String [] on_promotion = new String [dataArray.length()];
@@ -305,18 +299,16 @@ public class MainActivity extends FragmentActivity {
             String [] promotion_images = new String [dataArray.length()];*/
 
 
-
-
             //因為data陣列裡面有好多個JSON物件，因此利用for迴圈來將資料抓取出來
             //因為不知道data陣列裡有多少物件，因此我們用.length()這個方法來取得物件的數量
-           // for (int i = 0; i < data.length(); i++) {
-                //接下來這兩行在做同一件事情，就是把剛剛JSON陣列裡的物件抓取出來
-                //並取得裡面的字串資料
-                //dataArray.getJSONObject(i)這段是在講抓取data陣列裡的第i個JSON物件
-                //抓取到JSON物件之後再利用.getString(“欄位名稱”)來取得該項value
-                //這裡的欄位名稱就是剛剛前面所提到的name:value的name
-                //rating[i] = dataArray.getJSONObject(i).getString("rating");
-              //  title[i] = data.getJSONObject(i).getString("title");
+            // for (int i = 0; i < data.length(); i++) {
+            //接下來這兩行在做同一件事情，就是把剛剛JSON陣列裡的物件抓取出來
+            //並取得裡面的字串資料
+            //dataArray.getJSONObject(i)這段是在講抓取data陣列裡的第i個JSON物件
+            //抓取到JSON物件之後再利用.getString(“欄位名稱”)來取得該項value
+            //這裡的欄位名稱就是剛剛前面所提到的name:value的name
+            //rating[i] = dataArray.getJSONObject(i).getString("rating");
+            //  title[i] = data.getJSONObject(i).getString("title");
                 /*start_date[i] = dataArray.getJSONObject(i).getString("start_date");
                 end_date[i] = dataArray.getJSONObject(i).getString("end_date");
                 on_promotion[i] = dataArray.getJSONObject(i).getString("on_promotion");
@@ -328,13 +320,12 @@ public class MainActivity extends FragmentActivity {
                 phone[i] = dataArray.getJSONObject(i).getString("phone");
                 video[i] = dataArray.getJSONObject(i).getString("video");
                 promotion_images[i] = dataArray.getJSONObject(i).getString("promotion_images");*/
-           // }
+            // }
 
             Log.d("rating", promotion_images.getString(1));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        catch (JSONException e) {e.printStackTrace();}
-
-
 
 
     }
@@ -343,7 +334,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
 
 
         // Logs 'install' and 'app activate' App Events.
@@ -474,10 +464,6 @@ public class MainActivity extends FragmentActivity {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
-
-
-
-
 
 
 }

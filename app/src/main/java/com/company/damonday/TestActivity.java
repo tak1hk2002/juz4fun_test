@@ -1,7 +1,6 @@
 package com.company.damonday;
 
 
-
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -25,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.company.damonday.CompanyInfo.CompanySQLiteHandler;
 import com.company.damonday.Home.Home;
 import com.company.damonday.LatestComment.latestcommentvolley;
@@ -43,15 +43,12 @@ import com.company.damonday.function.ConnectionDetector;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
+
 import java.util.ArrayList;
 
 /**
  * Created by tomc on 2/8/15.
  * It is a fragment activity class for the sliding menu
- *
- *
- *
- *
  */
 public class TestActivity extends FragmentActivity {
     private DrawerLayout mDrawerLayout;
@@ -70,8 +67,8 @@ public class TestActivity extends FragmentActivity {
     public ArrayList<String> tempTitle;
     private NavDrawerListAdapter adapter;
     private LinearLayout mDrawerLinear;
-    private Button btn_login,btn_register,btn_logout;
-    private LinearLayout linear_logout,linear_login,linear_register;
+    private Button btn_login, btn_register, btn_logout;
+    private LinearLayout linear_logout, linear_login, linear_register;
     private SessionManager session;         //tomc 10/4/2016        login
     private LoginSQLiteHandler db;           //tomc 10/4/2016       login
     private Boolean HOME_FLAG;
@@ -89,7 +86,7 @@ public class TestActivity extends FragmentActivity {
         //tomc 10/4/2016   login
         session = new SessionManager(this);
         db = new LoginSQLiteHandler(this);          //tomc 10/4/2016       login
-        mTitle = mDrawerTitle = getTitle();
+        mDrawerTitle = getTitle();
 
         // load slide menu items
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -100,14 +97,14 @@ public class TestActivity extends FragmentActivity {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
-         mDrawerLinear = (LinearLayout) findViewById(R.id.drawer_linear);
-        linear_logout =(LinearLayout) findViewById(R.id.linear_logout);
+        mDrawerLinear = (LinearLayout) findViewById(R.id.drawer_linear);
+        linear_logout = (LinearLayout) findViewById(R.id.linear_logout);
         linear_login = (LinearLayout) findViewById(R.id.linear_login);
-        linear_register= (LinearLayout)findViewById(R.id.linear_register);
+        linear_register = (LinearLayout) findViewById(R.id.linear_register);
 
-        btn_logout =(Button) findViewById(R.id.btn_logout);
-        btn_login=(Button) findViewById(R.id.btn_login);
-        btn_register= (Button)findViewById(R.id.btn_register);
+        btn_logout = (Button) findViewById(R.id.btn_logout);
+        btn_login = (Button) findViewById(R.id.btn_login);
+        btn_register = (Button) findViewById(R.id.btn_register);
 
         navDrawerItems = new ArrayList<NavDrawerItem>();
         tempTitle = new ArrayList<String>();
@@ -143,7 +140,7 @@ public class TestActivity extends FragmentActivity {
         mDrawerList.setAdapter(adapter);
 
         // enabling action bar app icon and behaving it as toggle button
-       // getActionBar().setDisplayHomeAsUpEnabled(true);     //make back button
+        // getActionBar().setDisplayHomeAsUpEnabled(true);     //make back button
 
         getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getActionBar().setCustomView(R.layout.actionbar_custom_layout);
@@ -167,21 +164,19 @@ public class TestActivity extends FragmentActivity {
         getActionBar().getCustomView().findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Toast.makeText(TestActivity.this , "back" , Toast.LENGTH_SHORT).show();
+                // Toast.makeText(TestActivity.this , "back" , Toast.LENGTH_SHORT).show();
                 onBackPressed();
 
             }
         });
 
 
-
-        View v=getActionBar().getCustomView();
+        View v = getActionBar().getCustomView();
 
         TextView titleTxtView = (TextView) v.findViewById(R.id.actionbarTitle);
 
 
-
-       // getActionBar().setDisplayShowTitleEnabled(false);
+        // getActionBar().setDisplayShowTitleEnabled(false);
         //getActionBar().setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -191,9 +186,7 @@ public class TestActivity extends FragmentActivity {
         ) {
             public void onDrawerClosed(View view) {
                 //calling when Drawer is closed tomc 26/1/2016
-
-               // getActionBar().setTitle(mTitle);
-               // System.out.println("onDrawerClosed");
+                // System.out.println("onDrawerClosed");
                 // calling onPrepareOptionsMenu() to show action bar icons
                 invalidateOptionsMenu();
             }
@@ -201,7 +194,7 @@ public class TestActivity extends FragmentActivity {
             public void onDrawerOpened(View drawerView) {
                 //calling when Drawer is opened tomc 26/1/2016
 
-              //  getActionBar().setTitle(mDrawerTitle);
+                //  getActionBar().setTitle(mDrawerTitle);
                 // calling onPrepareOptionsMenu() to hide action bar icons
                 invalidateOptionsMenu();
             }
@@ -217,9 +210,9 @@ public class TestActivity extends FragmentActivity {
 
     }
 
-    public void DialogForNetworkChecking(){
+    public void DialogForNetworkChecking() {
         Boolean isInternetPresent = ConnectionDetector.isConnectingToInternet(this); // true or false
-        if(isInternetPresent == false) {
+        if (isInternetPresent == false) {
             AlertDialog.Builder ab = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK);
             AlertDialog dialog;
             ab.setTitle(R.string.connection_fail_warning);
@@ -232,45 +225,45 @@ public class TestActivity extends FragmentActivity {
             dialog = ab.create();
             dialog.show();
         }
-       // Log.d("Network", "bool=" + isInternetPresent);
+        // Log.d("Network", "bool=" + isInternetPresent);
     }
 
     /**
      * Slide menu item click listener
      */
-    public void AdjustActiontitle(String title){                        //tomc 6/3/2016
-        View v=getActionBar().getCustomView();
+    public void AdjustActiontitle(String title) {                        //tomc 6/3/2016
+        View v = getActionBar().getCustomView();
 
         TextView titleTxtView = (TextView) v.findViewById(R.id.actionbarTitle);
         titleTxtView.setText(title);
     }
 
-    public void hideBackButton(){                        //tomc 6/3/2016
+    public void hideBackButton() {                        //tomc 6/3/2016
 //use by the fragment
-        View v=getActionBar().getCustomView().findViewById(R.id.button_back);
+        View v = getActionBar().getCustomView().findViewById(R.id.button_back);
         v.setVisibility(View.INVISIBLE);
     }
 
-    public void showBackButton(){                        //tomc 6/3/2016
+    public void showBackButton() {                        //tomc 6/3/2016
 //use by the fragment
-        View v=getActionBar().getCustomView().findViewById(R.id.button_back);
+        View v = getActionBar().getCustomView().findViewById(R.id.button_back);
         v.setVisibility(View.VISIBLE);
     }
 
-    public void showMenuButton(){                        //tomc 6/8/2016
+    public void showMenuButton() {                        //tomc 6/8/2016
 //use by the fragment
-        View v=getActionBar().getCustomView().findViewById(R.id.button_setting);
+        View v = getActionBar().getCustomView().findViewById(R.id.button_setting);
         v.setVisibility(View.VISIBLE);
     }
 
-    public void hideMenuButton(){                        //tomc 6/8/2016
+    public void hideMenuButton() {                        //tomc 6/8/2016
 //use by the fragment
-        View v=getActionBar().getCustomView().findViewById(R.id.button_setting);
+        View v = getActionBar().getCustomView().findViewById(R.id.button_setting);
         v.setVisibility(View.INVISIBLE);
     }
 
-    public void checkLogin(){
-        if(session.isLoggedIn()|| AccessToken.getCurrentAccessToken() != null) {
+    public void checkLogin() {
+        if (session.isLoggedIn() || AccessToken.getCurrentAccessToken() != null) {
             linear_login.setVisibility(View.GONE);
             linear_register.setVisibility(View.GONE);
             linear_logout.setVisibility(View.VISIBLE);
@@ -300,8 +293,7 @@ public class TestActivity extends FragmentActivity {
 
 
             }
-        }
-        else {
+        } else {
             linear_logout.setVisibility(View.GONE);
             linear_login.setVisibility(View.VISIBLE);
             linear_register.setVisibility(View.VISIBLE);
@@ -343,8 +335,6 @@ public class TestActivity extends FragmentActivity {
     }
 
 
-
-
     private class SlideMenuClickListener implements
             ListView.OnItemClickListener {
         @Override
@@ -359,7 +349,7 @@ public class TestActivity extends FragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {                 //action bar 出現
 
         Log.d("onCreateOptionsMenu", "onCreateOptionsMenu");
-       // getMenuInflater().inflate(R.menu.menu_main, menu);
+        // getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
         // return true;
     }
@@ -390,26 +380,8 @@ public class TestActivity extends FragmentActivity {
             default:                        //tomc 13/10/2015 press back button in menu
 
 //                mDrawerLayout.closeDrawer(Gravity.RIGHT);
-//                //finish();
-//                // onKeyDown(KeyEvent.KEYCODE_BACK, null);     //tomc 13/10/2015 call
-//
+
                 onBackPressed();            //tomc 13/10/2015 call back button activity
-//                //Log.d("222222","rrrrrrr");
-//
-//                //setTitle("dddd");
-//                FragmentManager fragmentManager = getSupportFragmentManager();
-//                System.out.println("tom");
-//                System.out.println(fragmentManager.getBackStackEntryCount());
-//
-//                if (fragmentManager.getBackStackEntryCount() == 0) {
-//                    //如果返主頁
-//                    setTitle(navMenuTitles[0]);
-//                    displayView(0);
-//                } else {
-//                    //如果不是返主頁
-//                    setTitle(mTitle);
-//                }
-//
 //                //mDrawerLayout.closeDrawer(Gravity.RIGHT);
                 return super.onOptionsItemSelected(item);
 
@@ -447,7 +419,7 @@ public class TestActivity extends FragmentActivity {
             case 0:
                 //主頁
                 //getActionBar().setDisplayHomeAsUpEnabled(false);     //make back button
-                     //make back button
+                //make back button
                 //hideBackButton();
                 fragment = new Home();
                 HOME_FLAG = true;
@@ -503,14 +475,14 @@ public class TestActivity extends FragmentActivity {
             fragment.setArguments(bundle);
             FragmentManager fragmentManager = getSupportFragmentManager();
             Fragment homeFragment = fragmentManager.findFragmentByTag("home");
-             System.out.println("testActivity_backstackEntryCount:="+fragmentManager.getBackStackEntryCount());
+            System.out.println("testActivity_backstackEntryCount:=" + fragmentManager.getBackStackEntryCount());
             //clear all of the fragment at the stack
             //only the "main" stack, "empty" stack remains
             //fragmentManager.popBackStack("main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             //System.out.println(fragmentManager.getBackStackEntryCount());
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             //add the home fragment to empty stack
-            System.out.println("tag="+tag);
+            System.out.println("tag=" + tag);
             fragmentManager.popBackStack("emply", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragmentManager.popBackStack("main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);   //important to clear repeat fragment in the stack //Alan 9/2/2016
@@ -524,23 +496,21 @@ public class TestActivity extends FragmentActivity {
 //            else {
 //                System.out.println("homecase3");
 //                fragmentManager.popBackStack("main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-               fragmentTransaction.replace(R.id.frame_container, fragment, tag).addToBackStack("main");
+            fragmentTransaction.replace(R.id.frame_container, fragment, tag).addToBackStack("main");
 //                fragmentTransaction.hide(fragmentManager.findFragmentByTag("home"));
 //                fragmentTransaction.add(R.id.frame_container, fragment, "tag").addToBackStack("main");
 
-       //     }
+            //     }
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
 
-            if(position != 7) {
+            if (position != 7) {
                 // update selected item and title, then close the drawer
                 mDrawerList.setItemChecked(position, true);
                 mDrawerList.setSelection(position);
-               // tempmtitle = mTitle;
-               // System.out.println("tempmtitle=" + tempmtitle);
-               // setTitle(navMenuTitles[position]);
+                // System.out.println("tempmtitle=" + tempmtitle);
+                // setTitle(navMenuTitles[position]);
             }
-            System.out.println("ordertest1");
             mDrawerLayout.closeDrawer(mDrawerLinear);
         } else {
             // error in creating fragment
@@ -550,29 +520,22 @@ public class TestActivity extends FragmentActivity {
 
     @Override
     public void setTitle(CharSequence title) {
-      //  Log.d("setTitle", "setTitle old ");
-        //imageView != null;
-        if (getActionBar().getTitle()!= null) {
-            tempTitle.add(getActionBar().getTitle().toString());
-           // System.out.println("tomgg0" + getActionBar().getTitle().toString());
-        }
-       // mTitle = ((getActionBar().getTitle()).toString());}
+
         getActionBar().setTitle(title);
         AdjustActiontitle(getActionBar().getTitle().toString());
-        //System.out.println("tomgg"+tempTitle);
+
+        if (getActionBar().getTitle() != null) {
+            tempTitle.add(title.toString());
+        }
+        //      System.out.println("temptitle0:"+tempTitle);
 
     }
 
-    public void setTitle(CharSequence title,boolean back) {
-        //imageView != null;
-//        if (getActionBar().getTitle()!= null) {
-//            tempTitle.add(getActionBar().getTitle().toString());
-//        }
-        // mTitle = ((getActionBar().getTitle()).toString());}
-        getActionBar().setTitle(title);
-        AdjustActiontitle(getActionBar().getTitle().toString());
-        System.out.println(tempTitle);
+    public void setTitle(CharSequence title, boolean back) {
 
+        getActionBar().setTitle(title);
+        AdjustActiontitle(title.toString());
+        //System.out.println("temptitle4:"+tempTitle);
     }
 
     /**
@@ -593,7 +556,6 @@ public class TestActivity extends FragmentActivity {
         Log.d("onConfigurationChanged", "onConfigurationChanged");
         super.onConfigurationChanged(newConfig);
 
-
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
@@ -601,16 +563,30 @@ public class TestActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
-
+//when BackbuttonPressed
         System.out.println("onBackPressed");
         mDrawerLayout.closeDrawer(Gravity.RIGHT);
         FragmentManager fragmentManager = getSupportFragmentManager();
         Log.d("EntryCount", Integer.toString(fragmentManager.getBackStackEntryCount()));
         if (fragmentManager.getBackStackEntryCount() == 1) {
-            finish();
+            //quit the app dialog
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("提示")
+                    .setMessage("真係走喇嘛?")
+                    .setPositiveButton("走啦仲問！", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+
+                    })
+                    .setNegativeButton("講笑姐;p", null)
+                    .show();
+            // finish();
         }
-      //  if (fragmentManager.getBackStackEntryCount() == 1) {
-           // finish();
+        //  if (fragmentManager.getBackStackEntryCount() == 1) {
+        // finish();
             /*//如果返主頁
             if(!HOME_FLAG) {
                 tempTitle.clear();
@@ -621,29 +597,28 @@ public class TestActivity extends FragmentActivity {
             }
             else{
             }*/
-       // }
+        // }
         else {
+            //如果不是返主頁
+            if (!tempTitle.isEmpty()) {
+                tempTitle.remove(tempTitle.size() - 1);
+                //  System.out.println("temptitle3:" + tempTitle);
+                setTitle(tempTitle.get(tempTitle.size() - 1), true);
+            }
 
-            System.out.println("fragmentManager.getBackStackEntryCount()=" + fragmentManager.getBackStackEntryCount());
-           // fragmentManager.popBackStack();
+            //System.out.println("fragmentManager.getBackStackEntryCount()tom=" + fragmentManager.getBackStackEntryCount());
+            // fragmentManager.popBackStack();
             fragmentManager.popBackStackImmediate();
-            System.out.println("fragmentManager.getBackStackEntryCount2()=" + fragmentManager.getBackStackEntryCount());
-            if(fragmentManager.getBackStackEntryCount() == 1){
+            if (fragmentManager.getBackStackEntryCount() == 1) {
                 hideBackButton();
                 showMenuButton();
                 System.out.println("case1");
             }
-            //如果不是返主頁
-            //setTitle(mTitle);
-            if (!tempTitle.isEmpty()) {
-                setTitle(tempTitle.get(tempTitle.size() - 1), true);
-                tempTitle.remove(tempTitle.size() - 1);
-            }
 
-          //  System.out.println(tempTitle);
+
         }
         //moveTaskToBack(true);
-      //  super.onBackPressed(); // allows standard use of backbutton for page 1
+        //  super.onBackPressed(); // allows standard use of backbutton for page 1
     }
 }
 

@@ -13,32 +13,32 @@
 
     <!-- Login and register-->
 
-        <string name="hint_email">請輸入電郵</string>
-        <string name="hint_password">請輸入密碼</string>
-        <string name="hint_password_again">請再輸入密碼</string>
-        <string name="hint_username">請輸入登入名稱</string>
-        <string name="hint_confirmed_password">你輸入的密碼不相符</string>
-        <string name="register_success">你會稍後收到電郵，然後請激活你的帳號</string>
-        <string name="login_success">登入成功</string>
-        <string name="logout_success">登出成功</string>
-        <string name="title_member_login">會員登入</string>
-        <string name="title_member_register">註冊會員</string>
-        <string name="login_or">或</string>
-        <string name="forgot_password"><u>忘記密碼？</u></string>
-        <string name="title_register"><u>註冊</u></string>
-        <string name="btn_login">登入</string>
-        <string name="btn_register">註冊</string>
-        <string name="btn_logout">登出</string>
-        <string name="welcome">Welcome</string>
-        <string name="btn_facebook_login">BY FACEBOOK</string>
-        <string name="btn_email_login">BY EMAIL</string>
-        <string name="btn_skip_login">SKIP</string>
-        <string name="btn_facebook_logout">Log out with FACEBOOK</string>
-        <string name="txt_forget_password">你的密碼將會傳送到你的電郵裡</string>
-    
-        <!--warning-->
-        <string name="login_warning_enter_info">請輸入使用者名稱和密碼</string>
-        <string name="login_warning_forget_password_email">請輸入電郵</string>
+    <string name="hint_email">請輸入電郵</string>
+    <string name="hint_password">請輸入密碼</string>
+    <string name="hint_password_again">請再輸入密碼</string>
+    <string name="hint_username">請輸入登入名稱</string>
+    <string name="hint_confirmed_password">你輸入的密碼不相符</string>
+    <string name="register_success">你會稍後收到電郵，然後請激活你的帳號</string>
+    <string name="login_success">登入成功</string>
+    <string name="logout_success">登出成功</string>
+    <string name="title_member_login">會員登入</string>
+    <string name="title_member_register">註冊會員</string>
+    <string name="login_or">或</string>
+    <string name="forgot_password"><u>忘記密碼？</u></string>
+    <string name="title_register"><u>註冊</u></string>
+    <string name="btn_login">登入</string>
+    <string name="btn_register">註冊</string>
+    <string name="btn_logout">登出</string>
+    <string name="welcome">Welcome</string>
+    <string name="btn_facebook_login">BY FACEBOOK</string>
+    <string name="btn_email_login">BY EMAIL</string>
+    <string name="btn_skip_login">SKIP</string>
+    <string name="btn_facebook_logout">Log out with FACEBOOK</string>
+    <string name="txt_forget_password">你的密碼將會傳送到你的電郵裡</string>
+
+    <!--warning-->
+    <string name="login_warning_enter_info">請輸入使用者名稱和密碼</string>
+    <string name="login_warning_forget_password_email">請輸入電郵</string>
     <!-- -->
 
     <!-- Button-->
@@ -50,9 +50,8 @@
 
     <!-- facebook key-->
     <string name="facebook_app_id">1591220424465295</string>
-    
-    
-    
+
+
     <!-- companyInfo-->
     <string name="tab_company">概要</string>
     <string name="tab_comment">玩評</string>
@@ -71,7 +70,7 @@
         <item>營業時間：</item>
         <item>電郵：</item>
     </string-array>
-    
+
     <!-- my favourite-->
     <string name="my_favourite_list_delete_warning">真係唔要我？</string>
 
@@ -84,13 +83,13 @@
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
-        <item >Juz4fun</item>
-        <item >進階搜尋</item>
-        <item >排行榜</item>
-        <item >最新評論</item>
-        <item >我的最愛</item>
-        <item >新發現</item>
-        <item >設定</item>
+        <item>Juz4fun</item>
+        <item>進階搜尋</item>
+        <item>排行榜</item>
+        <item>最新評論</item>
+        <item>我的最愛</item>
+        <item>新發現</item>
+        <item>設定</item>
     </string-array>
 
 
@@ -136,11 +135,11 @@
         <item>詳細評分</item>
     </string-array>
 
-    <string name = "writeComment_dialog_title">主題</string>
-    <string name = "writeComment_dialog_content">內容</string>
-    <string name = "writeComment_dialog_consumption">消費</string>
-    <string name = "writeComment_dialog_overallrating">整體評分</string>
-    <string name = "writeComment_dialog_detailrating">詳細評分</string>
+    <string name="writeComment_dialog_title">主題</string>
+    <string name="writeComment_dialog_content">內容</string>
+    <string name="writeComment_dialog_consumption">消費</string>
+    <string name="writeComment_dialog_overallrating">整體評分</string>
+    <string name="writeComment_dialog_detailrating">詳細評分</string>
     <string-array name="writeComment_dialog_rating_detail">
         <item>趣味</item>
         <item>環境</item>
@@ -169,7 +168,7 @@
         <item>請輸入整體評分</item>
         <item>請輸入詳細評分</item>
     </string-array>
-    
+
 
     <string name="writeComment_submit_success">成功提交</string>
 
@@ -201,6 +200,7 @@
     <string name="home">Juz4fun</string>
     <string name="home2">主頁</string>
     <string name="advance_search">進階搜尋</string>
+    <string name="fast_search">快速搜尋</string>
     <string name="advance_search_result">搜尋結果</string>
     <string name="ranking">排行榜</string>
     <string name="latestcomment">最新評論</string>
@@ -212,10 +212,8 @@
     <string name="forget_password">忘記密碼</string>
     <string name="my_comment">我的評論</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
 
 
 </resources>
