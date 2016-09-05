@@ -54,14 +54,15 @@ import com.google.android.gms.analytics.ecommerce.Product;
 
 
 public class search_fast extends Fragment {
-    View view;
-    View myFragmentView;
-    SearchView search;
-    Typeface type;
-    ListView searchResults;
+    private View view;
+    private View myFragmentView;
+    private SearchView search;
+    private Typeface type;
+    private ListView searchResults;
     private List<CompanyObject> companyObjects = new ArrayList<CompanyObject>();
     private ProgressImage pDialog;
     private SearchResultsAdapter adapter;
+    private StringRequest strReq;
 
 
     //This arraylist will have data as pulled from server. This will keep cumulating.
@@ -238,7 +239,7 @@ public class search_fast extends Fragment {
 //        pDialog.setMessage("提交中 ...");
         //       showDialog();
 
-        StringRequest strReq = new StringRequest(Request.Method.GET,
+        strReq = new StringRequest(Request.Method.GET,
                 geturl(keyword), new Response.Listener<String>() {
 
             @Override
@@ -326,6 +327,15 @@ public class search_fast extends Fragment {
         Log.d("strReq", strReq.toString());
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (strReq != null)  {
+            strReq.cancel();
+            Log.d("onStop", "Search requests are all cancelled");
+        }
     }
 
 

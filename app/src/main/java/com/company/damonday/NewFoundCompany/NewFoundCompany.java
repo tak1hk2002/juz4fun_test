@@ -54,7 +54,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,22 +82,22 @@ public class NewFoundCompany extends Fragment {
     String company_address;
     String company_cost;
     String company_business_hour;
-    String[] title;
-    ListView listView;
+    private String[] title;
+    private ListView listView;
     private List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
     private String priceID;
     private ArrayList<String> array_category = new ArrayList<String>();
-    private HashMap<String, String> hashPrice = new HashMap<String, String>();
+    private HashMap<String, Integer> hashPrice = new HashMap<String, Integer>();
     private HashMap<Integer, String> hash_category = new HashMap<Integer, String>();
-    Button btn_submit;
-    Button btn_reset;
-    LinearLayout linearCat;
-    APIConfig optionDetail;
-    List<String> arrayPrice = new ArrayList<String>();
+    private Button btnSubmit, btnReset;
+    private LinearLayout linearCat;
+    private APIConfig optionDetail;
+    private List<String> arrayPrice = new ArrayList<String>();
     private ArrayAdapter adapterPrice;
-    Map<String, Integer> mapExpense = new HashMap<String, Integer>();
-    ArrayList<Integer> selectedCat = new ArrayList();
-    ArrayList<String> selectedCatName = new ArrayList<>();
+    private Map<String, Integer> mapExpense = new HashMap<String, Integer>();
+    private ArrayList<Integer> selectedCat = new ArrayList();
+    private ArrayList<String> selectedCatName = new ArrayList<>();
+    private JsonObjectRequest jsonObjReq;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -119,11 +123,33 @@ public class NewFoundCompany extends Fragment {
         getOptionDetail();
         view = inflater.inflate(R.layout.newfound, container, false);
         listView = (ListView) view.findViewById(R.id.listView);
+        btnReset = (Button) view.findViewById(R.id.button_reset);
+        btnSubmit = (Button) view.findViewById(R.id.button_submit);
+
         final SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), items,
                 R.layout.view_companywritecomment_list, new String[] {"title", "info"}, new int[] {R.id.title, R.id.info});
         listView.setAdapter(simpleAdapter);
 
 
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < items.size(); i++) {
+                    View view = null;
+                    items.get(i).put("info", "");
+                    //get each view of  the listview
+                    view = listView.getAdapter().getView(i, view, listView);
+                    ImageView imgIndicator = (ImageView) view.findViewById(R.id.indicator);
+                    TextView txtInfo = (TextView) view.findViewById(R.id.info);
+                    imgIndicator.setVisibility(View.VISIBLE);
+                    txtInfo.setVisibility(View.GONE);
+
+                }
+                simpleAdapter.notifyDataSetChanged();
+                //apply the changes of deleting the elements of the item
+                listView.setAdapter(simpleAdapter);
+            }
+        });
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -133,8 +159,11 @@ public class NewFoundCompany extends Fragment {
                 final EditText companyName = new EditText(getActivity());
                 final EditText companyAddress = new EditText(getActivity());
                 final EditText companyTel = new EditText(getActivity());
-                final EditText businessHour = new EditText(getActivity());
                 final String[] expense = {""};
+                String openTimeHour = null;
+                String openTimeMin = null;
+                String endTimeHour = null;
+                String endTimeMin = null;
                 final int[] selectedExpense = {-1};
                 final boolean[] selectedCatItem = new boolean[4];
                 final ImageView imgIndicator = (ImageView) view.findViewById(R.id.indicator);
@@ -163,19 +192,13 @@ public class NewFoundCompany extends Fragment {
                 companyName.setTextColor(getResources().getColor(R.color.font_white));
                 companyAddress.setTextColor(getResources().getColor(R.color.font_white));
                 companyTel.setTextColor(getResources().getColor(R.color.font_white));
-                businessHour.setTextColor(getResources().getColor(R.color.font_white));
 
-
-                //initial the time picker
-                openTime.setCurrentHour(0);
-                openTime.setCurrentMinute(0);
 
                 //only allow user to enter digits and "."
                 companyTel.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
 
                 //set only single line
                 companyName.setSingleLine(true);
-                businessHour.setSingleLine(true);
 
                 //change the Cursor color to white
                 Field f = null;
@@ -201,9 +224,6 @@ public class NewFoundCompany extends Fragment {
                 }
 
 
-
-
-
                 if (dialogCompanyName.isEmpty()) {
                     //imgIndicator.setVisibility(view.VISIBLE);
                     companyName.setText("");
@@ -221,21 +241,19 @@ public class NewFoundCompany extends Fragment {
                 } else {
                     companyTel.setText(dialogCompanyTel);
                 }
-                if (dialogBusinessHour.isEmpty()) {
-                    businessHour.setText("");
-                } else {
-                    businessHour.setText(dialogBusinessHour);
-                }
+                Log.d("dialogBusinessHour", dialogBusinessHour);
+
+
                 if (dialogExpense.isEmpty()) {
                     expense[0] = "";
                 } else {
                     expense[0] = dialogExpense;
-                    if(mapExpense.get(dialogExpense) != null)
-                        selectedExpense[0] = mapExpense.get(dialogExpense);
+                    if (hashPrice.get(dialogExpense) != null)
+                        selectedExpense[0] = hashPrice.get(dialogExpense);
                 }
 
                 //get the history of selecting cat
-                if(!dialogCat.isEmpty()) {
+                if (!dialogCat.isEmpty()) {
                     for (int i = 0; i < array_category.size(); i++) {
                         selectedCatItem[i] = false;
                         for (int j = 0; j < selectedCat.size(); j++) {
@@ -456,8 +474,35 @@ public class NewFoundCompany extends Fragment {
                         break;
                     //business hour
                     case 5:
+                        if (dialogBusinessHour.isEmpty()) {
+                            //initial the time picker
+                            openTime.setCurrentHour(0);
+                            openTime.setCurrentMinute(0);
+                            endTime.setCurrentHour(0);
+                            endTime.setCurrentMinute(0);
+                            openTimeHour = null;
+                            openTimeMin = null;
+                            endTimeHour = null;
+                            endTimeMin = null;
+                        } else {
+                            openTimeHour = items.get(position).get("openHour").toString().trim();
+                            openTimeMin = items.get(position).get("openMin").toString().trim();
+                            endTimeHour = items.get(position).get("endHour").toString().trim();
+                            endTimeMin = items.get(position).get("endMin").toString().trim();
+                            //initial the time picker
+                            openTime.setCurrentHour(Integer.parseInt(openTimeHour));
+                            openTime.setCurrentMinute(Integer.parseInt(openTimeMin));
+                            endTime.setCurrentHour(Integer.parseInt(endTimeHour));
+                            endTime.setCurrentMinute(Integer.parseInt(endTimeMin));
+                            //businessHour.setText(dialogBusinessHour);
+                            Log.d("openTimeHour", openTimeHour);
+                        }
                         ab.setTitle(R.string.newFound_business_hour_start);
                         ab.setView(openTime);
+                        final String finalOpenTimeHour = openTimeHour;
+                        final String finalOpenTimeMin = openTimeMin;
+                        final String finalEndTimeHour = endTimeHour;
+                        final String finalEndTimeMin = endTimeMin;
                         ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 AlertDialog.Builder xy = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_DARK);
@@ -467,6 +512,45 @@ public class NewFoundCompany extends Fragment {
 
                                 xy.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
+
+                                        imgIndicator.setVisibility(view.GONE);
+                                        txtInfo.setVisibility(view.VISIBLE);
+                                        int openHour = openTime.getCurrentHour();
+                                        int openMin = openTime.getCurrentMinute();
+                                        int endHour = endTime.getCurrentHour();
+                                        int endMin = endTime.getCurrentMinute();
+                                        String sOpenHour, sOpenMin, sEndHour, sEndMin;
+                                        if(openHour < 10){
+                                            sOpenHour = "0"+openHour;
+                                        } else {
+                                            sOpenHour = String.valueOf(openHour);
+                                        }
+                                        if(openMin < 10){
+                                            sOpenMin = "0"+openMin;
+                                        } else {
+                                            sOpenMin = String.valueOf(openMin);
+                                        }
+                                        if(endHour < 10){
+                                            sEndHour = "0"+endHour;
+                                        } else {
+                                            sEndHour = String.valueOf(endHour);
+                                        }
+                                        if(endMin < 10){
+                                            sEndMin = "0"+endMin;
+                                        } else {
+                                            sEndMin = String.valueOf(endMin);
+                                        }
+                                        String actualOpenTime = sOpenHour + ":" + sOpenMin;
+                                        String actualEndTime = sEndHour + ":" + sEndMin;
+                                        String actualTime = actualOpenTime + " - " + actualEndTime;
+                                        System.out.println(actualTime);
+
+                                        items.get(position).put("info", actualTime);
+                                        items.get(position).put("openHour", openTime.getCurrentHour());
+                                        items.get(position).put("openMin", openTime.getCurrentMinute());
+                                        items.get(position).put("endHour", endTime.getCurrentHour());
+                                        items.get(position).put("endMin", endTime.getCurrentMinute());
+                                        simpleAdapter.notifyDataSetChanged();
                                     }
                                 });
                                 xy.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
@@ -491,6 +575,7 @@ public class NewFoundCompany extends Fragment {
                         dialog = ab.create();
                         dialog.show();
                         break;
+
                 }
             }
         });
@@ -502,8 +587,6 @@ public class NewFoundCompany extends Fragment {
         getActivity().setTitle(R.string.newfound);
 
 
-        btn_submit = (Button) view.findViewById(R.id.button_submit);
-        btn_reset = (Button) view.findViewById(R.id.button_reset);
         pDialog = new ProgressImage(view.getContext());
 
 
@@ -513,36 +596,33 @@ public class NewFoundCompany extends Fragment {
 
 
 
-        btn_submit.setOnClickListener(new Button.OnClickListener() {
+        btnSubmit.setOnClickListener(new Button.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
                 String submitVars[] = new String[items.size() - 1];
 
-                /*for (int i = 0; i < items.size() - 1; i++){
+                for (int i = 0; i < items.size() - 1; i++){
                     //get the value that the user inputted
                     submitVars[i] = items.get(i).get("info").toString().trim();
+                    System.out.println(submitVars[i]);
                     if(submitVars[i].equals(">"))
                         submitVars[i] = "";
                     if(submitVars[i].isEmpty()){
                         //Toast.makeText(getActivity(), warning[i], Toast.LENGTH_SHORT).show();
-                        passChecking = false;
+                        //passChecking = false;
                     }
-                }*/
+                }
+                //what is the format of business hour
+                //
+                //
+                //
+                //
+                //
+                //
 
-                submitting(company_name, company_tel, company_type, company_address, company_cost, company_business_hour);
-
-
-            }
-        });
-
-
-        btn_reset.setOnClickListener(new Button.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
+                //submitting(company_name, company_tel, company_type, company_address, company_cost, company_business_hour);
 
 
             }
@@ -657,7 +737,7 @@ public class NewFoundCompany extends Fragment {
         //showpDialog();
 
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 APIConfig.URL_Advance_Search_criteria, null, new Response.Listener<JSONObject>() {
 
             public void onResponse(JSONObject response) {
@@ -678,7 +758,7 @@ public class NewFoundCompany extends Fragment {
                         for (int i = 1; i <= price.length(); i++) {
                             String name = price.getString(String.valueOf(i));
                             arrayPrice.add(name);
-                            hashPrice.put(name, String.valueOf(i));
+                            hashPrice.put(name, i-1);
                         }
 
                         for (int i = 0; i < category.length(); i++) {
@@ -743,6 +823,14 @@ public class NewFoundCompany extends Fragment {
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (jsonObjReq != null)  {
+            jsonObjReq.cancel();
+            Log.d("onStop", "New found requests are all cancelled");
+        }
+    }
 
     private void showDialog() {
         if (!pDialog.isShowing())

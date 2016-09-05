@@ -193,6 +193,14 @@
         <item>營業時間</item>
     </string-array>
 
+    <!--Search-->
+    <string-array name="advancedSearch_title">
+        <item>地域</item>
+        <item>地區</item>
+        <item>類別</item>
+        <item>價錢</item>
+    </string-array>
+
 
     <!--title-->
     <string name="feedback">提交意見</string>

@@ -72,6 +72,7 @@ public class FragmentTabs_try extends Fragment{
     private int SCROLL_Y=0;
     private CustomScrollView scrollView;
     private int pageNum = 1;
+    private JsonObjectRequest jsonObjReq;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -270,7 +271,7 @@ public class FragmentTabs_try extends Fragment{
     private void makeJsonArrayRequest() {
         showpDialog();
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 details.getUrlDetail(), null, new Response.Listener<JSONObject>() {
 
             public void onResponse(JSONObject response) {
@@ -340,6 +341,15 @@ public class FragmentTabs_try extends Fragment{
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (jsonObjReq != null)  {
+            jsonObjReq.cancel();
+            Log.d("onStop", "Company Detail requests are all cancelled");
+        }
     }
 
     private void showpDialog() {

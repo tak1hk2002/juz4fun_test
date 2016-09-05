@@ -67,6 +67,7 @@ public class Fragment_Login extends Fragment {
     private String entId, lastFragment;
     CallbackManager callbackManager;
     private AccessToken accessToken;
+    private StringRequest strReq, facebookStrReq;
 
 
     @Override
@@ -349,7 +350,7 @@ public class Fragment_Login extends Fragment {
 
         showDialog();
 
-        StringRequest strReq = new StringRequest(Request.Method.POST,
+        strReq = new StringRequest(Request.Method.POST,
                 APIConfig.URL_LOGIN, new Response.Listener<String>() {
 
             @Override
@@ -550,7 +551,7 @@ public class Fragment_Login extends Fragment {
         //pDialog.setMessage("Registering ...");
         //showDialog();
 
-        StringRequest strReq = new StringRequest(Request.Method.POST,
+        facebookStrReq = new StringRequest(Request.Method.POST,
                 APIConfig.URL_FACEBOOK_USER, new Response.Listener<String>() {
 
             @Override
@@ -634,7 +635,20 @@ public class Fragment_Login extends Fragment {
         };
 
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        AppController.getInstance().addToRequestQueue(facebookStrReq, tag_string_req);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (strReq != null)  {
+            strReq.cancel();
+            Log.d("onStop", "System Login requests are all cancelled");
+        }
+        if(facebookStrReq != null){
+            facebookStrReq.cancel();
+            Log.d("onStop", "Facebook Login requests are all cancelled");
+        }
     }
 
 

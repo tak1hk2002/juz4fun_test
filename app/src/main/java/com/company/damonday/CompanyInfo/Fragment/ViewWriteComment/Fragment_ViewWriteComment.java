@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -50,6 +51,7 @@ import org.w3c.dom.Text;
 import java.sql.SQLSyntaxErrorException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,17 +63,24 @@ public class Fragment_ViewWriteComment extends Fragment {
 
     private View view;
     private ListView listView;
-    private List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
+    private List<Fragment_ViewWriteComment_Comment> items = new ArrayList<Fragment_ViewWriteComment_Comment>();
     private String entId;
-    private String[] title, titleDetailRating, titleOverAllRating;
+    private String[] title, titleDetailRating, titleOverAllRating, warning;
     private RatingAdapter ratingAdapter;
     private ProgressImage pDialog;
     private static final String TAG = Fragment_ViewWriteComment.class.getSimpleName();
     private SessionManager session;
     private LoginSQLiteHandler DB;
+    private Boolean submitWarning = false;
     private Boolean systemLogin;
     //map the selected overall rating to key value
-    Map<String, Integer> mapOverallRating = new HashMap<String, Integer>();
+    private Map<String, Integer> mapOverallRating = new HashMap<String, Integer>();
+    private Map<String, String> mapDetailRating = new HashMap<String, String>();
+    private StringRequest strReq;
+    //內容，消費，整體評分，詳細評分 show indicator
+    private List<Integer> showDetailIndicator = Arrays.asList(1,2,3,4);
+    private String detailRatingDB[];
+
 
 
     @Override
@@ -90,10 +99,14 @@ public class Fragment_ViewWriteComment extends Fragment {
         //get the array list of writeComment option
         title = getResources().getStringArray(R.array.writeComment_title);
         for(int i = 0; i < title.length; i++){
-            Map<String, Object> item = new HashMap<String, Object>();
-            item.put("title", title[i]);
-            item.put("info", "");
-            items.add(item);
+            Fragment_ViewWriteComment_Comment comment = new Fragment_ViewWriteComment_Comment();
+            comment.setTitle(title[i]);
+            comment.setSubmitWarning(false);
+            //item.put("title", title[i]);
+            //item.put("info", "");
+            //if(showDetailIndicator.contains(i))
+            //    item.put("indicator", R.drawable.icon_forward_arrow);
+            items.add(comment);
         }
 
         //get the array list of rating bar option
@@ -105,8 +118,16 @@ public class Fragment_ViewWriteComment extends Fragment {
 
         }
 
+
+        //get the warning text
+        warning = getResources().getStringArray(R.array.writeComment_warning);
+
         //get the array list of overall rating
         titleOverAllRating = getResources().getStringArray(R.array.writeComment_dialog_rating_overall);
+
+        //get the db name of detail rating
+        detailRatingDB = getResources().getStringArray(R.array.writeComment_dialog_rating_detail_db);
+
 
         ratingAdapter = new RatingAdapter(getActivity(), list);
 
@@ -133,19 +154,25 @@ public class Fragment_ViewWriteComment extends Fragment {
         listView = (ListView) view.findViewById(R.id.listView);
         Button btnReset = (Button) view.findViewById(R.id.reset);
         Button btnSubmit = (Button) view.findViewById(R.id.submit);
-        final SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), items,
-                R.layout.view_companywritecomment_list, new String[] {"title", "info"}, new int[] {R.id.title, R.id.info});
-        listView.setAdapter(simpleAdapter);
+        final Fragment_ViewWriteComment_CustomListAdapter customAdapter = new Fragment_ViewWriteComment_CustomListAdapter(getActivity(), items, showDetailIndicator, warning);
+        /*final SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), items,
+                R.layout.view_companywritecomment_list, new String[] {"title", "info", "indicator"}, new int[] {R.id.title, R.id.info, R.id.indicator});*/
+        listView.setAdapter(customAdapter);
         setListViewHeightBasedOnChildren(listView);
 
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 for(int i = 0; i < items.size(); i++){
-                    items.get(i).put("info", "");
+                    //View view = null;
+                    items.get(i).setInfo("");
+                    items.get(i).setSubmitWarning(false);
+                    //get each view of  the listview
+                    //view = listView.getAdapter().getView(i, view, listView);
                 }
-                simpleAdapter.notifyDataSetChanged();
-
+                customAdapter.notifyDataSetChanged();
+                listView.setAdapter(customAdapter);
+                setListViewHeightBasedOnChildren(listView);
             }
         });
 
@@ -154,43 +181,32 @@ public class Fragment_ViewWriteComment extends Fragment {
             public void onClick(View v) {
 
                 //init
-                String submitVars[] = new String[items.size() - 1];
+                String submitVars[] = new String[items.size()];
                 String token = "";
-                ArrayList<String> rating = new ArrayList<String>();
                 Boolean passChecking = true;
-                String warning[] = getResources().getStringArray(R.array.writeComment_warning);
                 //------------------------------------------------------------------------
 
                 //without detailRating because it will be obtained individually
-                for (int i = 0; i < items.size() - 1; i++){
+                for (int i = 0; i < items.size(); i++) {
                     //get the value that the user inputted
-                    submitVars[i] = items.get(i).get("info").toString().trim();
-                    if(submitVars[i].equals(">"))
-                        submitVars[i] = "";
-                    if(submitVars[i].isEmpty()){
-                        Toast.makeText(getActivity(), warning[i], Toast.LENGTH_SHORT).show();
+                    submitVars[i] = items.get(i).getInfo().trim();
+
+                    //show warning of each view
+                    if (submitVars[i].isEmpty()) {
+                        items.get(i).setSubmitWarning(true);
                         passChecking = false;
                     }
+                    else{
+                        items.get(i).setSubmitWarning(false);
+                    }
                 }
 
-                //hardcode detail rating
-                if(ratingBarClicked[0] == false) {
-                    Toast.makeText(getActivity(), warning[4], Toast.LENGTH_SHORT).show();
-                    passChecking = false;
-                }
-
-                //get rating bar value
-                for(int i =0; i < titleDetailRating.length; i++){
-                    rating.add(Integer.toString(getModel(i).getRange()));
-                }
-
-                if(passChecking){
+                if (passChecking) {
                     //check facebook login or system login
                     session = new SessionManager(getActivity());
-                    if(AccessToken.getCurrentAccessToken() != null) {
+                    if (AccessToken.getCurrentAccessToken() != null) {
                         token = AccessToken.getCurrentAccessToken().toString();
-                    }
-                    else if (session.isLoggedIn()) {
+                    } else if (session.isLoggedIn()) {
                         systemLogin = true;
                         HashMap<String, String> user = DB.getUserDetails();
                         token = user.get("token");
@@ -199,12 +215,16 @@ public class Fragment_ViewWriteComment extends Fragment {
                     System.out.println(submitVars[1]);
                     System.out.println(submitVars[2]);
                     System.out.println(submitVars[3]);
-                    System.out.println(rating);
+                    System.out.println(mapDetailRating);
                     submitWriteComment(token, submitVars[0], submitVars[1], submitVars[2],
-                            Integer.toString(mapOverallRating.get(submitVars[3])), rating);
+                            Integer.toString(mapOverallRating.get(submitVars[3])), mapDetailRating);
 
                 }
 
+                customAdapter.notifyDataSetChanged();
+                //update the height of the listView
+                listView.setAdapter(customAdapter);
+                setListViewHeightBasedOnChildren(listView);
             }
         });
 
@@ -218,8 +238,6 @@ public class Fragment_ViewWriteComment extends Fragment {
                 final EditText txtExpense = new EditText(getActivity());
                 final String[] txtOverAllRating = new String[1];
                 final int[] selectedOverallRating = {-1};
-                final ImageView imgIndicator = (ImageView) view.findViewById(R.id.indicator);
-                final TextView txtInfo = (TextView) view.findViewById(R.id.info);
 
                 //set the edit text color
                 txtTitle.setTextColor(getResources().getColor(R.color.font_white));
@@ -234,81 +252,22 @@ public class Fragment_ViewWriteComment extends Fragment {
                 //only allow user to enter digits and "."
                 txtExpense.setKeyListener(DigitsKeyListener.getInstance("0123456789."));
 
-                //get the dialog content
-                String stringTitle = items.get(position).get("info").toString().trim();
-
-                if (stringTitle.isEmpty()) {
-                    //imgIndicator.setVisibility(view.VISIBLE);
-                    txtTitle.setText("");
-                } else {
-                    //imgIndicator.setVisibility(view.GONE);
-                    txtTitle.setText(stringTitle);
-                }
-                //get the dialog content
-                String stringContent = items.get(position).get("info").toString().trim();
-                if (stringContent.isEmpty()) {
-                    txtContent.setText("");
-                } else {
-                    txtContent.setText(stringContent);
-                }
-                //get the dialog content
-                String stringExpense = items.get(position).get("info").toString().trim();
-                if (stringExpense.isEmpty()) {
-                    txtExpense.setText("");
-                } else {
-                    txtExpense.setText(stringExpense);
-                }
-
-                //get the dialog content
-                String stringOverAllRating = items.get(position).get("info").toString().trim();
-                if (stringOverAllRating.isEmpty()) {
-                    txtOverAllRating[0] = "";
-                } else {
-                    txtOverAllRating[0] = stringOverAllRating;
-                    if(mapOverallRating.get(stringOverAllRating) != null)
-                        selectedOverallRating[0] = mapOverallRating.get(stringOverAllRating);
-                }
 
                 switch (position) {
-                    //title
-                    case 0:
-                        ab[0].setTitle(R.string.writeComment_dialog_title);
-
-                        ab[0].setView(txtTitle);
-
-                        ab[0].setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                //What ever you want to do with the value
-                                //Editable title = txtTitle.getText();
-                                //OR
-                                String title = txtTitle.getText().toString().trim();
-                                if (title.isEmpty()) {
-                                    imgIndicator.setVisibility(view.VISIBLE);
-                                    txtInfo.setVisibility(view.GONE);
-                                }
-                                else {
-                                    imgIndicator.setVisibility(view.GONE);
-                                    txtInfo.setVisibility(view.VISIBLE);
-                                }
-                                items.get(position).put("info", title);
-                                simpleAdapter.notifyDataSetChanged();
-                            }
-                        });
-
-                        ab[0].setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                // what ever you want to do with No option.
-                            }
-                        });
-
-                        //when alertview is launched, the keyboard show immediately
-                        dialog = ab[0].create();
-                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-                        dialog.show();
-                        break;
                     //content
                     case 1:
+                        //get the dialog content
+                        String stringContent = "";
+                        if(items.get(position).getInfo() != null)
+                            stringContent = items.get(position).getInfo().trim();
+
+                        if (stringContent.isEmpty()) {
+                            txtContent.setText("");
+                        } else {
+                            txtContent.setText(stringContent);
+                        }
+
+
                         ab[0].setTitle(R.string.writeComment_dialog_content);
 
                         ab[0].setView(txtContent);
@@ -319,16 +278,10 @@ public class Fragment_ViewWriteComment extends Fragment {
                                 //Editable content = txtContent.getText();
                                 //OR
                                 String content = txtContent.getText().toString().trim();
-                                if (content.isEmpty()){
-                                    imgIndicator.setVisibility(view.VISIBLE);
-                                    txtInfo.setVisibility(view.GONE);
-                                }
-                                else{
-                                    imgIndicator.setVisibility(view.GONE);
-                                    txtInfo.setVisibility(view.VISIBLE);
-                                }
-                                items.get(position).put("info", content);
-                                simpleAdapter.notifyDataSetChanged();
+                                items.get(position).setInfo(content);
+                                customAdapter.notifyDataSetChanged();
+                                //listView.setAdapter(customAdapter);
+                                //setListViewHeightBasedOnChildren(listView);
                             }
                         });
 
@@ -348,6 +301,17 @@ public class Fragment_ViewWriteComment extends Fragment {
                         break;
                     //consumption
                     case 2:
+
+                        //get the dialog content
+                        String stringExpense = "";
+                        if(items.get(position).getInfo() != null)
+                            stringExpense = items.get(position).getInfo().trim();
+
+                        if (stringExpense.isEmpty()) {
+                            txtExpense.setText("");
+                        } else {
+                            txtExpense.setText(stringExpense);
+                        }
                         ab[0].setTitle(R.string.writeComment_dialog_consumption);
 
                         ab[0].setView(txtExpense);
@@ -358,16 +322,10 @@ public class Fragment_ViewWriteComment extends Fragment {
                                 //Editable expense = txtExpense.getText();
                                 //OR
                                 String expense = txtExpense.getText().toString().trim();
-                                if (expense.isEmpty()){
-                                    imgIndicator.setVisibility(view.VISIBLE);
-                                    txtInfo.setVisibility(view.GONE);
-                                }
-                                else{
-                                    imgIndicator.setVisibility(view.GONE);
-                                    txtInfo.setVisibility(view.VISIBLE);
-                                }
-                                items.get(position).put("info", expense);
-                                simpleAdapter.notifyDataSetChanged();
+                                items.get(position).setInfo(expense);
+                                customAdapter.notifyDataSetChanged();
+                                //listView.setAdapter(customAdapter);
+                                //setListViewHeightBasedOnChildren(listView);
                             }
                         });
 
@@ -386,6 +344,19 @@ public class Fragment_ViewWriteComment extends Fragment {
                         break;
                     //Overall Rating
                     case 3:
+                        //get the dialog content
+                        String stringOverAllRating = "";
+                        if(items.get(position).getInfo() != null)
+                            stringOverAllRating = items.get(position).getInfo();
+
+                        if (stringOverAllRating.isEmpty()) {
+                            txtOverAllRating[0] = "";
+                        } else {
+                            txtOverAllRating[0] = stringOverAllRating;
+                            if(mapOverallRating.get(stringOverAllRating) != null)
+                                selectedOverallRating[0] = mapOverallRating.get(stringOverAllRating);
+                        }
+
                         ab[0].setTitle(R.string.writeComment_dialog_overallrating);
                         ab[0].setSingleChoiceItems(titleOverAllRating, selectedOverallRating[0], new DialogInterface.OnClickListener() {
 
@@ -410,16 +381,10 @@ public class Fragment_ViewWriteComment extends Fragment {
                         });
                         ab[0].setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                if (txtOverAllRating[0].isEmpty()){
-                                    imgIndicator.setVisibility(view.VISIBLE);
-                                    txtInfo.setVisibility(view.GONE);
-                                }
-                                else{
-                                    imgIndicator.setVisibility(view.GONE);
-                                    txtInfo.setVisibility(view.VISIBLE);
-                                }
-                                items.get(position).put("info", txtOverAllRating[0]);
-                                simpleAdapter.notifyDataSetChanged();
+                                items.get(position).setInfo(txtOverAllRating[0]);
+                                customAdapter.notifyDataSetChanged();
+                                //listView.setAdapter(customAdapter);
+                                //setListViewHeightBasedOnChildren(listView);
                             }
                         });
 
@@ -443,22 +408,17 @@ public class Fragment_ViewWriteComment extends Fragment {
                                 int total_rank = 0;
                                 for (int i = 0; i < titleDetailRating.length; i++) {
                                     total_rank = total_rank + getModel(i).getRange();
+                                    mapDetailRating.put(detailRatingDB[i], Integer.toString(getModel(i).getRange()));
                                 }
                                 NumberFormat nf = NumberFormat.getInstance();
                                 nf.setMaximumFractionDigits(1);
                                 String average = String.format("%.1f", (double) total_rank / (double) titleDetailRating.length);
 
-                                if (average.isEmpty()) {
-                                    imgIndicator.setVisibility(view.VISIBLE);
-                                    txtInfo.setVisibility(view.GONE);
-                                } else {
-                                    imgIndicator.setVisibility(view.GONE);
-                                    txtInfo.setVisibility(view.VISIBLE);
-                                }
-
                                 //Store the average to items
-                                items.get(position).put("info", average);
-                                simpleAdapter.notifyDataSetChanged();
+                                items.get(position).setInfo(average);
+                                customAdapter.notifyDataSetChanged();
+                                //listView.setAdapter(customAdapter);
+                                //setListViewHeightBasedOnChildren(listView);
                             }
                         });
 
@@ -567,13 +527,12 @@ public class Fragment_ViewWriteComment extends Fragment {
     //********************************************************************************************
 
     //***********************JSON volley**********************************************************
-    public void submitWriteComment(final String token, final String title, final String content, final String expense, final String overallRating, final ArrayList<String> detailRating){
+    public void submitWriteComment(final String token, final String title, final String content, final String expense, final String overallRating, final Map<String, String> detailRating){
         // Tag used to cancel the request
         String tag_string_req = "req_login";
-        final String detailRatingDB[] = getResources().getStringArray(R.array.writeComment_dialog_rating_detail_db);
         showDialog();
 
-        StringRequest strReq = new StringRequest(Request.Method.POST,
+        strReq = new StringRequest(Request.Method.POST,
                 APIConfig.URL_Write_Comment, new Response.Listener<String>() {
 
             @Override
@@ -596,7 +555,6 @@ public class Fragment_ViewWriteComment extends Fragment {
 
 
                         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        // System.out.println(fragmentManager.getBackStackEntryCount());
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentManager.popBackStack();
                         fragmentTransaction.replace(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
@@ -640,7 +598,7 @@ public class Fragment_ViewWriteComment extends Fragment {
                 params.put("comment", content);
                 params.put("assess", overallRating);
                 for (int i = 0; i < detailRating.size(); i++){
-                    params.put(detailRatingDB[i], detailRating.get(i));
+                    params.put(detailRatingDB[i], detailRating.get(detailRatingDB[i]));
                 }
                 return params;
             }
@@ -653,10 +611,19 @@ public class Fragment_ViewWriteComment extends Fragment {
     //******************************************************************************************
 
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (strReq != null)  {
+            strReq.cancel();
+            Log.d("onStop", "Write comment requests are all cancelled");
+        }
+    }
+
 
     //doulbe scrollView
     public static void setListViewHeightBasedOnChildren(ListView listView) {
-        SimpleAdapter listAdapter = (SimpleAdapter) listView.getAdapter();
+        Fragment_ViewWriteComment_CustomListAdapter listAdapter = (Fragment_ViewWriteComment_CustomListAdapter) listView.getAdapter();
         if (listAdapter == null) {
             // pre-condition
             return;

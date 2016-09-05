@@ -44,6 +44,7 @@ public class latestcommentvolley extends Fragment {
     private ListView listView;
     private latestcomment_Adapter adapter;
     private String api, lastFragmentTag;
+    private StringRequest latestcommentReq;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,7 +112,7 @@ public class latestcommentvolley extends Fragment {
         // Deserialize API response and then construct new objects to append to the adapter
         // Creating volley request obj
         Log.d("Link", api + offset);
-        StringRequest latestcommentReq = new StringRequest(api + Integer.toString(offset),
+        latestcommentReq = new StringRequest(api + Integer.toString(offset),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -171,6 +172,15 @@ public class latestcommentvolley extends Fragment {
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(latestcommentReq);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (latestcommentReq != null)  {
+            latestcommentReq.cancel();
+            Log.d("onStop", "Latest comment requests are all cancelled");
+        }
     }
 
     @Override

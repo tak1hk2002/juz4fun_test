@@ -21,25 +21,48 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:weightSum="1">
+        android:gravity="bottom">
 
-        <Button
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/reset"
-            android:layout_weight="0.5"
-            android:text="@string/btn_reset"
-            android:background="@drawable/action_cell_reset"
-            android:textColor="@color/font_white"
-            android:layout_marginRight="3dp"/>
+            android:layout_weight="0.6"
+            android:orientation="vertical"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp">
+            <Button
+                android:id="@+id/reset"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_top_height"
+                android:background="@drawable/btn_actioncell_reset_topbg"
+                android:text="@string/btn_reset"
+                android:textColor="@color/font_white"
+                android:layout_gravity="bottom"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_down_height"
+                android:background="@drawable/btn_actioncell_reset_downbg"/>
+        </LinearLayout>
 
-        <Button
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/submit"
-            android:layout_weight="0.5"
-            android:text="@string/btn_submit"
-            android:background="@drawable/action_cell_send"
-            android:textColor="@color/font_white"/>
+            android:layout_weight="0.6"
+            android:orientation="vertical"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp">
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_top_height"
+                android:background="@drawable/btn_actioncell_send_topbg"
+                android:text="@string/btn_submit"
+                android:textColor="@color/font_white"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_down_height"
+                android:background="@drawable/btn_actioncell_send_downbg"/>
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

@@ -51,6 +51,7 @@ public class Home extends Fragment {
     private MyAdapter adapter;
     private FragmentTabs_try fragmentTabs_try;
     private LinearLayout searchview;
+    private JsonObjectRequest jsonObjReq;
     //private SearchView search;
 
     @Override
@@ -161,7 +162,7 @@ public class Home extends Fragment {
 
     private void makeJsonArrayRequest() {
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 APIConfig.URL_HOME, null, new Response.Listener<JSONObject>() {
 
             public void onResponse(JSONObject response) {
@@ -231,6 +232,15 @@ public class Home extends Fragment {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (jsonObjReq != null)  {
+            jsonObjReq.cancel();
+            Log.d("onStop", "Write comment requests are all cancelled");
+        }
     }
 
 }

@@ -45,6 +45,7 @@ public class Ranking_try extends Fragment {
     private GridView gridView;
     private MyAdapter adapter;
     private FragmentTabs_try fragmentTabs_try;
+    private JsonObjectRequest jsonObjReq;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -128,7 +129,7 @@ public class Ranking_try extends Fragment {
 
     private void makeJsonArrayRequest() {
         showpDialog();
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 APIConfig.URL_RANKING, null, new Response.Listener<JSONObject>() {
 
             public void onResponse(JSONObject response) {
@@ -187,6 +188,15 @@ public class Ranking_try extends Fragment {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (jsonObjReq != null)  {
+            jsonObjReq.cancel();
+            Log.d("onStop", "Ranking requests are all cancelled");
+        }
     }
 
     private void showpDialog() {

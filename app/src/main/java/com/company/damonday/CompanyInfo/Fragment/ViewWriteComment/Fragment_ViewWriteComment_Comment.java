@@ -6,10 +6,14 @@ package com.company.damonday.CompanyInfo.Fragment.ViewWriteComment;
 public class Fragment_ViewWriteComment_Comment {
 
     private String title, info;
+    private Boolean submitWarning;
 
-    public Fragment_ViewWriteComment_Comment(String title, String info) {
+
+    public Fragment_ViewWriteComment_Comment(String title, String info, Boolean submitWarning) {
         this.title = title;
         this.info = info;
+        this.submitWarning = submitWarning;
+
     }
 
     public Fragment_ViewWriteComment_Comment() {
@@ -29,5 +33,13 @@ public class Fragment_ViewWriteComment_Comment {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public Boolean getSubmitWarning() {
+        return submitWarning;
+    }
+
+    public void setSubmitWarning(Boolean submitWarning) {
+        this.submitWarning = submitWarning;
     }
 }

@@ -62,7 +62,6 @@ public class Fragment_ViewComment_CustomListAdapter extends BaseAdapter {
         ImageView averagePic = (ImageView) convertView.findViewById(R.id.average_pic);
         TextView rating1 = (TextView) convertView.findViewById(R.id.rating1);
 
-        // getting movie data for the row
         Fragment_ViewComment_Comment m = commentItems.get(position);
 
         // profilePic image

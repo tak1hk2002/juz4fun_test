@@ -56,6 +56,7 @@ public class Fragment_ViewCompany extends Fragment {
     private APIConfig ranking;
     private double latitude, longitude;
     private List<Integer> showDetailIndicator = Arrays.asList(2, 3, 5);
+    private JsonObjectRequest jsonObjReq;
 
     private String[] companyInfoCat ;
 
@@ -227,8 +228,7 @@ public class Fragment_ViewCompany extends Fragment {
     private void makeJsonArrayRequest() {
         //showpDialog();
 
-
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 ranking.getUrlDetail(), null, new Response.Listener<JSONObject>() {
 
             public void onResponse(JSONObject response) {
@@ -329,6 +329,15 @@ public class Fragment_ViewCompany extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (jsonObjReq != null)  {
+            jsonObjReq.cancel();
+            Log.d("onStop", "Company Detail requests are all cancelled");
+        }
     }
 
 }

@@ -44,6 +44,7 @@ public class Fragment_ViewComment extends Fragment {
     private String entId;
     private APIConfig ranking;
     private Boolean APILoading = false;
+    private JsonObjectRequest jsonObjReq;
 
 
     @Override
@@ -174,7 +175,7 @@ public class Fragment_ViewComment extends Fragment {
         // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
         // Deserialize API response and then construct new objects to append to the adapter
         Log.d("offset", Integer.toString(offset));
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 ranking.getUrlComment().concat(Integer.toString(offset)), null, new Response.Listener<JSONObject>() {
 
             public void onResponse(JSONObject response) {
@@ -231,6 +232,15 @@ public class Fragment_ViewComment extends Fragment {
         });
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (jsonObjReq != null)  {
+            jsonObjReq.cancel();
+            Log.d("onStop", "Comment requests are all cancelled");
+        }
     }
 
     @Override

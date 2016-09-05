@@ -32,11 +32,12 @@ import org.w3c.dom.Text;
  * Created by lamtaklung on 18/9/15.
  */
 public class Fragment_ViewCommentDetail extends Fragment {
-    NetworkImageView profilePic;
-    ImageView averagePic;
-    TextView title, date, username, averageScore, content, funScore, serviceScore, environmentScore, equipmentScore, priceScore;
-    APIConfig commentUrl;
-    ProgressImage pDialog;
+    private NetworkImageView profilePic;
+    private ImageView averagePic;
+    private TextView title, date, username, averageScore, content, funScore, serviceScore, environmentScore, equipmentScore, priceScore;
+    private APIConfig commentUrl;
+    private ProgressImage pDialog;
+    private JsonObjectRequest jsonObjReq;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,7 +108,7 @@ public class Fragment_ViewCommentDetail extends Fragment {
 
     private void makeJsonArrayRequest() {
         showpDialog();
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 commentUrl.getUrlCommentDetail(), null, new Response.Listener<JSONObject>() {
 
             @Override
@@ -166,6 +167,14 @@ public class Fragment_ViewCommentDetail extends Fragment {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
 
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (jsonObjReq != null)  {
+            jsonObjReq.cancel();
+            Log.d("onStop", "Comment detail requests are all cancelled");
+        }
     }
 
     private void showpDialog() {

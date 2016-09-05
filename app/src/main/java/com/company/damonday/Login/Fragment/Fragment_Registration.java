@@ -50,6 +50,7 @@ public class Fragment_Registration extends Fragment {
     private SessionManager session;
     private LoginSQLiteHandler db;
     private View v;
+    private StringRequest strReq;
 
 
     @Override
@@ -149,7 +150,7 @@ Log.d("tomtomtomtom","register");
 
         showDialog();
 
-        StringRequest strReq = new StringRequest(Request.Method.POST,
+        strReq = new StringRequest(Request.Method.POST,
                 APIConfig.URL_REGISTER, new Response.Listener<String>() {
 
             @Override
@@ -230,6 +231,15 @@ Log.d("tomtomtomtom","register");
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (strReq != null)  {
+            strReq.cancel();
+            Log.d("onStop", "Registration requests are all cancelled");
+        }
     }
 
     private void showDialog() {
