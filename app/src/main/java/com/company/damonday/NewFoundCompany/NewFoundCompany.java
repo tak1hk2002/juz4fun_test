@@ -41,6 +41,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment_Comment;
+import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment_CustomListAdapter;
 import com.company.damonday.Home.Home;
 import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
@@ -58,6 +60,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -82,9 +85,9 @@ public class NewFoundCompany extends Fragment {
     String company_address;
     String company_cost;
     String company_business_hour;
-    private String[] title;
+    private String[] title, warning;
     private ListView listView;
-    private List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
+    private List<Fragment_ViewWriteComment_Comment> items = new ArrayList<Fragment_ViewWriteComment_Comment>();
     private String priceID;
     private ArrayList<String> array_category = new ArrayList<String>();
     private HashMap<String, Integer> hashPrice = new HashMap<String, Integer>();
@@ -98,6 +101,7 @@ public class NewFoundCompany extends Fragment {
     private ArrayList<Integer> selectedCat = new ArrayList();
     private ArrayList<String> selectedCatName = new ArrayList<>();
     private JsonObjectRequest jsonObjReq;
+    private List<Integer> showDetailIndicator = Arrays.asList(1, 5);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,11 +112,14 @@ public class NewFoundCompany extends Fragment {
         //get the array list of newFound option
         title = getResources().getStringArray(R.array.newFound_title);
         for(int i = 0; i < title.length; i++){
-            Map<String, Object> item = new HashMap<String, Object>();
-            item.put("title", title[i]);
-            item.put("info", "");
-            items.add(item);
+            Fragment_ViewWriteComment_Comment comment = new Fragment_ViewWriteComment_Comment();
+            comment.setTitle(title[i]);
+            comment.setSubmitWarning(false);
+            items.add(comment);
         }
+
+        //get the warning text
+        warning = getResources().getStringArray(R.array.newFound_warning);
 
 
 
@@ -126,9 +133,12 @@ public class NewFoundCompany extends Fragment {
         btnReset = (Button) view.findViewById(R.id.button_reset);
         btnSubmit = (Button) view.findViewById(R.id.button_submit);
 
-        final SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), items,
-                R.layout.view_companywritecomment_list, new String[] {"title", "info"}, new int[] {R.id.title, R.id.info});
-        listView.setAdapter(simpleAdapter);
+        final Fragment_ViewWriteComment_CustomListAdapter customAdapter = new Fragment_ViewWriteComment_CustomListAdapter(getActivity(), items, showDetailIndicator, warning);
+
+
+        //final SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), items,
+        //        R.layout.view_companywritecomment_list, new String[] {"title", "info"}, new int[] {R.id.title, R.id.info});
+        listView.setAdapter(customAdapter);
 
 
         btnReset.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +146,7 @@ public class NewFoundCompany extends Fragment {
             public void onClick(View v) {
                 for (int i = 0; i < items.size(); i++) {
                     View view = null;
-                    items.get(i).put("info", "");
+                    items.get(i).setInfo("");
                     //get each view of  the listview
                     view = listView.getAdapter().getView(i, view, listView);
                     ImageView imgIndicator = (ImageView) view.findViewById(R.id.indicator);
@@ -145,9 +155,9 @@ public class NewFoundCompany extends Fragment {
                     txtInfo.setVisibility(View.GONE);
 
                 }
-                simpleAdapter.notifyDataSetChanged();
+                customAdapter.notifyDataSetChanged();
                 //apply the changes of deleting the elements of the item
-                listView.setAdapter(simpleAdapter);
+                listView.setAdapter(customAdapter);
             }
         });
 
@@ -172,18 +182,8 @@ public class NewFoundCompany extends Fragment {
                 openTime.setIs24HourView(true);
                 final TimePicker endTime = new TimePicker(getActivity());
                 endTime.setIs24HourView(true);
-                //get the dialog content
-                String dialogCompanyName = items.get(position).get("info").toString().trim();
-                //get the dialog content
-                String dialogCompanyAddress = items.get(position).get("info").toString().trim();
-                //get the dialog content
-                String dialogCompanyTel = items.get(position).get("info").toString().trim();
-                //get the dialog content
-                String dialogBusinessHour = items.get(position).get("info").toString().trim();
-                //get the dialog content
-                String dialogExpense = items.get(position).get("info").toString().trim();
-                //get the dialog content
-                String dialogCat = items.get(position).get("info").toString().trim();
+
+
                 final AlertDialog.Builder ab = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_DARK);
                 AlertDialog dialog;
                 final AlertDialog[] insideDialog = new AlertDialog[1];
@@ -224,85 +224,24 @@ public class NewFoundCompany extends Fragment {
                 }
 
 
-                if (dialogCompanyName.isEmpty()) {
-                    //imgIndicator.setVisibility(view.VISIBLE);
-                    companyName.setText("");
-                } else {
-                    //imgIndicator.setVisibility(view.GONE);
-                    companyName.setText(dialogCompanyName);
-                }
-                if (dialogCompanyAddress.isEmpty()) {
-                    companyAddress.setText("");
-                } else {
-                    companyAddress.setText(dialogCompanyAddress);
-                }
-                if (dialogCompanyTel.isEmpty()) {
-                    companyTel.setText("");
-                } else {
-                    companyTel.setText(dialogCompanyTel);
-                }
-                Log.d("dialogBusinessHour", dialogBusinessHour);
-
-
-                if (dialogExpense.isEmpty()) {
-                    expense[0] = "";
-                } else {
-                    expense[0] = dialogExpense;
-                    if (hashPrice.get(dialogExpense) != null)
-                        selectedExpense[0] = hashPrice.get(dialogExpense);
-                }
-
-                //get the history of selecting cat
-                if (!dialogCat.isEmpty()) {
-                    for (int i = 0; i < array_category.size(); i++) {
-                        selectedCatItem[i] = false;
-                        for (int j = 0; j < selectedCat.size(); j++) {
-                            if (selectedCat.get(j) == i) {
-                                selectedCatItem[i] = true;
-                                break;
+                switch (position) {
+                    //cat
+                    case 1:
+                        //get the dialog content
+                        String dialogCat = items.get(position).getInfo().trim();
+                        //get the history of selecting cat
+                        if (!dialogCat.isEmpty()) {
+                            for (int i = 0; i < array_category.size(); i++) {
+                                selectedCatItem[i] = false;
+                                for (int j = 0; j < selectedCat.size(); j++) {
+                                    if (selectedCat.get(j) == i) {
+                                        selectedCatItem[i] = true;
+                                        break;
+                                    }
+                                }
                             }
                         }
-                    }
-                }
-                switch (position) {
-                    //company name
-                    case 0:
-                        ab.setTitle(title[position]);
 
-                        ab.setView(companyName);
-
-                        ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                //What ever you want to do with the value
-                                //Editable title = txtTitle.getText();
-                                //OR
-                                String name = companyName.getText().toString().trim();
-                                if (name.isEmpty()) {
-                                    imgIndicator.setVisibility(view.VISIBLE);
-                                    txtInfo.setVisibility(view.GONE);
-                                } else {
-                                    imgIndicator.setVisibility(view.GONE);
-                                    txtInfo.setVisibility(view.VISIBLE);
-                                }
-                                items.get(position).put("info", name);
-                                simpleAdapter.notifyDataSetChanged();
-                            }
-                        });
-
-                        ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                // what ever you want to do with No option.
-                            }
-                        });
-
-                        //when alertview is launched, the keyboard show immediately
-                        dialog = ab.create();
-                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-                        dialog.show();
-                        break;
-
-                    case 1:
                         ab.setTitle(title[position]);
                         //setSingleChiceItems cannot support List of arrayList, so I need to convert it to array
                         ab.setMultiChoiceItems(array_category.toArray(new String[array_category.size()]), selectedCatItem, new DialogInterface.OnMultiChoiceClickListener() {
@@ -324,15 +263,8 @@ public class NewFoundCompany extends Fragment {
                         });
                         ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                if (selectedCatName.size() == 0) {
-                                    imgIndicator.setVisibility(view.VISIBLE);
-                                    txtInfo.setVisibility(view.GONE);
-                                } else {
-                                    imgIndicator.setVisibility(view.GONE);
-                                    txtInfo.setVisibility(view.VISIBLE);
-                                }
-                                items.get(position).put("info", selectedCatName);
-                                simpleAdapter.notifyDataSetChanged();
+                                //items.get(position).setInfo(selectedCatName);
+                                customAdapter.notifyDataSetChanged();
                             }
                         });
 
@@ -344,136 +276,11 @@ public class NewFoundCompany extends Fragment {
                         });
                         ab.show();
                         break;
-                    //Company Address
-                    case 2:
-                        ab.setTitle(title[position]);
-
-                        ab.setView(companyAddress);
-
-                        ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                //What ever you want to do with the value
-                                //Editable title = txtTitle.getText();
-                                //OR
-                                String address = companyAddress.getText().toString().trim();
-                                if (address.isEmpty()) {
-                                    imgIndicator.setVisibility(view.VISIBLE);
-                                    txtInfo.setVisibility(view.GONE);
-                                } else {
-                                    imgIndicator.setVisibility(view.GONE);
-                                    txtInfo.setVisibility(view.VISIBLE);
-                                }
-                                items.get(position).put("info", address);
-                                simpleAdapter.notifyDataSetChanged();
-                            }
-                        });
-
-                        ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                // what ever you want to do with No option.
-                            }
-                        });
-
-                        //when alertview is launched, the keyboard show immediately
-                        dialog = ab.create();
-                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-                        dialog.show();
-                        break;
-                    //Company Telephone
-                    case 3:
-                        ab.setTitle(title[position]);
-
-                        ab.setView(companyTel);
-
-                        ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                //What ever you want to do with the value
-                                //Editable title = txtTitle.getText();
-                                //OR
-                                String tel = companyTel.getText().toString().trim();
-                                if (tel.isEmpty()) {
-                                    imgIndicator.setVisibility(view.VISIBLE);
-                                    txtInfo.setVisibility(view.GONE);
-                                } else {
-                                    imgIndicator.setVisibility(view.GONE);
-                                    txtInfo.setVisibility(view.VISIBLE);
-                                }
-                                items.get(position).put("info", tel);
-                                simpleAdapter.notifyDataSetChanged();
-                            }
-                        });
-
-                        ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                // what ever you want to do with No option.
-                            }
-                        });
-
-                        //when alertview is launched, the keyboard show immediately
-                        dialog = ab.create();
-                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-                        dialog.show();
-                        break;
-                    //expense
-                    case 4:
-                        ab.setTitle(title[position]);
-                        //setSingleChiceItems cannot support List of arrayList, so I need to convert it to array
-                        ab.setSingleChoiceItems(arrayPrice.toArray(new String[arrayPrice.size()]), selectedExpense[0], new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which) {
-                                    case 0:
-                                        expense[0] = arrayPrice.get(which);
-                                        selectedExpense[0] = which;
-                                        break;
-                                    case 1:
-                                        expense[0] = arrayPrice.get(which);
-                                        selectedExpense[0] = which;
-                                        break;
-                                    case 2:
-                                        expense[0] = arrayPrice.get(which);
-                                        selectedExpense[0] = which;
-                                        break;
-                                    case 3:
-                                        expense[0] = arrayPrice.get(which);
-                                        selectedExpense[0] = which;
-                                        break;
-                                    case 4:
-                                        expense[0] = arrayPrice.get(which);
-                                        selectedExpense[0] = which;
-                                        break;
-                                }
-
-                            }
-                        });
-                        ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                if (expense[0].isEmpty()) {
-                                    imgIndicator.setVisibility(view.VISIBLE);
-                                    txtInfo.setVisibility(view.GONE);
-                                } else {
-                                    imgIndicator.setVisibility(view.GONE);
-                                    txtInfo.setVisibility(view.VISIBLE);
-                                }
-                                items.get(position).put("info", expense[0]);
-                                simpleAdapter.notifyDataSetChanged();
-                            }
-                        });
-
-                        ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                        dialog = ab.create();
-                        dialog.show();
-                        break;
                     //business hour
                     case 5:
+                        //get the dialog content
+                        String dialogBusinessHour = items.get(position).getInfo().trim();
+
                         if (dialogBusinessHour.isEmpty()) {
                             //initial the time picker
                             openTime.setCurrentHour(0);
@@ -485,17 +292,16 @@ public class NewFoundCompany extends Fragment {
                             endTimeHour = null;
                             endTimeMin = null;
                         } else {
-                            openTimeHour = items.get(position).get("openHour").toString().trim();
-                            openTimeMin = items.get(position).get("openMin").toString().trim();
-                            endTimeHour = items.get(position).get("endHour").toString().trim();
-                            endTimeMin = items.get(position).get("endMin").toString().trim();
+                            openTimeHour = items.get(position).getOpenHour().toString();
+                            openTimeMin = items.get(position).getOpenMin().toString();
+                            endTimeHour = items.get(position).getEndHour().toString();
+                            endTimeMin = items.get(position).getEndMin().toString();
                             //initial the time picker
                             openTime.setCurrentHour(Integer.parseInt(openTimeHour));
                             openTime.setCurrentMinute(Integer.parseInt(openTimeMin));
                             endTime.setCurrentHour(Integer.parseInt(endTimeHour));
                             endTime.setCurrentMinute(Integer.parseInt(endTimeMin));
                             //businessHour.setText(dialogBusinessHour);
-                            Log.d("openTimeHour", openTimeHour);
                         }
                         ab.setTitle(R.string.newFound_business_hour_start);
                         ab.setView(openTime);
@@ -513,8 +319,7 @@ public class NewFoundCompany extends Fragment {
                                 xy.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
 
-                                        imgIndicator.setVisibility(view.GONE);
-                                        txtInfo.setVisibility(view.VISIBLE);
+                                        //convert the business time to string format
                                         int openHour = openTime.getCurrentHour();
                                         int openMin = openTime.getCurrentMinute();
                                         int endHour = endTime.getCurrentHour();
@@ -545,12 +350,12 @@ public class NewFoundCompany extends Fragment {
                                         String actualTime = actualOpenTime + " - " + actualEndTime;
                                         System.out.println(actualTime);
 
-                                        items.get(position).put("info", actualTime);
-                                        items.get(position).put("openHour", openTime.getCurrentHour());
-                                        items.get(position).put("openMin", openTime.getCurrentMinute());
-                                        items.get(position).put("endHour", endTime.getCurrentHour());
-                                        items.get(position).put("endMin", endTime.getCurrentMinute());
-                                        simpleAdapter.notifyDataSetChanged();
+                                        items.get(position).setInfo(actualTime);
+                                        items.get(position).setOpenHour(openTime.getCurrentHour());
+                                        items.get(position).setOpenMin(openTime.getCurrentMinute());
+                                        items.get(position).setEndHour(endTime.getCurrentHour());
+                                        items.get(position).setEndMin(endTime.getCurrentMinute());
+                                        customAdapter.notifyDataSetChanged();
                                     }
                                 });
                                 xy.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
@@ -605,7 +410,7 @@ public class NewFoundCompany extends Fragment {
 
                 for (int i = 0; i < items.size() - 1; i++){
                     //get the value that the user inputted
-                    submitVars[i] = items.get(i).get("info").toString().trim();
+                    submitVars[i] = items.get(i).getInfo().trim();
                     System.out.println(submitVars[i]);
                     if(submitVars[i].equals(">"))
                         submitVars[i] = "";

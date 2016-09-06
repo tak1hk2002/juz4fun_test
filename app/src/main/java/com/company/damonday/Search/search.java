@@ -30,6 +30,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment_Comment;
+import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment_CustomListAdapter;
 import com.company.damonday.Home.Home;
 import com.company.damonday.LatestComment.latestcommentvolley;
 import com.company.damonday.Search.search;
@@ -45,6 +47,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,8 +74,11 @@ public class search extends Fragment {
     private HashMap<String, Integer> hash_Price = new HashMap<String, Integer>();
     private HashMap<String, Integer> hash_large_district = new HashMap<String, Integer>();
     //private HashMap<String, String> hash_district = new HashMap<String, String>();
-    private HashMap<String, String> hash_area_all = new HashMap<String, String>();
-    private HashMap<String, String> hash_HK_Island =new HashMap<>();
+    private HashMap<String, String> areaIdAll = new HashMap<String, String>();
+    private HashMap<String, String> areaIdHkIsland =new HashMap<>();
+    private HashMap<String, String> areaIdKowloon =new HashMap<>();
+    private HashMap<String, String> areaIdNewTerritories =new HashMap<>();
+    private HashMap<String, String> areaIdIslands =new HashMap<>();
     private HashMap<String, Object> hash_area = new HashMap<>();
     private String price_id;
     private String district_id;
@@ -85,20 +91,27 @@ public class search extends Fragment {
     private ProgressImage pDialog;
     private View view;
     private JsonObjectRequest jsonObjReq;
-    private List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
+    private List<Fragment_ViewWriteComment_Comment> items = new ArrayList<Fragment_ViewWriteComment_Comment>();
     private Map<String, Integer> mapExpense = new HashMap<String, Integer>();
-    private String[] title;
+    private String[] title, warning;
+    private List<Integer> showDetailIndicator = Arrays.asList(0, 1, 2, 3);
+
+    public search() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         title = getResources().getStringArray(R.array.advancedSearch_title);
         for(int i = 0; i < title.length; i++){
-            Map<String, Object> item = new HashMap<String, Object>();
-            item.put("title", title[i]);
-            item.put("info", "");
-            items.add(item);
+            Fragment_ViewWriteComment_Comment comment = new Fragment_ViewWriteComment_Comment();
+            comment.setTitle(title[i]);
+            comment.setSubmitWarning(false);
+            items.add(comment);
         }
+
+        //get the warning text
+        warning = getResources().getStringArray(R.array.advancedSearch_warning);
 
 
     }
@@ -111,9 +124,9 @@ public class search extends Fragment {
         button_search = (Button) view.findViewById(R.id.button_search);
         button_reset = (Button) view.findViewById(R.id.button_reset);
 
-        final SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), items,
-                R.layout.view_companywritecomment_list, new String[] {"title", "info"}, new int[] {R.id.title, R.id.info});
-        listView.setAdapter(simpleAdapter);
+        final Fragment_ViewWriteComment_CustomListAdapter customAdapter = new Fragment_ViewWriteComment_CustomListAdapter(getActivity(), items, showDetailIndicator, warning);
+
+        listView.setAdapter(customAdapter);
 
         array_district.add("全選");
         //arrayPrice.add("全選");
@@ -131,16 +144,12 @@ public class search extends Fragment {
                 final AlertDialog.Builder ab = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_DARK);
                 AlertDialog dialog;
 
-                final ImageView imgIndicator = (ImageView) view.findViewById(R.id.indicator);
-                final TextView txtInfo = (TextView) view.findViewById(R.id.info);
-
-
                 //get the dialog content
-                String dialogDistrict = items.get(position).get("info").toString().trim();
+                String dialogDistrict = items.get(position).getInfo().trim();
                 //get the dialog content
-                String dialogCat = items.get(position).get("info").toString().trim();
+                String dialogCat = items.get(position).getInfo().trim();
                 //get the dialog content
-                String dialogExpense = items.get(position).get("info").toString().trim();
+                String dialogExpense = items.get(position).getInfo().trim();
 
                 final String[] area = {""};
                 final String[] district = {""};
@@ -151,34 +160,20 @@ public class search extends Fragment {
                 final int[] selectedExpense = {-1};
 
 
-                if (dialogDistrict.isEmpty()) {
-                    district[0] = "";
-                } else {
-                    district[0] = dialogDistrict;
-                    if (hash_large_district.get(dialogDistrict) != null)
-                        selectedDistrict[0] = hash_large_district.get(dialogDistrict);
-                }
-
-                if (dialogExpense.isEmpty()) {
-                    expense[0] = "";
-                } else {
-                    expense[0] = dialogExpense;
-                    if (hash_Price.get(dialogExpense) != null)
-                        selectedExpense[0] = hash_Price.get(dialogExpense);
-                }
 
                 switch (position) {
-                    //Area
+                    //地域
                     case 0:
                         //get the dialog content
-                        final String dialogArea = items.get(position).get("info").toString().trim();
+                        final String dialogArea = items.get(position).getInfo().trim();
 
                         if (dialogArea.isEmpty()) {
                             area[0] = "";
                         } else {
                             area[0] = dialogArea;
                             if (hash_large_district.get(dialogArea) != null)
-                                selectedArea[0] = hash_large_district.get(dialogArea);
+                                //減1是因為要對應Single choice ID
+                                selectedArea[0] = hash_large_district.get(dialogArea) - 1;
                         }
 
                         ab.setTitle(title[position]);
@@ -188,22 +183,27 @@ public class search extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
+                                    //全選
                                     case 0:
                                         area[0] = array_lage_district.get(which);
                                         selectedArea[0] = which;
                                         break;
+                                    //Hk island
                                     case 1:
                                         area[0] = array_lage_district.get(which);
                                         selectedArea[0] = which;
                                         break;
+                                    //Kowloon
                                     case 2:
                                         area[0] = array_lage_district.get(which);
                                         selectedArea[0] = which;
                                         break;
+                                    //NT
                                     case 3:
                                         area[0] = array_lage_district.get(which);
                                         selectedArea[0] = which;
                                         break;
+                                    //islands
                                     case 4:
                                         area[0] = array_lage_district.get(which);
                                         selectedArea[0] = which;
@@ -214,14 +214,6 @@ public class search extends Fragment {
                         });
                         ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                if (area[0].isEmpty()) {
-                                    imgIndicator.setVisibility(view.VISIBLE);
-                                    txtInfo.setVisibility(view.GONE);
-                                } else {
-                                    imgIndicator.setVisibility(view.GONE);
-                                    txtInfo.setVisibility(view.VISIBLE);
-                                }
-
                                 //update the district list after selecting area
                                 System.out.println(area[0]);
                                 if (area[0].equals("全選")) {
@@ -248,8 +240,9 @@ public class search extends Fragment {
                                 }
 
 
-                                items.get(position).put("info", area[0]);
-                                simpleAdapter.notifyDataSetChanged();
+                                items.get(position).setInfo(area[0]);
+                                large_district_id = Integer.toString(selectedArea[0] + 1);
+                                customAdapter.notifyDataSetChanged();
                             }
                         });
 
@@ -264,8 +257,16 @@ public class search extends Fragment {
 
 
                         break;
-                    //District
+                    //地區
                     case 1:
+                        if (dialogDistrict.isEmpty()) {
+                            district[0] = "";
+                        } else {
+                            district[0] = dialogDistrict;
+                            if (hash_large_district.get(dialogDistrict) != null)
+                                selectedDistrict[0] = hash_large_district.get(dialogDistrict);
+                        }
+
                         ab.setTitle(title[position]);
                         //setSingleChiceItems cannot support List of arrayList, so I need to convert it to array
                         ab.setSingleChoiceItems(array_district.toArray(new String[array_district.size()]), -1, new DialogInterface.OnClickListener() {
@@ -299,15 +300,8 @@ public class search extends Fragment {
                         });
                         ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                if (district[0].isEmpty()) {
-                                    imgIndicator.setVisibility(view.VISIBLE);
-                                    txtInfo.setVisibility(view.GONE);
-                                } else {
-                                    imgIndicator.setVisibility(view.GONE);
-                                    txtInfo.setVisibility(view.VISIBLE);
-                                }
-                                items.get(position).put("info", district[0]);
-                                simpleAdapter.notifyDataSetChanged();
+                                items.get(position).setInfo(district[0]);
+                                customAdapter.notifyDataSetChanged();
                             }
                         });
 
@@ -322,6 +316,14 @@ public class search extends Fragment {
                         break;
                     //expense
                     case 3:
+                        if (dialogExpense.isEmpty()) {
+                            expense[0] = "";
+                        } else {
+                            expense[0] = dialogExpense;
+                            if (hash_Price.get(dialogExpense) != null)
+                                selectedExpense[0] = hash_Price.get(dialogExpense);
+                        }
+
                         ab.setTitle(title[position]);
                         //setSingleChiceItems cannot support List of arrayList, so I need to convert it to array
                         ab.setSingleChoiceItems(arrayPrice.toArray(new String[arrayPrice.size()]), selectedExpense[0], new DialogInterface.OnClickListener() {
@@ -329,23 +331,33 @@ public class search extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
+                                    //All
                                     case 0:
                                         expense[0] = arrayPrice.get(which);
                                         selectedExpense[0] = which;
                                         break;
+                                    //below 100
                                     case 1:
                                         expense[0] = arrayPrice.get(which);
                                         selectedExpense[0] = which;
                                         break;
+                                    //101-200
                                     case 2:
                                         expense[0] = arrayPrice.get(which);
                                         selectedExpense[0] = which;
                                         break;
+                                    //201-300
                                     case 3:
                                         expense[0] = arrayPrice.get(which);
                                         selectedExpense[0] = which;
                                         break;
+                                    //301-400
                                     case 4:
+                                        expense[0] = arrayPrice.get(which);
+                                        selectedExpense[0] = which;
+                                        break;
+                                    //401 or above
+                                    case 5:
                                         expense[0] = arrayPrice.get(which);
                                         selectedExpense[0] = which;
                                         break;
@@ -355,15 +367,9 @@ public class search extends Fragment {
                         });
                         ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                if (expense[0].isEmpty()) {
-                                    imgIndicator.setVisibility(view.VISIBLE);
-                                    txtInfo.setVisibility(view.GONE);
-                                } else {
-                                    imgIndicator.setVisibility(view.GONE);
-                                    txtInfo.setVisibility(view.VISIBLE);
-                                }
-                                items.get(position).put("info", expense[0]);
-                                simpleAdapter.notifyDataSetChanged();
+                                items.get(position).setInfo(expense[0]);
+                                price_id = Integer.toString(selectedExpense[0]);
+                                customAdapter.notifyDataSetChanged();
                             }
                         });
 
@@ -385,161 +391,56 @@ public class search extends Fragment {
 
 
 
-
-        /*//選中時
-        spinner_lagre_district.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView adapterView, View view, int position, long id) {
-                //Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-                Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
-
-                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
-                // ((TextView) adapterView.getChildAt(0)).setTextSize(5);
-
-
-                if (adapterView.getSelectedItem().toString().equals("全選")) {
-                    array_district = array_area_all;
-                    Log.d("tom", "all");
-                }
-                if (adapterView.getSelectedItem().toString().equals("香港島")) {
-                    array_district = array_HK_Island;
-                    Log.d("tom", "HK_island");
-                }
-
-                if (adapterView.getSelectedItem().toString().equals("九龍")) {
-                    array_district = array_Kowloon;
-                    Log.d("tom", "kowloon");
-                }
-
-                if (adapterView.getSelectedItem().toString().equals("新界")) {
-                    array_district = array_New_Territories;
-                    Log.d("tom", "NT");
-                }
-                if (adapterView.getSelectedItem().toString().equals("離島")) {
-                    array_district = array_Islands_District;
-                    Log.d("tom", "island");
-                }
-
-
-                if (!adapterView.getSelectedItem().toString().equals("全選")) {
-                    large_district_id = hash_large_district.get(adapterView.getSelectedItem().toString());
-                } else {
-                    large_district_id = "";
-                }
-                Log.d("large_district_id:", large_district_id);
-                adapter_district = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, array_district);
-                adapter_district.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner_district.setAdapter(adapter_district);
-            }
-
-            public void onNothingSelected(AdapterView arg0) {
-                Toast.makeText(getActivity(), "您沒有選擇任何項目", Toast.LENGTH_LONG).show();
-            }
-        });
-
-
-//價錢
-        spinnerPrice.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView adapterView, View view, int position, long id) {
-                //Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-                Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
-                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
-                //拎番個id
-                if (!adapterView.getSelectedItem().toString().equals("全選")) {
-                    price_id = hash_Price.get(adapterView.getSelectedItem().toString());
-                } else {
-                    price_id = "";
-                }
-                Log.d("_price_id:", price_id);
-            }
-
-            public void onNothingSelected(AdapterView arg0) {
-                Toast.makeText(getActivity(), "您沒有選擇任何項目", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        spinner_district.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView adapterView, View view, int position, long id) {
-                //Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-                //  ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
-                Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
-                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
-                //拎番個id
-                if (!adapterView.getSelectedItem().toString().equals("全選")) {
-                    district_id = hash_area_all.get(adapterView.getSelectedItem().toString());
-                } else {
-                    district_id = "";
-                }
-                Log.d("district_id:", district_id);
-            }
-
-            public void onNothingSelected(AdapterView arg0) {
-                Toast.makeText(getActivity(), "您沒有選擇任何項目", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        spinner_category.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView adapterView, View view, int position, long id) {
-                //Toast.makeText(getActivity(), "您選擇" + adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-                Log.d("getSelectedItem:", adapterView.getSelectedItem().toString());
-                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
-                //拎番個id
-                if (!adapterView.getSelectedItem().toString().equals("全選")) {
-                    category_id = hash_category.get(adapterView.getSelectedItem().toString());
-                } else {
-                    category_id = "";
-                }
-                Log.d("category_id:", category_id);
-            }
-
-            public void onNothingSelected(AdapterView arg0) {
-                Toast.makeText(getActivity(), "您沒有選擇任何項目", Toast.LENGTH_LONG).show();
-            }
-        });*/
-
-
-
-        /*adapterPrice = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,arrayPrice);
-        //設定下拉選單的樣式
-        adapterPrice.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPrice.setAdapter(adapterPrice);*/
-        //設定項目被選取之後的動作
-/*        spinnerPrice.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
-            public void onItemSelected(AdapterView adapterView, View view, int position, long id){
-                Toast.makeText(getActivity(), "您選擇"+adapterView.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-            }
-            public void onNothingSelected(AdapterView arg0) {
-                Toast.makeText(getActivity(), "您沒有選擇任何項目", Toast.LENGTH_LONG).show();
-            }
-        });*/
-
         button_search.setOnClickListener(new Button.OnClickListener() {
 
             @Override
 
             public void onClick(View v) {
-                //   submitting();
 
-                //傳送數據去下一個fragment
-                Bundle bundle = new Bundle();
-                bundle.putString("category_id", category_id);
-                bundle.putString("district_id", district_id);
-                bundle.putString("large_district_id", large_district_id);
-                bundle.putString("price_id", price_id);
+                //init
+                ArrayList<String> submitVars = new ArrayList<String>();
+                Boolean passChecking = true;
+                //----------------------------------------------------
 
-                search_result search_result_fragment = new search_result();
-                search_result_fragment.setArguments(bundle);
-                //傳送數據去下一個fragment
+                for (int i = 0; i < items.size(); i++) {
+                    //get the value that the user inputted
+                    submitVars.add(items.get(i).getInfo().trim());
 
-                ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
-                ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                // FragmentManager fragmentManager = getFragmentManager();
-                System.out.println(fragmentManager.getBackStackEntryCount());
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("search"));
-                fragmentTransaction.add(R.id.frame_container, search_result_fragment, "search_result").addToBackStack(null);
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                fragmentTransaction.commit();
+                    //show warning of each view
+                    if (submitVars.get(i).isEmpty()) {
+                        items.get(i).setSubmitWarning(true);
+                        passChecking = false;
+                    }
+                    else{
+                        items.get(i).setSubmitWarning(false);
+                    }
+                }
+                System.out.println(large_district_id);
+                System.out.println(price_id);
+
+                if(passChecking) {
+                    //傳送數據去下一個fragment
+                    Bundle bundle = new Bundle();
+                    bundle.putString("category_id", category_id);
+                    bundle.putString("district_id", district_id);
+                    bundle.putString("large_district_id", large_district_id);
+                    bundle.putString("price_id", price_id);
+
+                    search_result search_result_fragment = new search_result();
+                    search_result_fragment.setArguments(bundle);
+                    //傳送數據去下一個fragment
+
+                    ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                    ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    // FragmentManager fragmentManager = getFragmentManager();
+                    System.out.println(fragmentManager.getBackStackEntryCount());
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.hide(getFragmentManager().findFragmentByTag("search"));
+                    fragmentTransaction.add(R.id.frame_container, search_result_fragment, "search_result").addToBackStack(null);
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    fragmentTransaction.commit();
+                }
 
             }
 
@@ -611,7 +512,7 @@ public class search extends Fragment {
                             //get distrist
                             String district_name = districtDetail.getString("district_name");
                             array_lage_district.add(district_name);
-                            hash_large_district.put(district_name, i-1);
+                            hash_large_district.put(district_name, i);
                             //get area array
                             try {
                                 JSONArray area = districtDetail.getJSONArray("area");
@@ -621,19 +522,22 @@ public class search extends Fragment {
                                     String area_id = areaDetail.getString("area_id");
                                     array_district.add(area_name);
                                     // array_area_all.add(area_name);
-                                    hash_area_all.put(area_name, area_id);
+                                    areaIdAll.put(area_name, area_id);
                                     if (district_name.equals("香港島")) {
                                         array_HK_Island.add(area_name);
-                                        hash_HK_Island.put(area_name, area_id);
+                                        areaIdHkIsland.put(area_name, area_id);
                                     }
                                     if (district_name.equals("九龍")) {
                                         array_Kowloon.add(area_name);
+                                        areaIdKowloon.put(area_name, area_id);
                                     }
                                     if (district_name.equals("新界")) {
                                         array_New_Territories.add(area_name);
+                                        areaIdNewTerritories.put(area_name, area_id);
                                     }
                                     if (district_name.equals("離島")) {
                                         array_Islands_District.add(area_name);
+                                        areaIdIslands.put(area_name, area_id);
                                     }
                                 }
                             } catch (JSONException e) {

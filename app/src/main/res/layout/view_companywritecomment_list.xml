@@ -5,8 +5,8 @@
     android:layout_centerVertical="true"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -22,7 +22,7 @@
             android:layout_gravity="center"
             android:text="TextView"
             android:textColor="@color/font_grey_white"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <RelativeLayout
             android:layout_width="0dp"

@@ -102,10 +102,6 @@ public class Fragment_ViewWriteComment extends Fragment {
             Fragment_ViewWriteComment_Comment comment = new Fragment_ViewWriteComment_Comment();
             comment.setTitle(title[i]);
             comment.setSubmitWarning(false);
-            //item.put("title", title[i]);
-            //item.put("info", "");
-            //if(showDetailIndicator.contains(i))
-            //    item.put("indicator", R.drawable.icon_forward_arrow);
             items.add(comment);
         }
 
@@ -155,8 +151,6 @@ public class Fragment_ViewWriteComment extends Fragment {
         Button btnReset = (Button) view.findViewById(R.id.reset);
         Button btnSubmit = (Button) view.findViewById(R.id.submit);
         final Fragment_ViewWriteComment_CustomListAdapter customAdapter = new Fragment_ViewWriteComment_CustomListAdapter(getActivity(), items, showDetailIndicator, warning);
-        /*final SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), items,
-                R.layout.view_companywritecomment_list, new String[] {"title", "info", "indicator"}, new int[] {R.id.title, R.id.info, R.id.indicator});*/
         listView.setAdapter(customAdapter);
         setListViewHeightBasedOnChildren(listView);
 
@@ -186,7 +180,6 @@ public class Fragment_ViewWriteComment extends Fragment {
                 Boolean passChecking = true;
                 //------------------------------------------------------------------------
 
-                //without detailRating because it will be obtained individually
                 for (int i = 0; i < items.size(); i++) {
                     //get the value that the user inputted
                     submitVars[i] = items.get(i).getInfo().trim();

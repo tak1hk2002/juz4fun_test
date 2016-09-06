@@ -66,7 +66,9 @@ public class Fragment_ViewWriteComment_CustomListAdapter extends BaseAdapter {
 
         m = items.get(position);
 
+        //popup window view
         if(showDetailIndicator.contains(position)) {
+            //disappear editTexit
             editInfo.setVisibility(View.GONE);
 
             if(m.getInfo() == null || m.getInfo().length() == 0) {
@@ -78,6 +80,7 @@ public class Fragment_ViewWriteComment_CustomListAdapter extends BaseAdapter {
                 txtInfo.setVisibility(View.VISIBLE);
             }
         }
+        //editText view
         else{
             imgIndicator.setVisibility(View.GONE);
             editInfo.setVisibility(View.VISIBLE);
@@ -86,14 +89,12 @@ public class Fragment_ViewWriteComment_CustomListAdapter extends BaseAdapter {
 
 
 
-        txtInfo.setText(m.getInfo());
-
-        title.setText(m.getTitle());
-
-        editInfo.setText(m.getInfo());
-        editInfo.setHint(warning[position]);
-
-        warningInfo.setText(warning[position]);
+        if(warning != null ) {
+            //display hint in editText
+            editInfo.setHint(warning[position]);
+            //display warning message
+            warningInfo.setText(warning[position]);
+        }
 
 
         //check the writeComment form is submitted
@@ -105,6 +106,12 @@ public class Fragment_ViewWriteComment_CustomListAdapter extends BaseAdapter {
                 warningInfo.setVisibility(View.VISIBLE);
             }
         }
+
+        txtInfo.setText(m.getInfo());
+
+        title.setText(m.getTitle());
+
+        editInfo.setText(m.getInfo());
 
 
 
