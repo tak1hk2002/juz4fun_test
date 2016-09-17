@@ -1,16 +1,16 @@
-package com.company.damonday.CompanyInfo.Fragment.ViewWriteComment;
+package com.company.damonday.Framework.SubmitForm;
 
 /**
  * Created by lamtaklung on 13/9/15.
  */
-public class Fragment_ViewWriteComment_Comment {
+public class SubmitForm {
 
     private String title, info;
     private Integer openHour, openMin, endHour, endMin;
     private Boolean submitWarning;
 
 
-    public Fragment_ViewWriteComment_Comment(String title, String info, Boolean submitWarning) {
+    public SubmitForm(String title, String info, Boolean submitWarning) {
         this.title = title;
         this.info = info;
         this.submitWarning = submitWarning;
@@ -18,7 +18,7 @@ public class Fragment_ViewWriteComment_Comment {
     }
 
 
-    public Fragment_ViewWriteComment_Comment(String title, String info, Boolean submitWarning, Integer openHour, Integer openMin, Integer endHour, Integer endMin){
+    public SubmitForm(String title, String info, Boolean submitWarning, Integer openHour, Integer openMin, Integer endHour, Integer endMin){
         this.title = title;
         this.info = info;
         this.submitWarning = submitWarning;
@@ -29,7 +29,7 @@ public class Fragment_ViewWriteComment_Comment {
 
     }
 
-    public Fragment_ViewWriteComment_Comment() {
+    public SubmitForm() {
     }
 
     public String getTitle() {

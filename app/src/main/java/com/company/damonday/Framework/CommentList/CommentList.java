@@ -1,20 +1,18 @@
-package com.company.damonday.LatestComment;
+package com.company.damonday.Framework.CommentList;
 
 /**
  * Created by tom on 14/6/15.
  */
 
-import java.util.ArrayList;
-
-public class latestcomment {
+public class CommentList {
     private String entName, companyName, title, profilePic, postedDate, username, rating, id;
 
 
-    public latestcomment() {
+    public CommentList() {
     }
 
 
-    public latestcomment(String title, String profilePic, String postedDate, String username, String rating, String id, String entName, String companyName) {
+    public CommentList(String title, String profilePic, String postedDate, String username, String rating, String id, String entName, String companyName) {
         this.title = title;
         this.profilePic = profilePic;
         this.postedDate = postedDate;

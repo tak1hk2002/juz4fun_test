@@ -1,4 +1,4 @@
-package com.company.damonday.CompanyInfo.Fragment.ViewWriteComment;
+package com.company.damonday.Framework.SubmitForm;
 
 import android.content.Context;
 import android.text.Editable;
@@ -18,19 +18,22 @@ import java.util.List;
 /**
  * Created by lamtaklung on 2/9/2016.
  */
-public class Fragment_ViewWriteComment_CustomListAdapter extends BaseAdapter {
+public class SubmitForm_CustomListAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
     private String warning[];
-    private List<Fragment_ViewWriteComment_Comment> items;
+    private List<SubmitForm> items;
     private List<Integer> showDetailIndicator;
-    Fragment_ViewWriteComment_Comment m;
+    private List<Integer> hideEditText;
+    private SubmitForm m;
+    private int abc;
 
-    public Fragment_ViewWriteComment_CustomListAdapter(Context context, List<Fragment_ViewWriteComment_Comment> items,
-                                                       List<Integer> showDetailIndicator, String warning[]){
+    public SubmitForm_CustomListAdapter(Context context, List<SubmitForm> items,
+                                        List<Integer> showDetailIndicator, List<Integer> hideEditText, String warning[]){
         this.context = context;
         this.items = items;
         this.showDetailIndicator = showDetailIndicator;
+        this.hideEditText = hideEditText;
         this.warning = warning;
     }
 
@@ -54,17 +57,19 @@ public class Fragment_ViewWriteComment_CustomListAdapter extends BaseAdapter {
 
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.view_companywritecomment_list, parent, false);
+        convertView = inflater.inflate(R.layout.submitform_list, parent, false);
 
         EditText editInfo = (EditText) convertView.findViewById(R.id.editText);
-        editInfo.addTextChangedListener(new GenericTextWatcher(editInfo));
         ImageView imgIndicator = (ImageView) convertView.findViewById(R.id.indicator);
         TextView txtInfo = (TextView) convertView.findViewById(R.id.info);
         TextView title = (TextView) convertView.findViewById(R.id.title);
         TextView warningInfo = (TextView) convertView.findViewById(R.id.warning);
 
-
         m = items.get(position);
+
+
+        //set the editText can be refreshed automatically
+        editInfo.addTextChangedListener(new GenericTextWatcher(position));
 
         //popup window view
         if(showDetailIndicator.contains(position)) {
@@ -82,9 +87,15 @@ public class Fragment_ViewWriteComment_CustomListAdapter extends BaseAdapter {
         }
         //editText view
         else{
-            imgIndicator.setVisibility(View.GONE);
-            editInfo.setVisibility(View.VISIBLE);
-            txtInfo.setVisibility(View.GONE);
+            if(hideEditText.contains(position)){
+                imgIndicator.setVisibility(View.GONE);
+                editInfo.setVisibility(View.GONE);
+                txtInfo.setVisibility(View.VISIBLE);
+            }else {
+                imgIndicator.setVisibility(View.GONE);
+                editInfo.setVisibility(View.VISIBLE);
+                txtInfo.setVisibility(View.GONE);
+            }
         }
 
 
@@ -114,24 +125,22 @@ public class Fragment_ViewWriteComment_CustomListAdapter extends BaseAdapter {
         editInfo.setText(m.getInfo());
 
 
-
         return convertView;
     }
 
     //save the editText content when text is changed
     private class GenericTextWatcher implements TextWatcher {
 
-        private View view;
-        private GenericTextWatcher(View view) {
-            this.view = view;
+        private int position;
+        private GenericTextWatcher(int position) {
+            this.position = position;
         }
 
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
         public void afterTextChanged(Editable editable) {
-            final EditText editText = (EditText) view;
-            m.setInfo(editText.getText().toString());
+            items.get(position).setInfo(editable.toString());
         }
     }
 }

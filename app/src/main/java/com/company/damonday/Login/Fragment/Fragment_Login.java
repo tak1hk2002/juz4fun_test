@@ -204,7 +204,6 @@ public class Fragment_Login extends Fragment {
                 accessToken = loginResult.getAccessToken();
 
                 Log.d("accessToken", accessToken.getToken());
-                System.out.println(profile.getName());
 
                 //send request and call graph api
 

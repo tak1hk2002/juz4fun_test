@@ -1,3 +1,4 @@
+/*
 package com.company.damonday.CompanyInfo.Fragment.ViewComment;
 
 import android.content.Context;
@@ -17,9 +18,11 @@ import com.company.damonday.function.AppController;
 
 import java.util.List;
 
+*/
 /**
  * Created by lamtaklung on 23/7/15.
- */
+ *//*
+
 public class Fragment_ViewComment_CustomListAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
@@ -96,3 +99,4 @@ public class Fragment_ViewComment_CustomListAdapter extends BaseAdapter {
     }
 
 }
+*/

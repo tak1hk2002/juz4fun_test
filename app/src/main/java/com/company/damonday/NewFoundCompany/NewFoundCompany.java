@@ -1,25 +1,17 @@
 package com.company.damonday.NewFoundCompany;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Html;
 import android.text.Spanned;
-import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,9 +19,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -41,10 +31,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment_Comment;
-import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment_CustomListAdapter;
+import com.company.damonday.Framework.SubmitForm.SubmitForm;
+import com.company.damonday.Framework.SubmitForm.SubmitForm_CustomListAdapter;
 import com.company.damonday.Home.Home;
-import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 
 import com.company.damonday.R;
@@ -55,13 +44,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Field;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +71,7 @@ public class NewFoundCompany extends Fragment {
     String company_business_hour;
     private String[] title, warning;
     private ListView listView;
-    private List<Fragment_ViewWriteComment_Comment> items = new ArrayList<Fragment_ViewWriteComment_Comment>();
+    private List<SubmitForm> items = new ArrayList<SubmitForm>();
     private String priceID;
     private ArrayList<String> array_category = new ArrayList<String>();
     private HashMap<String, Integer> hashPrice = new HashMap<String, Integer>();
@@ -112,7 +96,7 @@ public class NewFoundCompany extends Fragment {
         //get the array list of newFound option
         title = getResources().getStringArray(R.array.newFound_title);
         for(int i = 0; i < title.length; i++){
-            Fragment_ViewWriteComment_Comment comment = new Fragment_ViewWriteComment_Comment();
+            SubmitForm comment = new SubmitForm();
             comment.setTitle(title[i]);
             comment.setSubmitWarning(false);
             items.add(comment);
@@ -133,42 +117,17 @@ public class NewFoundCompany extends Fragment {
         btnReset = (Button) view.findViewById(R.id.button_reset);
         btnSubmit = (Button) view.findViewById(R.id.button_submit);
 
-        final Fragment_ViewWriteComment_CustomListAdapter customAdapter = new Fragment_ViewWriteComment_CustomListAdapter(getActivity(), items, showDetailIndicator, warning);
+        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator, null, warning);
 
 
-        //final SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(), items,
-        //        R.layout.view_companywritecomment_list, new String[] {"title", "info"}, new int[] {R.id.title, R.id.info});
         listView.setAdapter(customAdapter);
 
-
-        btnReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = 0; i < items.size(); i++) {
-                    View view = null;
-                    items.get(i).setInfo("");
-                    //get each view of  the listview
-                    view = listView.getAdapter().getView(i, view, listView);
-                    ImageView imgIndicator = (ImageView) view.findViewById(R.id.indicator);
-                    TextView txtInfo = (TextView) view.findViewById(R.id.info);
-                    imgIndicator.setVisibility(View.VISIBLE);
-                    txtInfo.setVisibility(View.GONE);
-
-                }
-                customAdapter.notifyDataSetChanged();
-                //apply the changes of deleting the elements of the item
-                listView.setAdapter(customAdapter);
-            }
-        });
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
 
-                final EditText companyName = new EditText(getActivity());
-                final EditText companyAddress = new EditText(getActivity());
-                final EditText companyTel = new EditText(getActivity());
                 final String[] expense = {""};
                 String openTimeHour = null;
                 String openTimeMin = null;
@@ -188,47 +147,15 @@ public class NewFoundCompany extends Fragment {
                 AlertDialog dialog;
                 final AlertDialog[] insideDialog = new AlertDialog[1];
 
-                //set the edit text color
-                companyName.setTextColor(getResources().getColor(R.color.font_white));
-                companyAddress.setTextColor(getResources().getColor(R.color.font_white));
-                companyTel.setTextColor(getResources().getColor(R.color.font_white));
-
-
-                //only allow user to enter digits and "."
-                companyTel.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
-
-                //set only single line
-                companyName.setSingleLine(true);
-
-                //change the Cursor color to white
-                Field f = null;
-                try {
-                    f = TextView.class.getDeclaredField("mCursorDrawableRes");
-                    f.setAccessible(true);
-                    f.set(companyName, R.drawable.color_cursor);
-                } catch (Exception ignored) {
-                }
-
-                try {
-                    f = TextView.class.getDeclaredField("mCursorDrawableRes");
-                    f.setAccessible(true);
-                    f.set(companyAddress, R.drawable.color_cursor);
-                } catch (Exception ignored) {
-                }
-
-                try {
-                    f = TextView.class.getDeclaredField("mCursorDrawableRes");
-                    f.setAccessible(true);
-                    f.set(companyTel, R.drawable.color_cursor);
-                } catch (Exception ignored) {
-                }
-
 
                 switch (position) {
                     //cat
                     case 1:
                         //get the dialog content
-                        String dialogCat = items.get(position).getInfo().trim();
+
+                        String dialogCat = "";
+                        if (items.get(position).getInfo() != null)
+                            dialogCat = items.get(position).getInfo();
                         //get the history of selecting cat
                         if (!dialogCat.isEmpty()) {
                             for (int i = 0; i < array_category.size(); i++) {
@@ -279,9 +206,11 @@ public class NewFoundCompany extends Fragment {
                     //business hour
                     case 5:
                         //get the dialog content
-                        String dialogBusinessHour = items.get(position).getInfo().trim();
-
-                        if (dialogBusinessHour.isEmpty()) {
+                        String dialogBusinessHour = "";
+                        if (items.get(position).getInfo() != null)
+                            dialogBusinessHour = items.get(position).getInfo();
+                        System.out.println(dialogBusinessHour);
+                        if (dialogBusinessHour.isEmpty() || dialogBusinessHour.length() == 0) {
                             //initial the time picker
                             openTime.setCurrentHour(0);
                             openTime.setCurrentMinute(0);
@@ -406,14 +335,12 @@ public class NewFoundCompany extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String submitVars[] = new String[items.size() - 1];
+                String submitVars[] = new String[items.size()];
 
-                for (int i = 0; i < items.size() - 1; i++){
+                for (int i = 0; i < items.size(); i++){
                     //get the value that the user inputted
                     submitVars[i] = items.get(i).getInfo().trim();
                     System.out.println(submitVars[i]);
-                    if(submitVars[i].equals(">"))
-                        submitVars[i] = "";
                     if(submitVars[i].isEmpty()){
                         //Toast.makeText(getActivity(), warning[i], Toast.LENGTH_SHORT).show();
                         //passChecking = false;
@@ -430,6 +357,17 @@ public class NewFoundCompany extends Fragment {
                 //submitting(company_name, company_tel, company_type, company_address, company_cost, company_business_hour);
 
 
+            }
+        });
+
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < items.size(); i++) {
+                    items.get(i).setInfo("");
+                    //get each view of  the listview
+                }
+                customAdapter.notifyDataSetChanged();
             }
         });
 

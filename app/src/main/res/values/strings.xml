@@ -4,6 +4,12 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
 
+    <!-- main page-->
+    <string name="main_quit_prompt">提示</string>
+    <string name="main_quit_message">真係走喇嘛?</string>
+    <string name="main_quit_positive">走啦仲問！</string>
+    <string name="main_quit_negative">講笑姐;p</string>
+    
     <!--common use-->
     <string name="or">或</string>
 
@@ -32,7 +38,7 @@
     <string name="welcome">Welcome</string>
     <string name="btn_facebook_login">BY FACEBOOK</string>
     <string name="btn_email_login">BY EMAIL</string>
-    <string name="btn_skip_login">SKIP</string>
+    <string name="btn_skip_login">跳過</string>
     <string name="btn_facebook_logout">Log out with FACEBOOK</string>
     <string name="txt_forget_password">你的密碼將會傳送到你的電郵裡</string>
 
@@ -198,7 +204,7 @@
         <item>請選擇公司類別</item>
         <item>請輸入公司地址</item>
         <item>請輸入公司電話</item>
-        <item>請輸入平均清費</item>
+        <item>請輸入平均消費</item>
         <item>請輸入營業時間</item>
     </string-array>
 
@@ -216,6 +222,29 @@
         <item>請選擇類別</item>
         <item>請選擇價錢</item>
     </string-array>
+
+    <!--feedback-->
+    <string-array name = "feedback_title">
+        <item>主題</item>
+        <item>你的電郵</item>
+        <item>內容</item>
+    </string-array>
+
+    <string-array name = "feedback_warning">
+        <item>請輸入主題</item>
+        <item>請輸入你的電郵</item>
+        <item>請輸入內容</item>
+    </string-array>
+
+    <!--setting-->
+    <string-array name="setting_title">
+        <item>我的評論</item>
+        <item>有關我們</item>
+        <item>提交意見</item>
+        <item>版本</item>
+    </string-array>
+
+    <string name = "setting_android_version">1.0</string>
 
 
     <!--title-->

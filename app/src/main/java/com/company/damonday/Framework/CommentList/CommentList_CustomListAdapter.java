@@ -1,4 +1,4 @@
-package com.company.damonday.LatestComment;
+package com.company.damonday.Framework.CommentList;
 
 /**
  * Created by tom on 14/6/15.
@@ -7,7 +7,6 @@ package com.company.damonday.LatestComment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,35 +16,30 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.company.damonday.CompanyInfo.Fragment.ViewComment.Fragment_ViewComment_Comment;
 import com.company.damonday.R;
 import com.company.damonday.function.AppController;
 
-import com.company.damonday.LatestComment.latestcomment;
-
-import org.w3c.dom.Text;
-
 import java.util.List;
 
-public class latestcomment_Adapter extends BaseAdapter {
+public class CommentList_CustomListAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
-    private List<latestcomment> latestcommentItems;
+    private List<CommentList> commentListItems;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
-    public latestcomment_Adapter(Activity activity, List<latestcomment> latestcommentItems) {
+    public CommentList_CustomListAdapter(Activity activity, List<CommentList> commentListItems) {
         this.activity = activity;
-        this.latestcommentItems = latestcommentItems;
+        this.commentListItems = commentListItems;
     }
 
     @Override
     public int getCount() {
-        return latestcommentItems.size();
+        return commentListItems.size();
     }
 
     @Override
     public Object getItem(int location) {
-        return latestcommentItems.get(location);
+        return commentListItems.get(location);
     }
 
     @Override
@@ -72,7 +66,7 @@ public class latestcomment_Adapter extends BaseAdapter {
         TextView entNameAndCompanyName = (TextView) convertView.findViewById(R.id.ent_name_company_name);
 
         // getting movie data for the row
-        latestcomment m = latestcommentItems.get(position);
+        CommentList m = commentListItems.get(position);
 
         // profilePic image
         profilePic.setImageUrl(m.getProfilePic(), imageLoader);
@@ -83,7 +77,10 @@ public class latestcomment_Adapter extends BaseAdapter {
         title.setText(m.getTitle());
 
         //Ent name and Company Name
-        entNameAndCompanyName.setText(m.getEntName() + "@" + m.getCompanyName());
+        if(m.getEntName() != null && m.getCompanyName() != null)
+            entNameAndCompanyName.setText(m.getEntName() + "@" + m.getCompanyName());
+        else
+            entNameAndCompanyName.setText("");
 
         //username
         username.setText(m.getUsername());

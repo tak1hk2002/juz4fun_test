@@ -1,4 +1,4 @@
-package com.company.damonday.LatestComment;
+package com.company.damonday.Framework.CommentList;
 
 import android.util.Log;
 import android.widget.AbsListView;

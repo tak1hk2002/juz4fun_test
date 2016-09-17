@@ -1,11 +1,7 @@
 package com.company.damonday.Search;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,11 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -29,13 +21,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment_Comment;
-import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment_CustomListAdapter;
-import com.company.damonday.Home.Home;
-import com.company.damonday.LatestComment.latestcommentvolley;
-import com.company.damonday.Search.search;
-import com.company.damonday.CompanyInfo.FragmentTabs_try;
+import com.company.damonday.Framework.SubmitForm.SubmitForm;
+import com.company.damonday.Framework.SubmitForm.SubmitForm_CustomListAdapter;
 import com.company.damonday.R;
 import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
@@ -51,7 +38,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 
 /**
@@ -91,7 +77,7 @@ public class search extends Fragment {
     private ProgressImage pDialog;
     private View view;
     private JsonObjectRequest jsonObjReq;
-    private List<Fragment_ViewWriteComment_Comment> items = new ArrayList<Fragment_ViewWriteComment_Comment>();
+    private List<SubmitForm> items = new ArrayList<SubmitForm>();
     private Map<String, Integer> mapExpense = new HashMap<String, Integer>();
     private String[] title, warning;
     private List<Integer> showDetailIndicator = Arrays.asList(0, 1, 2, 3);
@@ -102,9 +88,12 @@ public class search extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getActivity().setTitle(R.string.advance_search);
+
         title = getResources().getStringArray(R.array.advancedSearch_title);
         for(int i = 0; i < title.length; i++){
-            Fragment_ViewWriteComment_Comment comment = new Fragment_ViewWriteComment_Comment();
+            SubmitForm comment = new SubmitForm();
             comment.setTitle(title[i]);
             comment.setSubmitWarning(false);
             items.add(comment);
@@ -124,7 +113,7 @@ public class search extends Fragment {
         button_search = (Button) view.findViewById(R.id.button_search);
         button_reset = (Button) view.findViewById(R.id.button_reset);
 
-        final Fragment_ViewWriteComment_CustomListAdapter customAdapter = new Fragment_ViewWriteComment_CustomListAdapter(getActivity(), items, showDetailIndicator, warning);
+        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator, null, warning);
 
         listView.setAdapter(customAdapter);
 

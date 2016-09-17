@@ -1,32 +1,24 @@
 package com.company.damonday.CompanyInfo.Fragment.ViewWriteComment;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.InputType;
-import android.text.method.DigitsKeyListener;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RatingBar;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +28,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.appyvet.rangebar.RangeBar;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
+import com.company.damonday.Framework.SubmitForm.SubmitForm;
+import com.company.damonday.Framework.SubmitForm.SubmitForm_CustomListAdapter;
 import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.R;
@@ -46,9 +40,8 @@ import com.facebook.AccessToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.sql.SQLSyntaxErrorException;
+import java.lang.reflect.Field;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,7 +56,7 @@ public class Fragment_ViewWriteComment extends Fragment {
 
     private View view;
     private ListView listView;
-    private List<Fragment_ViewWriteComment_Comment> items = new ArrayList<Fragment_ViewWriteComment_Comment>();
+    private List<SubmitForm> items = new ArrayList<SubmitForm>();
     private String entId;
     private String[] title, titleDetailRating, titleOverAllRating, warning;
     private RatingAdapter ratingAdapter;
@@ -78,7 +71,7 @@ public class Fragment_ViewWriteComment extends Fragment {
     private Map<String, String> mapDetailRating = new HashMap<String, String>();
     private StringRequest strReq;
     //內容，消費，整體評分，詳細評分 show indicator
-    private List<Integer> showDetailIndicator = Arrays.asList(1,2,3,4);
+    private List<Integer> showDetailIndicator = Arrays.asList(1,3,4);
     private String detailRatingDB[];
 
 
@@ -99,7 +92,7 @@ public class Fragment_ViewWriteComment extends Fragment {
         //get the array list of writeComment option
         title = getResources().getStringArray(R.array.writeComment_title);
         for(int i = 0; i < title.length; i++){
-            Fragment_ViewWriteComment_Comment comment = new Fragment_ViewWriteComment_Comment();
+            SubmitForm comment = new SubmitForm();
             comment.setTitle(title[i]);
             comment.setSubmitWarning(false);
             items.add(comment);
@@ -150,7 +143,7 @@ public class Fragment_ViewWriteComment extends Fragment {
         listView = (ListView) view.findViewById(R.id.listView);
         Button btnReset = (Button) view.findViewById(R.id.reset);
         Button btnSubmit = (Button) view.findViewById(R.id.submit);
-        final Fragment_ViewWriteComment_CustomListAdapter customAdapter = new Fragment_ViewWriteComment_CustomListAdapter(getActivity(), items, showDetailIndicator, warning);
+        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator, null, warning);
         listView.setAdapter(customAdapter);
         setListViewHeightBasedOnChildren(listView);
 
@@ -226,24 +219,27 @@ public class Fragment_ViewWriteComment extends Fragment {
             public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
                 final AlertDialog.Builder[] ab = {new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_DARK)};
                 AlertDialog dialog;
-                final EditText txtTitle = new EditText(getActivity());
                 final EditText txtContent = new EditText(getActivity());
-                final EditText txtExpense = new EditText(getActivity());
                 final String[] txtOverAllRating = new String[1];
                 final int[] selectedOverallRating = {-1};
 
                 //set the edit text color
-                txtTitle.setTextColor(getResources().getColor(R.color.font_white));
                 txtContent.setTextColor(getResources().getColor(R.color.font_white));
-                txtExpense.setTextColor(getResources().getColor(R.color.font_white));
 
-                //set only single line
-                txtTitle.setSingleLine(true);
-                txtExpense.setSingleLine(true);
+                txtContent.setLines(15);
+                txtContent.setGravity(Gravity.TOP);
+                txtContent.setGravity(Gravity.LEFT);
 
-
-                //only allow user to enter digits and "."
-                txtExpense.setKeyListener(DigitsKeyListener.getInstance("0123456789."));
+                //change the Cursor color to white
+                Field f = null;
+                try {
+                    f = TextView.class.getDeclaredField("mCursorDrawableRes");
+                    f.setAccessible(true);
+                    f.set(txtContent, R.drawable.color_cursor);
+                }
+                catch (Exception ignored) {
+                    ignored.printStackTrace();
+                }
 
 
                 switch (position) {
@@ -291,49 +287,6 @@ public class Fragment_ViewWriteComment extends Fragment {
 
                         dialog.show();
 
-                        break;
-                    //consumption
-                    case 2:
-
-                        //get the dialog content
-                        String stringExpense = "";
-                        if(items.get(position).getInfo() != null)
-                            stringExpense = items.get(position).getInfo().trim();
-
-                        if (stringExpense.isEmpty()) {
-                            txtExpense.setText("");
-                        } else {
-                            txtExpense.setText(stringExpense);
-                        }
-                        ab[0].setTitle(R.string.writeComment_dialog_consumption);
-
-                        ab[0].setView(txtExpense);
-
-                        ab[0].setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                //What ever you want to do with the value
-                                //Editable expense = txtExpense.getText();
-                                //OR
-                                String expense = txtExpense.getText().toString().trim();
-                                items.get(position).setInfo(expense);
-                                customAdapter.notifyDataSetChanged();
-                                //listView.setAdapter(customAdapter);
-                                //setListViewHeightBasedOnChildren(listView);
-                            }
-                        });
-
-                        ab[0].setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                // what ever you want to do with No option.
-                                dialog.dismiss();
-                            }
-                        });
-
-                        //when alertview is launched, the keyboard show immediately
-                        dialog = ab[0].create();
-                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-                        dialog.show();
                         break;
                     //Overall Rating
                     case 3:
@@ -616,7 +569,7 @@ public class Fragment_ViewWriteComment extends Fragment {
 
     //doulbe scrollView
     public static void setListViewHeightBasedOnChildren(ListView listView) {
-        Fragment_ViewWriteComment_CustomListAdapter listAdapter = (Fragment_ViewWriteComment_CustomListAdapter) listView.getAdapter();
+        SubmitForm_CustomListAdapter listAdapter = (SubmitForm_CustomListAdapter) listView.getAdapter();
         if (listAdapter == null) {
             // pre-condition
             return;

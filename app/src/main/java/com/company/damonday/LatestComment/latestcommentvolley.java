@@ -5,7 +5,6 @@ package com.company.damonday.LatestComment;
  */
 
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,10 +22,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.company.damonday.CompanyInfo.Fragment.ViewCommentDetail.Fragment_ViewCommentDetail;
+import com.company.damonday.Framework.CommentList.CommentList;
+import com.company.damonday.Framework.CommentList.CommentList_CustomListAdapter;
+import com.company.damonday.Framework.CommentList.EndlessScrollListener;
 import com.company.damonday.R;
 import com.company.damonday.TestActivity;
 import com.company.damonday.function.AppController;
-import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.ProgressImage;
 
 import org.json.JSONArray;
@@ -40,9 +41,9 @@ public class latestcommentvolley extends Fragment {
     // Log tag
     private static final String TAG = latestcommentvolley.class.getSimpleName();
     private ProgressImage pDialog;
-    private List<latestcomment> latestcommentList = new ArrayList<latestcomment>();
+    private List<CommentList> commentListList = new ArrayList<CommentList>();
     private ListView listView;
-    private latestcomment_Adapter adapter;
+    private CommentList_CustomListAdapter adapter;
     private String api, lastFragmentTag;
     private StringRequest latestcommentReq;
 
@@ -65,7 +66,7 @@ public class latestcommentvolley extends Fragment {
         //setContentView(R.layout.latestcomment);
         getActivity().setTitle(R.string.latestcomment);
         listView = (ListView) view.findViewById(R.id.list);
-        adapter = new latestcomment_Adapter(getActivity(), latestcommentList);
+        adapter = new CommentList_CustomListAdapter(getActivity(), commentListList);
         listView.setAdapter(adapter);
         listView.setOnScrollListener(new EndlessScrollListener() {
             @Override
@@ -82,7 +83,7 @@ public class latestcommentvolley extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
-                bundle.putString("comment_id", latestcommentList.get(position).getId());
+                bundle.putString("comment_id", commentListList.get(position).getId());
                 Fragment_ViewCommentDetail fragment_ViewCommentDetail = new Fragment_ViewCommentDetail();
                 fragment_ViewCommentDetail.setArguments(bundle);
                 /*getFragmentManager().beginTransaction()
@@ -134,18 +135,18 @@ public class latestcommentvolley extends Fragment {
                                     // JSONArray jArray = jObject.getJSONArray("data");
 
                                     // JSONObject obj = response.getJSONObject(i);
-                                    latestcomment latestcomment = new latestcomment();
-                                    latestcomment.setId(oneObject.getString("ID"));
-                                    latestcomment.setTitle(oneObject.getString("title"));
-                                    latestcomment.setProfilePic(oneObject.getString("profile_picture"));
-                                    latestcomment.setRating(oneObject.getString("average_score"));
-                                    latestcomment.setEntName("Bubble Soccer");
-                                    latestcomment.setCompanyName("Party Home");
-                                    latestcomment.setUsername(oneObject.getString("username"));
-                                    latestcomment.setPostedDate(oneObject.getString("days_before"));
+                                    CommentList CommentList = new CommentList();
+                                    CommentList.setId(oneObject.getString("ID"));
+                                    CommentList.setTitle(oneObject.getString("title"));
+                                    CommentList.setProfilePic(oneObject.getString("profile_picture"));
+                                    CommentList.setRating(oneObject.getString("average_score"));
+                                    CommentList.setEntName("Bubble Soccer");
+                                    CommentList.setCompanyName("Party Home");
+                                    CommentList.setUsername(oneObject.getString("username"));
+                                    CommentList.setPostedDate(oneObject.getString("days_before"));
                                     //latestcomment.setComment(oneObject.getString("comment"));
                                     // adding movie to movies array
-                                    latestcommentList.add(latestcomment);
+                                    commentListList.add(CommentList);
 
                                     // notifying list adapter about data changes
                                     // so that it renders the list view with updated data

@@ -65,40 +65,38 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.2"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
         <ImageView
             android:id="@+id/average_pic"
             android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignLeft="@+id/rating1"
-            android:layout_alignStart="@+id/rating1" />
-        <TextView
-            android:id="@+id/rating1"
+            android:layout_height="40dp"/>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="6dp"
-            android:layout_below="@+id/average_pic"
-            android:textSize="@dimen/rating"
-            android:textColor="@color/font_grey_white"
-            android:text="3.4"/>
-        <TextView
-            android:id="@+id/rating2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_below="@+id/average_pic"
-            android:layout_toRightOf="@+id/rating1"
-            android:textSize="@dimen/max_rating"
-            android:textColor="@color/font_grey_white"
-            android:text="@string/commentDetail_max_score"/>
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/rating1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/rating"
+                android:textColor="@color/font_grey_white"
+                android:text="3"/>
+            <TextView
+                android:id="@+id/rating2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/max_rating"
+                android:textColor="@color/font_grey_white"
+                android:text="@string/commentDetail_max_score"/>
 
-    </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
 
 
 

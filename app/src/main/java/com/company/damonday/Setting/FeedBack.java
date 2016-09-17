@@ -1,29 +1,32 @@
 package com.company.damonday.Setting;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.company.damonday.Framework.SubmitForm.SubmitForm;
+import com.company.damonday.Framework.SubmitForm.SubmitForm_CustomListAdapter;
 import com.company.damonday.Home.Home;
-import com.company.damonday.MainActivity;
 import com.company.damonday.R;
-import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.company.damonday.function.ProgressImage;
@@ -31,7 +34,11 @@ import com.company.damonday.function.ProgressImage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,15 +47,17 @@ import java.util.Map;
 
 
 public class FeedBack extends Fragment {
-    EditText EditText_Subject;
-    EditText EditText_Content;
-    EditText EditText_Email;
     String Subject;
     String Content;
     String Email;
-    Button btn_submit;
+    Button btn_submit, btnSubmit, btnReset;
     Button btn_reset;
     private View view;
+
+    ListView listView;
+    private List<SubmitForm> items = new ArrayList<SubmitForm>();
+    private List<Integer> showDetailIndicator = Arrays.asList(2);
+    private String[] warning, title;
 
     private ProgressImage pDialog;
 
@@ -56,48 +65,170 @@ public class FeedBack extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getActivity().setTitle(R.string.feedback);
+
+        //get the array list of newFound option
+        title = getResources().getStringArray(R.array.feedback_title);
+        for(int i = 0; i < title.length; i++){
+            SubmitForm submitForm = new SubmitForm();
+            submitForm.setTitle(title[i]);
+            submitForm.setSubmitWarning(false);
+            items.add(submitForm);
+        }
+
+        //get the warning text
+        warning = getResources().getStringArray(R.array.feedback_warning);
 
     }
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.setting_feedback, container, false);
-        //getActivity().getActionBar().setTitle(R.string.feedback);
-        getActivity().setTitle(R.string.feedback);
-        EditText_Subject = (EditText) view.findViewById(R.id.subject);
-        EditText_Content = (EditText) view.findViewById(R.id.content);
-        EditText_Email = (EditText) view.findViewById(R.id.email);
-        btn_submit = (Button) view.findViewById(R.id.button_submit);
-        btn_reset = (Button) view.findViewById(R.id.button_reset);
+        view = inflater.inflate(R.layout.newfound, container, false);
+
         pDialog = new ProgressImage(view.getContext());
 
-        btn_submit.setOnClickListener(new Button.OnClickListener() {
+
+        view = inflater.inflate(R.layout.newfound, container, false);
+        listView = (ListView) view.findViewById(R.id.listView);
+        btnReset = (Button) view.findViewById(R.id.button_reset);
+        btnSubmit = (Button) view.findViewById(R.id.button_submit);
+
+        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator, null, warning);
+
+
+        listView.setAdapter(customAdapter);
+
+
+        btnSubmit.setOnClickListener(new Button.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Subject = EditText_Subject.getText().toString();
-                Content = EditText_Content.getText().toString();
-                Email = EditText_Email.getText().toString();
+                //init
+                String submitVars[] = new String[items.size()];
+                Boolean passChecking = true;
+                //------------------------------------------------------------------------
 
+                for (int i = 0; i < items.size(); i++) {
+                    //get the value that the user inputted
+                    submitVars[i] = items.get(i).getInfo().trim();
 
-                submitting(Subject, Content, Email);
+                    //show warning of each view
+                    if (submitVars[i].isEmpty()) {
+                        items.get(i).setSubmitWarning(true);
+                        passChecking = false;
+                    }
+                    else{
+                        items.get(i).setSubmitWarning(false);
+                    }
+                }
 
+                if (passChecking) {
+                    System.out.println(submitVars[0]);
+                    System.out.println(submitVars[1]);
+                    System.out.println(submitVars[2]);
+                    //submitting(submitVars[0], submitVars[1], submitVars[2]);
+                }
+
+                customAdapter.notifyDataSetChanged();
 
             }
         });
 
 
-        btn_reset.setOnClickListener(new Button.OnClickListener() {
+        btnReset.setOnClickListener(new Button.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                EditText_Subject.setText("");
-                EditText_Content.setText("");
-                EditText_Email.setText("");
-
+                for(int i = 0; i < items.size(); i++){
+                    //View view = null;
+                    items.get(i).setInfo("");
+                    items.get(i).setSubmitWarning(false);
+                    //get each view of  the listview
+                    //view = listView.getAdapter().getView(i, view, listView);
+                }
+                customAdapter.notifyDataSetChanged();
 
             }
+        });
+
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
+                final AlertDialog.Builder[] ab = {new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_DARK)};
+                AlertDialog dialog;
+                final EditText txtContent = new EditText(getActivity());
+
+
+                //set the edit text color
+                txtContent.setTextColor(getResources().getColor(R.color.font_white));
+
+                txtContent.setLines(15);
+                txtContent.setGravity(Gravity.TOP);
+                txtContent.setGravity(Gravity.LEFT);
+
+                //change the Cursor color to white
+                Field f = null;
+                try {
+                    f = TextView.class.getDeclaredField("mCursorDrawableRes");
+                    f.setAccessible(true);
+                    f.set(txtContent, R.drawable.color_cursor);
+                }
+                catch (Exception ignored) {
+                    ignored.printStackTrace();
+                }
+
+                switch(position) {
+                    //content
+                    case 2:
+                        //get the dialog content
+                        String stringContent = "";
+                        if (items.get(position).getInfo() != null)
+                            stringContent = items.get(position).getInfo().trim();
+
+                        if (stringContent.isEmpty()) {
+                            txtContent.setText("");
+                        } else {
+                            txtContent.setText(stringContent);
+                        }
+
+
+                        ab[0].setTitle(R.string.writeComment_dialog_content);
+
+                        ab[0].setView(txtContent);
+
+                        ab[0].setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                //What ever you want to do with the value
+                                //Editable content = txtContent.getText();
+                                //OR
+                                String content = txtContent.getText().toString().trim();
+                                items.get(position).setInfo(content);
+                                customAdapter.notifyDataSetChanged();
+                                //listView.setAdapter(customAdapter);
+                                //setListViewHeightBasedOnChildren(listView);
+                            }
+                        });
+
+                        ab[0].setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                // what ever you want to do with No option.
+                                dialog.dismiss();
+                            }
+                        });
+
+                        //when alertview is launched, the keyboard show immediately
+                        dialog = ab[0].create();
+                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+                        dialog.show();
+
+                        break;
+                }
+            }
+
         });
 
 
@@ -105,7 +236,7 @@ public class FeedBack extends Fragment {
     }
 
 
-    private void submitting(final String subject, final String content, final String email) {
+    private void submitting(final String subject, final String email, final String content) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 

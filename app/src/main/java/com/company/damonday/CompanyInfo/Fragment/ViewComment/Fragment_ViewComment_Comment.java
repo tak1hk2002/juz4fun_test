@@ -1,10 +1,13 @@
+/*
 package com.company.damonday.CompanyInfo.Fragment.ViewComment;
 
 import java.util.ArrayList;
 
+*/
 /**
  * Created by lamtaklung on 23/7/15.
- */
+ *//*
+
 public class Fragment_ViewComment_Comment {
     private String title, profilePic, postedDate, username, rating, id;
 
@@ -71,3 +74,4 @@ public class Fragment_ViewComment_Comment {
         this.id = id;
     }
 }
+*/

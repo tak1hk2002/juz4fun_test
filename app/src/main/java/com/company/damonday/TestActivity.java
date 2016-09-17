@@ -570,18 +570,18 @@ public class TestActivity extends FragmentActivity {
         Log.d("EntryCount", Integer.toString(fragmentManager.getBackStackEntryCount()));
         if (fragmentManager.getBackStackEntryCount() == 1) {
             //quit the app dialog
-            new AlertDialog.Builder(this)
+            new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK)
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("提示")
-                    .setMessage("真係走喇嘛?")
-                    .setPositiveButton("走啦仲問！", new DialogInterface.OnClickListener() {
+                    .setTitle(R.string.main_quit_prompt)
+                    .setMessage(R.string.main_quit_message)
+                    .setPositiveButton(R.string.main_quit_positive, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             finish();
                         }
 
                     })
-                    .setNegativeButton("講笑姐;p", null)
+                    .setNegativeButton(R.string.main_quit_negative, null)
                     .show();
             // finish();
         }

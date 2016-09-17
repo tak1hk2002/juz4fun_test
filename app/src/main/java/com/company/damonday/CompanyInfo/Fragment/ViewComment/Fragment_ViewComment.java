@@ -20,6 +20,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.company.damonday.CompanyInfo.Fragment.ViewCommentDetail.Fragment_ViewCommentDetail;
+import com.company.damonday.Framework.CommentList.CommentList;
+import com.company.damonday.Framework.CommentList.CommentList_CustomListAdapter;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
@@ -39,8 +41,8 @@ public class Fragment_ViewComment extends Fragment {
     private View v;
     public  ListView commentListView;
     private TextView txtNoComment;
-    private Fragment_ViewComment_CustomListAdapter customListAdapter;
-    public  List<Fragment_ViewComment_Comment> commentList = new ArrayList<Fragment_ViewComment_Comment>();
+    private CommentList_CustomListAdapter customListAdapter;
+    public  List<CommentList> commentList = new ArrayList<CommentList>();
     private String entId;
     private APIConfig ranking;
     private Boolean APILoading = false;
@@ -80,7 +82,7 @@ public class Fragment_ViewComment extends Fragment {
 
         commentListView = (ListView) v.findViewById(R.id.list);
         txtNoComment = (TextView) v.findViewById(R.id.no_comment);
-        customListAdapter = new Fragment_ViewComment_CustomListAdapter(getActivity(), commentList);
+        customListAdapter = new CommentList_CustomListAdapter(getActivity(), commentList);
         commentListView.setAdapter(customListAdapter);
         //if no comment, show warning to user
         commentListView.setEmptyView(txtNoComment);
@@ -190,7 +192,7 @@ public class Fragment_ViewComment extends Fragment {
                         txtNoComment.setText(R.string.comment_no_comment);
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject commentContent = data.getJSONObject(i);
-                            Fragment_ViewComment_Comment comment = new Fragment_ViewComment_Comment();
+                            CommentList comment = new CommentList();
                             comment.setProfilePic("http://www.suggymoto.com/Blog/wp-content/uploads/2013/03/Android-Icon-50x50.png");
                             comment.setTitle(commentContent.getString("title"));
                             comment.setPostedDate(commentContent.getString("time"));
