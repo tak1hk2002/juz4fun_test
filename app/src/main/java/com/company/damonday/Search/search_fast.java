@@ -75,16 +75,6 @@ public class search_fast extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-
-    public String geturl(String keyword) {
-        String geturl = APIConfig.URL_Fast_Search;
-
-        geturl = geturl + "?keyword=" + keyword;
-
-        Log.d("geturl", geturl);
-        return geturl;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -239,8 +229,11 @@ public class search_fast extends Fragment {
 //        pDialog.setMessage("提交中 ...");
         //       showDialog();
 
+        //new object for Api url
+        APIConfig apiConfig = new APIConfig(keyword);
+
         strReq = new StringRequest(Request.Method.GET,
-                geturl(keyword), new Response.Listener<String>() {
+                apiConfig.getUrlFastSearch(), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -249,10 +242,10 @@ public class search_fast extends Fragment {
 
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    String error = jObj.getString("status");
+                    int status = jObj.getInt("status");
 
                     // Check for error node in json
-                    if (error.equals("success")) {
+                    if (status == 1) {
                         // user successfully logged in
                         // Create login session
                         //session.setLogin(true);
@@ -263,12 +256,14 @@ public class search_fast extends Fragment {
                             JSONObject oneObject = jArray.getJSONObject(i);
 
                             String name = oneObject.getString("name");
-                            String ID = oneObject.getString("ID");
+                            String ID = oneObject.getString("id");
+                            String company = oneObject.getString("company_name");
 
 
                             search_fast_model model = new search_fast_model();
                             model.setTitle(name);
                             model.setUser_id(ID);
+                            model.setCompanyName(company);
 
 
                             // adding movie to movies array
@@ -277,10 +272,9 @@ public class search_fast extends Fragment {
                         }
 
 
-                    } else {
+                    } else if (status == 0) {
                         // Error in login. Get the error message
-                        JSONObject data = jObj.getJSONObject("data");
-                        String errorMsg = data.getString("msg");
+                        String errorMsg = jObj.getString("msg");
 
                         Toast.makeText(getActivity(),
                                 errorMsg, Toast.LENGTH_LONG).show();
@@ -411,10 +405,13 @@ public class search_fast extends Fragment {
             }
 
             TextView title = (TextView) convertView.findViewById(R.id.title);
+            TextView companyName = (TextView) convertView.findViewById(R.id.company_name);
 
             search_fast_model m = productDetails.get(position);
 
             title.setText(m.getTitle());
+
+            companyName.setText("@"+m.getCompanyName());
 
             return convertView;
         }

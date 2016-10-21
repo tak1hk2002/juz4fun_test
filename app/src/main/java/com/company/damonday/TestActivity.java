@@ -23,24 +23,22 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.company.damonday.CompanyInfo.CompanySQLiteHandler;
 import com.company.damonday.Home.Home;
-import com.company.damonday.LatestComment.latestcommentvolley;
+import com.company.damonday.LatestComment.LatestComment;
 import com.company.damonday.Login.Fragment.Fragment_Login;
 import com.company.damonday.Login.Fragment.Fragment_Registration;
 import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MyFavourites.MyFavourites;
 import com.company.damonday.NewFoundCompany.NewFoundCompany;
-import com.company.damonday.Ranking.NavDrawerListAdapter;
-import com.company.damonday.Ranking.Ranking_try;
+import com.company.damonday.Ranking.Ranking;
 import com.company.damonday.Search.search;
 import com.company.damonday.Setting.Setting;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.ConnectionDetector;
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 
@@ -72,6 +70,8 @@ public class TestActivity extends FragmentActivity {
     private SessionManager session;         //tomc 10/4/2016        login
     private LoginSQLiteHandler db;           //tomc 10/4/2016       login
     private Boolean HOME_FLAG;
+    private AccessTokenTracker accessTokenTracker;
+    private String tag = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,6 +208,24 @@ public class TestActivity extends FragmentActivity {
             displayView(7);
         }
 
+
+        /*//keep checking whether the accessToken is null or not
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(
+                    AccessToken oldAccessToken,
+                    AccessToken currentAccessToken) {
+
+                if (currentAccessToken == null){
+                    //User logged out
+
+                }
+            }
+        };
+
+        if(!accessTokenTracker.isTracking())
+            accessTokenTracker.startTracking();*/
+
     }
 
     public void DialogForNetworkChecking() {
@@ -267,32 +285,21 @@ public class TestActivity extends FragmentActivity {
             linear_login.setVisibility(View.GONE);
             linear_register.setVisibility(View.GONE);
             linear_logout.setVisibility(View.VISIBLE);
-
-            if (session.isLoggedIn()) {
-                btn_logout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-
-
-                    public void onClick(View v) {
+            btn_logout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (session.isLoggedIn()) {
                         session.setLogin(false);
-                        db.deleteUsers();
-
-                        mDrawerLayout.closeDrawer(Gravity.RIGHT);
                     }
-
-
-                });
-            } else if (AccessToken.getCurrentAccessToken() != null) {
-                btn_logout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDrawerLayout.closeDrawer(Gravity.RIGHT);
-
+                    else if(AccessToken.getCurrentAccessToken() != null){
+                        LoginManager.getInstance().logOut();
                     }
-                });
+                    db.deleteUsers();
+                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                }
 
+            });
 
-            }
         } else {
             linear_logout.setVisibility(View.GONE);
             linear_login.setVisibility(View.VISIBLE);
@@ -408,7 +415,6 @@ public class TestActivity extends FragmentActivity {
     private void displayView(int position) {
         // update the main content by replacing fragments
         Fragment fragment = null;
-        String tag = null;
         String api = null;
         HOME_FLAG = false;
         //getActionBar().setDisplayHomeAsUpEnabled(true);     //make back button
@@ -433,12 +439,12 @@ public class TestActivity extends FragmentActivity {
                 break;
             case 2:
                 //排行榜
-                fragment = new Ranking_try();
+                fragment = new Ranking();
                 tag = "ranking";
                 break;
             case 3:
                 //最新評論
-                fragment = new latestcommentvolley();
+                fragment = new LatestComment();
                 api = APIConfig.URL_Latest_Comment;
                 tag = "latestcommentvolley";
                 break;
@@ -527,16 +533,16 @@ public class TestActivity extends FragmentActivity {
         if (getActionBar().getTitle() != null) {
             tempTitle.add(title.toString());
         }
-        //      System.out.println("temptitle0:"+tempTitle);
+        System.out.println("temptitle0:"+tempTitle);
 
     }
 
-    public void setTitle(CharSequence title, boolean back) {
+    /*public void setTitle(CharSequence title, boolean back) {
 
         getActionBar().setTitle(title);
         AdjustActiontitle(title.toString());
         //System.out.println("temptitle4:"+tempTitle);
-    }
+    }*/
 
     /**
      * When using the ActionBarDrawerToggle, you must call it during
@@ -563,12 +569,47 @@ public class TestActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
+        boolean clickLoginOrRegister;
 //when BackbuttonPressed
         System.out.println("onBackPressed");
+        System.out.println(tag);
         mDrawerLayout.closeDrawer(Gravity.RIGHT);
         FragmentManager fragmentManager = getSupportFragmentManager();
         Log.d("EntryCount", Integer.toString(fragmentManager.getBackStackEntryCount()));
-        if (fragmentManager.getBackStackEntryCount() == 1) {
+
+        String lastBarTitle = tempTitle.get(tempTitle.size()-1);
+        //indicate whether the last page is login or register or not
+        if(lastBarTitle.equals("登入") || lastBarTitle.equals("註冊"))
+            clickLoginOrRegister = true;
+        else
+            clickLoginOrRegister = false;
+
+        /*
+        * 因為launch page會有登入和註冊，click then back button會問係咪要離開，所以要加exception如果係launchpage and (登入or註冊)，
+        * 可以back page
+        * */
+        if (fragmentManager.getBackStackEntryCount() > 1 ||
+                (tag.equals("launchpage") && clickLoginOrRegister)) {
+            //如果不是返主頁
+            if (!tempTitle.isEmpty()) {
+                System.out.println(tempTitle);
+                tempTitle.remove(tempTitle.size() - 1);
+                //  System.out.println("temptitle3:" + tempTitle);
+                setTitle(tempTitle.get(tempTitle.size()-1));
+            }
+
+            //System.out.println("fragmentManager.getBackStackEntryCount()tom=" + fragmentManager.getBackStackEntryCount());
+            // fragmentManager.popBackStack();
+            fragmentManager.popBackStackImmediate();
+            if (fragmentManager.getBackStackEntryCount() == 1) {
+                hideBackButton();
+                showMenuButton();
+                System.out.println("case1");
+            }
+
+
+        }
+        else{
             //quit the app dialog
             new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK)
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -583,39 +624,6 @@ public class TestActivity extends FragmentActivity {
                     })
                     .setNegativeButton(R.string.main_quit_negative, null)
                     .show();
-            // finish();
-        }
-        //  if (fragmentManager.getBackStackEntryCount() == 1) {
-        // finish();
-            /*//如果返主頁
-            if(!HOME_FLAG) {
-                tempTitle.clear();
-                tempTitle.add(getResources().getString(R.string.home));
-                setTitle(R.string.home);
-                //displayView(0);
-                System.out.println("case1");
-            }
-            else{
-            }*/
-        // }
-        else {
-            //如果不是返主頁
-            if (!tempTitle.isEmpty()) {
-                tempTitle.remove(tempTitle.size() - 1);
-                //  System.out.println("temptitle3:" + tempTitle);
-                setTitle(tempTitle.get(tempTitle.size() - 1), true);
-            }
-
-            //System.out.println("fragmentManager.getBackStackEntryCount()tom=" + fragmentManager.getBackStackEntryCount());
-            // fragmentManager.popBackStack();
-            fragmentManager.popBackStackImmediate();
-            if (fragmentManager.getBackStackEntryCount() == 1) {
-                hideBackButton();
-                showMenuButton();
-                System.out.println("case1");
-            }
-
-
         }
         //moveTaskToBack(true);
         //  super.onBackPressed(); // allows standard use of backbutton for page 1

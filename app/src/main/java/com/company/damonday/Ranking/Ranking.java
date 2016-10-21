@@ -1,11 +1,13 @@
 package com.company.damonday.Ranking;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -15,10 +17,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.company.damonday.CompanyInfo.FragmentTabs;
+import com.company.damonday.CompanyInfo.FragmentTabs_try;
+import com.company.damonday.Framework.ImageList.ImageInfo;
+import com.company.damonday.Framework.ImageList.ImageList_CustomListAdapter;
 import com.company.damonday.R;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.ProgressImage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,72 +33,104 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import function.GetPreviousObject;
-
-
 /**
- * Created by LAM on 22/4/2015.
+ * Created by lamtaklung on 3/8/15.
  */
+public class Ranking extends Fragment {
 
-public class Ranking extends Activity {
-
-    // json array response url
-    private String urlJsonObj = "http://damonday.tk/api/entertainment/rank/";
 
     private static String TAG = Ranking.class.getSimpleName();
-
     // Progress dialog
-    private ProgressDialog pDialog;
-    private List<CompanyInfo> companyInfoItems = new ArrayList<CompanyInfo>();
+    private ProgressImage pDialog;
+    private List<ImageInfo> imageInfoItems = new ArrayList<ImageInfo>();
     private GridView gridView;
-    private MyAdapter adapter;
-
+    private ImageList_CustomListAdapter adapter;
+    private FragmentTabs_try fragmentTabs_try;
+    private JsonObjectRequest jsonObjReq;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ranking);
-        gridView = (GridView) findViewById(R.id.gridView);
 
-
-        //wait for displaying ranking
-        //pDialog = new ProgressDialog(this);
+        pDialog = new ProgressImage(getActivity());
+        // Showing progress dialog before making http request
         //pDialog.setMessage("Loading...");
-        //pDialog.show();
-
-
+        pDialog.show();
         makeJsonArrayRequest();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        //init view
+        View view = inflater.inflate(R.layout.ranking, container, false);
+
+        //getActivity().getActionBar().setTitle(R.string.ranking);
+        getActivity().setTitle(R.string.ranking);
+
+        gridView = (GridView) view.findViewById(R.id.gridView);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
-                Toast.makeText(Ranking.this, "You Clicked " + companyInfoItems.get(position).getUrl(), Toast.LENGTH_LONG).show();
 
                 //pass the following object to next activity
-                Intent i = new Intent(Ranking.this, FragmentTabs.class);
+                /*Intent i = new Intent(Ranking.this, FragmentTabs.class);
                 i.putExtra("Ent_id", companyInfoItems.get(position).getEnt_id());
-                startActivity(i);
+                startActivity(i);*/
+
+                //pass object to next fragment
+                Bundle bundle = new Bundle();
+                bundle.putString("ent_id", Integer.toString(imageInfoItems.get(position).getEntID()));
+                fragmentTabs_try = new FragmentTabs_try();
+                fragmentTabs_try.setArguments(bundle);
+
+                ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
+                FragmentManager fragmentManager = getFragmentManager();
+                // System.out.println(fragmentManager.getBackStackEntryCount());
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("ranking"));
+                fragmentTransaction.add(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                fragmentTransaction.commit();
+
             }
         });
 
 
+        /*fragmentTabs_try.getView().setFocusableInTouchMode(true);
+        fragmentTabs_try.getView().requestFocus();
+        fragmentTabs_try.getView().setOnKeyListener( new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey( View v, int keyCode, KeyEvent event )
+            {
+                if( keyCode == KeyEvent.KEYCODE_BACK )
+                {
+                    return true;
+                }
+                return false;
+            }
+        } );*/
+
+        return view;
+
     }
 
-
     @Override
-    public void onStart() {
-        super.onStart();
-        adapter = new MyAdapter(this, companyInfoItems, false);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        adapter = new ImageList_CustomListAdapter(getActivity(), imageInfoItems, false);
         gridView.setAdapter(adapter);
-
     }
 
 
     private void makeJsonArrayRequest() {
-
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        showpDialog();
+        jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 APIConfig.URL_RANKING, null, new Response.Listener<JSONObject>() {
 
             public void onResponse(JSONObject response) {
@@ -100,28 +138,27 @@ public class Ranking extends Activity {
 
 
                 try {
-
-
                     // loop through each json object
-                    String status = response.getString("status");
-                    JSONArray rank = response.getJSONArray("data");
+                    int status = response.getInt("status");
 
-                    if (status.equals("success")) {
-
+                    if (status == 1) {
+                        JSONArray rank = response.getJSONArray("data");
                         for (int i = 0; i < rank.length(); i++) {
-                            CompanyInfo companyInfo = new CompanyInfo();
+                            ImageInfo imageInfo = new ImageInfo();
                             JSONObject company = (JSONObject) rank
                                     .get(i);
-                            companyInfo.setTitle(company.getString("name"));
-                            companyInfo.setUrl(company.getString("cover_image"));
-                            companyInfo.setEnt_id(company.getInt("ID"));
-
-                            companyInfoItems.add(companyInfo);
+                            imageInfo.setTitle(company.getString("name"));
+                            imageInfo.setCompany(company.getString("company_name"));
+                            imageInfo.setUrl(company.getString("cover_image"));
+                            imageInfo.setEntID(company.getInt("id"));
+                            int resID = getResources().getIdentifier("mascot_rank" + Integer.toString(i + 1), "drawable", getActivity().getPackageName());
+                            imageInfo.setMoscotID(resID);
+                            imageInfoItems.add(imageInfo);
 
                         }
-                    } else {
+                    } else if (status == 0) {
                         String errorMsg = response.getString("msg");
-                        Toast.makeText(getApplicationContext(),
+                        Toast.makeText(getActivity(),
                                 errorMsg,
                                 Toast.LENGTH_LONG).show();
                     }
@@ -130,23 +167,23 @@ public class Ranking extends Activity {
                 } catch (JSONException e) {
                     Log.d("error", "error");
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),
+                    Toast.makeText(getActivity(),
                             "Error: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }
                 //hidePDialog();
                 // notifying list adapter about data changes
                 // so that it renders the list view with updated data
-
+                hidepDialog();
                 adapter.notifyDataSetChanged();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
+                Toast.makeText(getActivity(),
                         R.string.connection_server_warning, Toast.LENGTH_SHORT).show();
-                //hidePDialog();
+                hidepDialog();
             }
         });
         // Adding request to request queue
@@ -154,15 +191,21 @@ public class Ranking extends Activity {
 
     }
 
-   /* @Override
-    public void onDestroy() {
-        super.onDestroy();
-        hidePDialog();
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (jsonObjReq != null)  {
+            jsonObjReq.cancel();
+            Log.d("onStop", "Ranking requests are all cancelled");
+        }
     }
 
-    private void hidePDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
-    }*/
+    private void showpDialog() {
+        pDialog.show();
+    }
+
+    private void hidepDialog() {
+        pDialog.dismiss();
+    }
 
 }

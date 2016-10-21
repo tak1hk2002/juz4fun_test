@@ -26,7 +26,6 @@ public class SubmitForm_CustomListAdapter extends BaseAdapter {
     private List<Integer> showDetailIndicator;
     private List<Integer> hideEditText;
     private SubmitForm m;
-    private int abc;
 
     public SubmitForm_CustomListAdapter(Context context, List<SubmitForm> items,
                                         List<Integer> showDetailIndicator, List<Integer> hideEditText, String warning[]){

@@ -28,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.appyvet.rangebar.RangeBar;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
+import com.company.damonday.Framework.ScrollView.ScrollView;
 import com.company.damonday.Framework.SubmitForm.SubmitForm;
 import com.company.damonday.Framework.SubmitForm.SubmitForm_CustomListAdapter;
 import com.company.damonday.Login.LoginSQLiteHandler;
@@ -72,7 +73,9 @@ public class Fragment_ViewWriteComment extends Fragment {
     private StringRequest strReq;
     //內容，消費，整體評分，詳細評分 show indicator
     private List<Integer> showDetailIndicator = Arrays.asList(1,3,4);
+    private List<Integer> showEditText = Arrays.asList();
     private String detailRatingDB[];
+    private ScrollView doubleScroll = new ScrollView();
 
 
 
@@ -143,9 +146,9 @@ public class Fragment_ViewWriteComment extends Fragment {
         listView = (ListView) view.findViewById(R.id.listView);
         Button btnReset = (Button) view.findViewById(R.id.reset);
         Button btnSubmit = (Button) view.findViewById(R.id.submit);
-        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator, null, warning);
+        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator, showEditText, warning);
         listView.setAdapter(customAdapter);
-        setListViewHeightBasedOnChildren(listView);
+        doubleScroll.setListViewHeightBasedOnChildren2(listView);
 
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,7 +162,7 @@ public class Fragment_ViewWriteComment extends Fragment {
                 }
                 customAdapter.notifyDataSetChanged();
                 listView.setAdapter(customAdapter);
-                setListViewHeightBasedOnChildren(listView);
+                doubleScroll.setListViewHeightBasedOnChildren2(listView);
             }
         });
 
@@ -197,10 +200,12 @@ public class Fragment_ViewWriteComment extends Fragment {
                         HashMap<String, String> user = DB.getUserDetails();
                         token = user.get("token");
                     }
+                    System.out.println(entId);
+                    System.out.println(token);
                     System.out.println(submitVars[0]);
-                    System.out.println(submitVars[1]);
+                    Log.d("content", submitVars[1]);
                     System.out.println(submitVars[2]);
-                    System.out.println(submitVars[3]);
+                    System.out.println(mapOverallRating.get(submitVars[3]));
                     System.out.println(mapDetailRating);
                     submitWriteComment(token, submitVars[0], submitVars[1], submitVars[2],
                             Integer.toString(mapOverallRating.get(submitVars[3])), mapDetailRating);
@@ -210,7 +215,7 @@ public class Fragment_ViewWriteComment extends Fragment {
                 customAdapter.notifyDataSetChanged();
                 //update the height of the listView
                 listView.setAdapter(customAdapter);
-                setListViewHeightBasedOnChildren(listView);
+                doubleScroll.setListViewHeightBasedOnChildren2(listView);
             }
         });
 
@@ -488,9 +493,9 @@ public class Fragment_ViewWriteComment extends Fragment {
 
                 try{
                     JSONObject jObj = new JSONObject(response);
-                    String error = jObj.getString("status");
+                    int status = jObj.getInt("status");
                     // Check for error node in json
-                    if (error.equals("success")) {
+                    if (status == 1) {
 
 
                         //(refresh)go to company detail
@@ -510,10 +515,9 @@ public class Fragment_ViewWriteComment extends Fragment {
                         Toast.makeText(getActivity(), R.string.writeComment_submit_success, Toast.LENGTH_SHORT).show();
 
 
-                    }else {
+                    }else if (status == 0) {
                         // Error in login. Get the error message
-                        JSONObject data = jObj.getJSONObject("data");
-                        String errorMsg = data.getString("msg");
+                        String errorMsg = jObj.getString("msg");
 
                         Toast.makeText(getActivity(),
                                 errorMsg, Toast.LENGTH_SHORT).show();
@@ -540,7 +544,7 @@ public class Fragment_ViewWriteComment extends Fragment {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("token", token);
                 params.put("title", title);
-                params.put("ent_id", entId);
+                params.put("entId", entId);
                 params.put("comment", content);
                 params.put("assess", overallRating);
                 for (int i = 0; i < detailRating.size(); i++){
@@ -566,44 +570,6 @@ public class Fragment_ViewWriteComment extends Fragment {
         }
     }
 
-
-    //doulbe scrollView
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        SubmitForm_CustomListAdapter listAdapter = (SubmitForm_CustomListAdapter) listView.getAdapter();
-        if (listAdapter == null) {
-            // pre-condition
-            return;
-        }
-
-        /*int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < (listAdapter.getCount()); i++)
-        {
-            view = listAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, AbsListView.LayoutParams.WRAP_CONTENT));
-
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-        listView.requestLayout();*/
-        int totalHeight = listView.getPaddingTop() + listView.getPaddingBottom();;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight
-                + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-    }
 
     private void showDialog() {
         if (!pDialog.isShowing())

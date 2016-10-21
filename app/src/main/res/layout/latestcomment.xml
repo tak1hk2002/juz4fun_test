@@ -14,10 +14,9 @@
             <ListView
                 android:id="@+id/list"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:divider="@drawable/list_divider"
-                android:dividerHeight="1dp"
-                android:listSelector="@drawable/view_companycomment_list_row_selector" />
+                android:dividerHeight="1dp"/>
 
         </RelativeLayout>
 

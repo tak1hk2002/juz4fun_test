@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.multidex.MultiDex;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -20,12 +21,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 
-import com.company.damonday.Home.Home;
 import com.company.damonday.Login.FragmentTabs;
 import com.company.damonday.function.APIConfig;
-import com.company.damonday.Ranking.Ranking;
 import com.company.damonday.function.AppController;
-import com.company.damonday.function.ProgressImage;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -125,9 +123,9 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 // 啟動地圖元件用的Intent物件
-                Intent intentMap = new Intent(MainActivity.this, MapsActivity.class);
+                //Intent intentMap = new Intent(MainActivity.this, MapsActivity.class);
                 // 啟動地圖元件
-                startActivityForResult(intentMap, 2);
+                //startActivityForResult(intentMap, 2);
             }
         });
 

@@ -70,6 +70,7 @@ public class MyFavourites_adapter extends BaseAdapter {
         NetworkImageView userIcon = (NetworkImageView) convertView
                 .findViewById(R.id.user_icon);
         TextView title = (TextView) convertView.findViewById(R.id.title);
+        TextView companyName = (TextView) convertView.findViewById(R.id.company_name);
         TextView rating = (TextView) convertView.findViewById(R.id.average_score);
         TextView rating2 = (TextView) convertView.findViewById(R.id.average_score2);
         TextView price_range = (TextView) convertView.findViewById(R.id.price_range);
@@ -108,7 +109,7 @@ public class MyFavourites_adapter extends BaseAdapter {
             scoreIcon.setImageResource(R.drawable.mascot_happy_comment);
 
         //price_range
-        price_range.setText(m.getPrice());
+        price_range.setText("$"+m.getPrice());
 
         //category
         category.setText(m.getCategory());

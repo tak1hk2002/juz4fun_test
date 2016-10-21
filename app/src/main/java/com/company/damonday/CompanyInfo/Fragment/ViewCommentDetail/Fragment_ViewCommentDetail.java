@@ -115,9 +115,10 @@ public class Fragment_ViewCommentDetail extends Fragment {
             public void onResponse(JSONObject jsonObject) {
 
                 try {
-                    String status = jsonObject.getString("status");
-                    JSONObject commentInfo = jsonObject.getJSONObject("data");
-                    if (status.equals("success")) {
+                    int status = jsonObject.getInt("status");
+
+                    if (status == 1) {
+                        JSONObject commentInfo = jsonObject.getJSONObject("data");
                         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
                         profilePic.setImageUrl(commentInfo.getString("profile_picture"), imageLoader);
                         title.setText(commentInfo.getString("title"));
@@ -138,8 +139,8 @@ public class Fragment_ViewCommentDetail extends Fragment {
                         else if (Float.parseFloat(commentInfo.getString("average_score")) > 3.3)
                             averagePic.setImageResource(R.drawable.mascot_happy_comment);
 
-                    } else {
-                        String errorMsg = commentInfo.getString("msg");
+                    } else if(status == 0) {
+                        String errorMsg = jsonObject.getString("msg");
                         Toast.makeText(getActivity(),
                                 errorMsg,
                                 Toast.LENGTH_LONG).show();

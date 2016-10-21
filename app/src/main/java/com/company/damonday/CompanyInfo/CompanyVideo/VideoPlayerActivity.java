@@ -20,6 +20,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.company.damonday.R;
 
@@ -29,6 +30,7 @@ public class VideoPlayerActivity extends Fragment implements SurfaceHolder.Callb
     MediaPlayer player;
     VideoControllerView controller;
     View rootView;
+    String videoUrl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,13 @@ public class VideoPlayerActivity extends Fragment implements SurfaceHolder.Callb
                 ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         ActionBar action=getActivity().getActionBar();
         action.hide();
+
+        try {
+            videoUrl = getArguments().getString("videoUrl");
+        }catch(Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "No data loaded", Toast.LENGTH_LONG).show();
+        }
 
 
         player = new MediaPlayer();

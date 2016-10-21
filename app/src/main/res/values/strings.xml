@@ -9,7 +9,7 @@
     <string name="main_quit_message">真係走喇嘛?</string>
     <string name="main_quit_positive">走啦仲問！</string>
     <string name="main_quit_negative">講笑姐;p</string>
-    
+
     <!--common use-->
     <string name="or">或</string>
 
@@ -67,12 +67,12 @@
     <string name="not_has_score_yet">未有分住</string>
     <string-array name="company_info_cat">
         <item>公司名稱：</item>
-        <item>玩樂簡介：</item>
+        <item>描述：</item>
         <item>地址：</item>
         <item>電話：</item>
         <item>類別：</item>
         <item>價錢：</item>
-        <item>建議交通工具：</item>
+        <item>交通工具：</item>
         <item>營業時間：</item>
         <item>電郵：</item>
     </string-array>
@@ -224,13 +224,13 @@
     </string-array>
 
     <!--feedback-->
-    <string-array name = "feedback_title">
+    <string-array name="feedback_title">
         <item>主題</item>
         <item>你的電郵</item>
         <item>內容</item>
     </string-array>
 
-    <string-array name = "feedback_warning">
+    <string-array name="feedback_warning">
         <item>請輸入主題</item>
         <item>請輸入你的電郵</item>
         <item>請輸入內容</item>
@@ -244,7 +244,7 @@
         <item>版本</item>
     </string-array>
 
-    <string name = "setting_android_version">1.0</string>
+    <string name="setting_android_version">1.0</string>
 
 
     <!--title-->
@@ -264,6 +264,7 @@
     <string name="register">註冊</string>
     <string name="forget_password">忘記密碼</string>
     <string name="my_comment">我的評論</string>
+    <string name="launchpage">Launch</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

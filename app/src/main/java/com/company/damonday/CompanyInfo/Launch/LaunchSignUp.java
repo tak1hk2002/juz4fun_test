@@ -58,6 +58,10 @@ public class LaunchSignUp extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //set bar title
+        getActivity().setTitle(R.string.launchpage);
+
         View view = inflater.inflate(R.layout.launch_sign_up, container, false);
         Button btnRegister = (Button) view.findViewById(R.id.btn_register);
         Button btnSkip = (Button) view.findViewById((R.id.btn_skip));

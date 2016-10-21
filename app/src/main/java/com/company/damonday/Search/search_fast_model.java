@@ -4,6 +4,21 @@ package com.company.damonday.Search;
  * Created by tom on 25/10/15.
  */
 public class search_fast_model {
+    private String title;
+    private String user_id;
+    private String companyName;
+
+    public search_fast_model() {
+    }
+
+
+    public search_fast_model(String user_id, String title, String companyName) {
+        this.title = title;
+        this.user_id = user_id;
+        this.companyName = companyName;
+
+    }
+
     public String getTitle() {
         return title;
     }
@@ -20,20 +35,12 @@ public class search_fast_model {
         this.user_id = user_id;
     }
 
-    private String title;
-    private String user_id;
-
-    public search_fast_model() {
+    public String getCompanyName() {
+        return companyName;
     }
 
-
-    public search_fast_model(String user_id, String title
-    ) {
-        this.title = title;
-        this.user_id = user_id;
-
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
-
-
 }
 

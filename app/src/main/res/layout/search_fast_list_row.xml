@@ -15,6 +15,16 @@
         android:textColor="@color/font_light_white"
         android:textSize="18dp" />
 
+    <TextView
+        android:id="@+id/company_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="真好玩真好玩"
+        android:textColor="@color/font_light_white"
+        android:textSize="18dp" />
+
 </RelativeLayout>
 
 

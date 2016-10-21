@@ -205,6 +205,7 @@ public class FragmentTabs_try extends Fragment{
                 mTabHost.newTabSpec("玩評").setIndicator(createTabView(getActivity(), "玩評")),
                 Fragment_ViewComment.class, bundle);
 
+
         //check login
         //no login, go to login or register option screen
 
@@ -227,7 +228,7 @@ public class FragmentTabs_try extends Fragment{
         tv.setText(tabText);
         return view;
     }
-
+    boolean mEnableFlag = true;
     //Calculate the height of the ScrollView after combining outer and inner listView
     private CustomScrollView.ScrollChangedListener mScrollChangedListener = new CustomScrollView.ScrollChangedListener() {
         @Override
@@ -236,13 +237,13 @@ public class FragmentTabs_try extends Fragment{
 
             int height=scrollView.getHeight();
             int scrollViewMeasuredHeight=scrollView.getChildAt(0).getMeasuredHeight();
-            System.out.println(">>>>>>>>>>>> "+"scrollY="+y+",height="+height+",scrollViewMeasuredHeight="+scrollViewMeasuredHeight*0.9);
+            System.out.println(">>>>>>>>>>>> "+"scrollY="+y+",height="+height+",scrollViewMeasuredHeight="+scrollViewMeasuredHeight);
             SCROLL_Y=y;
             if((y+height)>=scrollViewMeasuredHeight*0.9 && mTabHost.getCurrentTab() == 1) {
-                boolean mEnableFlag = true;
+
                 if(mEnableFlag)
                 {
-                    //mEnableFlag=false;
+                    mEnableFlag=false;
                     // GO TO Load More!!!
                     Log.d("Load more", "Load more");
 
@@ -250,8 +251,10 @@ public class FragmentTabs_try extends Fragment{
                     Fragment_ViewComment fragment_viewComment = (Fragment_ViewComment)fragmentManager.findFragmentByTag("玩評");
                     pageNum++;
                     fragment_viewComment.customLoadMoreDataFromApi(pageNum);
-
                 }
+            }
+            else{
+                mEnableFlag = true;
             }
         }
     };
@@ -278,15 +281,16 @@ public class FragmentTabs_try extends Fragment{
                 Log.d(TAG, response.toString());
 
                 try {
-                    String status = response.getString("status");
-                    JSONObject companyInfo = response.getJSONObject("data");
-                    if (status.equals("success")){
+                    int status = response.getInt("status");
 
+                    if (status == 1){
+                        JSONObject companyInfo = response.getJSONObject("data");
                         JSONObject score = companyInfo.getJSONObject("score");
                         JSONArray promotion_images = companyInfo.getJSONArray("promotion_images");
-                        //videoUrl = companyInfo.getString("video");
-                        videoUrl = "http://www.sample-videos.com/video/mp4/360/big_buck_bunny_360p_2mb.mp4";
-                        companyName = companyInfo.getString("name");
+                        videoUrl = companyInfo.getString("video");
+                        Log.d("VideoUrl", videoUrl);
+                        //videoUrl = "http://www.sample-videos.com/video/mp4/360/big_buck_bunny_360p_2mb.mp4";
+                        companyName = companyInfo.getString("cht_name");
                         Log.d("videoUrl", videoUrl);
 
                         for (int i = 0; i < promotion_images.length(); i++){
@@ -308,8 +312,8 @@ public class FragmentTabs_try extends Fragment{
 
                         initViews();
 
-                    }else{
-                        String errorMsg = companyInfo.getString("msg");
+                    }else if (status == 0){
+                        String errorMsg = response.getString("msg");
                         Toast.makeText(getActivity(),
                                 errorMsg,
                                 Toast.LENGTH_LONG).show();
@@ -371,8 +375,7 @@ public class FragmentTabs_try extends Fragment{
         //tvCompanyTitle.setText(companyName);
 
         if(!companyName.equals(null));   //tomc 28/10/2015
-       // getActivity().getActionBar().setTitle(companyName);
-        getActivity().setTitle(companyName);
+            getActivity().setTitle(companyName);
 
 
         String coverPageUrl;
@@ -388,9 +391,9 @@ public class FragmentTabs_try extends Fragment{
         for(int i = 0; i < coverPage.size(); i++) {
             listOfItems.add(coverPage.get(i));
         }
-        listOfItems.add("http://cdn.inside.com.tw/wp-content/uploads/2012/05/Chrome.jpg");
-        listOfItems.add("http://cdn.inside.com.tw/wp-content/uploads/2012/05/Chrome.jpg");
-        listOfItems.add("http://cdn.inside.com.tw/wp-content/uploads/2012/05/Chrome.jpg");
+        //listOfItems.add("http://cdn.inside.com.tw/wp-content/uploads/2012/05/Chrome.jpg");
+        //listOfItems.add("http://cdn.inside.com.tw/wp-content/uploads/2012/05/Chrome.jpg");
+        //listOfItems.add("http://cdn.inside.com.tw/wp-content/uploads/2012/05/Chrome.jpg");
 
     }
 
@@ -430,8 +433,12 @@ public class FragmentTabs_try extends Fragment{
                     @Override
                     public void onClick(View v) {
                         //startActivity(new Intent(getActivity(), VideoPlayerActivity.class));
+                        Bundle bundle = new Bundle();
+                        bundle.putString("videoUrl", videoUrl);
+
 
                         VideoPlayerActivity videoPlayerActivity = new VideoPlayerActivity();
+                        videoPlayerActivity.setArguments(bundle);
 
                         FragmentManager fragmentManager = getFragmentManager();
                         //fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);   //important to clear repeat fragment in the stack //Alan 9/2/2016

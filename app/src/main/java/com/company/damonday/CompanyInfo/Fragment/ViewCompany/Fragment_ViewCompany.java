@@ -1,5 +1,6 @@
 package com.company.damonday.CompanyInfo.Fragment.ViewCompany;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
@@ -24,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.company.damonday.CompanyInfo.Fragment.ViewCompany.FeeDetail.Fee_Detail;
+import com.company.damonday.Framework.ScrollView.ScrollView;
 import com.company.damonday.MapsActivity;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
@@ -50,21 +55,23 @@ public class Fragment_ViewCompany extends Fragment {
     private ListView listView;
     private SimpleAdapter simpleAdapter;
     private String urlJsonObj, compayName;
-    private String entId;
+    private String entId, companyTel;
     private ArrayList<String> companyInfo = new ArrayList<String>();
     private List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
     private APIConfig ranking;
     private double latitude, longitude;
     private List<Integer> showDetailIndicator = Arrays.asList(2, 3, 5);
     private JsonObjectRequest jsonObjReq;
-
+    private ScrollView doubleScroll = new ScrollView();
+    private ArrayList<String> info = new ArrayList<String>();
+    private Fragment_ViewCompany_CustomListAdapter customAdapter;
+    private int storeDesiredWidth = 0;
     private String[] companyInfoCat ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-
         try {
             //get id from previous page
             entId = getArguments().getString("ent_id");
@@ -78,7 +85,6 @@ public class Fragment_ViewCompany extends Fragment {
 
         //get the company info categories
         companyInfoCat = getResources().getStringArray(R.array.company_info_cat);
-
 
 
         makeJsonArrayRequest();
@@ -100,11 +106,14 @@ public class Fragment_ViewCompany extends Fragment {
         v = inflater.inflate(R.layout.view_companyinfo, container, false);
 
         listView = (ListView)v.findViewById(R.id.listView_Company);
-        simpleAdapter = new SimpleAdapter(getActivity(),
+        /*simpleAdapter = new SimpleAdapter(getActivity(),
                 items, R.layout.view_companyinfo_simpleadapter, new String[]{"title", "text", "indicator"},
-                new int[]{R.id.title, R.id.text, R.id.indicator});
-        listView.setAdapter(simpleAdapter);
-        setListViewHeightBasedOnChildren(listView);
+                new int[]{R.id.title, R.id.text, R.id.indicator});*/
+
+        customAdapter = new Fragment_ViewCompany_CustomListAdapter(getActivity(), info, companyInfoCat, showDetailIndicator);
+        listView.setAdapter(customAdapter);
+        doubleScroll.setListViewHeightBasedOnChildren(listView);
+        //customAdapter.notifyDataSetChanged();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -130,7 +139,7 @@ public class Fragment_ViewCompany extends Fragment {
                         //trigger built in phone call function
                         //ACTION_DIAL => modify hardcoded number before making a call
                         Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
-                        phoneIntent.setData(Uri.parse("tel:29525478"));
+                        phoneIntent.setData(Uri.parse("tel:" + companyTel));
                         try {
                             startActivity(phoneIntent);
                             //finish();
@@ -187,18 +196,25 @@ public class Fragment_ViewCompany extends Fragment {
 
 
     //Double scrollView
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        SimpleAdapter listAdapter = (SimpleAdapter) listView.getAdapter();
-        if (listAdapter == null) {
-            // pre-condition
+    public void setListViewHeightBasedOnChildren(ListView listView) {
+        Log.d("setListView", "HIHI");
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
             return;
-        }
 
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
+        System.out.println(storeDesiredWidth);
+
+        if(storeDesiredWidth == 0)
+            storeDesiredWidth = desiredWidth;
+        else if (storeDesiredWidth < desiredWidth)
+            storeDesiredWidth = desiredWidth;
+        else
+            desiredWidth = storeDesiredWidth;
+        System.out.println(desiredWidth);
         int totalHeight = 0;
         View view = null;
-        for (int i = 0; i < (listAdapter.getCount()); i++)
-        {
+        for (int i = 0; i < listAdapter.getCount(); i++) {
             view = listAdapter.getView(i, view, listView);
             if (i == 0)
                 view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, AbsListView.LayoutParams.WRAP_CONTENT));
@@ -206,22 +222,9 @@ public class Fragment_ViewCompany extends Fragment {
             view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
             totalHeight += view.getMeasuredHeight();
         }
-
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
-        listView.requestLayout();
-        /*int totalHeight = listView.getPaddingTop() + listView.getPaddingBottom();;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight
-                + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);*/
     }
 
 
@@ -236,17 +239,20 @@ public class Fragment_ViewCompany extends Fragment {
 
                 try {
 
-                    ArrayList<Spanned> info = new ArrayList<Spanned>();
-
                     // loop through each json object
-                    String status = response.getString("status");
-                    JSONObject companyInfo = response.getJSONObject("data");
+                    int status = response.getInt("status");
 
-                    if (status.equals("success")) {
-                        info.add(Html.fromHtml(companyInfo.getString("name")));
-                        info.add((Html.fromHtml(companyInfo.getString("description"))));
-                        info.add(Html.fromHtml(companyInfo.getString("address")));
-                        info.add(Html.fromHtml(companyInfo.getString("contact_number")));
+                    if (status == 1) {
+                        JSONObject companyInfo = response.getJSONObject("data");
+
+                        latitude = companyInfo.getDouble("latitude");
+                        longitude = companyInfo.getDouble("longitude");
+                        companyTel = companyInfo.getString("contact_number");
+
+                        info.add(companyInfo.getString("company_name"));
+                        info.add(companyInfo.getString("description"));
+                        info.add(companyInfo.getString("address"));
+                        info.add(companyTel);
                         //cat
                         JSONArray catList = companyInfo.getJSONArray("cat");
                         String cat = "";
@@ -255,41 +261,28 @@ public class Fragment_ViewCompany extends Fragment {
                                 cat += ", ";
                             cat += catList.get(i);
                         }
-                        info.add(Html.fromHtml(cat));
-                        info.add(Html.fromHtml(companyInfo.getString("price")));
-                        info.add(Html.fromHtml(companyInfo.getString("preferred_transport")));
-                        info.add(Html.fromHtml(companyInfo.getString("business_hour")));
-                        info.add(Html.fromHtml("Dummy text"));
-                        info.add(Html.fromHtml("Dummy text"));
-                        info.add(Html.fromHtml("Dummy text"));
-                        //info.add(Html.fromHtml("Dummy text"));
-                        //info.add(Html.fromHtml("Dummy text"));
-                        //info.add(Html.fromHtml("Dummy text"));
-
-                        latitude = companyInfo.getDouble("latitude");
-                        longitude = companyInfo.getDouble("longitude");
-
-
-
+                        info.add(cat);
+                        info.add(companyInfo.getString("price"));
+                        info.add(companyInfo.getString("preferred_transport"));
+                        info.add(companyInfo.getString("business_hour"));
+                        info.add("Dummy text");
 
                     /*info.add(companyInfo.getString("ID"));
                     info.add(companyInfo.getString("name"));
                     info.add(companyInfo.getString("hit_rate"));*/
 
 
-                        for (int i = 0; i < companyInfoCat.length; i++) {
+                        /*for (int i = 0; i < companyInfoCat.length; i++) {
                             Map<String, Object> item = new HashMap<String, Object>();
                             item.put("title", companyInfoCat[i]);
                             item.put("text", info.get(i));
-                            if(showDetailIndicator.contains(i))
-                                item.put("indicator", R.drawable.icon_forward_arrow);
                             items.add(item);
-                        }
-                    }else{
-                        String errorMsg = companyInfo.getString("msg");
+                        }*/
+                    }else if(status == 0){
+                        String errorMsg = response.getString("msg");
                         Toast.makeText(getActivity(),
                                 errorMsg,
-                                Toast.LENGTH_LONG).show();
+                                Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -309,8 +302,8 @@ public class Fragment_ViewCompany extends Fragment {
 
                 // notifying list adapter about data changes
                 // so that it renders the list view with updated data
-                setListViewHeightBasedOnChildren(listView);
-                //simpleAdapter.notifyDataSetChanged();
+                doubleScroll.setListViewHeightBasedOnChildren(listView);
+                customAdapter.notifyDataSetChanged();
 
             }
         }, new Response.ErrorListener() {

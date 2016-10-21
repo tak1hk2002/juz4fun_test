@@ -33,7 +33,7 @@ public class ProgressImage{
         dialog.setContentView(R.layout.progress_bar);
         ImageView image = (ImageView) dialog.findViewById(R.id.progress_image);
         Glide.with(mContext)
-                .load(R.drawable.mascot_loading)
+                .load(R.drawable.mascot_loading1)
                 .asGif()
                 .crossFade()
                 .into(image);

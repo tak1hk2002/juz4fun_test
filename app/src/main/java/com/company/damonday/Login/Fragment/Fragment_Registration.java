@@ -122,6 +122,7 @@ Log.d("tomtomtomtom","register");
                             .show();
                 }
                 else {
+                    System.out.println(email+"  "+username+"  "+password);
                     registerUser(email, username, password);
                 }
             }
@@ -160,13 +161,13 @@ Log.d("tomtomtomtom","register");
 
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    JSONObject data = jObj.getJSONObject("data");
-                    String error = jObj.getString("status");
-                    if (error.equals("success")) {
+                    int status = jObj.getInt("status");
+                    if (status == 1) {
+                        //JSONObject data = jObj.getJSONObject("data");
                         //get toke from API
-                        String token = data.getString("token");
+                        //String token = data.getString("token");
                         // Inserting row in users table
-                        db.addUser(token, email, username);
+                        //db.addUser(token, email, username);
 
                         //display message login successfully
                         AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
@@ -190,11 +191,11 @@ Log.d("tomtomtomtom","register");
                         });
                         ab.create().show();
 
-                    } else {
+                    } else if (status == 0) {
 
                         // Error occurred in registration. Get the error
                         // message
-                        String errorMsg = data.getString("msg");
+                        String errorMsg = jObj.getString("msg");
 
                         Toast.makeText(getActivity(),
                                 errorMsg, Toast.LENGTH_LONG).show();
@@ -219,7 +220,6 @@ Log.d("tomtomtomtom","register");
             protected Map<String, String> getParams() {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("tag", "register");
                 params.put("email", email);
                 params.put("username", username);
                 params.put("password", password);

@@ -86,6 +86,7 @@ public class NewFoundCompany extends Fragment {
     private ArrayList<String> selectedCatName = new ArrayList<>();
     private JsonObjectRequest jsonObjReq;
     private List<Integer> showDetailIndicator = Arrays.asList(1, 5);
+    private List<Integer> hideEditText = Arrays.asList();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,7 +118,7 @@ public class NewFoundCompany extends Fragment {
         btnReset = (Button) view.findViewById(R.id.button_reset);
         btnSubmit = (Button) view.findViewById(R.id.button_submit);
 
-        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator, null, warning);
+        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator, hideEditText, warning);
 
 
         listView.setAdapter(customAdapter);

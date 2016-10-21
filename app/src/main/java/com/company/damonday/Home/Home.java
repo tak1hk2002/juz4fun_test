@@ -1,12 +1,9 @@
 package com.company.damonday.Home;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -23,14 +19,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.R;
-import com.company.damonday.Ranking.CompanyInfo;
-import com.company.damonday.Ranking.MyAdapter;
+import com.company.damonday.Framework.ImageList.ImageInfo;
+import com.company.damonday.Framework.ImageList.ImageList_CustomListAdapter;
 import com.company.damonday.Ranking.Ranking;
 import com.company.damonday.Search.search_fast;
 import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
-import com.company.damonday.function.ConnectionDetector;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,11 +39,11 @@ import java.util.List;
  */
 public class Home extends Fragment {
 
-    private static String TAG = Ranking.class.getSimpleName();
+    private static String TAG = Home.class.getSimpleName();
     // Progress dialog
-    private List<CompanyInfo> companyInfoItems = new ArrayList<CompanyInfo>();
+    private List<ImageInfo> imageInfoItems = new ArrayList<ImageInfo>();
     private GridView gridView;
-    private MyAdapter adapter;
+    private ImageList_CustomListAdapter adapter;
     private FragmentTabs_try fragmentTabs_try;
     private LinearLayout searchview;
     private JsonObjectRequest jsonObjReq;
@@ -70,7 +65,7 @@ public class Home extends Fragment {
 
         //search =(SearchView)view.findViewById(R.id.search);
         gridView = (GridView) view.findViewById(R.id.gridView);
-        adapter = new MyAdapter(getActivity(), companyInfoItems, true);
+        adapter = new ImageList_CustomListAdapter(getActivity(), imageInfoItems, true);
         gridView.setAdapter(adapter);
         getActivity().setTitle(R.string.home);
 
@@ -120,7 +115,7 @@ public class Home extends Fragment {
                 // getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
                 //pass object to next fragment
                 Bundle bundle = new Bundle();
-                bundle.putString("ent_id", Integer.toString(companyInfoItems.get(position).getEnt_id()));
+                bundle.putString("ent_id", Integer.toString(imageInfoItems.get(position).getEntID()));
                 fragmentTabs_try = new FragmentTabs_try();
                 fragmentTabs_try.setArguments(bundle);
 
@@ -170,27 +165,27 @@ public class Home extends Fragment {
 
                 try {
                     // loop through each json object
-                    String status = response.getString("status");
-                    JSONArray rank = response.getJSONArray("data");
+                    int status = response.getInt("status");
 
-                    if (status.equals("success")) {
-
+                    if (status == 1) {
+                        JSONArray rank = response.getJSONArray("data");
                         for (int i = 0; i < rank.length(); i++) {
-                            CompanyInfo companyInfo = new CompanyInfo();
+                            ImageInfo imageInfo = new ImageInfo();
                             JSONObject company = (JSONObject) rank
                                     .get(i);
-                            // companyInfo.setTitle(company.getString("name"));
-                            companyInfo.setUrl(company.getString("cover_image"));
-                            companyInfo.setEnt_id(company.getInt("ID"));
-                            companyInfoItems.add(companyInfo);
+                            imageInfo.setTitle(company.getString("name"));
+                            imageInfo.setUrl(company.getString("cover_image"));
+                            imageInfo.setCompany(company.getString("company_name"));
+                            imageInfo.setEntID(company.getInt("id"));
+                            imageInfoItems.add(imageInfo);
 
                         }
-                    } else {
+                    } else if (status == 0) {
                         String errorMsg = response.getString("msg");
                         Log.d("error1", "error1");
                         Toast.makeText(getActivity(),
                                 errorMsg,
-                                Toast.LENGTH_LONG).show();
+                                Toast.LENGTH_SHORT).show();
                     }
 
 

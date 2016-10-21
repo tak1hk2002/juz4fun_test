@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import com.company.damonday.Framework.SubmitForm.SubmitForm;
 import com.company.damonday.Framework.SubmitForm.SubmitForm_CustomListAdapter;
-import com.company.damonday.LatestComment.latestcommentvolley;
+import com.company.damonday.LatestComment.LatestComment;
 import com.company.damonday.Login.Fragment.Fragment_Login;
 import com.company.damonday.Login.Fragment.Fragment_Registration;
 import com.company.damonday.Login.LoginSQLiteHandler;
@@ -114,11 +114,10 @@ public class Setting extends Fragment {
 
                 switch (position){
                     case 0:
-                        latestcommentvolley latestcomment = new latestcommentvolley();
+                        MyComment myComment = new MyComment();
                         bundle = new Bundle();
-                        bundle.putString("api", APIConfig.URL_Latest_Comment);
                         bundle.putString("last_fragment_tag", "my_comment");
-                        latestcomment.setArguments(bundle);
+                        myComment.setArguments(bundle);
                         //getActivity().setTitle(R.string.my_comment);
                         ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
                         ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
@@ -126,7 +125,7 @@ public class Setting extends Fragment {
                         // System.out.println(fragmentManager.getBackStackEntryCount());
                         fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.hide(getFragmentManager().findFragmentByTag("setting"));
-                        fragmentTransaction.add(R.id.frame_container, latestcomment, "my_comment").addToBackStack(null);
+                        fragmentTransaction.add(R.id.frame_container, myComment, "my_comment").addToBackStack(null);
                         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         fragmentTransaction.commit();
                         break;
@@ -166,13 +165,14 @@ public class Setting extends Fragment {
             }
         });
 
+        HashMap<String, String> user = db.getUserDetails();
+        String name = user.get("username");
+        String email = user.get("email");
+
         //already logined
         if (session.isLoggedIn()) {
             islogouted.setVisibility(View.GONE);
             // Fetching user details from sqlite
-            HashMap<String, String> user = db.getUserDetails();
-            String name = user.get("username");
-            String email = user.get("email");
             txtUsername.setText(name);
             txtEmail.setText(email);
             Resources res = getResources();
@@ -212,6 +212,7 @@ public class Setting extends Fragment {
 
 
             Profile profile = Profile.getCurrentProfile();
+
             try {
                 //get the profile and let it to be circular
                 String profileImgUrl = "https://graph.facebook.com/" + profile.getId() + "/picture?type=large";
@@ -222,6 +223,8 @@ public class Setting extends Fragment {
                         .into(imgProfile);
                 //username
                 txtUsername.setText(profile.getName());
+                //email
+                txtEmail.setText(email);
 
 
             } catch (Exception e) {
@@ -232,6 +235,7 @@ public class Setting extends Fragment {
                 @Override
                 public void onClick(View v) {
                     LoginManager.getInstance().logOut();
+                    db.deleteUsers();
                     Setting setting = new Setting();
 
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -244,40 +248,6 @@ public class Setting extends Fragment {
 
                 }
             });
-
-            /*btnFBLogout.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-
-                //登入成功
-
-                @Override
-                public void onSuccess(LoginResult loginResult) {
-
-                    LoginManager.getInstance().logOut();
-
-
-                    //userFacebook(accessToken.getToken(), profile.getName(), accessToken.getUserId(), ImgUrl);
-
-
-                }
-
-                //登入取消
-
-                @Override
-                public void onCancel() {
-                    // App code
-
-                    Log.d("FB", "CANCEL");
-                }
-
-                //登入失敗
-
-                @Override
-                public void onError(FacebookException exception) {
-                    // App code
-
-                    Log.d("FB", exception.toString());
-                }
-            });*/
 
 
         }

@@ -194,10 +194,6 @@ public class Fragment_Login extends Fragment {
                 Profile profile = Profile.getCurrentProfile();
 
 
-                //get user ID and display his profile pic
-                String userId = loginResult.getAccessToken().getUserId();
-                String profileImgUrl = "https://graph.facebook.com/" + userId + "/picture?type=large";
-
 
                 Log.d("FB", "access token got.");
                 //accessToken之後或許還會用到 先存起來
@@ -218,11 +214,21 @@ public class Fragment_Login extends Fragment {
 
                                 //讀出姓名 ID FB個人頁面連結
 
+                                String email = object.optString("email");
+                                String fbID = object.optString("id");
+                                String fbUsername = object.optString("name");
+
                                 Log.d("FB", "complete");
-                                Log.d("FB", object.optString("name"));
+                                Log.d("FB", fbUsername);
                                 Log.d("FB", object.optString("link"));
-                                Log.d("FB", object.optString("id"));
-                                Log.d("FB", object.optString("email"));
+                                Log.d("FB", fbID);
+                                Log.d("FB", email);
+
+                                //profile pic url
+                                String fbProfilePic = "https://graph.facebook.com/" + fbID + "/picture?type=large";
+                                Log.d("FB", fbProfilePic);
+                                userFacebook(fbID, fbProfilePic, email, accessToken.getToken(), fbUsername);
+
 
                             }
                         });
@@ -234,12 +240,6 @@ public class Fragment_Login extends Fragment {
                 request.setParameters(parameters);
                 request.executeAsync();
 
-
-                //profile pic url
-                String ImgUrl = "https://graph.facebook.com/" + profile.getId() + "/picture?type=large";
-
-
-                userFacebook(accessToken.getToken(), profile.getName(), accessToken.getUserId(), ImgUrl);
 
             }
 
@@ -359,110 +359,35 @@ public class Fragment_Login extends Fragment {
 
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    JSONObject data = jObj.getJSONObject("data");
-                    String error = jObj.getString("status");
+                    int error = jObj.getInt("status");
 
                     // Check for error node in json
-                    if (error.equals("success")) {
-                        String token = data.getString("token");
+                    if (error == 1) {
+                        JSONObject data = jObj.getJSONObject("data");
+                        String token = data.getString("auth_key");
                         String username = data.getString("username");
+                        String email = data.getString("email");
                         // Create login session
                         session.setLogin(true);
                         //add user info to sqlite
                         Log.d("toke", token);
                         Log.d("username", username);
-                        loginSQLiteHandler.addUser(token, "Wait for Ryo to add email field", username);
+                        //add the user info into SQlite
+                        loginSQLiteHandler.addUser(token, email, username);
 
                         try {
                             redirectToDetail();
-                            /*//last fragment is from detail
-                            if (entId != null) {
-                                System.out.println("HIHIHIHIHHHI");
-                                Bundle bundle = new Bundle();
-                                FragmentTabs_try fragmentTabs_try = new FragmentTabs_try();
-                                bundle.putString("ent_id", entId);
-                                fragmentTabs_try.setArguments(bundle);
-
-
-                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                System.out.println(fragmentManager.getBackStackEntryCount());
-                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                //delete last fragment
-                                fragmentManager.popBackStack();
-                                //delete last fragment
-                                fragmentManager.popBackStack();
-                                //delete loginfragment
-                                    *//*Fragment loginFragment = getActivity().getSupportFragmentManager().findFragmentByTag("login");
-                                    Fragment companyDetailFragment = getActivity().getSupportFragmentManager().findFragmentByTag("companyDetail");
-                                    if(loginFragment != null)
-                                        fragmentTransaction.remove(loginFragment);
-                                    if(companyDetailFragment != null)
-                                        fragmentTransaction.remove(companyDetailFragment);*//*
-
-
-                                //hide the fragment which is to jump to company detail page
-                                String hideFragment = "";
-                                if(getActivity().getSupportFragmentManager().findFragmentByTag("home") != null)
-                                    hideFragment = "home";
-                                else if (getActivity().getSupportFragmentManager().findFragmentByTag("ranking") != null)
-                                    hideFragment = "ranking";
-                                else if (getActivity().getSupportFragmentManager().findFragmentByTag("search_result") != null)
-                                    hideFragment = "search_result";
-
-                                fragmentTransaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag(hideFragment));
-                                fragmentTransaction.add(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
-
-                                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                                fragmentTransaction.commit();
-
-
-                            }
-                            //last fragment is from setting
-                            else if (lastFragment != null){
-                                switch (lastFragment){
-                                    case "setting":
-                                        Setting setting = new Setting();
-                                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                        //clear all of the fragment at the stack
-                                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                        fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null)
-                                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                                                .commit();
-
-                                        break;
-                                }
-                            }
-                            else {
-                                Fragment fragment = null;
-                                fragment = new Home();
-                                getActivity().getActionBar().show();
-                                // This method will be executed once the timer is over
-                                // Start your app main activity
-                                *//*Intent i = new Intent(SplashActivity.this, TestActivity.class);
-                                startActivity(i);*//*
-                                if (fragment != null) {
-                                    FragmentManager fragmentManager = getFragmentManager();
-                                    //clear all of the fragment at the stack
-                                    fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                                    //System.out.println(fragmentManager.getBackStackEntryCount());
-                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                    fragmentTransaction.replace(R.id.frame_container, fragment, "home").addToBackStack("main");
-                                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                                    fragmentTransaction.commit();
-                                }
-                            }*/
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
 
 
-                    } else {
+                    } else if (error == 0) {
                         // Error in login. Get the error message
-                        String errorMsg = data.getString("msg");
+                        String errorMsg = jObj.getString("msg");
 
                         Toast.makeText(getActivity(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                                errorMsg, Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     // JSON error
@@ -542,8 +467,8 @@ public class Fragment_Login extends Fragment {
     }
 
 
-    private void userFacebook(final String accessToken, final String username,
-                              final String id, final String profilePic) {
+    private void userFacebook(final String fbID, final String fbProfilePic,
+                              final String email, final String fbToken, final String fbUsername) {
         // Tag used to cancel the request
         String tag_string_req = "req_facebook";
 
@@ -562,42 +487,20 @@ public class Fragment_Login extends Fragment {
 
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    String error = jObj.getString("status");
-                    if (error.equals("success")) {
-                        Toast.makeText(getActivity(),
-                                error, Toast.LENGTH_LONG).show();
+                    int status = jObj.getInt("status");
+                    if (status == 1) {
+
+                        //add facebook info into SQLite
+                        loginSQLiteHandler.addUser(fbToken, email, fbUsername);
                         Log.d("facebook", "success");
 
                         redirectToDetail();
 
-                        // User successfully stored in MySQL
-                        // Now store the user in sqlite
-
-                        // Inserting row in users table
-                        //db.addUser(email, username);
-                        //Log.d("email", email);
-
-
-                        //display message login successfully
-                        /*AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
-                        ab.setTitle(R.string.register_success);
-                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                Intent in = new Intent(v.getContext(), FragmentTabs.class);
-                                v.getContext().startActivity(in);
-                            }
-                        });
-                        ab.create().show();*/
-
-                    } else {
+                    } else if (status == 0){
 
                         // Error occurred in registration. Get the error
                         // message
-                        JSONObject data = jObj.getJSONObject("data");
-                        String errorMsg = data.getString("msg");
+                        String errorMsg = jObj.getString("msg");
 
                         Toast.makeText(getActivity(),
                                 errorMsg, Toast.LENGTH_LONG).show();
@@ -623,10 +526,11 @@ public class Fragment_Login extends Fragment {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
                 //params.put("tag", "register");
-                params.put("fb_id", id);
-                params.put("fb_token", accessToken);
-                params.put("fb_username", username);
-                params.put("fb_profile_picture", profilePic);
+                params.put("fbId", fbID);
+                params.put("fbProfile", fbProfilePic);
+                params.put("email", email);
+                params.put("fbToken", fbToken);
+                params.put("fbUsername", fbUsername);
 
                 return params;
             }

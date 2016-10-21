@@ -57,6 +57,7 @@ public class FeedBack extends Fragment {
     ListView listView;
     private List<SubmitForm> items = new ArrayList<SubmitForm>();
     private List<Integer> showDetailIndicator = Arrays.asList(2);
+    private List<Integer> hideEditText = Arrays.asList(2);
     private String[] warning, title;
 
     private ProgressImage pDialog;
@@ -93,7 +94,7 @@ public class FeedBack extends Fragment {
         btnReset = (Button) view.findViewById(R.id.button_reset);
         btnSubmit = (Button) view.findViewById(R.id.button_submit);
 
-        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator, null, warning);
+        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator, hideEditText, warning);
 
 
         listView.setAdapter(customAdapter);
@@ -126,7 +127,7 @@ public class FeedBack extends Fragment {
                     System.out.println(submitVars[0]);
                     System.out.println(submitVars[1]);
                     System.out.println(submitVars[2]);
-                    //submitting(submitVars[0], submitVars[1], submitVars[2]);
+                    submitting(submitVars[0], submitVars[1], submitVars[2]);
                 }
 
                 customAdapter.notifyDataSetChanged();
@@ -252,10 +253,10 @@ public class FeedBack extends Fragment {
 
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    String error = jObj.getString("status");
+                    int status = jObj.getInt("status");
 
                     // Check for error node in json
-                    if (error.equals("success")) {
+                    if (status == 1) {
                         // user successfully logged in
                         // Create login session
                         //session.setLogin(true);
@@ -295,13 +296,12 @@ public class FeedBack extends Fragment {
                         ab.create().show();
 
 
-                    } else {
+                    } else if (status == 0) {
                         // Error in login. Get the error message
-                        JSONObject data = jObj.getJSONObject("data");
-                        String errorMsg = data.getString("msg");
+                        String errorMsg = jObj.getString("msg");
 
                         Toast.makeText(getActivity(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                                errorMsg, Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     // JSON error

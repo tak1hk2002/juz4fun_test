@@ -12,14 +12,11 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.company.damonday.R;
-import com.company.damonday.Ranking.CompanyInfo;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,12 +57,12 @@ public class AboutUs extends Fragment {
 
 
                     // loop through each json object
-                    String status = response.getString("status");
-                    JSONObject rank = response.getJSONObject("data");
+                    int status = response.getInt("status");
 
-                    if (status.equals("success")) {
 
-                        data = rank.getString("value");
+                    if (status == 1) {
+
+                        data = response.getString("data");
                         Log.d("JSON", data);
                         //textview= (TextView)view.findViewById(R.id.textview);
                         textview.setText(data);
@@ -82,11 +79,11 @@ public class AboutUs extends Fragment {
 //                            companyInfoItems.add(companyInfo);
 //
 //                        }
-                    } else {
+                    } else if (status == 0){
                         String errorMsg = response.getString("msg");
                         Toast.makeText(getActivity(),
                                 errorMsg,
-                                Toast.LENGTH_LONG).show();
+                                Toast.LENGTH_SHORT).show();
                     }
 
 

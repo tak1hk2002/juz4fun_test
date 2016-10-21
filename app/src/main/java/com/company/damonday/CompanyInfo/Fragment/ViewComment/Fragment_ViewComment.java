@@ -22,6 +22,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.company.damonday.CompanyInfo.Fragment.ViewCommentDetail.Fragment_ViewCommentDetail;
 import com.company.damonday.Framework.CommentList.CommentList;
 import com.company.damonday.Framework.CommentList.CommentList_CustomListAdapter;
+import com.company.damonday.Framework.ScrollView.ScrollView;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
@@ -47,6 +48,7 @@ public class Fragment_ViewComment extends Fragment {
     private APIConfig ranking;
     private Boolean APILoading = false;
     private JsonObjectRequest jsonObjReq;
+    private ScrollView doubleScroll = new ScrollView();
 
 
     @Override
@@ -88,6 +90,7 @@ public class Fragment_ViewComment extends Fragment {
         commentListView.setEmptyView(txtNoComment);
         //customListAdapter.notifyDataSetChanged();
         setListViewHeightBasedOnChildren(commentListView);
+        //setListViewHeightBasedOnChildren(commentListView);
         commentListView.deferNotifyDataSetChanged();
         customListAdapter.notifyDataSetChanged();
 
@@ -184,8 +187,8 @@ public class Fragment_ViewComment extends Fragment {
 
 
                 try {
-                    String status = response.getString("status");
-                    if(status.equals("success")){
+                    int status = response.getInt("status");
+                    if(status == 1){
                         JSONArray data = response.getJSONArray("data");
                         txtNoComment.setVisibility(View.GONE);
                         commentListView.setVisibility(View.VISIBLE);
@@ -195,12 +198,19 @@ public class Fragment_ViewComment extends Fragment {
                             CommentList comment = new CommentList();
                             comment.setProfilePic("http://www.suggymoto.com/Blog/wp-content/uploads/2013/03/Android-Icon-50x50.png");
                             comment.setTitle(commentContent.getString("title"));
-                            comment.setPostedDate(commentContent.getString("time"));
-                            comment.setUsername("Alan Lam");
-                            comment.setRating(commentContent.getString("worth"));
-                            comment.setId(commentContent.getString("ID"));
+                            comment.setPostedDate(commentContent.getString("days_before"));
+                            comment.setUsername(commentContent.getString("username"));
+                            comment.setRating(commentContent.getString("average_score"));
+                            comment.setId(commentContent.getString("id"));
                             commentList.add(comment);
                         }
+                    }
+                    else if(status == 0){
+                        String errorMsg = response.getString("msg");
+                        Log.d("error1", "error1");
+                        Toast.makeText(getActivity(),
+                                errorMsg,
+                                Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -213,7 +223,8 @@ public class Fragment_ViewComment extends Fragment {
                 commentList.add(comment5);
                 */
                 //hidepDialog();
-                setListViewHeightBasedOnChildren(commentListView);
+                doubleScroll.setListViewHeightBasedOnChildren2(commentListView);
+                //setListViewHeightBasedOnChildren(commentListView);
                 commentListView.deferNotifyDataSetChanged();
                 customListAdapter.notifyDataSetChanged();
 

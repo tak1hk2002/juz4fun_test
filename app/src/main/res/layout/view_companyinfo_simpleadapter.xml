@@ -11,7 +11,7 @@
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:textSize="18sp"
+        android:textSize="15sp"
         android:textColor="@color/font_grey_white"
         android:id="@+id/title"/>
 
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_alignParentRight="true"
             android:id="@+id/text"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textColor="@color/font_grey_white"/>
     </RelativeLayout>
 
