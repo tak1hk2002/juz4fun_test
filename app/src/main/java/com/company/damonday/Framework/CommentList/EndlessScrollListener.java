@@ -49,23 +49,29 @@ public abstract class EndlessScrollListener implements AbsListView.OnScrollListe
         // If it’s still loading, we check to see if the dataset count has
         // changed, if so we conclude it has finished loading and update the current page
         // number and total item count.
-        Log.d("currentPage", Integer.toString(currentPage));
         Log.d("loading", Boolean.toString(loading));
         Log.d("totalItemCount", Integer.toString(totalItemCount));
+        Log.d("visibleItemCount", Integer.toString(visibleItemCount));
+        Log.d("firstVisibleItem", Integer.toString(firstVisibleItem));
         Log.d("previousTotalItemCOunt", Integer.toString(previousTotalItemCount));
         if (loading && (totalItemCount > previousTotalItemCount)) {
             loading = false;
             previousTotalItemCount = totalItemCount;
+            Log.d("currentPage", Integer.toString(currentPage));
             currentPage++;
+            Log.d("currentPage", Integer.toString(currentPage));
         }
 
         // If it isn’t currently loading, we check to see if we have breached
         // the visibleThreshold and need to reload more data.
         // If we do need to reload some more data, we execute onLoadMore to fetch the data.
         if (!loading && (totalItemCount - visibleItemCount)<=(firstVisibleItem + visibleThreshold)) {
+            Log.d("onLoadMore", "onLoadMore");
+            Log.d("currentPage", Integer.toString(currentPage));
             onLoadMore(currentPage, totalItemCount);
             loading = true;
         }
+        System.out.println("hihihihihihihihihihih");
     }
 
     // Defines the process for actually loading more data based on page

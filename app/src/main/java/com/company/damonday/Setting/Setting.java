@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.company.damonday.Framework.SubmitForm.SubmitForm;
 import com.company.damonday.Framework.SubmitForm.SubmitForm_CustomListAdapter;
@@ -63,6 +64,7 @@ public class Setting extends Fragment {
     private String[] title;
     private List<Integer> showDetailIndicator = Arrays.asList(0,1,2);
     private List<Integer> hideEditText = Arrays.asList(3);
+    private String lastFragmentTag, api;
 
 
     @Override
@@ -75,6 +77,14 @@ public class Setting extends Fragment {
         db = new LoginSQLiteHandler(getActivity());
         //宣告callback Manager
         callbackManager = CallbackManager.Factory.create();
+
+        try {
+            lastFragmentTag = getArguments().getString("last_fragment_tag");
+            api = getArguments().getString("api");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //get the array list of writeComment option
         title = getResources().getStringArray(R.array.setting_title);
@@ -124,7 +134,7 @@ public class Setting extends Fragment {
                         fragmentManager = getFragmentManager();
                         // System.out.println(fragmentManager.getBackStackEntryCount());
                         fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.hide(getFragmentManager().findFragmentByTag("setting"));
+                        fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
                         fragmentTransaction.add(R.id.frame_container, myComment, "my_comment").addToBackStack(null);
                         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         fragmentTransaction.commit();
@@ -140,7 +150,7 @@ public class Setting extends Fragment {
                         fragmentManager = getFragmentManager();
                         System.out.println(fragmentManager.getBackStackEntryCount());
                         fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.hide(getFragmentManager().findFragmentByTag("setting"));
+                        fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
                         fragmentTransaction.add(R.id.frame_container, about_us_fragment, "about_us").addToBackStack(null);
                         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         fragmentTransaction.commit();
@@ -156,7 +166,7 @@ public class Setting extends Fragment {
                         fragmentManager = getFragmentManager();
                         System.out.println(fragmentManager.getBackStackEntryCount());
                         fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.hide(getFragmentManager().findFragmentByTag("setting"));
+                        fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
                         fragmentTransaction.add(R.id.frame_container, feedback_fragment, "feedback").addToBackStack(null);
                         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         fragmentTransaction.commit();

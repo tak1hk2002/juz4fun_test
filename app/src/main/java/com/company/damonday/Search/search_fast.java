@@ -50,7 +50,6 @@ import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.company.damonday.function.ProgressImage;
-import com.google.android.gms.analytics.ecommerce.Product;
 
 
 public class search_fast extends Fragment {

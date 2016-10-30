@@ -21,6 +21,7 @@ public class SubmitForm {
     public SubmitForm(String title, String info, Boolean submitWarning, Integer openHour, Integer openMin, Integer endHour, Integer endMin){
         this.title = title;
         this.info = info;
+
         this.submitWarning = submitWarning;
         this.openHour = openHour;
         this.openMin = openMin;

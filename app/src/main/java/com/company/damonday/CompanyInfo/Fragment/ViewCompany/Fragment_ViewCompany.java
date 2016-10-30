@@ -129,7 +129,7 @@ public class Fragment_ViewCompany extends Fragment {
                         GetPreviousObject passedObject = new GetPreviousObject(-1, latitude, longitude, compayName
                         );
                         // 啟動地圖元件用的Intent物件
-                        Intent intentMap = new Intent(v.getContext(), MapsActivity.class);
+                        Intent intentMap = new Intent(getActivity(), MapsActivity.class);
                         intentMap.putExtra("LatLng", passedObject);
                         // 啟動地圖元件
                         startActivityForResult(intentMap, 2);
@@ -247,6 +247,7 @@ public class Fragment_ViewCompany extends Fragment {
 
                         latitude = companyInfo.getDouble("latitude");
                         longitude = companyInfo.getDouble("longitude");
+                        compayName = companyInfo.getString("company_name");
                         companyTel = companyInfo.getString("contact_number");
 
                         info.add(companyInfo.getString("company_name"));

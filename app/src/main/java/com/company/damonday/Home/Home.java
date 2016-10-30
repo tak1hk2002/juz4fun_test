@@ -1,5 +1,6 @@
 package com.company.damonday.Home;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,7 +22,6 @@ import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.R;
 import com.company.damonday.Framework.ImageList.ImageInfo;
 import com.company.damonday.Framework.ImageList.ImageList_CustomListAdapter;
-import com.company.damonday.Ranking.Ranking;
 import com.company.damonday.Search.search_fast;
 import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
@@ -33,6 +33,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.company.damonday.Launch.LaunchPage.PREFS_NAME;
 
 /**
  * Created by lamtaklung on 3/8/15.
@@ -53,6 +55,7 @@ public class Home extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().getActionBar().show();
+
         makeJsonArrayRequest();
     }
 
@@ -234,7 +237,7 @@ public class Home extends Fragment {
         super.onStop();
         if (jsonObjReq != null)  {
             jsonObjReq.cancel();
-            Log.d("onStop", "Write comment requests are all cancelled");
+            Log.d("onStop", "home requests are all cancelled");
         }
     }
 

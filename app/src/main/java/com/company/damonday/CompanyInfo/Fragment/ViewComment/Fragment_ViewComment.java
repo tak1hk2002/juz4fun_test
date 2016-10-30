@@ -196,7 +196,7 @@ public class Fragment_ViewComment extends Fragment {
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject commentContent = data.getJSONObject(i);
                             CommentList comment = new CommentList();
-                            comment.setProfilePic("http://www.suggymoto.com/Blog/wp-content/uploads/2013/03/Android-Icon-50x50.png");
+                            comment.setProfilePic(commentContent.getString("profile_picture"));
                             comment.setTitle(commentContent.getString("title"));
                             comment.setPostedDate(commentContent.getString("days_before"));
                             comment.setUsername(commentContent.getString("username"));

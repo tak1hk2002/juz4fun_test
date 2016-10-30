@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.company.damonday.Launch.LaunchPage;
 import com.company.damonday.Home.Home;
 import com.company.damonday.LatestComment.LatestComment;
 import com.company.damonday.Login.Fragment.Fragment_Login;
@@ -463,6 +464,7 @@ public class TestActivity extends FragmentActivity {
                 //設定
                 fragment = new Setting();
                 tag = "setting";
+                api = "";
                 break;
             case 7:
                 //launch page
@@ -537,12 +539,12 @@ public class TestActivity extends FragmentActivity {
 
     }
 
-    /*public void setTitle(CharSequence title, boolean back) {
+    public void setTitleBackButton(CharSequence title) {
 
         getActionBar().setTitle(title);
         AdjustActiontitle(title.toString());
         //System.out.println("temptitle4:"+tempTitle);
-    }*/
+    }
 
     /**
      * When using the ActionBarDrawerToggle, you must call it during
@@ -594,8 +596,8 @@ public class TestActivity extends FragmentActivity {
             if (!tempTitle.isEmpty()) {
                 System.out.println(tempTitle);
                 tempTitle.remove(tempTitle.size() - 1);
-                //  System.out.println("temptitle3:" + tempTitle);
-                setTitle(tempTitle.get(tempTitle.size()-1));
+                System.out.println("temptitle3:" + tempTitle);
+                setTitleBackButton(tempTitle.get(tempTitle.size()-1));
             }
 
             //System.out.println("fragmentManager.getBackStackEntryCount()tom=" + fragmentManager.getBackStackEntryCount());

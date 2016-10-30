@@ -480,7 +480,7 @@ public class Fragment_ViewWriteComment extends Fragment {
     //***********************JSON volley**********************************************************
     public void submitWriteComment(final String token, final String title, final String content, final String expense, final String overallRating, final Map<String, String> detailRating){
         // Tag used to cancel the request
-        String tag_string_req = "req_login";
+        String tag_string_req = "submitWriteComment";
         showDialog();
 
         strReq = new StringRequest(Request.Method.POST,

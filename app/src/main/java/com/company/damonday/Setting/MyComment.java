@@ -52,18 +52,26 @@ public class MyComment extends Fragment {
     private StringRequest myCommentReq;
     private SessionManager session;
     private LoginSQLiteHandler DB;
-    private String token = null;
+    private String token = null, lastFragmentTag;
     private APIConfig APIConfig;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        try {
+            lastFragmentTag = getArguments().getString("last_fragment_tag");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
         //get token
         session = new SessionManager(getActivity());
         if (AccessToken.getCurrentAccessToken() != null) {
             token = AccessToken.getCurrentAccessToken().toString();
         } else if (session.isLoggedIn()) {
+            DB = new LoginSQLiteHandler(getActivity());
             HashMap<String, String> user = DB.getUserDetails();
             token = user.get("token");
         }
@@ -106,7 +114,8 @@ public class MyComment extends Fragment {
                 ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frame_container, fragment_ViewCommentDetail, "commentDetail").addToBackStack(null);
+                fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
+                fragmentTransaction.add(R.id.frame_container, fragment_ViewCommentDetail, "commentDetail").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.commit();
             }
@@ -124,7 +133,7 @@ public class MyComment extends Fragment {
         // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
         // Deserialize API response and then construct new objects to append to the adapter
         // Creating volley request obj
-        Log.d("Link", APIConfig.getUrlComment() + offset);
+        Log.d("Link", APIConfig.getUrlMyComment() + offset);
         myCommentReq = new StringRequest(APIConfig.getUrlMyComment() + Integer.toString(offset),
                 new Response.Listener<String>() {
                     @Override
@@ -134,8 +143,6 @@ public class MyComment extends Fragment {
 
                         try {
                             JSONObject jObject = new JSONObject(response);
-                            // String aJsonString = jObject.getString("result");
-                            //String bJsonString = jObject.getString("timestamp");
                             int status = jObject.getInt("status");
                             if(status == 1) {
                                 JSONArray jArray = jObject.getJSONArray("data");

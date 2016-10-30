@@ -3,6 +3,7 @@ package com.company.damonday.NewFoundCompany;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -50,6 +51,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.company.damonday.Launch.LaunchPage.PREFS_NAME;
+
 /**
  * Created by lamtaklung on 28/9/15.
  */
@@ -85,14 +88,29 @@ public class NewFoundCompany extends Fragment {
     private ArrayList<Integer> selectedCat = new ArrayList();
     private ArrayList<String> selectedCatName = new ArrayList<>();
     private JsonObjectRequest jsonObjReq;
-    private List<Integer> showDetailIndicator = Arrays.asList(1, 5);
+    private List<Integer> showDetailIndicator = Arrays.asList(1, 4, 5);
     private List<Integer> hideEditText = Arrays.asList();
+    private JSONObject priceJsonObject;
+    private JSONArray categoryJsonArray;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.setting);
-        //hi
+
+        //get search criteria
+        SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, 0); // 0 - for private mode
+        String category = settings.getString("category", null);
+        String price = settings.getString("price", null);
+        if(category != null && price != null) {
+            try {
+                categoryJsonArray = new JSONArray(category);
+                priceJsonObject = new JSONObject(price);
+                System.out.println(categoryJsonArray);
+                System.out.println(priceJsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
         //get the array list of newFound option
         title = getResources().getStringArray(R.array.newFound_title);
@@ -106,13 +124,18 @@ public class NewFoundCompany extends Fragment {
         //get the warning text
         warning = getResources().getStringArray(R.array.newFound_warning);
 
+        //create Option detail including category and price
+        try {
+            createOptionDetail();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        getOptionDetail();
         view = inflater.inflate(R.layout.newfound, container, false);
         listView = (ListView) view.findViewById(R.id.listView);
         btnReset = (Button) view.findViewById(R.id.button_reset);
@@ -135,7 +158,7 @@ public class NewFoundCompany extends Fragment {
                 String endTimeHour = null;
                 String endTimeMin = null;
                 final int[] selectedExpense = {-1};
-                final boolean[] selectedCatItem = new boolean[4];
+                final boolean[] selectedCatItem = new boolean[10];
                 final ImageView imgIndicator = (ImageView) view.findViewById(R.id.indicator);
                 final TextView txtInfo = (TextView) view.findViewById(R.id.info);
                 final TimePicker openTime = new TimePicker(getActivity());
@@ -477,95 +500,42 @@ public class NewFoundCompany extends Fragment {
     }
 
 
-    private void getOptionDetail() {
-        //showpDialog();
+
+    private void createOptionDetail() throws JSONException {
+        for (int i = 1; i <= priceJsonObject.length(); i++) {
+            String name = priceJsonObject.getString(String.valueOf(i));
+            arrayPrice.add(name);
+            hashPrice.put(name, i-1);
+        }
+
+        for (int i = 0; i < categoryJsonArray.length(); i++) {
+
+            JSONObject categoryDetail = (JSONObject) categoryJsonArray.get(i);
+            String name = categoryDetail.getString("cht_name");
+            String ID = categoryDetail.getString("id");
+            //  hashPrice.put(name, ID);
+            //arrayPrice = new String[category.length()];
+            array_category.add(name);
+            hash_category.put(Integer.parseInt(ID), name);
+        }
+
+        //put the checkbox into linearLayout
+        ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        for(int i=0;i<array_category.size();i++){
+
+            CheckBox checkBox = new CheckBox(getActivity());
+            checkBox.setText(array_category.get(i));
+            checkBox.setTextColor(getResources().getColor(R.color.font_light_white));
+
+            checkBox.setLayoutParams(lparams);
 
 
-        jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                APIConfig.URL_Advance_Search_criteria, null, new Response.Listener<JSONObject>() {
-
-            public void onResponse(JSONObject response) {
-                Log.d("json", response.toString());
-
-                try {
-
-                    ArrayList<Spanned> info = new ArrayList<Spanned>();
-
-                    // loop through each json object
-                    String status = response.getString("status");
-                    JSONObject criteria = response.getJSONObject("data");
-
-                    if (status.equals("success")) {
-                        JSONArray category = criteria.getJSONArray("category");
-                        JSONObject price = criteria.getJSONObject("price_range");
-
-                        for (int i = 1; i <= price.length(); i++) {
-                            String name = price.getString(String.valueOf(i));
-                            arrayPrice.add(name);
-                            hashPrice.put(name, i-1);
-                        }
-
-                        for (int i = 0; i < category.length(); i++) {
-
-                            JSONObject categoryDetail = (JSONObject) category.get(i);
-                            String name = categoryDetail.getString("name");
-                            String ID = categoryDetail.getString("ID");
-                            //  hashPrice.put(name, ID);
-                            //arrayPrice = new String[category.length()];
-                            array_category.add(name);
-                            hash_category.put(Integer.parseInt(ID), name);
-                        }
-
-                        //put the checkbox into linearLayout
-                        ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                        for(int i=0;i<array_category.size();i++){
-
-                            CheckBox checkBox = new CheckBox(getActivity());
-                            checkBox.setText(array_category.get(i));
-                            checkBox.setTextColor(getResources().getColor(R.color.font_light_white));
-
-                            checkBox.setLayoutParams(lparams);
-
-
-                        }
-
-
-
-
-                    }else{
-                        String errorMsg = criteria.getString("msg");
-                        Toast.makeText(getActivity(),
-                                errorMsg,
-                                Toast.LENGTH_LONG).show();
-                    }
-
-
-
-
-                } catch (JSONException e) {
-                    Log.d("error", "error");
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(),
-                            "Error: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("error", "Error: " + error.getMessage());
-                Toast.makeText(getActivity(),
-                        R.string.connection_server_warning, Toast.LENGTH_SHORT).show();
-                //hidepDialog();
-            }
-        });
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq);
+        }
 
     }
+
 
     @Override
     public void onStop() {

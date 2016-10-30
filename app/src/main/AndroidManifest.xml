@@ -28,7 +28,8 @@
 
         <!-- android:theme="@style/AppTheme" -->
         <activity
-            android:name=".MainActivity"
+            android:name=".TestActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -42,19 +43,11 @@
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
-            android:name=".Home.Home"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".CompanyInfo.FragmentTabs"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Login.DisplayLogin"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".TestActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/app_name"
-            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Login.FragmentTabs"
             android:label="@string/app_name"
@@ -88,9 +81,9 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/. 
         -->
-        <meta-data
+        <!--<meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="@string/google_maps_key" />-->
 
         <activity
             android:name=".MapsActivity"

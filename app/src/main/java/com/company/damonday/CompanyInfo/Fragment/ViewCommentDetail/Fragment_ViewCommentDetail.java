@@ -64,8 +64,6 @@ public class Fragment_ViewCommentDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        getActivity().setTitle(R.string.latestcomment);
         View view = inflater.inflate(R.layout.view_companydetailcomment, container, false);
 
         profilePic = (NetworkImageView) view.findViewById(R.id.profile_pic);
@@ -119,6 +117,9 @@ public class Fragment_ViewCommentDetail extends Fragment {
 
                     if (status == 1) {
                         JSONObject commentInfo = jsonObject.getJSONObject("data");
+
+                        getActivity().setTitle(commentInfo.getString("title"));
+
                         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
                         profilePic.setImageUrl(commentInfo.getString("profile_picture"), imageLoader);
                         title.setText(commentInfo.getString("title"));

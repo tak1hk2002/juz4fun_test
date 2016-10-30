@@ -38,10 +38,10 @@ public class APIConfig {
 
 
     //advance search criteria
-    public static String URL_Advance_Search_criteria="http://52.32.220.112/api/entertainment/search_criteria";
+    public static String URL_Advance_Search_criteria="http://52.32.220.112/juz4fun/api/entertainment/search-criteria";
 
     //advance search
-    public static String URL_Advance_Search="http://52.32.220.112/api/entertainment/advanced_search/";
+    public static String URL_Advance_Search="http://52.32.220.112/juz4fun/api/entertainment/advanced-search/";
 
 
     //submit comment
@@ -52,7 +52,7 @@ public class APIConfig {
 
     //My comment
     public String getUrlMyComment(){
-        return "http://52.32.220.112/juz4fun/api/comment/my-list/?token="+id+"&page=1";
+        return "http://52.32.220.112/juz4fun/api/comment/my-list/?token="+id+"&page=";
     }
 
     //Detail url
