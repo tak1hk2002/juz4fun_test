@@ -86,10 +86,11 @@ public class search extends Fragment {
     private List<String> selectedCatName = new ArrayList<>();
     private boolean[] tempSelectedCatItem;
 
-    private String price_id;
-    private String district_id;
-    private String large_district_id;
-    private String category_id;
+    boolean selectAll = true;
+
+    private ArrayList<Integer> priceID = new ArrayList<>();
+    private ArrayList<Integer> districtID = new ArrayList<>();
+    private ArrayList<Integer> categoryID = new ArrayList<>();
 
     private ListView listView;
     private Button button_search;
@@ -171,7 +172,7 @@ public class search extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
                 final AlertDialog.Builder ab = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_DARK);
-                AlertDialog dialog;
+                AlertDialog dialog = null;
 
                 switch (position) {
                     //地域
@@ -221,35 +222,50 @@ public class search extends Fragment {
                         break;
                     //地區
                     case 1:
-                        String districtName = items.get(position).getInfo();
-                        if(!districtName.equals("")) {
-                            selectedDistrictName = new ArrayList(Arrays.asList(districtName.split(", ")));
-                        }
-
                         ab.setTitle(title[position]);
                         ab.setMultiChoiceItems(areaSelection.toArray(new String[areaSelection.size()]), selectedDistrictItem, new DialogInterface.OnMultiChoiceClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
-                                if (isChecked) {
-                                    selectedDistrictName.add(areaSelection.get(indexSelected));
-
-                                } else  {
-                                    selectedDistrictName.remove(areaSelection.get(indexSelected));
-                                }
                             }
                         });
                         ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                items.get(position).setInfo(TextUtils.join(", ", selectedDistrictName).toString());
+                                districtID = new ArrayList<>();
+                                selectedDistrictName = new ArrayList<String>();
+                                //list to be string
                                 if(selectedDistrictItem != null) {
+                                    //Just add select all string into list
+                                    if(tempSelectedDistrictItem[0])
+                                        selectedDistrictName.add(areaSelection.get(0));
+
+
                                     for (int i = 0; i < selectedDistrictItem.length; i++) {
-                                        tempSelectedDistrictItem[i] = selectedDistrictItem[i];
+                                        System.out.println(tempSelectedDistrictItem[i]);
+                                        //add selected name into a selected list
+                                        //add the final select ID into list
+                                        if(tempSelectedDistrictItem[i]) {
+                                            if(!tempSelectedDistrictItem[0])
+                                                selectedDistrictName.add(areaSelection.get(i));
+                                            //do not count Select all ID in district list
+                                            if(i != 0)
+                                                districtID.add(i);
+                                        }
+                                        //remove selected name from selected list
+                                        else{
+                                            if(!tempSelectedDistrictItem[0])
+                                                selectedDistrictName.remove(areaSelection.get(i));
+                                        }
+                                        //put the selected list result into selected item
+                                        selectedDistrictItem[i] = tempSelectedDistrictItem[i];
                                     }
                                 }
+                                //keep selected name string in history
+                                items.get(position).setInfo(TextUtils.join(", ", selectedDistrictName).toString());
 
-                                Log.d("selectedDistrictName", selectedDistrictName.toString());
+                                Log.d("districtID", districtID.toString());
                                 customAdapter.notifyDataSetChanged();
+
                             }
                         });
 
@@ -258,7 +274,7 @@ public class search extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 if(tempSelectedDistrictItem != null) {
                                     for (int i = 0; i < tempSelectedDistrictItem.length; i++) {
-                                        selectedDistrictItem[i] = tempSelectedDistrictItem[i];
+                                        tempSelectedDistrictItem[i] = selectedDistrictItem[i];
                                     }
                                 }
 
@@ -267,35 +283,55 @@ public class search extends Fragment {
                         });
                         dialog = ab.create();
                         dialog.show();
+                        //call handler of checkbox to control select all function
+                        tempSelectedDistrictItem = onDialog(dialog, selectedDistrictItem, tempSelectedDistrictItem);
                         break;
                     //cat
                     case 2:
-                        String catName = items.get(position).getInfo();
-                        if(!catName.equals("")) {
-                            selectedCatName = new ArrayList(Arrays.asList(catName.split(", ")));
-                        }
 
                         ab.setTitle(title[position]);
                         ab.setMultiChoiceItems(array_category.toArray(new String[array_category.size()]), selectedCatItem, new DialogInterface.OnMultiChoiceClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
-                                if (isChecked) {
-                                    selectedCatName.add(hash_category.get(indexSelected));
-
-                                } else  {
-                                    selectedCatName.remove(hash_category.get(indexSelected));
-                                }
                             }
                         });
                         ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                items.get(position).setInfo(TextUtils.join(", ", selectedCatName).toString());
+                                //AlertDialog alertDialog = (AlertDialog) dialog;
+                                //final ListView listView = alertDialog.getListView();
+
+                                categoryID = new ArrayList<>();
+                                selectedCatName = new ArrayList<String>();
+
+                                //list to be string
                                 if(selectedCatItem != null) {
+                                    //Just add select all string into list
+                                    if(tempSelectedCatItem[0])
+                                        selectedCatName.add(hash_category.get(0));
+
                                     for (int i = 0; i < selectedCatItem.length; i++) {
-                                        tempSelectedCatItem[i] = selectedCatItem[i];
+                                        //add selected name into a selected list
+                                        //add the final select ID into list
+                                        if(tempSelectedCatItem[i]) {
+                                            if(!tempSelectedCatItem[0])
+                                                selectedCatName.add(hash_category.get(i));
+                                            if(i != 0)
+                                                categoryID.add(i);
+                                        }
+                                        //remove selected name from selected list
+                                        else{
+                                            if(!tempSelectedCatItem[0])
+                                                selectedCatName.remove(hash_category.get(i));
+                                        }
+                                        //put the selected list result into selected item
+                                        selectedCatItem[i] = tempSelectedCatItem[i];
                                     }
                                 }
+                                //keep selected name string in history
+                                items.get(position).setInfo(TextUtils.join(", ", selectedCatName).toString());
+
+                                Log.d("categoryID", categoryID.toString());
                                 customAdapter.notifyDataSetChanged();
                             }
                         });
@@ -303,45 +339,61 @@ public class search extends Fragment {
                         ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if(tempSelectedCatItem != null) {
-                                    for (int i = 0; i < tempSelectedCatItem.length; i++) {
-                                        selectedCatItem[i] = tempSelectedCatItem[i];
-                                    }
-                                }
                                 dialog.dismiss();
                             }
                         });
                         dialog = ab.create();
                         dialog.show();
+                        tempSelectedCatItem = onDialog(dialog, selectedCatItem, tempSelectedCatItem);
                         break;
                     //expense
                     case 3:
-                        String expenseName = items.get(position).getInfo();
-                        if(!expenseName.equals("")) {
-                            selectedExpenseName = new ArrayList(Arrays.asList(expenseName.split(", ")));
-                        }
 
                         ab.setTitle(title[position]);
                         ab.setMultiChoiceItems(arrayPrice.toArray(new String[arrayPrice.size()]), selectedExpenseItem, new DialogInterface.OnMultiChoiceClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
-                                if (isChecked) {
-                                    selectedExpenseName.add(hash_Price.get(indexSelected));
-
-                                } else  {
-                                    selectedExpenseName.remove(hash_Price.get(indexSelected));
-                                }
                             }
                         });
                         ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                items.get(position).setInfo(TextUtils.join(", ", selectedExpenseName).toString());
+                                //AlertDialog alertDialog = (AlertDialog) dialog;
+                                //final ListView listView = alertDialog.getListView();
+
+                                priceID = new ArrayList<>();
+                                selectedExpenseName = new ArrayList<String>();
+
+                                //list to be string
                                 if(selectedExpenseItem != null) {
+
+                                    //Just add select all string into list
+                                    if(tempSelectedExpenseItem[0])
+                                        selectedExpenseName.add(hash_Price.get(0));
+
                                     for (int i = 0; i < selectedExpenseItem.length; i++) {
-                                        tempSelectedExpenseItem[i] = selectedExpenseItem[i];
+                                        //add selected name into a selected list
+                                        //add the final select ID into list
+
+                                        if(tempSelectedExpenseItem[i]) {
+                                            if(!tempSelectedExpenseItem[0])
+                                                selectedExpenseName.add(hash_Price.get(i));
+                                            if(i != 0)
+                                                priceID.add(i);
+                                        }
+                                        //remove selected name from selected list
+                                        else{
+                                            if(!tempSelectedExpenseItem[0])
+                                                selectedExpenseName.remove(hash_Price.get(i));
+                                        }
+                                        //put the selected list result into selected item
+                                        selectedExpenseItem[i] = tempSelectedExpenseItem[i];
                                     }
                                 }
+                                //keep selected name string in history
+                                items.get(position).setInfo(TextUtils.join(", ", selectedExpenseName).toString());
+
+                                Log.d("priceID", priceID.toString());
                                 customAdapter.notifyDataSetChanged();
                             }
                         });
@@ -349,20 +401,18 @@ public class search extends Fragment {
                         ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if(tempSelectedExpenseItem != null) {
-                                    for (int i = 0; i < tempSelectedExpenseItem.length; i++) {
-                                        selectedExpenseItem[i] = tempSelectedExpenseItem[i];
-                                    }
-                                }
                                 dialog.dismiss();
                             }
                         });
                         dialog = ab.create();
                         dialog.show();
+                        tempSelectedExpenseItem = onDialog(dialog, selectedExpenseItem, tempSelectedExpenseItem);
                         break;
                 }
             }
         });
+
+
 
 
 
@@ -372,13 +422,50 @@ public class search extends Fragment {
 
             public void onClick(View v) {
 
+                HashMap<Integer, HashMap<String, String >> hashDistrictID = new HashMap<Integer, HashMap<String, String>>();
+                ArrayList<String> districtList = new ArrayList<String>();
+                ArrayList<String> catList = new ArrayList<String>();
+                //districtID
+                if (selectedAreaName.equals("全選")) {
+                    hashDistrictID = areaIdHkIsland;
+                }
+                else if (selectedAreaName.equals("香港島")) {
+                    hashDistrictID = areaIdHkIsland;
+                }
+                else if (selectedAreaName.equals("九龍")) {
+                    hashDistrictID = areaIdKowloon;
+                }
+                else if (selectedAreaName.equals("新界")) {
+                    hashDistrictID = areaIdNewTerritories;
+                }
+                else if (selectedAreaName.equals("離島")) {
+                    hashDistrictID = areaIdIslands;
+                }
+
+                for (int i = 0; i < districtID.size(); i++){
+                    HashMap<String, String> hashKey =  hashDistrictID.get(districtID.get(i));
+                    for (String key: hashKey.keySet())
+                        districtList.add(key);
+                }
+                String districtString = TextUtils.join(",", districtList);
+                System.out.println(districtString);
+
+                //Category
+                String catString = TextUtils.join(",", categoryID);
+                System.out.println(catString);
+
+                //price
+                String priceString = TextUtils.join(",", priceID);
+                System.out.println(priceString);
 
 
-                //傳送數據去下一個fragment
+
+                /*//傳送數據去下一個fragment
                 Bundle bundle = new Bundle();
                 bundle.putBooleanArray("category_id", selectedCatItem);
                 bundle.putBooleanArray("district_id", selectedDistrictItem);
                 bundle.putBooleanArray("price_id", selectedExpenseItem);
+
 
                 search_result search_result_fragment = new search_result();
                 search_result_fragment.setArguments(bundle);
@@ -393,7 +480,7 @@ public class search extends Fragment {
                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("search"));
                 fragmentTransaction.add(R.id.frame_container, search_result_fragment, "search_result").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                fragmentTransaction.commit();
+                fragmentTransaction.commit();*/
 
             }
 
@@ -430,6 +517,52 @@ public class search extends Fragment {
         return view;
     }
 
+    //to control the action of the multiple checkbox
+    public boolean[] onDialog (AlertDialog dialog, final boolean[] items, final boolean[] selectedItem){
+
+
+        final ListView listView = dialog.getListView();
+        // ListView Item Click Listener that enables "Select all" choice
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                boolean isChecked = listView.isItemChecked(position);
+
+                if(isChecked)
+                    selectedItem[position] = true;
+                else
+                    selectedItem[position] = false;
+
+                if (position == 0) {
+                    if(selectAll) {
+                        Log.d("HIHI", "HIHIHI");
+                        for (int i = 1; i < items.length; i++) { // we start with first element after "Select all" choice
+                            if (isChecked && !listView.isItemChecked(i)
+                                    || !isChecked && listView.isItemChecked(i)) {
+                                listView.performItemClick(listView, i, 0);
+                                if(isChecked && !listView.isItemChecked(i))
+                                    selectedItem[i] = true;
+                                else if (!isChecked && listView.isItemChecked(i))
+                                    selectedItem[i] = false;
+                            }
+                        }
+                    }
+                } else {
+                    if (!isChecked && listView.isItemChecked(0)) {
+                        Log.d("ababab", "ababab");
+                        // if other item is unselected while "Select all" is selected, unselect "Select all"
+                        // false, performItemClick, true is a must in order for this code to work
+                        selectAll = false;
+                        listView.performItemClick(listView, 0, 0);
+                        selectedItem[0] = false;
+                        selectAll = true;
+                    }
+                }
+            }
+        });
+        return selectedItem;
+    }
+
     private void createOptionDetail() throws JSONException {
 
         ArrayList<String> allArrayAreaName = new ArrayList<>();
@@ -438,6 +571,7 @@ public class search extends Fragment {
         arrayPrice.add("全選");               //solve text color bug      2016/6/23 tomc
         hash_Price.put(0, "全選");            //hard code
         array_category.add("全選");           //solve text color bug     2016/6/23 tomc
+        hash_category.put(0, "全選");
         //arrayPrice.add("全選");
         // array_category.add("全選");
         array_area_all.add("全選");
@@ -487,23 +621,23 @@ public class search extends Fragment {
 
                     areaDetailHash.put(area_id, area_name);
                     allArrayAreaName.add(area_name);
-                    areaIdAll.put(array_district.size() - 1, areaDetailHash);
+                    areaIdAll.put(j + 1, areaDetailHash);
 
                     if (district_name.equals("香港島")) {
                         arrayAreaName.add(area_name);
-                        areaIdHkIsland.put(j, areaDetailHash);
+                        areaIdHkIsland.put(j + 1, areaDetailHash);
                     }
                     if (district_name.equals("九龍")) {
                         arrayAreaName.add(area_name);
-                        areaIdKowloon.put(j, areaDetailHash);
+                        areaIdKowloon.put(j + 1, areaDetailHash);
                     }
                     if (district_name.equals("新界")) {
                         arrayAreaName.add(area_name);
-                        areaIdNewTerritories.put(j, areaDetailHash);
+                        areaIdNewTerritories.put(j + 1, areaDetailHash);
                     }
                     if (district_name.equals("離島")) {
                         arrayAreaName.add(area_name);
-                        areaIdIslands.put(j, areaDetailHash);
+                        areaIdIslands.put(j + 1, areaDetailHash);
                     }
                 }
                 array_district.put(i, arrayAreaName);
@@ -512,7 +646,7 @@ public class search extends Fragment {
             }
             array_district.put(0, allArrayAreaName);
         }
-        Log.d("array_district",array_district.toString());
+        Log.d("areaIdAll",areaIdAll.toString());
     }
 
 
