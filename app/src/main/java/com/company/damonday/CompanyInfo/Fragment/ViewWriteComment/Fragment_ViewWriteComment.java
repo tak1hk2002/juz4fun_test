@@ -68,7 +68,12 @@ public class Fragment_ViewWriteComment extends Fragment {
     private Boolean submitWarning = false;
     private Boolean systemLogin;
     //map the selected overall rating to key value
-    private Map<String, Integer> mapOverallRating = new HashMap<String, Integer>();
+    private int selectedOverallRatingItem = -1;
+    private int tempSelectedOverallRatingItem = -1;
+    private int overallRating;
+    private String selectedOverallRatingName;
+
+
     private Map<String, String> mapDetailRating = new HashMap<String, String>();
     private StringRequest strReq;
     //內容，消費，整體評分，詳細評分 show indicator
@@ -123,9 +128,6 @@ public class Fragment_ViewWriteComment extends Fragment {
 
         ratingAdapter = new RatingAdapter(getActivity(), list);
 
-        mapOverallRating.put("正評", 0);
-        mapOverallRating.put("一般", 1);
-        mapOverallRating.put("負評", 2);
 
         DB = new LoginSQLiteHandler(getActivity());
 
@@ -205,10 +207,10 @@ public class Fragment_ViewWriteComment extends Fragment {
                     System.out.println(submitVars[0]);
                     Log.d("content", submitVars[1]);
                     System.out.println(submitVars[2]);
-                    System.out.println(mapOverallRating.get(submitVars[3]));
+                    System.out.println(overallRating);
                     System.out.println(mapDetailRating);
                     submitWriteComment(token, submitVars[0], submitVars[1], submitVars[2],
-                            Integer.toString(mapOverallRating.get(submitVars[3])), mapDetailRating);
+                            overallRating, mapDetailRating);
 
                 }
 
@@ -225,8 +227,6 @@ public class Fragment_ViewWriteComment extends Fragment {
                 final AlertDialog.Builder[] ab = {new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_DARK)};
                 AlertDialog dialog;
                 final EditText txtContent = new EditText(getActivity());
-                final String[] txtOverAllRating = new String[1];
-                final int[] selectedOverallRating = {-1};
 
                 //set the edit text color
                 txtContent.setTextColor(getResources().getColor(R.color.font_white));
@@ -295,44 +295,21 @@ public class Fragment_ViewWriteComment extends Fragment {
                         break;
                     //Overall Rating
                     case 3:
-                        //get the dialog content
-                        String stringOverAllRating = "";
-                        if(items.get(position).getInfo() != null)
-                            stringOverAllRating = items.get(position).getInfo();
-
-                        if (stringOverAllRating.isEmpty()) {
-                            txtOverAllRating[0] = "";
-                        } else {
-                            txtOverAllRating[0] = stringOverAllRating;
-                            if(mapOverallRating.get(stringOverAllRating) != null)
-                                selectedOverallRating[0] = mapOverallRating.get(stringOverAllRating);
-                        }
-
                         ab[0].setTitle(R.string.writeComment_dialog_overallrating);
-                        ab[0].setSingleChoiceItems(titleOverAllRating, selectedOverallRating[0], new DialogInterface.OnClickListener() {
+                        ab[0].setSingleChoiceItems(titleOverAllRating, selectedOverallRatingItem, new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                switch (which) {
-                                    case 0:
-                                        txtOverAllRating[0] = titleOverAllRating[which];
-                                        selectedOverallRating[0] = which;
-                                        break;
-                                    case 1:
-                                        txtOverAllRating[0] = titleOverAllRating[which];
-                                        selectedOverallRating[0] = which;
-                                        break;
-                                    case 2:
-                                        txtOverAllRating[0] = titleOverAllRating[which];
-                                        selectedOverallRating[0] = which;
-                                        break;
-                                }
+                                selectedOverallRatingItem = which;
+                                selectedOverallRatingName = titleOverAllRating[which];
 
                             }
                         });
                         ab[0].setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                items.get(position).setInfo(txtOverAllRating[0]);
+                                tempSelectedOverallRatingItem = selectedOverallRatingItem;
+                                overallRating = selectedOverallRatingItem;
+                                items.get(position).setInfo(selectedOverallRatingName);
                                 customAdapter.notifyDataSetChanged();
                                 //listView.setAdapter(customAdapter);
                                 //setListViewHeightBasedOnChildren(listView);
@@ -342,6 +319,7 @@ public class Fragment_ViewWriteComment extends Fragment {
                         ab[0].setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                selectedOverallRatingItem = tempSelectedOverallRatingItem;
                                 dialog.dismiss();
                             }
                         });
@@ -478,7 +456,7 @@ public class Fragment_ViewWriteComment extends Fragment {
     //********************************************************************************************
 
     //***********************JSON volley**********************************************************
-    public void submitWriteComment(final String token, final String title, final String content, final String expense, final String overallRating, final Map<String, String> detailRating){
+    public void submitWriteComment(final String token, final String title, final String content, final String expense, final int overallRating, final Map<String, String> detailRating){
         // Tag used to cancel the request
         String tag_string_req = "submitWriteComment";
         showDialog();
@@ -542,13 +520,19 @@ public class Fragment_ViewWriteComment extends Fragment {
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
+                System.out.println("token: "+ token);
+                System.out.println("title: "+ title);
+                System.out.println("entId: "+ entId);
+                System.out.println("comment: "+ content);
+                System.out.println("assess: "+ Integer.toString(overallRating));
                 params.put("token", token);
                 params.put("title", title);
                 params.put("entId", entId);
                 params.put("comment", content);
-                params.put("assess", overallRating);
+                params.put("assess", Integer.toString(overallRating));
                 for (int i = 0; i < detailRating.size(); i++){
                     params.put(detailRatingDB[i], detailRating.get(detailRatingDB[i]));
+                    System.out.println(detailRatingDB[i]+": "+ detailRating.get(detailRatingDB[i]));
                 }
                 return params;
             }

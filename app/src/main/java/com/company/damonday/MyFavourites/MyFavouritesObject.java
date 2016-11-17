@@ -9,6 +9,7 @@ public class MyFavouritesObject {
     String entId;
     String picUrl;
     String title;
+    String companyName;
     String price;
     String like;
     String fair;
@@ -98,23 +99,22 @@ public class MyFavouritesObject {
         this.cat = cat;
     }
 
-    public MyFavouritesObject(String entId, String picUrl, String title, String price, String like, String fair, String dislike, String averageScore, ArrayList<String> cat) {
-        this.entId = entId;
-        this.picUrl = picUrl;
-        this.title = title;
-        this.price = price;
-        this.like = like;
-        this.fair = fair;
-        this.dislike = dislike;
-        this.averageScore = averageScore;
-
-        this.cat = cat;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public MyFavouritesObject(String entId, String picUrl, String title, String price, String like, String fair, String dislike, String averageScore, String cat) {
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public MyFavouritesObject() {
+    }
+
+    public MyFavouritesObject(String entId, String picUrl, String title, String companyName, String price, String like, String fair, String dislike, String averageScore, String cat) {
         this.entId = entId;
         this.picUrl = picUrl;
         this.title = title;
+        this.companyName = companyName;
         this.price = price;
         this.like = like;
         this.fair = fair;

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,21 +76,29 @@ public class NewFoundCompany extends Fragment {
     private String[] title, warning;
     private ListView listView;
     private List<SubmitForm> items = new ArrayList<SubmitForm>();
-    private String priceID;
     private ArrayList<String> array_category = new ArrayList<String>();
-    private HashMap<String, Integer> hashPrice = new HashMap<String, Integer>();
     private HashMap<Integer, String> hash_category = new HashMap<Integer, String>();
+    private HashMap<Integer, String> hash_Price = new HashMap<Integer, String>();
+    private boolean[] selectedCatItem;
+    private List<String> selectedCatName = new ArrayList<>();
+    private boolean[] tempSelectedCatItem;
+    private ArrayList<Integer> categoryID = new ArrayList<>();
+    private int priceID;
+    private int selectedExpenseItem = -1;
+    private String selectedExpenseName;
+    private int tempSelectedExpenseItem = -1;
+
+
     private Button btnSubmit, btnReset;
     private LinearLayout linearCat;
     private APIConfig optionDetail;
     private List<String> arrayPrice = new ArrayList<String>();
     private ArrayAdapter adapterPrice;
     private Map<String, Integer> mapExpense = new HashMap<String, Integer>();
-    private ArrayList<Integer> selectedCat = new ArrayList();
-    private ArrayList<String> selectedCatName = new ArrayList<>();
     private JsonObjectRequest jsonObjReq;
     private List<Integer> showDetailIndicator = Arrays.asList(1, 4, 5);
     private List<Integer> hideEditText = Arrays.asList();
+    private List<Integer> warningIndex = Arrays.asList(0,1);
     private JSONObject priceJsonObject;
     private JSONArray categoryJsonArray;
 
@@ -152,15 +161,10 @@ public class NewFoundCompany extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
 
-                final String[] expense = {""};
                 String openTimeHour = null;
                 String openTimeMin = null;
                 String endTimeHour = null;
                 String endTimeMin = null;
-                final int[] selectedExpense = {-1};
-                final boolean[] selectedCatItem = new boolean[10];
-                final ImageView imgIndicator = (ImageView) view.findViewById(R.id.indicator);
-                final TextView txtInfo = (TextView) view.findViewById(R.id.info);
                 final TimePicker openTime = new TimePicker(getActivity());
                 openTime.setIs24HourView(true);
                 final TimePicker endTime = new TimePicker(getActivity());
@@ -177,44 +181,39 @@ public class NewFoundCompany extends Fragment {
                     case 1:
                         //get the dialog content
 
-                        String dialogCat = "";
-                        if (items.get(position).getInfo() != null)
-                            dialogCat = items.get(position).getInfo();
-                        //get the history of selecting cat
-                        if (!dialogCat.isEmpty()) {
-                            for (int i = 0; i < array_category.size(); i++) {
-                                selectedCatItem[i] = false;
-                                for (int j = 0; j < selectedCat.size(); j++) {
-                                    if (selectedCat.get(j) == i) {
-                                        selectedCatItem[i] = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-
                         ab.setTitle(title[position]);
-                        //setSingleChiceItems cannot support List of arrayList, so I need to convert it to array
                         ab.setMultiChoiceItems(array_category.toArray(new String[array_category.size()]), selectedCatItem, new DialogInterface.OnMultiChoiceClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
-                                System.out.println(indexSelected);
-                                if (isChecked) {
-                                    // If the user checked the item, add it to the selected items
-                                    selectedCat.add(indexSelected);
-                                    selectedCatName.add(hash_category.get(indexSelected));
-
-                                } else if (selectedCat.contains(indexSelected)) {
-                                    // Else, if the item is already in the array, remove it
-                                    selectedCat.remove(Integer.valueOf(indexSelected));
-                                    selectedCatName.remove(hash_category.get(indexSelected));
-                                }
                             }
                         });
                         ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                //items.get(position).setInfo(selectedCatName);
+                                //AlertDialog alertDialog = (AlertDialog) dialog;
+                                //final ListView listView = alertDialog.getListView();
+
+                                categoryID = new ArrayList<>();
+                                selectedCatName = new ArrayList<String>();
+
+                                //list to be string
+                                if(selectedCatItem != null) {
+                                    for (int i = 0; i < selectedCatItem.length; i++) {
+                                        tempSelectedCatItem[i] = selectedCatItem[i];
+
+                                        //add the final select ID into list
+                                        if(selectedCatItem[i]) {
+                                            selectedCatName.add(hash_category.get(i+1));
+                                            categoryID.add(i);
+                                        }
+                                        else
+                                            selectedCatName.remove(hash_category.get(i+1));
+                                    }
+                                }
+                                //keep selected name string in history
+                                items.get(position).setInfo(TextUtils.join(", ", selectedCatName).toString());
+
+                                Log.d("categoryID", categoryID.toString());
                                 customAdapter.notifyDataSetChanged();
                             }
                         });
@@ -222,11 +221,49 @@ public class NewFoundCompany extends Fragment {
                         ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                for (int i = 0; i < selectedCatItem.length; i++) {
+                                    selectedCatItem[i] = tempSelectedCatItem[i];
+                                }
                                 dialog.dismiss();
                             }
                         });
-                        ab.show();
+                        dialog = ab.create();
+                        dialog.show();
                         break;
+                    case 4:
+                        ab.setTitle(R.string.newFound_expense);
+                        ab.setSingleChoiceItems(arrayPrice.toArray(new String[arrayPrice.size()]), selectedExpenseItem, new DialogInterface.OnClickListener(){
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                selectedExpenseItem = which;
+                                selectedExpenseName = arrayPrice.get(which);
+                            }
+                        });
+                        ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                priceID = selectedExpenseItem;
+                                tempSelectedExpenseItem = selectedExpenseItem;
+                                items.get(position).setInfo(selectedExpenseName);
+                                Log.d("priceID", Integer.toString(priceID));
+                                customAdapter.notifyDataSetChanged();
+                            }
+                        });
+
+                        ab.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                selectedExpenseItem = tempSelectedExpenseItem;
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog = ab.create();
+                        dialog.show();
+                        break;
+
                     //business hour
                     case 5:
                         //get the dialog content
@@ -359,17 +396,44 @@ public class NewFoundCompany extends Fragment {
             @Override
             public void onClick(View v) {
 
+                //init
                 String submitVars[] = new String[items.size()];
+                Boolean passChecking = true;
 
                 for (int i = 0; i < items.size(); i++){
                     //get the value that the user inputted
                     submitVars[i] = items.get(i).getInfo().trim();
-                    System.out.println(submitVars[i]);
-                    if(submitVars[i].isEmpty()){
-                        //Toast.makeText(getActivity(), warning[i], Toast.LENGTH_SHORT).show();
-                        //passChecking = false;
+                    if(warningIndex.contains(i)){
+                        if(submitVars[i].isEmpty()) {
+                            //Toast.makeText(getActivity(), warning[i], Toast.LENGTH_SHORT).show();
+                            //passChecking = false;
+                            items.get(i).setSubmitWarning(true);
+                            passChecking = false;
+                        }
+                        else{
+                            System.out.println(submitVars[i]);
+                            items.get(i).setSubmitWarning(false);
+                        }
+                    }
+                    else {
+                        items.get(i).setSubmitWarning(false);
+                        System.out.println(submitVars[i]);
                     }
                 }
+
+                if(passChecking){
+                    System.out.println("Company: " +submitVars[0]);
+                    System.out.println("Cat: " +categoryID);
+                    System.out.println("address: " +submitVars[2]);
+                    System.out.println("tel: " +submitVars[3]);
+                    System.out.println("price: " + priceID);
+                    System.out.println("Company: " +submitVars[5]);
+
+
+                    //submitting(submitVars[0], submitVars[3], submitVars[1], submitVars[2], submitVars[4], submitVars[5]);
+
+                }
+                customAdapter.notifyDataSetChanged();
                 //what is the format of business hour
                 //
                 //
@@ -378,7 +442,6 @@ public class NewFoundCompany extends Fragment {
                 //
                 //
 
-                //submitting(company_name, company_tel, company_type, company_address, company_cost, company_business_hour);
 
 
             }
@@ -391,6 +454,17 @@ public class NewFoundCompany extends Fragment {
                     items.get(i).setInfo("");
                     //get each view of  the listview
                 }
+                selectedCatItem = new boolean[array_category.size()];
+                tempSelectedCatItem = new boolean[array_category.size()];
+                categoryID = new ArrayList<Integer>();
+                selectedCatName = new ArrayList<>();
+
+                selectedExpenseItem = -1;
+                tempSelectedExpenseItem = -1;
+                selectedExpenseName = "";
+                priceID = -1;
+
+
                 customAdapter.notifyDataSetChanged();
             }
         });
@@ -417,17 +491,17 @@ public class NewFoundCompany extends Fragment {
 
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    String error = jObj.getString("status");
+                    int status = jObj.getInt("status");
 
                     // Check for error node in json
-                    if (error.equals("success")) {
+                    if (status == 1) {
                         // user successfully logged in
                         // Create login session
                         //session.setLogin(true);
 
 
                         //display message login successfully
-                        AlertDialog.Builder ab = new AlertDialog.Builder(view.getContext());
+                        AlertDialog.Builder ab = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_DARK);
                         ab.setTitle(R.string.submit_success);
                         ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
 
@@ -455,13 +529,12 @@ public class NewFoundCompany extends Fragment {
                         ab.create().show();
 
 
-                    } else {
+                    } else if (status == 0) {
                         // Error in login. Get the error message
-                        JSONObject data = jObj.getJSONObject("data");
-                        String errorMsg = data.getString("msg");
+                        String errorMsg = jObj.getString("msg");
 
                         Toast.makeText(getActivity(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                                errorMsg, Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     // JSON error
@@ -484,12 +557,12 @@ public class NewFoundCompany extends Fragment {
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("company_name", company_name);
-                params.put("company_tel", company_tel);
-                params.put("company_type", company_type);
-                params.put("company_address", company_address);
-                params.put("cost", company_cost);
-                params.put("business_hour", company_business_hour);
+                params.put("name", company_name);
+                params.put("tel", company_tel);
+                params.put("type", company_type);
+                params.put("address", company_address);
+                params.put("price", company_cost);
+                params.put("businessHour", company_business_hour);
                 return params;
             }
 
@@ -502,37 +575,28 @@ public class NewFoundCompany extends Fragment {
 
 
     private void createOptionDetail() throws JSONException {
-        for (int i = 1; i <= priceJsonObject.length(); i++) {
-            String name = priceJsonObject.getString(String.valueOf(i));
-            arrayPrice.add(name);
-            hashPrice.put(name, i-1);
-        }
-
-        for (int i = 0; i < categoryJsonArray.length(); i++) {
+        for (int i = 1; i < categoryJsonArray.length(); i++) {
 
             JSONObject categoryDetail = (JSONObject) categoryJsonArray.get(i);
             String name = categoryDetail.getString("cht_name");
-            String ID = categoryDetail.getString("id");
+            String id = categoryDetail.getString("id");
             //  hashPrice.put(name, ID);
             //arrayPrice = new String[category.length()];
             array_category.add(name);
-            hash_category.put(Integer.parseInt(ID), name);
+            hash_category.put(i, name);
         }
+        //inital
+        selectedCatItem = new boolean[array_category.size()];
+        tempSelectedCatItem = new boolean[array_category.size()];
 
-        //put the checkbox into linearLayout
-        ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        for(int i=0;i<array_category.size();i++){
-
-            CheckBox checkBox = new CheckBox(getActivity());
-            checkBox.setText(array_category.get(i));
-            checkBox.setTextColor(getResources().getColor(R.color.font_light_white));
-
-            checkBox.setLayoutParams(lparams);
-
-
+        for (int i = 1; i <= priceJsonObject.length(); i++) {
+            String name = priceJsonObject.getString(String.valueOf(i));
+            arrayPrice.add(name);
+            hash_Price.put(i, name);
         }
+        //inital
+        //selectedExpenseItem = new boolean[arrayPrice.size()];
+        //tempSelectedExpenseItem = new boolean[arrayPrice.size()];
 
     }
 

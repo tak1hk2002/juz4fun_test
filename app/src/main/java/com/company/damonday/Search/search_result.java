@@ -18,6 +18,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
+import com.company.damonday.MyFavourites.MyFavouritesObject;
+import com.company.damonday.MyFavourites.MyFavourites_adapter;
 import com.company.damonday.R;
 import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
@@ -31,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +45,6 @@ import java.util.Map;
 public class search_result extends Fragment {
     private String price_id;
     private String district_id;
-    private String large_district_id;
     private String category_id;
     private FragmentTabs_try fragmentTabs_try;
     private ImageView ivMyFavourite, ivLike, ivFair, ivDislike;
@@ -55,9 +57,9 @@ public class search_result extends Fragment {
     // Movies json url
     // private static final String url = "http://damonday.tk/api/comment/latest_comments/?page=1";
     private ProgressImage pDialog;
-    private List<CompanyObject> companyObjects = new ArrayList<CompanyObject>();
+    private List<MyFavouritesObject> companyObjects = new ArrayList<MyFavouritesObject>();
     private ListView listView;
-    private search_adapter adapter;
+    private MyFavourites_adapter adapter;
     private String geturl = "";
 
     @Override
@@ -69,19 +71,36 @@ public class search_result extends Fragment {
 
         price_id = bundle.getString("price_id");
         district_id = bundle.getString("district_id");
-        large_district_id = bundle.getString("large_district_id");
         category_id = bundle.getString("category_id");
         geturl();
 
-        Log.d("search", price_id + "+" + district_id + "+" + large_district_id + "+" + category_id);
+        Log.d("search", price_id + "+" + district_id  + "+" + category_id);
 
     }
 
 
     public String geturl() {
-        geturl = APIConfig.URL_Advance_Search;
+        ArrayList<String> parmsList = new ArrayList<>();
+        String parmsString = "";
 
-        geturl = String.format(geturl + "?price_range=" + price_id + "&cat_id=" + category_id + "&area_id=" + district_id + "&district_id=" + large_district_id);
+        geturl = APIConfig.URL_Advance_Search;
+        if(!category_id.equals(""))
+            parmsList.add("catId=" + category_id);
+        if(!price_id.equals(""))
+            parmsList.add("priceRange=" + price_id);
+        if(!district_id.equals(""))
+            parmsList.add("areaId=" + district_id);
+        for(int i = 0; i < parmsList.size(); i++){
+            if(i == 0){
+                parmsString = "?";
+            }
+            parmsString += parmsList.get(i);
+
+            if(i < (parmsList.size() - 1)){
+                parmsString += "&";
+            }
+        }
+        geturl = String.format(geturl + parmsString);
 
         Log.d("geturl", geturl);
         return geturl;
@@ -96,9 +115,9 @@ public class search_result extends Fragment {
         pDialog = new ProgressImage(getActivity());
         pDialog.show();
         //setContentView(R.layout.latestcomment);
-        submitting(category_id, district_id, large_district_id, price_id);
+        submitting(category_id, district_id, price_id);
         listView = (ListView) view.findViewById(R.id.list);
-        adapter = new search_adapter(getActivity(), companyObjects);
+        adapter = new MyFavourites_adapter(getActivity(), companyObjects, true);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -109,7 +128,7 @@ public class search_result extends Fragment {
 
                 //pass object to next fragment
                 Bundle bundle = new Bundle();
-                bundle.putString("ent_id", companyObjects.get(position).getUser_id());
+                bundle.putString("ent_id", companyObjects.get(position).getEntId());
                 fragmentTabs_try = new FragmentTabs_try();
                 fragmentTabs_try.setArguments(bundle);
 
@@ -130,7 +149,7 @@ public class search_result extends Fragment {
     }
 
 
-    private void submitting(final String category_id, final String district_id, final String large_district_id, final String price_id) {
+    private void submitting(final String category_id, final String district_id, final String price_id) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
@@ -146,60 +165,66 @@ public class search_result extends Fragment {
 
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    String error = jObj.getString("status");
+                    int status = jObj.getInt("status");
 
                     // Check for error node in json
-                    if (error.equals("success")) {
+                    if (status == 1) {
                         // user successfully logged in
                         // Create login session
                         //session.setLogin(true);
                         JSONArray jArray = jObj.getJSONArray("data");
-                        for (int i = 0; i < jArray.length(); i++) {
+                        if (jArray != null && jArray.length() > 0) {
+                            for (int i = 0; i < jArray.length(); i++) {
 
-                            JSONObject oneObject = jArray.getJSONObject(i);
-                            JSONObject score = oneObject.getJSONObject("score");
-                            String price_range = oneObject.getString("price_range");
-                            String average_score = score.getString("average_score");
-                            JSONArray category = oneObject.getJSONArray("category");
-                            String name = oneObject.getString("name");
-                            String category_name = "";
-                            for (int j = 0; j < category.length(); j++) {
-                                JSONObject cat_object = category.getJSONObject(j);
-                                String cat = cat_object.getString("name");
-                                if (category_name != "")
-                                    category_name += ", ";
-                                category_name += cat;
-                            }
+                                JSONObject oneObject = jArray.getJSONObject(i);
+                                JSONObject score = oneObject.getJSONObject("score");
+                                String id = oneObject.getString("id");
+                                String coverImage = oneObject.getString("cover_image");
+                                String campanyName = oneObject.getString("company_name");
+                                String price_range = oneObject.getString("price_range");
+                                String average_score = score.getString("average_score");
+                                JSONArray category = oneObject.getJSONArray("cat");
+                                String name = oneObject.getString("name");
+                                String category_name = "";
+                                for (int j = 0; j < category.length(); j++) {
+                                    String cat = category.getString(j);
+                                    if (category_name != "")
+                                        category_name += ", ";
+                                    category_name += cat;
+                                }
+                                System.out.println("category_name: " + category_name);
 
 
 //                            String category ="室內";  //tomc 26/20/2015
 //                            String title ="真好玩工作室";
 
-                            String like = score.getString("like");
-                            String fair = score.getString("fair");
-                            String dislike = score.getString("dislike");
-                            //category
-                            //title
+                                String like = score.getString("like");
+                                String fair = score.getString("fair");
+                                String dislike = score.getString("dislike");
+                                //category
+                                //title
 
 
-                            CompanyObject companyObject = new CompanyObject();
-                            companyObject.setTitle(name);
-                            companyObject.setCategory(category_name);
-                            companyObject.setUser_id(oneObject.getString("ID"));
-                            companyObject.setThumbnailUrl(oneObject.getString("cover_image"));
-                            companyObject.setAveage_scrore(average_score);
-                            companyObject.setLike(like);
-                            companyObject.setDislike(dislike);
-                            companyObject.setFair(fair);
-                            companyObject.setPrice_range(price_range);
+                                MyFavouritesObject companyObject = new MyFavouritesObject();
+                                companyObject.setTitle(name);
+                                companyObject.setCompanyName(campanyName);
+                                companyObject.setCategory(category_name);
+                                companyObject.setEntId(id);
+                                companyObject.setPicUrl(coverImage);
+                                companyObject.setAverageScore(average_score);
+                                companyObject.setLike(like);
+                                companyObject.setDislike(dislike);
+                                companyObject.setFair(fair);
+                                companyObject.setPrice(price_range);
 
 
-                            // adding movie to movies array
-                            companyObjects.add(companyObject);
+                                // adding movie to movies array
+                                companyObjects.add(companyObject);
+                            }
                         }
 
 
-                    } else {
+                    } else if (status == 0) {
                         // Error in login. Get the error message
                         JSONObject data = jObj.getJSONObject("data");
                         String errorMsg = data.getString("msg");
@@ -227,12 +252,11 @@ public class search_result extends Fragment {
 
             @Override
             protected Map<String, String> getParams() {
-                // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("category_id", category_id);
-                params.put("district_id", district_id);
-                params.put("large_district_id", large_district_id);
-                params.put("price_range", price_id);
+                params.put("catId", category_id);
+                params.put("priceRange", price_id);
+                params.put("areaId", district_id);
+
 
                 return params;
             }

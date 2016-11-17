@@ -26,7 +26,7 @@ public class CompanySQLiteHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "abc";
+    private static final String DATABASE_NAME = "juz4fun";
 
     // Login table name
     private static final String TABLE_MY_FAVOURITE = "my_favourite";
@@ -35,7 +35,8 @@ public class CompanySQLiteHandler extends SQLiteOpenHelper {
     private static final String KEY_ID = "id";
     private static final String KEY_ENT_ID = "ent_id";
     private static final String KEY_PIC_URL = "pic_url";
-    private static final String KEY_TITLE = "title";
+    private static final String KEY_ENT_NAME = "ent_name";
+    private static final String KEY_COMPANY_NAME = "company_name";
     private static final String KEY_PRICE = "price";
     private static final String KEY_LIKE = "like";
     private static final String KEY_FAIR = "fair";
@@ -56,7 +57,8 @@ public class CompanySQLiteHandler extends SQLiteOpenHelper {
                 KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 KEY_ENT_ID + " INTEGER NOT NULL, " +
                 KEY_PIC_URL + " TEXT NOT NULL, " +
-                KEY_TITLE + " TEXT NOT NULL, " +
+                KEY_ENT_NAME + " TEXT NOT NULL, " +
+                KEY_COMPANY_NAME + " TEXT NOT NULL, " +
                 KEY_PRICE + " TEXT NOT NULL, " +
                 KEY_LIKE + " TEXT NOT NULL, " +
                 KEY_FAIR + " TEXT NOT NULL, " +
@@ -83,12 +85,6 @@ public class CompanySQLiteHandler extends SQLiteOpenHelper {
      * */
     public void addMyFavourite(MyFavouritesObject myFavouritesObject){
         SQLiteDatabase db = this.getWritableDatabase();
-        String cat = "";
-        for (int i = 0; i < myFavouritesObject.getCat().size(); i++){
-            if(cat != "")
-                cat += ", ";
-            cat += myFavouritesObject.getCat().get(i);
-        }
 
         Time t = new Time(Time.getCurrentTimezone());
         t.setToNow();
@@ -98,13 +94,14 @@ public class CompanySQLiteHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_ENT_ID, myFavouritesObject.getEntId()); // entID
         values.put(KEY_PIC_URL, myFavouritesObject.getPicUrl()); // picUrl
-        values.put(KEY_TITLE, myFavouritesObject.getTitle()); // title
+        values.put(KEY_ENT_NAME, myFavouritesObject.getTitle()); // title
+        values.put(KEY_COMPANY_NAME, myFavouritesObject.getCompanyName());
         values.put(KEY_PRICE, myFavouritesObject.getPrice()); // price
         values.put(KEY_LIKE, myFavouritesObject.getLike()); // like
         values.put(KEY_FAIR, myFavouritesObject.getFair()); // fair
         values.put(KEY_DISLIKE, myFavouritesObject.getDislike()); // dislike
         values.put(KEY_AVERAGE_SCORE, myFavouritesObject.getAverageScore()); // averageScore
-        values.put(KEY_CATEGORIES, cat); // cat
+        values.put(KEY_CATEGORIES, myFavouritesObject.getCategory()); // cat
         values.put(KEY_CREATE_DATE, date); // create date
 
         // Inserting Row
@@ -174,16 +171,17 @@ public class CompanySQLiteHandler extends SQLiteOpenHelper {
         //String id=cursor.getString(1);
         String ent_id=cursor.getString(1);
         String pic_url=cursor.getString(2);
-        String title=cursor.getString(3);
-        String price=cursor.getString(4);
-        String like=cursor.getString(5);
-        String fair=cursor.getString(6);
-        String dislike=cursor.getString(7);
-        String average_score=cursor.getString(8);
-        String categories=cursor.getString(9);
+        String ent_name=cursor.getString(3);
+        String company_name = cursor.getString(4);
+        String price=cursor.getString(5);
+        String like=cursor.getString(6);
+        String fair=cursor.getString(7);
+        String dislike=cursor.getString(8);
+        String average_score=cursor.getString(9);
+        String categories=cursor.getString(10);
         //String create_date=cursor.getString(11);
 
-        MyFavouritesObject result = new MyFavouritesObject(ent_id,pic_url,title,price,like,fair,dislike,average_score,categories);
+        MyFavouritesObject result = new MyFavouritesObject(ent_id,pic_url,ent_name, company_name,price,like,fair,dislike,average_score,categories);
 
         // 回傳結果
         return result;

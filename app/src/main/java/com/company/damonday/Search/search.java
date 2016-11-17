@@ -460,11 +460,11 @@ public class search extends Fragment {
 
 
 
-                /*//傳送數據去下一個fragment
+                //傳送數據去下一個fragment
                 Bundle bundle = new Bundle();
-                bundle.putBooleanArray("category_id", selectedCatItem);
-                bundle.putBooleanArray("district_id", selectedDistrictItem);
-                bundle.putBooleanArray("price_id", selectedExpenseItem);
+                bundle.putString("category_id", catString);
+                bundle.putString("district_id", districtString);
+                bundle.putString("price_id", priceString);
 
 
                 search_result search_result_fragment = new search_result();
@@ -480,7 +480,7 @@ public class search extends Fragment {
                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("search"));
                 fragmentTransaction.add(R.id.frame_container, search_result_fragment, "search_result").addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                fragmentTransaction.commit();*/
+                fragmentTransaction.commit();
 
             }
 
@@ -493,17 +493,21 @@ public class search extends Fragment {
                 selectedAreaName = "";
                 areaSelection = new ArrayList<String>();
 
+
                 selectedDistrictItem = null;
                 tempSelectedDistrictItem = null;
                 selectedDistrictName = new ArrayList<>();
+                districtID = new ArrayList<Integer>();
 
                 selectedExpenseItem = new boolean[arrayPrice.size()];
                 selectedExpenseName = new ArrayList<>();
                 tempSelectedExpenseItem = new boolean[arrayPrice.size()];
+                priceID = new ArrayList<Integer>();
 
                 selectedCatItem = new boolean[array_category.size()];
                 selectedCatName = new ArrayList<>();
                 tempSelectedCatItem = new boolean[array_category.size()];
+                categoryID = new ArrayList<Integer>();
 
                 for (int i= 0; i < items.size(); i++){
                     items.get(i).setInfo("");

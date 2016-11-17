@@ -51,7 +51,7 @@ public class MyFavourites extends Fragment {
         }
 
         listView = (ListView) view.findViewById(R.id.list);
-        adapter = new MyFavourites_adapter(getActivity(), myFavouritesObjects);
+        adapter = new MyFavourites_adapter(getActivity(), myFavouritesObjects, false);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

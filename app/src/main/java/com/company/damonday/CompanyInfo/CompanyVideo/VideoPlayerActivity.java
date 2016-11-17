@@ -1,199 +1,98 @@
 package com.company.damonday.CompanyInfo.CompanyVideo;
 
-/**
- * Created by lamtaklung on 24/1/2016.
- */
-import java.io.IOException;
-
-import android.app.ActionBar;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.Toast;
+
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnPreparedListener;
+import android.net.Uri;
+import android.util.Log;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 import com.company.damonday.R;
 
-public class VideoPlayerActivity extends Fragment implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener, VideoControllerView.MediaPlayerControl {
+public class VideoPlayerActivity extends Activity {
 
-    SurfaceView videoSurface;
-    MediaPlayer player;
-    VideoControllerView controller;
-    View rootView;
-    String videoUrl;
+    private VideoView myVideoView;
+    private int position = 0;
+    private ProgressDialog progressDialog;
+    private MediaController mediaControls;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_video_player);
-        getActivity().setRequestedOrientation(
-                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        ActionBar action=getActivity().getActionBar();
-        action.hide();
 
-        try {
-            videoUrl = getArguments().getString("videoUrl");
-        }catch(Exception e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), "No data loaded", Toast.LENGTH_LONG).show();
+        // set the main layout of the activity
+        setContentView(R.layout.companyinfo_video_player);
+
+        //set the media controller buttons
+        if (mediaControls == null) {
+            mediaControls = new MediaController(VideoPlayerActivity.this);
         }
 
+        //initialize the VideoView
+        myVideoView = (VideoView) findViewById(R.id.video_view);
 
-        player = new MediaPlayer();
-        controller = new VideoControllerView(getActivity());
+        // create a progress bar while the video file is loading
+        progressDialog = new ProgressDialog(VideoPlayerActivity.this);
+        // set a title for the progress bar
+        progressDialog.setTitle("JavaCodeGeeks Android Video View Example");
+        // set a message for the progress bar
+        progressDialog.setMessage("Loading...");
+        //set the progress bar not cancelable on users' touch
+        progressDialog.setCancelable(false);
+        // show the progress bar
+        progressDialog.show();
 
         try {
-            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setDataSource(getActivity(), Uri.parse("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"));
-            player.setOnPreparedListener(this);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            //set the media controller in the VideoView
+            myVideoView.setMediaController(mediaControls);
+
+            //set the uri of the video to be played
+            myVideoView.setVideoURI(Uri.parse("http://52.32.220.112/juz4fun/uploads/entertainment/oTpzMqDzZ445L9TPhtomWM1Oj7mTxnW1094KodAoR4pvJLIO-qeOr9hp8bV7__E8.mp4"));
+
+        } catch (Exception e) {
+            Log.e("Error", e.getMessage());
             e.printStackTrace();
         }
-    }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+        myVideoView.requestFocus();
+        //we also set an setOnPreparedListener in order to know when the video file is ready for playback
+        myVideoView.setOnPreparedListener(new OnPreparedListener() {
 
-        rootView = inflater.inflate(R.layout.activity_video_player,container, false);
-        videoSurface = (SurfaceView) rootView.findViewById(R.id.videoSurface);
-        SurfaceHolder videoHolder = videoSurface.getHolder();
-        videoHolder.addCallback(this);
-
-        rootView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                controller.show();
-                return false;
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                // close the progress bar and play the video
+                progressDialog.dismiss();
+                //if we have a position on savedInstanceState, the video playback should start from here
+                myVideoView.seekTo(position);
+                if (position == 0) {
+                    myVideoView.start();
+                } else {
+                    //if we come from a resumed activity, video playback will be paused
+                    myVideoView.pause();
+                }
             }
         });
-        return rootView;
-    }
-
-
-    // Implement SurfaceHolder.Callback
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        player.setDisplay(holder);
-        player.prepareAsync();
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        //we use onSaveInstanceState in order to store the video playback position for orientation change
+        savedInstanceState.putInt("Position", myVideoView.getCurrentPosition());
+        myVideoView.pause();
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        //we use onRestoreInstanceState in order to play the video playback from the stored position
+        position = savedInstanceState.getInt("Position");
+        myVideoView.seekTo(position);
+        Log.d("onRestoreInstanceState", "onRestoreInstanceState");
     }
-    // End SurfaceHolder.Callback
-
-    // Implement MediaPlayer.OnPreparedListener
-    @Override
-    public void onPrepared(MediaPlayer mp) {
-        controller.setMediaPlayer(this);
-        controller.setAnchorView((FrameLayout) rootView.findViewById(R.id.videoSurfaceContainer));
-        player.start();
-    }
-    // End MediaPlayer.OnPreparedListener
-
-    // Implement VideoMediaController.MediaPlayerControl
-    @Override
-    public boolean canPause() {
-        return true;
-    }
-
-    @Override
-    public boolean canSeekBackward() {
-        return true;
-    }
-
-    @Override
-    public boolean canSeekForward() {
-        return true;
-    }
-
-    @Override
-    public int getBufferPercentage() {
-        return 0;
-    }
-
-    @Override
-    public int getCurrentPosition() {
-        return player.getCurrentPosition();
-    }
-
-    @Override
-    public int getDuration() {
-        return player.getDuration();
-    }
-
-    @Override
-    public boolean isPlaying() {
-        return player.isPlaying();
-    }
-
-    @Override
-    public void pause() {
-        player.pause();
-    }
-
-    @Override
-    public void seekTo(int i) {
-        player.seekTo(i);
-    }
-
-    @Override
-    public void start() {
-        player.start();
-    }
-
-    @Override
-    public boolean isFullScreen() {
-        return false;
-    }
-
-    @Override
-    public void toggleFullScreen() {
-
-    }
-    // End VideoMediaController.MediaPlayerControl
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        player.pause();
-        getActivity().setRequestedOrientation(
-                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        ActionBar action=getActivity().getActionBar();
-        action.show();
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
-
 }

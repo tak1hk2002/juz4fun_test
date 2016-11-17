@@ -1,5 +1,6 @@
 package com.company.damonday.CompanyInfo;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.company.damonday.CompanyInfo.CompanyVideo.FullScreenViewActivity;
+import com.company.damonday.CompanyInfo.CompanyVideo.VideoPlayer;
 import com.company.damonday.CompanyInfo.CompanyVideo.VideoPlayerActivity;
 import com.company.damonday.CompanyInfo.Fragment.ViewComment.CustomScrollView;
 import com.company.damonday.CompanyInfo.Fragment.ViewComment.Fragment_ViewComment;
@@ -61,9 +63,8 @@ public class FragmentTabs_try extends Fragment{
     private ProgressImage pDialog;
     private static String TAG = FragmentTabs_try.class.getSimpleName();
     private ArrayList<String> coverPage = new ArrayList<String>();
-    private ArrayList<String> categories = new ArrayList<String>();
     private TextView tvLike, tvDislike, tvFair, tvCompanyTitle;
-    private String like, dislike, fair, companyName, averageScore, cat, price, entId, videoUrl;
+    private String like, dislike, fair, entName, companyName,averageScore, categories, price, entId, videoUrl;
     private APIConfig details;
     private ImageView ivMyFavourite, imgLike, imgOk, imgDislike;
     private CompanySQLiteHandler myfavouriteDB;
@@ -262,6 +263,7 @@ public class FragmentTabs_try extends Fragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.d("Fragment 1", "onActivityCreated");
 
     }
 
@@ -269,7 +271,25 @@ public class FragmentTabs_try extends Fragment{
     public void onResume() {
         super.onResume();
         scrollView.smoothScrollTo(0, SCROLL_Y);
+        Log.d("Fragment 1", "onResume");
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("Fragment 1", "onDestroy");
+        ActionBar action=getActivity().getActionBar();
+        action.hide();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("Fragment 1", "onDestroyView");
+        ActionBar action=getActivity().getActionBar();
+        action.hide();
+    }
+
 
     private void makeJsonArrayRequest() {
         showpDialog();
@@ -290,7 +310,9 @@ public class FragmentTabs_try extends Fragment{
                         videoUrl = companyInfo.getString("video");
                         Log.d("VideoUrl", videoUrl);
                         //videoUrl = "http://www.sample-videos.com/video/mp4/360/big_buck_bunny_360p_2mb.mp4";
-                        companyName = companyInfo.getString("cht_name");
+                        entName = companyInfo.getString("cht_name");
+                        companyName = companyInfo.getString("company_name");
+
                         Log.d("videoUrl", videoUrl);
 
                         for (int i = 0; i < promotion_images.length(); i++){
@@ -303,9 +325,14 @@ public class FragmentTabs_try extends Fragment{
 
                         //other info
                         JSONArray cat = companyInfo.getJSONArray("cat");
+                        categories = "";
                         for (int i = 0; i < cat.length(); i++){
-                            categories.add((String) cat.get(i));
+                            String catString = cat.getString(i);
+                            if (categories != "")
+                                categories += ", ";
+                            categories += catString;
                         }
+                        System.out.println("categories: "+ categories);
                         price = companyInfo.getString("price");
                         averageScore = score.getString("average_score").equals("null") ? getResources().getString(R.string.not_has_score_yet) : score.getString("average_score");
 
@@ -374,8 +401,8 @@ public class FragmentTabs_try extends Fragment{
         tvFair.setText(fair);
         //tvCompanyTitle.setText(companyName);
 
-        if(!companyName.equals(null));   //tomc 28/10/2015
-            getActivity().setTitle(companyName);
+        if(!entName.equals(null));   //tomc 28/10/2015
+            getActivity().setTitle(entName);
 
 
         String coverPageUrl;
@@ -384,7 +411,7 @@ public class FragmentTabs_try extends Fragment{
         }else {
             coverPageUrl = "";
         }
-        myFavouritesObject = new MyFavouritesObject(entId, coverPageUrl, companyName, price, like, fair, dislike, averageScore, categories);
+        myFavouritesObject = new MyFavouritesObject(entId, coverPageUrl, entName, companyName, price, like, fair, dislike, averageScore, categories);
 
         if(videoUrl != null)
             listOfItems.add(videoUrl);
@@ -432,12 +459,16 @@ public class FragmentTabs_try extends Fragment{
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //startActivity(new Intent(getActivity(), VideoPlayerActivity.class));
+                        Intent i = new Intent(getActivity(), VideoPlayerActivity.class);
+                        startActivity(i);
+
+
+                        /*//startActivity(new Intent(getActivity(), VideoPlayerActivity.class));
                         Bundle bundle = new Bundle();
                         bundle.putString("videoUrl", videoUrl);
 
 
-                        VideoPlayerActivity videoPlayerActivity = new VideoPlayerActivity();
+                        VideoPlayer videoPlayerActivity = new VideoPlayer();
                         videoPlayerActivity.setArguments(bundle);
 
                         FragmentManager fragmentManager = getFragmentManager();
@@ -446,7 +477,8 @@ public class FragmentTabs_try extends Fragment{
                         fragmentTransaction.hide(getFragmentManager().findFragmentByTag("companyDetail"));
                         fragmentTransaction.add(R.id.frame_container, videoPlayerActivity, "video").addToBackStack("main");  //Alan 9/2/2016
                         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                        fragmentTransaction.commit();
+                        fragmentTransaction.commit();*/
+
                     }
                 });
             }

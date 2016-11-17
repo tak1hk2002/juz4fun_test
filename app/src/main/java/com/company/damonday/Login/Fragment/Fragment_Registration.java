@@ -17,9 +17,17 @@ import android.widget.EditText;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.company.damonday.Login.FragmentTabs;
 import com.company.damonday.function.APIConfig;
@@ -33,6 +41,7 @@ import com.company.damonday.function.ProgressImage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -212,6 +221,25 @@ Log.d("tomtomtomtom","register");
                 Log.e(TAG, "Registration Error: " + error.getMessage());
                 Toast.makeText(getActivity(),
                         R.string.connection_server_warning, Toast.LENGTH_LONG).show();
+                //hideDialog();
+                NetworkResponse networkResponse = error.networkResponse;
+                if (networkResponse != null) {
+                    Log.e("Volley", "Error. HTTP Status Code:"+networkResponse.statusCode);
+                }
+
+                if (error instanceof TimeoutError) {
+                    Log.e("Volley", "TimeoutError");
+                }else if(error instanceof NoConnectionError){
+                    Log.e("Volley", "NoConnectionError");
+                } else if (error instanceof AuthFailureError) {
+                    Log.e("Volley", "AuthFailureError");
+                } else if (error instanceof ServerError) {
+                    Log.e("Volley", "ServerError");
+                } else if (error instanceof NetworkError) {
+                    Log.e("Volley", "NetworkError");
+                } else if (error instanceof ParseError) {
+                    Log.e("Volley", "ParseError");
+                }
                 hideDialog();
             }
         }) {
@@ -220,11 +248,17 @@ Log.d("tomtomtomtom","register");
             protected Map<String, String> getParams() {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("email", email);
                 params.put("username", username);
                 params.put("password", password);
+                params.put("email", email);
 
                 return params;
+            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                //headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
             }
 
         };
@@ -233,14 +267,14 @@ Log.d("tomtomtomtom","register");
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
-    @Override
+    /*@Override
     public void onStop() {
         super.onStop();
         if (strReq != null)  {
             strReq.cancel();
             Log.d("onStop", "Registration requests are all cancelled");
         }
-    }
+    }*/
 
     private void showDialog() {
         if (!pDialog.isShowing())

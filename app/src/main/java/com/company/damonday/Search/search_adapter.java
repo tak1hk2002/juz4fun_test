@@ -53,7 +53,7 @@ public class search_adapter extends BaseAdapter {
             inflater = (LayoutInflater) activity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
-            convertView = inflater.inflate(R.layout.search_result_list_row, null);      //tomc
+            convertView = inflater.inflate(R.layout.myfavourites_list_row, null);      //tomc
 
         if (imageLoader == null)
             imageLoader = AppController.getInstance().getImageLoader();

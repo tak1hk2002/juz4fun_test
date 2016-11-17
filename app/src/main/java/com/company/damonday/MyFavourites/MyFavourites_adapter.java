@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,11 +35,13 @@ public class MyFavourites_adapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<MyFavouritesObject> myFavouritesObjects;
     private CompanySQLiteHandler myfavouriteDB;
+    private boolean disableRight;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
-    public MyFavourites_adapter(Activity activity, List<MyFavouritesObject> myFavouritesObjects) {
+    public MyFavourites_adapter(Activity activity, List<MyFavouritesObject> myFavouritesObjects, boolean disableRight) {
         this.activity = activity;
         this.myFavouritesObjects = myFavouritesObjects;
+        this.disableRight = disableRight;
     }
 
     @Override
@@ -79,7 +82,12 @@ public class MyFavourites_adapter extends BaseAdapter {
         TextView fair = (TextView) convertView.findViewById(R.id.fair);
         TextView dislike = (TextView) convertView.findViewById(R.id.dislike);
         ImageView scoreIcon = (ImageView) convertView.findViewById(R.id.score_icon);
+        RelativeLayout right = (RelativeLayout) convertView.findViewById(R.id.right);
         final ImageView myFavourite = (ImageView) convertView.findViewById(R.id.my_favourite);
+
+        // disappear right hand my favourite icon
+        if(disableRight)
+            right.setVisibility(View.GONE);
 
 
         // getting movie data for the row
@@ -92,6 +100,9 @@ public class MyFavourites_adapter extends BaseAdapter {
 
         // title
         title.setText(m.getTitle());
+
+        // company name
+        companyName.setText(m.getCompanyName());
 
         // rating
         rating.setText(m.getAverageScore());
@@ -109,7 +120,7 @@ public class MyFavourites_adapter extends BaseAdapter {
             scoreIcon.setImageResource(R.drawable.mascot_happy_comment);
 
         //price_range
-        price_range.setText("$"+m.getPrice());
+        price_range.setText(m.getPrice());
 
         //category
         category.setText(m.getCategory());

@@ -40,7 +40,7 @@
         </activity>
         <activity
             android:name=".CompanyInfo.CompanyVideo.VideoPlayerActivity"
-            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name=".CompanyInfo.FragmentTabs"

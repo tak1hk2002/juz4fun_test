@@ -34,7 +34,7 @@ public class APIConfig {
     public static String URL_SETTING_feedback = "http://52.32.220.112/juz4fun/api/system/submit-opinion/";
 
     //newfound
-    public static String URL_newfound = "http://52.32.220.112/api/entertainment/new_entertainment";
+    public static String URL_newfound = "http://52.32.220.112/juz4fun/api/entertainment/new/";
 
 
     //advance search criteria
