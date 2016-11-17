@@ -17,7 +17,7 @@ import com.company.damonday.R;
 public class VideoPlayerActivity extends Activity {
 
     private VideoView myVideoView;
-    private int position = 0;
+    private int position = 0; 
     private ProgressDialog progressDialog;
     private MediaController mediaControls;
 
