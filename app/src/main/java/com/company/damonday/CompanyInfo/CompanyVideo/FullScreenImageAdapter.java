@@ -58,7 +58,6 @@ public class FullScreenImageAdapter extends PagerAdapter {
                 false);
 
         imgDisplay = (NetworkImageView) viewLayout.findViewById(R.id.imgDisplay);
-        btnClose = (Button) viewLayout.findViewById(R.id.btnClose);
 
         /*BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -66,15 +65,9 @@ public class FullScreenImageAdapter extends PagerAdapter {
         imgDisplay.setImageBitmap(bitmap);*/
         if (imageLoader == null)
             imageLoader = AppController.getInstance().getImageLoader();
+
         imgDisplay.setImageUrl(_imagePaths.get(position), imageLoader);
 
-        // close button click event
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _activity.finish();
-            }
-        });
 
         ((ViewPager) container).addView(viewLayout);
 

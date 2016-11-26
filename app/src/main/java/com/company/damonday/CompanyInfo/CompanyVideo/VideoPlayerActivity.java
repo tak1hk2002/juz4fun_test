@@ -1,5 +1,6 @@
 package com.company.damonday.CompanyInfo.CompanyVideo;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 
@@ -17,7 +18,7 @@ import com.company.damonday.R;
 public class VideoPlayerActivity extends Activity {
 
     private VideoView myVideoView;
-    private int position = 0; 
+    private int position = 0;
     private ProgressDialog progressDialog;
     private MediaController mediaControls;
 
@@ -39,11 +40,9 @@ public class VideoPlayerActivity extends Activity {
         // create a progress bar while the video file is loading
         progressDialog = new ProgressDialog(VideoPlayerActivity.this);
         // set a title for the progress bar
-        progressDialog.setTitle("JavaCodeGeeks Android Video View Example");
-        // set a message for the progress bar
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(getString(R.string.company_info_video_loading));
         //set the progress bar not cancelable on users' touch
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
         // show the progress bar
         progressDialog.show();
 
@@ -51,8 +50,11 @@ public class VideoPlayerActivity extends Activity {
             //set the media controller in the VideoView
             myVideoView.setMediaController(mediaControls);
 
+            Intent intent = getIntent();
+            String videUrl = intent.getStringExtra("videoUrl");
+
             //set the uri of the video to be played
-            myVideoView.setVideoURI(Uri.parse("http://52.32.220.112/juz4fun/uploads/entertainment/oTpzMqDzZ445L9TPhtomWM1Oj7mTxnW1094KodAoR4pvJLIO-qeOr9hp8bV7__E8.mp4"));
+            myVideoView.setVideoURI(Uri.parse(videUrl));
 
         } catch (Exception e) {
             Log.e("Error", e.getMessage());

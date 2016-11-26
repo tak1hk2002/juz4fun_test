@@ -76,6 +76,8 @@
         <item>營業時間：</item>
         <item>電郵：</item>
     </string-array>
+    <string name="company_info_video_loading">等多陣啦衰鬼!!</string>
+    <string name="company_info_viewpager_close">飛咗你</string>
 
     <!-- my favourite-->
     <string name="my_favourite_list_delete_warning">真係唔要我？</string>
@@ -126,7 +128,7 @@
     <string name="commentDetail_max_score">/5</string>
     <string name="commentDetail_fun">趣味</string>
     <string name="commentDetail_service">服務</string>
-    <string name="commentDetail_environment">環境</string>
+    <string name="commentDetail_environment">環境</string>s
     <string name="commentDetail_equipment">設備</string>
     <string name="commentDetail_price">抵玩</string>
 

@@ -274,22 +274,6 @@ public class FragmentTabs_try extends Fragment{
         Log.d("Fragment 1", "onResume");
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("Fragment 1", "onDestroy");
-        ActionBar action=getActivity().getActionBar();
-        action.hide();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d("Fragment 1", "onDestroyView");
-        ActionBar action=getActivity().getActionBar();
-        action.hide();
-    }
-
 
     private void makeJsonArrayRequest() {
         showpDialog();
@@ -460,6 +444,7 @@ public class FragmentTabs_try extends Fragment{
                     @Override
                     public void onClick(View v) {
                         Intent i = new Intent(getActivity(), VideoPlayerActivity.class);
+                        i.putExtra("videoUrl", videoUrl);
                         startActivity(i);
 
 
