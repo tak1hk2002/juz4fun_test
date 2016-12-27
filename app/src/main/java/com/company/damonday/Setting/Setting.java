@@ -189,7 +189,7 @@ public class Setting extends Fragment {
             imgProfile.setDefaultImageResId(R.drawable.pro_pic_default);
 
             /*DisplayImageOptions options = new DisplayImageOptions.Builder()
-                    // this will make circle, pass the width of image
+                    // this will make circle, pass the wigdth of image
                     .displayer(new RoundedBitmapDisplayer(getResources().getDimensionPixelSize(R.dimen.image_dimen_‌​menu)))
                     .cacheOnDisc(true)
                     .build();
