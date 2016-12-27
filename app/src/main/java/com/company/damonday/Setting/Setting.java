@@ -180,7 +180,7 @@ public class Setting extends Fragment {
         String name = user.get("username");
         String email = user.get("email");
 
-        //already logined
+        //already logined 
         if (session.isLoggedIn()) {
             islogouted.setVisibility(View.GONE);
             // Fetching user details from sqlite
