@@ -46,9 +46,6 @@
             android:name=".CompanyInfo.FragmentTabs"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Login.DisplayLogin"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Login.FragmentTabs"
             android:label="@string/app_name"
             android:launchMode="singleTop"
@@ -60,8 +57,17 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name=".CompanyInfo.CompanyVideo.FullScreenViewActivity"
+            android:name=".CompanyInfo.CompanyImages.FullScreenViewActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar" />
+
+        <receiver
+            android:name=".function.NetworkChecking.ConnectivityReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
 
         <meta-data
             android:name="com.google.android.gms.version"

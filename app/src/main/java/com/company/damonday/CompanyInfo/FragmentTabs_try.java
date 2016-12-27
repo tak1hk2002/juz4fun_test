@@ -1,14 +1,11 @@
 package com.company.damonday.CompanyInfo;
 
-import android.app.ActionBar;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTabHost;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -26,15 +23,13 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
-import com.company.damonday.CompanyInfo.CompanyVideo.FullScreenViewActivity;
-import com.company.damonday.CompanyInfo.CompanyVideo.VideoPlayer;
+import com.company.damonday.CompanyInfo.CompanyImages.FullScreenViewActivity;
 import com.company.damonday.CompanyInfo.CompanyVideo.VideoPlayerActivity;
 import com.company.damonday.CompanyInfo.Fragment.ViewComment.CustomScrollView;
 import com.company.damonday.CompanyInfo.Fragment.ViewComment.Fragment_ViewComment;
 import com.company.damonday.CompanyInfo.Fragment.ViewCompany.Fragment_ViewCompany;
 import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment;
 import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_login_register;
-import com.company.damonday.Login.Fragment.Fragment_Login;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MyFavourites.MyFavouritesObject;
 import com.company.damonday.R;
@@ -44,7 +39,6 @@ import com.company.damonday.function.ProgressImage;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.viewpagerindicator.CirclePageIndicator;
-import com.viewpagerindicator.UnderlinePageIndicator;
 
 
 import org.json.JSONArray;
@@ -435,7 +429,7 @@ public class FragmentTabs_try extends Fragment{
                 ImageView VideoPreviewPlayButton = (ImageView) view.findViewById(R.id.VideoPreviewPlayButton);
 
                 MediaPreview.setImageResource(R.color.black);
-                VideoPreviewPlayButton.setImageResource(R.drawable.ic_media_play1);
+                VideoPreviewPlayButton.setImageResource(R.drawable.btn_play_large);
 
                 VideoPreviewPlayButton.setVisibility(view.VISIBLE);
 
@@ -477,7 +471,11 @@ public class FragmentTabs_try extends Fragment{
                 tView = (NetworkImageView) view
                         .findViewById(R.id.PageView);
 
+                tView.setDefaultImageResId(R.drawable.mascot_nopic);
+                tView.setErrorImageResId(R.drawable.mascot_die_pic);
                 tView.setImageUrl(listOfItems.get(position), imageLoader);
+
+
 
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -80,6 +80,8 @@ public class ImageList_CustomListAdapter extends BaseAdapter {
 
         if (c.getUrl().length() > 0) {
             companyImage.setImageUrl(c.getUrl(), imageLoader);
+            companyImage.setDefaultImageResId(R.drawable.mascot_nopic);
+            companyImage.setErrorImageResId(R.drawable.mascot_die_pic);
             // title
             title.setText(c.getTitle());
             companyName.setText("@"+c.getCompany()+"//");

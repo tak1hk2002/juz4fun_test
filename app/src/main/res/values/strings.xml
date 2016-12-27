@@ -15,6 +15,7 @@
 
     <!--network problem-->
     <string name="connection_fail_warning">喂！你斷左線喎（好似係）</string>
+    <string name="connection_success_warning">連返線咪幾好！！</string>
     <string name="connection_server_warning">唔好意思，伺服器好繁忙，陣間再試啦！！</string>
 
     <!-- Login and register-->
@@ -52,6 +53,7 @@
     <string name="btn_cancel">取消</string>
     <string name="btn_submit">提交</string>
     <string name="btn_reset">重設</string>
+    <string name="btn_retry">重試</string>
     <!---->
 
     <!-- facebook key-->
@@ -67,17 +69,17 @@
     <string name="not_has_score_yet">未有分住</string>
     <string-array name="company_info_cat">
         <item>公司名稱：</item>
-        <item>描述：</item>
+        <item>類別：</item>
         <item>地址：</item>
         <item>電話：</item>
-        <item>類別：</item>
         <item>價錢：</item>
-        <item>交通工具：</item>
         <item>營業時間：</item>
+        <item>交通工具：</item>
         <item>電郵：</item>
+        <item>描述：</item>
     </string-array>
     <string name="company_info_video_loading">等多陣啦衰鬼!!</string>
-    <string name="company_info_viewpager_close">飛咗你</string>
+    <string name="company_info_viewpager_close">關閉</string>
 
     <!-- my favourite-->
     <string name="my_favourite_list_delete_warning">真係唔要我？</string>
@@ -181,7 +183,7 @@
     <string name="writeComment_submit_success">成功提交</string>
 
     <!--feedback-->
-    <string name="submit_success">提交成功</string>
+    <string name="submit_success">提交成功喇！！</string>
 
     <!-- new found-->
     <string name="newFound_company_name">公司名稱 *</string>

@@ -63,8 +63,10 @@ public class Fragment_ViewCompany_CustomListAdapter extends BaseAdapter {
         TextView text = (TextView) convertView.findViewById(R.id.text);
         ImageView indicator = (ImageView) convertView.findViewById(R.id.indicator);
 
-        title.setText(titleListItmes[position]);
-        text.setText(InfoListItems.get(position));
+        if(InfoListItems.get(position) != null) {
+            title.setText(titleListItmes[position]);
+            text.setText(InfoListItems.get(position));
+        }
         if(showDetailIndicator.contains(position))
             indicator.setVisibility(View.VISIBLE);
         else

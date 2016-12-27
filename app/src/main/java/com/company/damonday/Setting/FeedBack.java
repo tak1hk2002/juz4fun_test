@@ -27,6 +27,7 @@ import com.company.damonday.Framework.SubmitForm.SubmitForm;
 import com.company.damonday.Framework.SubmitForm.SubmitForm_CustomListAdapter;
 import com.company.damonday.Home.Home;
 import com.company.damonday.R;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.company.damonday.function.ProgressImage;
@@ -263,7 +264,7 @@ public class FeedBack extends Fragment {
 
 
                         //display message login successfully
-                        AlertDialog.Builder ab = new AlertDialog.Builder(view.getContext());
+                        AlertDialog.Builder ab = new AlertDialog.Builder(view.getContext(), AlertDialog.THEME_HOLO_DARK);
                         ab.setTitle(R.string.submit_success);
                         ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
 
@@ -281,9 +282,10 @@ public class FeedBack extends Fragment {
                                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);  //tomc 31/1/2016  To disable the back button in home
                                 //  getActivity().getActionBar().setTitle(R.string.home);
                                 getActivity().setTitle(R.string.home);
+                                ((TestActivity) getActivity()).showMenuButton();
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("feedback"));
-                                fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack(null);
+                                fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack("main");
                                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                                 fragmentTransaction.commit();
 

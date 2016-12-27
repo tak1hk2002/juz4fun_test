@@ -14,8 +14,6 @@ import android.widget.Toast;
 import com.company.damonday.CompanyInfo.CompanySQLiteHandler;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.R;
-import com.company.damonday.Search.CompanyObject;
-import com.company.damonday.Search.search_adapter;
 import com.company.damonday.TestActivity;
 
 import java.util.ArrayList;

@@ -70,7 +70,7 @@ public class CommentList_CustomListAdapter extends BaseAdapter {
 
         // profilePic image
         profilePic.setImageUrl(m.getProfilePic(), imageLoader);
-        profilePic.setDefaultImageResId(R.drawable.mascot_die_pic);
+        profilePic.setDefaultImageResId(R.drawable.pro_pic_default);
         profilePic.setErrorImageResId(R.drawable.mascot_die_pic);
 
         // title

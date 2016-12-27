@@ -22,7 +22,7 @@
         android:paddingBottom="10dp"
         android:layout_gravity="center"/>
 
-    <TextView
+    <!--<TextView
         android:id="@+id/VideoTitle"
         android:text="abcabcabc"
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
         android:background="#e75e5050"
         android:layout_alignBottom="@+id/picture"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true" />-->
 
 
 </FrameLayout>

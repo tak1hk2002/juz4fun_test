@@ -83,7 +83,7 @@ public class MyFavourites_adapter extends BaseAdapter {
         TextView dislike = (TextView) convertView.findViewById(R.id.dislike);
         ImageView scoreIcon = (ImageView) convertView.findViewById(R.id.score_icon);
         RelativeLayout right = (RelativeLayout) convertView.findViewById(R.id.right);
-        final ImageView myFavourite = (ImageView) convertView.findViewById(R.id.my_favourite);
+        //final ImageView myFavourite = (ImageView) convertView.findViewById(R.id.my_favourite);
 
         // disappear right hand my favourite icon
         if(disableRight)
@@ -95,7 +95,7 @@ public class MyFavourites_adapter extends BaseAdapter {
 
         // thumbnail image
         userIcon.setImageUrl(m.getPicUrl(), imageLoader);
-        userIcon.setDefaultImageResId(R.drawable.mascot_die_pic);
+        userIcon.setDefaultImageResId(R.drawable.pro_pic_default);
         userIcon.setErrorImageResId(R.drawable.mascot_die_pic);
 
         // title
@@ -134,7 +134,7 @@ public class MyFavourites_adapter extends BaseAdapter {
         //Fair
         fair.setText(m.getFair());
 
-        myFavourite.setOnClickListener(new View.OnClickListener() {
+        /*myFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder ab = new AlertDialog.Builder(activity, AlertDialog.THEME_HOLO_DARK);
@@ -158,7 +158,7 @@ public class MyFavourites_adapter extends BaseAdapter {
                 dialog = ab.create();
                 dialog.show();
             }
-        });
+        });*/
 
 
         return convertView;

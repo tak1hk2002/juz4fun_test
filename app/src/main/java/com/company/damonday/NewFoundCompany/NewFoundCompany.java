@@ -423,14 +423,14 @@ public class NewFoundCompany extends Fragment {
 
                 if(passChecking){
                     System.out.println("Company: " +submitVars[0]);
-                    System.out.println("Cat: " +categoryID);
+                    System.out.println("Cat: " +submitVars[1]);
                     System.out.println("address: " +submitVars[2]);
                     System.out.println("tel: " +submitVars[3]);
-                    System.out.println("price: " + priceID);
+                    System.out.println("price: " + submitVars[4]);
                     System.out.println("Company: " +submitVars[5]);
 
 
-                    //submitting(submitVars[0], submitVars[3], submitVars[1], submitVars[2], submitVars[4], submitVars[5]);
+                    submitting(submitVars[0], submitVars[3], submitVars[1], submitVars[2], submitVars[4], submitVars[5]);
 
                 }
                 customAdapter.notifyDataSetChanged();
@@ -500,33 +500,17 @@ public class NewFoundCompany extends Fragment {
                         //session.setLogin(true);
 
 
-                        //display message login successfully
-                        AlertDialog.Builder ab = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_DARK);
-                        ab.setTitle(R.string.submit_success);
-                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
+                        Toast.makeText(getActivity(), R.string.submit_success, Toast.LENGTH_SHORT).show();
+                        Home home_fragment = new Home();
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-//                                Intent in = new Intent(view.getContext(), MainActivity.class);
-//                                view.getContext().startActivity(in);
-
-                                Home home_fragment = new Home();
-
-                                FragmentManager fragmentManager = getFragmentManager();
-                                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);  //tomc 31/1/2016  To disable the back button in home
-                                //System.out.println(fragmentManager.getBackStackEntryCount());
-                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("newfound"));
-                                fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack(null);
-                                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                                fragmentTransaction.commit();
-                             //   getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
-
-
-                            }
-                        });
-                        ab.create().show();
+                        FragmentManager fragmentManager = getFragmentManager();
+                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);  //tomc 31/1/2016  To disable the back button in home
+                        //System.out.println(fragmentManager.getBackStackEntryCount());
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.hide(getFragmentManager().findFragmentByTag("newfound"));
+                        fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack(null);
+                        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        fragmentTransaction.commit();
 
 
                     } else if (status == 0) {
@@ -575,24 +559,28 @@ public class NewFoundCompany extends Fragment {
 
 
     private void createOptionDetail() throws JSONException {
-        for (int i = 1; i < categoryJsonArray.length(); i++) {
+        if(categoryJsonArray != null) {
+            for (int i = 1; i < categoryJsonArray.length(); i++) {
 
-            JSONObject categoryDetail = (JSONObject) categoryJsonArray.get(i);
-            String name = categoryDetail.getString("cht_name");
-            String id = categoryDetail.getString("id");
-            //  hashPrice.put(name, ID);
-            //arrayPrice = new String[category.length()];
-            array_category.add(name);
-            hash_category.put(i, name);
+                JSONObject categoryDetail = (JSONObject) categoryJsonArray.get(i);
+                String name = categoryDetail.getString("cht_name");
+                String id = categoryDetail.getString("id");
+                //  hashPrice.put(name, ID);
+                //arrayPrice = new String[category.length()];
+                array_category.add(name);
+                hash_category.put(i, name);
+            }
         }
         //inital
         selectedCatItem = new boolean[array_category.size()];
         tempSelectedCatItem = new boolean[array_category.size()];
 
-        for (int i = 1; i <= priceJsonObject.length(); i++) {
-            String name = priceJsonObject.getString(String.valueOf(i));
-            arrayPrice.add(name);
-            hash_Price.put(i, name);
+        if(priceJsonObject != null) {
+            for (int i = 1; i <= priceJsonObject.length(); i++) {
+                String name = priceJsonObject.getString(String.valueOf(i));
+                arrayPrice.add(name);
+                hash_Price.put(i, name);
+            }
         }
         //inital
         //selectedExpenseItem = new boolean[arrayPrice.size()];

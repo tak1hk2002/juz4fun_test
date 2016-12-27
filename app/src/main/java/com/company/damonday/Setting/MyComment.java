@@ -75,6 +75,7 @@ public class MyComment extends Fragment {
             HashMap<String, String> user = DB.getUserDetails();
             token = user.get("token");
         }
+        System.out.println("Token: "+token);
 
         APIConfig = new APIConfig(token);
 
@@ -85,7 +86,7 @@ public class MyComment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.latestcomment, container, false);
         //setContentView(R.layout.latestcomment);
-        getActivity().setTitle(R.string.latestcomment);
+        getActivity().setTitle(R.string.my_comment);
         listView = (ListView) view.findViewById(R.id.list);
         adapter = new CommentList_CustomListAdapter(getActivity(), commentListList);
         listView.setAdapter(adapter);

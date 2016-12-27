@@ -60,7 +60,7 @@ public class Fragment_ViewCompany extends Fragment {
     private List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
     private APIConfig ranking;
     private double latitude, longitude;
-    private List<Integer> showDetailIndicator = Arrays.asList(2, 3, 5);
+    private List<Integer> showDetailIndicator = Arrays.asList();
     private JsonObjectRequest jsonObjReq;
     private ScrollView doubleScroll = new ScrollView();
     private ArrayList<String> info = new ArrayList<String>();
@@ -124,6 +124,7 @@ public class Fragment_ViewCompany extends Fragment {
                 args.putInt("position", position);
 
                 switch (position) {
+                    //address map
                     case 2:
                         //pass the object to MapsActivity
                         GetPreviousObject passedObject = new GetPreviousObject(-1, latitude, longitude, compayName
@@ -134,8 +135,8 @@ public class Fragment_ViewCompany extends Fragment {
                         // 啟動地圖元件
                         startActivityForResult(intentMap, 2);
                         break;
+                    //tel
                     case 3:
-
                         //trigger built in phone call function
                         //ACTION_DIAL => modify hardcoded number before making a call
                         Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
@@ -149,6 +150,7 @@ public class Fragment_ViewCompany extends Fragment {
                                     "Call faild, please try again later.", Toast.LENGTH_SHORT).show();
                         }
                         break;
+                    //fee detail
                     case 5:
                         Bundle bundle = new Bundle();
                         bundle.putString("ent_id", entId);
@@ -251,9 +253,6 @@ public class Fragment_ViewCompany extends Fragment {
                         companyTel = companyInfo.getString("contact_number");
 
                         info.add(companyInfo.getString("company_name"));
-                        info.add(companyInfo.getString("description"));
-                        info.add(companyInfo.getString("address"));
-                        info.add(companyTel);
                         //cat
                         JSONArray catList = companyInfo.getJSONArray("cat");
                         String cat = "";
@@ -263,10 +262,15 @@ public class Fragment_ViewCompany extends Fragment {
                             cat += catList.get(i);
                         }
                         info.add(cat);
+                        info.add(companyInfo.getString("address"));
+                        info.add(companyTel);
+
                         info.add(companyInfo.getString("price"));
-                        info.add(companyInfo.getString("preferred_transport"));
                         info.add(companyInfo.getString("business_hour"));
+                        info.add(companyInfo.getString("preferred_transport"));
+
                         info.add("Dummy text");
+                        info.add(companyInfo.getString("description"));
 
                     /*info.add(companyInfo.getString("ID"));
                     info.add(companyInfo.getString("name"));

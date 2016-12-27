@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.company.damonday.Launch.LaunchPage;
 import com.company.damonday.Home.Home;
@@ -34,10 +35,11 @@ import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MyFavourites.MyFavourites;
 import com.company.damonday.NewFoundCompany.NewFoundCompany;
 import com.company.damonday.Ranking.Ranking;
-import com.company.damonday.Search.search;
+import com.company.damonday.Search.AdvancedSearch;
 import com.company.damonday.Setting.Setting;
 import com.company.damonday.function.APIConfig;
-import com.company.damonday.function.ConnectionDetector;
+import com.company.damonday.function.AppController;
+import com.company.damonday.function.NetworkChecking.ConnectivityReceiver;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.FacebookSdk;
@@ -49,7 +51,7 @@ import java.util.ArrayList;
  * Created by tomc on 2/8/15.
  * It is a fragment activity class for the sliding menu
  */
-public class TestActivity extends FragmentActivity {
+public class TestActivity extends FragmentActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -82,7 +84,7 @@ public class TestActivity extends FragmentActivity {
         setContentView(R.layout.drawer);
 
         //check if the network is connected      Alan 14/5/2016
-        DialogForNetworkChecking();
+        checkConnection();
 
         //tomc 10/4/2016   login
         session = new SessionManager(this);
@@ -229,22 +231,31 @@ public class TestActivity extends FragmentActivity {
 
     }
 
-    public void DialogForNetworkChecking() {
-        Boolean isInternetPresent = ConnectionDetector.isConnectingToInternet(this); // true or false
-        if (isInternetPresent == false) {
-            AlertDialog.Builder ab = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK);
-            AlertDialog dialog;
-            ab.setTitle(R.string.connection_fail_warning);
-            ab.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            dialog = ab.create();
-            dialog.show();
+    // Method to manually check connection status
+    private void checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+    }
+
+    // Showing the status in Snackbar
+    private void showSnack(boolean isConnected) {
+        if (isConnected) {
+            Toast.makeText(this, R.string.connection_success_warning, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, R.string.connection_fail_warning, Toast.LENGTH_SHORT).show();
         }
-        // Log.d("Network", "bool=" + isInternetPresent);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register connection status listener
+        AppController.getInstance().setConnectivityListener(this);
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        showSnack(isConnected);
     }
 
     /**
@@ -435,7 +446,7 @@ public class TestActivity extends FragmentActivity {
             case 1:
                 //showBackButton();
                 //進階搜尋
-                fragment = new search();
+                fragment = new AdvancedSearch();
                 tag = "search";
                 break;
             case 2:

@@ -1,6 +1,5 @@
 package com.company.damonday.Home;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,7 +21,7 @@ import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.R;
 import com.company.damonday.Framework.ImageList.ImageInfo;
 import com.company.damonday.Framework.ImageList.ImageList_CustomListAdapter;
-import com.company.damonday.Search.search_fast;
+import com.company.damonday.Search.FastSearch;
 import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
@@ -33,8 +32,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.company.damonday.Launch.LaunchPage.PREFS_NAME;
 
 /**
  * Created by lamtaklung on 3/8/15.
@@ -86,7 +83,7 @@ public class Home extends Fragment {
                 ((TestActivity) getActivity()).showBackButton();
                 ((TestActivity) getActivity()).hideMenuButton();
                 //getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-                Fragment fragment_search_fast = new search_fast();
+                Fragment fragment_search_fast = new FastSearch();
                 FragmentManager fragmentManager = getFragmentManager();
                 //fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);   //important to clear repeat fragment in the stack //tomc 24/1/2016
                 // System.out.println(fragmentManager.getBackStackEntryCount());

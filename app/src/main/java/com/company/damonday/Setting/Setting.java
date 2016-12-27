@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.company.damonday.Framework.SubmitForm.SubmitForm;
 import com.company.damonday.Framework.SubmitForm.SubmitForm_CustomListAdapter;
 import com.company.damonday.LatestComment.LatestComment;
@@ -107,7 +108,7 @@ public class Setting extends Fragment {
         islogined = (LinearLayout) view.findViewById(R.id.logined);
         islogouted = (LinearLayout) view.findViewById(R.id.logouted);
         Button btnSysLogout = (Button) view.findViewById(R.id.sys_logout);
-        ImageView imgProfile = (ImageView) view.findViewById(R.id.profile_img);
+        NetworkImageView imgProfile = (NetworkImageView) view.findViewById(R.id.profile_img);
         TextView txtUsername = (TextView) view.findViewById(R.id.username);
         TextView txtEmail = (TextView) view.findViewById(R.id.email);
         ListView listView = (ListView) view.findViewById(R.id.listView);
@@ -134,8 +135,8 @@ public class Setting extends Fragment {
                         fragmentManager = getFragmentManager();
                         // System.out.println(fragmentManager.getBackStackEntryCount());
                         fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
-                        fragmentTransaction.add(R.id.frame_container, myComment, "my_comment").addToBackStack(null);
+                        //fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
+                        fragmentTransaction.replace(R.id.frame_container, myComment, "my_comment").addToBackStack(null);
                         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         fragmentTransaction.commit();
                         break;
@@ -150,7 +151,7 @@ public class Setting extends Fragment {
                         fragmentManager = getFragmentManager();
                         System.out.println(fragmentManager.getBackStackEntryCount());
                         fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
+                        //fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
                         fragmentTransaction.add(R.id.frame_container, about_us_fragment, "about_us").addToBackStack(null);
                         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         fragmentTransaction.commit();
@@ -166,7 +167,7 @@ public class Setting extends Fragment {
                         fragmentManager = getFragmentManager();
                         System.out.println(fragmentManager.getBackStackEntryCount());
                         fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
+                        //fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
                         fragmentTransaction.add(R.id.frame_container, feedback_fragment, "feedback").addToBackStack(null);
                         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         fragmentTransaction.commit();
@@ -185,9 +186,7 @@ public class Setting extends Fragment {
             // Fetching user details from sqlite
             txtUsername.setText(name);
             txtEmail.setText(email);
-            Resources res = getResources();
-            Bitmap originalProfilePic = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
-            imgProfile.setImageBitmap(getRoundedShape(originalProfilePic));
+            imgProfile.setDefaultImageResId(R.drawable.pro_pic_default);
 
             /*DisplayImageOptions options = new DisplayImageOptions.Builder()
                     // this will make circle, pass the width of image
