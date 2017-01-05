@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -42,6 +43,7 @@ public class Home extends Fragment {
     // Progress dialog
     private List<ImageInfo> imageInfoItems = new ArrayList<ImageInfo>();
     private GridView gridView;
+    private TextView noHome;
     private ImageList_CustomListAdapter adapter;
     private FragmentTabs_try fragmentTabs_try;
     private LinearLayout searchview;
@@ -65,6 +67,10 @@ public class Home extends Fragment {
 
         //search =(SearchView)view.findViewById(R.id.search);
         gridView = (GridView) view.findViewById(R.id.gridView);
+        noHome = (TextView) view.findViewById(R.id.no_home);
+
+        noHome.setText(R.string.main_no_home);
+
         adapter = new ImageList_CustomListAdapter(getActivity(), imageInfoItems, true);
         gridView.setAdapter(adapter);
         getActivity().setTitle(R.string.home);
@@ -169,16 +175,24 @@ public class Home extends Fragment {
 
                     if (status == 1) {
                         JSONArray rank = response.getJSONArray("data");
-                        for (int i = 0; i < rank.length(); i++) {
-                            ImageInfo imageInfo = new ImageInfo();
-                            JSONObject company = (JSONObject) rank
-                                    .get(i);
-                            imageInfo.setTitle(company.getString("name"));
-                            imageInfo.setUrl(company.getString("cover_image"));
-                            imageInfo.setCompany(company.getString("company_name"));
-                            imageInfo.setEntID(company.getInt("id"));
-                            imageInfoItems.add(imageInfo);
+                        if(rank.length() > 0) {
+                            noHome.setVisibility(View.GONE);
+                            gridView.setVisibility(View.VISIBLE);
+                            for (int i = 0; i < rank.length(); i++) {
+                                ImageInfo imageInfo = new ImageInfo();
+                                JSONObject company = (JSONObject) rank
+                                        .get(i);
+                                imageInfo.setTitle(company.getString("name"));
+                                imageInfo.setUrl(company.getString("cover_image"));
+                                imageInfo.setCompany(company.getString("company_name"));
+                                imageInfo.setEntID(company.getInt("id"));
+                                imageInfoItems.add(imageInfo);
 
+                            }
+                        }
+                        else{
+                            noHome.setVisibility(View.VISIBLE);
+                            gridView.setVisibility(View.GONE);
                         }
                     } else if (status == 0) {
                         String errorMsg = response.getString("msg");

@@ -56,7 +56,7 @@ import java.util.Map;
  * Created by lamtaklung on 31/5/15.
  */
 public class Fragment_Login extends Fragment {
-    private static final String TAG = Fragment_Registration.class.getSimpleName();
+    private static final String TAG = Fragment_Login.class.getSimpleName();
     private Button btnLogin, btnCancel;
     private EditText inputUsername;
     private EditText inputPassword;
@@ -473,7 +473,7 @@ public class Fragment_Login extends Fragment {
         String tag_string_req = "req_facebook";
 
         //pDialog.setMessage("Registering ...");
-        //showDialog();
+        showDialog();
 
         facebookStrReq = new StringRequest(Request.Method.POST,
                 APIConfig.URL_FACEBOOK_USER, new Response.Listener<String>() {
@@ -481,7 +481,7 @@ public class Fragment_Login extends Fragment {
             @Override
             public void onResponse(String response) {
                 //Log.d(TAG, "Register Response: " + response.toString());
-                //hideDialog();
+                hideDialog();
                 Log.d("URL_FACEBOOK_USER", APIConfig.URL_FACEBOOK_USER.toString());
                 Log.d("Response", response.toString());
 
@@ -517,7 +517,7 @@ public class Fragment_Login extends Fragment {
                 //Log.e(TAG, "Registration Error: " + error.getMessage());
                 Toast.makeText(getActivity(),
                         R.string.connection_server_warning, Toast.LENGTH_LONG).show();
-                //hideDialog();
+                hideDialog();
             }
         }) {
 

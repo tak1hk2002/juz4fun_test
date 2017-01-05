@@ -65,7 +65,7 @@ public class Setting extends Fragment {
     private String[] title;
     private List<Integer> showDetailIndicator = Arrays.asList(0,1,2);
     private List<Integer> hideEditText = Arrays.asList(3);
-    private String lastFragmentTag, api;
+    private String lastFragmentTag, api, token = null;
 
 
     @Override
@@ -85,6 +85,13 @@ public class Setting extends Fragment {
         }
         catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if (AccessToken.getCurrentAccessToken() != null) {
+            token = AccessToken.getCurrentAccessToken().getToken().toString();
+        } else if (session.isLoggedIn()) {
+            HashMap<String, String> user = db.getUserDetails();
+            token = user.get("token");
         }
 
         //get the array list of writeComment option
@@ -108,7 +115,7 @@ public class Setting extends Fragment {
         islogined = (LinearLayout) view.findViewById(R.id.logined);
         islogouted = (LinearLayout) view.findViewById(R.id.logouted);
         Button btnSysLogout = (Button) view.findViewById(R.id.sys_logout);
-        NetworkImageView imgProfile = (NetworkImageView) view.findViewById(R.id.profile_img);
+        ImageView imgProfile = (ImageView) view.findViewById(R.id.profile_img);
         TextView txtUsername = (TextView) view.findViewById(R.id.username);
         TextView txtEmail = (TextView) view.findViewById(R.id.email);
         ListView listView = (ListView) view.findViewById(R.id.listView);
@@ -125,20 +132,39 @@ public class Setting extends Fragment {
 
                 switch (position){
                     case 0:
-                        MyComment myComment = new MyComment();
-                        bundle = new Bundle();
-                        bundle.putString("last_fragment_tag", "my_comment");
-                        myComment.setArguments(bundle);
-                        //getActivity().setTitle(R.string.my_comment);
-                        ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
-                        ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
-                        fragmentManager = getFragmentManager();
-                        // System.out.println(fragmentManager.getBackStackEntryCount());
-                        fragmentTransaction = fragmentManager.beginTransaction();
-                        //fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
-                        fragmentTransaction.replace(R.id.frame_container, myComment, "my_comment").addToBackStack(null);
-                        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                        fragmentTransaction.commit();
+                        if(token != null) {
+                            MyComment myComment = new MyComment();
+                            bundle = new Bundle();
+                            bundle.putString("last_fragment_tag", "my_comment");
+                            myComment.setArguments(bundle);
+                            //getActivity().setTitle(R.string.my_comment);
+                            ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                            ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
+                            fragmentManager = getFragmentManager();
+                            // System.out.println(fragmentManager.getBackStackEntryCount());
+                            fragmentTransaction = fragmentManager.beginTransaction();
+                            //fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
+                            fragmentTransaction.replace(R.id.frame_container, myComment, "my_comment").addToBackStack(null);
+                            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                            fragmentTransaction.commit();
+                        }
+                        else{
+                            Toast.makeText(getActivity(), R.string.setting_login_first, Toast.LENGTH_SHORT).show();
+                            Fragment_Login login = new Fragment_Login();
+                            bundle = new Bundle();
+                            bundle.putString("last_fragment_tag", "login");
+                            login.setArguments(bundle);
+                            //getActivity().setTitle(R.string.my_comment);
+                            ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                            ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
+                            fragmentManager = getFragmentManager();
+                            // System.out.println(fragmentManager.getBackStackEntryCount());
+                            fragmentTransaction = fragmentManager.beginTransaction();
+                            //fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
+                            fragmentTransaction.replace(R.id.frame_container, login, "login").addToBackStack(null);
+                            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                            fragmentTransaction.commit();
+                        }
                         break;
                     case 1:
                         //Bundle bundle = new Bundle();
@@ -186,7 +212,7 @@ public class Setting extends Fragment {
             // Fetching user details from sqlite
             txtUsername.setText(name);
             txtEmail.setText(email);
-            imgProfile.setDefaultImageResId(R.drawable.pro_pic_default);
+            imgProfile.setImageResource(R.drawable.pro_pic_default);
 
             /*DisplayImageOptions options = new DisplayImageOptions.Builder()
                     // this will make circle, pass the wigdth of image

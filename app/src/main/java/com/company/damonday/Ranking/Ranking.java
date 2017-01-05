@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -44,6 +45,7 @@ public class Ranking extends Fragment {
     private ProgressImage pDialog;
     private List<ImageInfo> imageInfoItems = new ArrayList<ImageInfo>();
     private GridView gridView;
+    private TextView noRanking;
     private ImageList_CustomListAdapter adapter;
     private FragmentTabs_try fragmentTabs_try;
     private JsonObjectRequest jsonObjReq;
@@ -69,6 +71,8 @@ public class Ranking extends Fragment {
         getActivity().setTitle(R.string.ranking);
 
         gridView = (GridView) view.findViewById(R.id.gridView);
+        noRanking = (TextView) view.findViewById(R.id.no_ranking);
+        noRanking.setText(R.string.ranking_no_ranking);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -143,18 +147,26 @@ public class Ranking extends Fragment {
 
                     if (status == 1) {
                         JSONArray rank = response.getJSONArray("data");
-                        for (int i = 0; i < rank.length(); i++) {
-                            ImageInfo imageInfo = new ImageInfo();
-                            JSONObject company = (JSONObject) rank
-                                    .get(i);
-                            imageInfo.setTitle(company.getString("name"));
-                            imageInfo.setCompany(company.getString("company_name"));
-                            imageInfo.setUrl(company.getString("cover_image"));
-                            imageInfo.setEntID(company.getInt("id"));
-                            int resID = getResources().getIdentifier("mascot_rank" + Integer.toString(i + 1), "drawable", getActivity().getPackageName());
-                            imageInfo.setMoscotID(resID);
-                            imageInfoItems.add(imageInfo);
+                        if(rank.length() > 0) {
+                            for (int i = 0; i < rank.length(); i++) {
+                                noRanking.setVisibility(View.GONE);
+                                gridView.setVisibility(View.VISIBLE);
+                                ImageInfo imageInfo = new ImageInfo();
+                                JSONObject company = (JSONObject) rank
+                                        .get(i);
+                                imageInfo.setTitle(company.getString("name"));
+                                imageInfo.setCompany(company.getString("company_name"));
+                                imageInfo.setUrl(company.getString("cover_image"));
+                                imageInfo.setEntID(company.getInt("id"));
+                                int resID = getResources().getIdentifier("mascot_rank" + Integer.toString(i + 1), "drawable", getActivity().getPackageName());
+                                imageInfo.setMoscotID(resID);
+                                imageInfoItems.add(imageInfo);
 
+                            }
+                        }
+                        else{
+                            noRanking.setVisibility(View.VISIBLE);
+                            gridView.setVisibility(View.GONE);
                         }
                     } else if (status == 0) {
                         String errorMsg = response.getString("msg");

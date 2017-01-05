@@ -4,11 +4,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
 
-    <!-- main page-->
-    <string name="main_quit_prompt">提示</string>
-    <string name="main_quit_message">真係走喇嘛?</string>
-    <string name="main_quit_positive">走啦仲問！</string>
-    <string name="main_quit_negative">講笑姐;p</string>
 
     <!--common use-->
     <string name="or">或</string>
@@ -28,6 +23,7 @@
     <string name="register_success">你會稍後收到電郵，然後請激活你的帳號</string>
     <string name="login_success">登入成功</string>
     <string name="logout_success">登出成功</string>
+    <string name="forgot_password_success">我地陣間會寄返個密碼去你個email account</string>
     <string name="title_member_login">會員登入</string>
     <string name="title_member_register">註冊會員</string>
     <string name="login_or">或</string>
@@ -46,6 +42,7 @@
     <!--warning-->
     <string name="login_warning_enter_info">請輸入使用者名稱和密碼</string>
     <string name="login_warning_forget_password_email">請輸入電郵</string>
+    <string name="login_warning_forget_password_username">請輸入登入名稱</string>
     <!-- -->
 
     <!-- Button-->
@@ -59,6 +56,13 @@
     <!-- facebook key-->
     <string name="facebook_app_id">1591220424465295</string>
 
+
+    <!-- main page-->
+    <string name="main_quit_prompt">提示</string>
+    <string name="main_quit_message">真係走喇嘛?</string>
+    <string name="main_quit_positive">走啦仲問！</string>
+    <string name="main_quit_negative">講笑姐;p</string>
+    <string name="main_no_home">太多玩樂啦！比D時間我諗下介紹D咩比你地！</string>
 
     <!-- companyInfo-->
     <string name="tab_company">概要</string>
@@ -81,8 +85,13 @@
     <string name="company_info_video_loading">等多陣啦衰鬼!!</string>
     <string name="company_info_viewpager_close">關閉</string>
 
+    <!--Ranking-->
+    <string name="ranking_no_ranking">未有排行榜住，你地快D幫D玩樂評分啦！</string>
+
+
     <!-- my favourite-->
     <string name="my_favourite_list_delete_warning">真係唔要我？</string>
+    <string name="my_favourite_list_no_favourite">你還沒有收藏，快點去收藏吧！</string>
 
     <!-- media controller-->
     <string name="description">Media Controls</string>
@@ -140,14 +149,14 @@
     <string-array name="writeComment_title">
         <item>主題</item>
         <item>內容</item>
-        <item>消費</item>
+        <item>消費(個人)</item>
         <item>整體評分</item>
         <item>詳細評分</item>
     </string-array>
 
     <string name="writeComment_dialog_title">主題</string>
     <string name="writeComment_dialog_content">內容</string>
-    <string name="writeComment_dialog_consumption">消費</string>
+    <string name="writeComment_dialog_consumption">消費(個人)</string>
     <string name="writeComment_dialog_overallrating">整體評分</string>
     <string name="writeComment_dialog_detailrating">詳細評分</string>
     <string-array name="writeComment_dialog_rating_detail">
@@ -174,7 +183,7 @@
     <string-array name="writeComment_warning">
         <item>請輸入主題</item>
         <item>請輸入內容</item>
-        <item>請輸入消費</item>
+        <item>請輸入消費(個人)</item>
         <item>請輸入整體評分</item>
         <item>請輸入詳細評分</item>
     </string-array>
@@ -199,7 +208,7 @@
         <item>公司類別 *</item>
         <item>公司地址</item>
         <item>公司電話</item>
-        <item>個人平均消費</item>
+        <item>消費(個人)</item>
         <item>營業時間</item>
     </string-array>
 
@@ -208,7 +217,7 @@
         <item>請選擇公司類別</item>
         <item>請輸入公司地址</item>
         <item>請輸入公司電話</item>
-        <item>請輸入個人平均消費</item>
+        <item>請輸入消費(個人)</item>
         <item>請輸入營業時間</item>
     </string-array>
 
@@ -226,6 +235,8 @@
         <item>請選擇類別</item>
         <item>請選擇價錢</item>
     </string-array>
+
+    <string name="search_no_result">無結果喎！你走啦！我唔想攪大佢！</string>
 
     <!--feedback-->
     <string-array name="feedback_title">
@@ -247,6 +258,7 @@
         <item>提交意見</item>
         <item>版本</item>
     </string-array>
+    <string name="setting_login_first">喂！登入左先睇到架！</string>
 
     <string name="setting_android_version">1.0</string>
 

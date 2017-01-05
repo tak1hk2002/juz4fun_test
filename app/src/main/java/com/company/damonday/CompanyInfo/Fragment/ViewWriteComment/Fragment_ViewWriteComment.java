@@ -31,9 +31,11 @@ import com.company.damonday.CompanyInfo.FragmentTabs_try;
 import com.company.damonday.Framework.ScrollView.ScrollView;
 import com.company.damonday.Framework.SubmitForm.SubmitForm;
 import com.company.damonday.Framework.SubmitForm.SubmitForm_CustomListAdapter;
+import com.company.damonday.Home.Home;
 import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.R;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.company.damonday.function.ProgressImage;
@@ -475,22 +477,30 @@ public class Fragment_ViewWriteComment extends Fragment {
                     // Check for error node in json
                     if (status == 1) {
 
+                        AlertDialog.Builder ab = new AlertDialog.Builder(view.getContext(), AlertDialog.THEME_HOLO_DARK);
+                        ab.setTitle(R.string.submit_success);
+                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
 
-                        //(refresh)go to company detail
-                        Bundle bundle = new Bundle();
-                        bundle.putString("ent_id", entId);
-                        FragmentTabs_try fragmentTabs_try = new FragmentTabs_try();
-                        fragmentTabs_try.setArguments(bundle);
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+//                             //(refresh)go to company detail
+                                Bundle bundle = new Bundle();
+                                bundle.putString("ent_id", entId);
+                                FragmentTabs_try fragmentTabs_try = new FragmentTabs_try();
+                                fragmentTabs_try.setArguments(bundle);
 
 
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentManager.popBackStack();
-                        fragmentTransaction.replace(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
-                        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                        fragmentTransaction.commit();
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentManager.popBackStack();
+                                fragmentTransaction.replace(R.id.frame_container, fragmentTabs_try, "companyDetail").addToBackStack(null);
+                                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                fragmentTransaction.commit();
 
-                        Toast.makeText(getActivity(), R.string.writeComment_submit_success, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        ab.create().show();
 
 
                     }else if (status == 0) {

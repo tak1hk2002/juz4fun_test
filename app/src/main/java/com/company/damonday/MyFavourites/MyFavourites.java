@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.company.damonday.CompanyInfo.CompanySQLiteHandler;
@@ -44,11 +45,20 @@ public class MyFavourites extends Fragment {
 
         db = new CompanySQLiteHandler(getActivity());
         myFavouritesObjects = db.getAll();
-        if (myFavouritesObjects.size() == 0) {
-            Toast.makeText(getActivity(), "你還沒有收藏，快點去收藏吧！", Toast.LENGTH_LONG).show();
-        }
+
 
         listView = (ListView) view.findViewById(R.id.list);
+        TextView noFavourite = (TextView) view.findViewById(R.id.no_favourite);
+        if (myFavouritesObjects.size() > 0) {
+            noFavourite.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+        }
+        else {
+            listView.setVisibility(View.GONE);
+            noFavourite.setVisibility(View.VISIBLE);
+        }
+
+        noFavourite.setText(R.string.my_favourite_list_no_favourite);
         adapter = new MyFavourites_adapter(getActivity(), myFavouritesObjects, false);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

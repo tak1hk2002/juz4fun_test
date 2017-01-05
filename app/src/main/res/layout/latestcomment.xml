@@ -6,18 +6,22 @@
     android:background="@color/bg_grey_black_light">
 
 
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="8">
 
-            <ListView
-                android:id="@+id/list"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:divider="@drawable/list_divider"
-                android:dividerHeight="1dp"/>
 
-        </RelativeLayout>
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@drawable/list_divider"
+        android:dividerHeight="1dp"/>
+
+    <TextView
+        android:id="@+id/no_comment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/font_grey_white"
+        android:gravity="center"
+        android:visibility="gone"/>
+
 
 </LinearLayout>

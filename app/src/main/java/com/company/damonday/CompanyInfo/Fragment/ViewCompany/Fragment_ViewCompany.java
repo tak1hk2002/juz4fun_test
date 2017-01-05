@@ -265,7 +265,7 @@ public class Fragment_ViewCompany extends Fragment {
                         info.add(companyInfo.getString("address"));
                         info.add(companyTel);
 
-                        info.add(companyInfo.getString("price"));
+                        info.add(companyInfo.getString("price_range"));
                         info.add(companyInfo.getString("business_hour"));
                         info.add(companyInfo.getString("preferred_transport"));
 

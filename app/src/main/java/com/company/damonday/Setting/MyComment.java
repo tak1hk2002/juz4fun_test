@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -47,6 +48,7 @@ public class MyComment extends Fragment {
     private static final String TAG = MyComment.class.getSimpleName();
     private ProgressImage pDialog;
     private ListView listView;
+    private TextView noComment;
     private CommentList_CustomListAdapter adapter;
     private List<CommentList> commentListList = new ArrayList<CommentList>();
     private StringRequest myCommentReq;
@@ -88,6 +90,9 @@ public class MyComment extends Fragment {
         //setContentView(R.layout.latestcomment);
         getActivity().setTitle(R.string.my_comment);
         listView = (ListView) view.findViewById(R.id.list);
+        noComment = (TextView) view.findViewById(R.id.no_comment);
+        noComment.setText(R.string.comment_no_comment);
+
         adapter = new CommentList_CustomListAdapter(getActivity(), commentListList);
         listView.setAdapter(adapter);
         listView.setOnScrollListener(new EndlessScrollListener() {
@@ -147,36 +152,45 @@ public class MyComment extends Fragment {
                             int status = jObject.getInt("status");
                             if(status == 1) {
                                 JSONArray jArray = jObject.getJSONArray("data");
-                                // Parsing json
-                                for (int i = 0; i < jArray.length(); i++) {
-                                    try {
-                                        JSONObject oneObject = jArray.getJSONObject(i);
-                                        //JSONObject jObject = new JSONObject(response);
-                                        // String aJsonString = jObject.getString("result");
-                                        //String bJsonString = jObject.getString("timestamp");
-                                        // JSONArray jArray = jObject.getJSONArray("data");
 
-                                        // JSONObject obj = response.getJSONObject(i);
-                                        CommentList CommentList = new CommentList();
-                                        CommentList.setId(oneObject.getString("id"));
-                                        CommentList.setTitle(oneObject.getString("title"));
-                                        CommentList.setProfilePic("");
-                                        CommentList.setRating("0");
-                                        CommentList.setEntName("Bubble Soccer");
-                                        CommentList.setCompanyName("ABC");
-                                        CommentList.setPostedDate(oneObject.getString("days_before"));
-                                        //latestcomment.setComment(oneObject.getString("comment"));
-                                        // adding movie to movies array
-                                        commentListList.add(CommentList);
+                                if(jArray.length() > 0) {
+                                    noComment.setVisibility(View.GONE);
+                                    listView.setVisibility(View.VISIBLE);
+                                    // Parsing json
+                                    for (int i = 0; i < jArray.length(); i++) {
+                                        try {
+                                            JSONObject oneObject = jArray.getJSONObject(i);
+                                            //JSONObject jObject = new JSONObject(response);
+                                            // String aJsonString = jObject.getString("result");
+                                            //String bJsonString = jObject.getString("timestamp");
+                                            // JSONArray jArray = jObject.getJSONArray("data");
 
-                                        // notifying list adapter about data changes
-                                        // so that it renders the list view with updated data
-                                        adapter.notifyDataSetChanged();
+                                            // JSONObject obj = response.getJSONObject(i);
+                                            CommentList CommentList = new CommentList();
+                                            CommentList.setId(oneObject.getString("id"));
+                                            CommentList.setTitle(oneObject.getString("title"));
+                                            CommentList.setProfilePic("");
+                                            CommentList.setRating("0");
+                                            CommentList.setEntName("Bubble Soccer");
+                                            CommentList.setCompanyName("ABC");
+                                            CommentList.setPostedDate(oneObject.getString("days_before"));
+                                            //latestcomment.setComment(oneObject.getString("comment"));
+                                            // adding movie to movies array
+                                            commentListList.add(CommentList);
 
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+                                            // notifying list adapter about data changes
+                                            // so that it renders the list view with updated data
+                                            adapter.notifyDataSetChanged();
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
                                     }
-
+                                }
+                                else{
+                                    noComment.setVisibility(View.VISIBLE);
+                                    listView.setVisibility(View.GONE);
                                 }
                             }
                             else if (status == 0){

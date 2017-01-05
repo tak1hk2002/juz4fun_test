@@ -58,7 +58,7 @@ public class FragmentTabs_try extends Fragment{
     private static String TAG = FragmentTabs_try.class.getSimpleName();
     private ArrayList<String> coverPage = new ArrayList<String>();
     private TextView tvLike, tvDislike, tvFair, tvCompanyTitle;
-    private String like, dislike, fair, entName, companyName,averageScore, categories, price, entId, videoUrl;
+    private String like, dislike, fair, entName, companyName,averageScore, categories, price, entId, videoUrl, previewImage;
     private APIConfig details;
     private ImageView ivMyFavourite, imgLike, imgOk, imgDislike;
     private CompanySQLiteHandler myfavouriteDB;
@@ -290,8 +290,8 @@ public class FragmentTabs_try extends Fragment{
                         //videoUrl = "http://www.sample-videos.com/video/mp4/360/big_buck_bunny_360p_2mb.mp4";
                         entName = companyInfo.getString("cht_name");
                         companyName = companyInfo.getString("company_name");
+                        previewImage = companyInfo.getString("video_preview_image");
 
-                        Log.d("videoUrl", videoUrl);
 
                         for (int i = 0; i < promotion_images.length(); i++){
                             coverPage.add((String) promotion_images.get(i));
@@ -311,7 +311,7 @@ public class FragmentTabs_try extends Fragment{
                             categories += catString;
                         }
                         System.out.println("categories: "+ categories);
-                        price = companyInfo.getString("price");
+                        price = companyInfo.getString("price_range");
                         averageScore = score.getString("average_score").equals("null") ? getResources().getString(R.string.not_has_score_yet) : score.getString("average_score");
 
 
@@ -425,10 +425,18 @@ public class FragmentTabs_try extends Fragment{
             View view;
             if(position == 0 && videoUrl != null) {
                 view = layoutInflater.inflate(R.layout.companyinfo_fragment_tab_video, container,false);
-                ImageView MediaPreview = (ImageView) view.findViewById(R.id.MediaPreview);
+                if (imageLoader == null)
+                    imageLoader = AppController.getInstance().getImageLoader();
+
+                NetworkImageView MediaPreview = (NetworkImageView) view.findViewById(R.id.MediaPreview);
                 ImageView VideoPreviewPlayButton = (ImageView) view.findViewById(R.id.VideoPreviewPlayButton);
 
-                MediaPreview.setImageResource(R.color.black);
+                if(!previewImage.equals("")) {
+                    MediaPreview.setImageUrl(previewImage, imageLoader);
+                }
+                else
+                    MediaPreview.setBackgroundResource(R.drawable.mascot_die_pic);
+
                 VideoPreviewPlayButton.setImageResource(R.drawable.btn_play_large);
 
                 VideoPreviewPlayButton.setVisibility(view.VISIBLE);

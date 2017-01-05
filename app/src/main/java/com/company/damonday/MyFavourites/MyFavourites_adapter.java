@@ -86,8 +86,8 @@ public class MyFavourites_adapter extends BaseAdapter {
         //final ImageView myFavourite = (ImageView) convertView.findViewById(R.id.my_favourite);
 
         // disappear right hand my favourite icon
-        if(disableRight)
-            right.setVisibility(View.GONE);
+        /*if(disableRight)
+            right.setVisibility(View.GONE);*/
 
 
         // getting movie data for the row

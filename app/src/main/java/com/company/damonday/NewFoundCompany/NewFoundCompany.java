@@ -36,6 +36,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.company.damonday.Framework.SubmitForm.SubmitForm;
 import com.company.damonday.Framework.SubmitForm.SubmitForm_CustomListAdapter;
 import com.company.damonday.Home.Home;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 
 import com.company.damonday.R;
@@ -500,17 +501,38 @@ public class NewFoundCompany extends Fragment {
                         //session.setLogin(true);
 
 
-                        Toast.makeText(getActivity(), R.string.submit_success, Toast.LENGTH_SHORT).show();
-                        Home home_fragment = new Home();
+                        AlertDialog.Builder ab = new AlertDialog.Builder(view.getContext(), AlertDialog.THEME_HOLO_DARK);
+                        ab.setTitle(R.string.submit_success);
+                        ab.setNeutralButton(R.string.btn_confirm, new DialogInterface.OnClickListener() {
 
-                        FragmentManager fragmentManager = getFragmentManager();
-                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);  //tomc 31/1/2016  To disable the back button in home
-                        //System.out.println(fragmentManager.getBackStackEntryCount());
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.hide(getFragmentManager().findFragmentByTag("newfound"));
-                        fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack(null);
-                        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                        fragmentTransaction.commit();
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+//                                Intent in = new Intent(view.getContext(), MainActivity.class);
+//                                view.getContext().startActivity(in);
+
+                                Home home_fragment = new Home();
+
+                                FragmentManager fragmentManager = getFragmentManager();
+
+
+                                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);  //tomc 31/1/2016  To disable the back button in home
+                                //  getActivity().getActionBar().setTitle(R.string.home);
+                                getActivity().setTitle(R.string.home);
+                                ((TestActivity) getActivity()).showMenuButton();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("newfound"));
+                                fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack("main");
+                                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                fragmentTransaction.commit();
+
+                                // this.getActionBar().setDisplayHomeAsUpEnabled(false);
+                                // getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);      //tomc 31/1/2016  To disable the back button in home
+
+
+                            }
+                        });
+                        ab.create().show();
 
 
                     } else if (status == 0) {

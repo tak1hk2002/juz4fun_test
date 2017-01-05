@@ -274,7 +274,7 @@ public class FeedBack extends Fragment {
 //                                Intent in = new Intent(view.getContext(), MainActivity.class);
 //                                view.getContext().startActivity(in);
 
-                                Home home_fragment = new Home();
+                                Setting setting_fragment = new Setting();
 
                                 FragmentManager fragmentManager = getFragmentManager();
 
@@ -285,7 +285,7 @@ public class FeedBack extends Fragment {
                                 ((TestActivity) getActivity()).showMenuButton();
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("feedback"));
-                                fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack("main");
+                                fragmentTransaction.add(R.id.frame_container, setting_fragment, "setting").addToBackStack("main");
                                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                                 fragmentTransaction.commit();
 

@@ -14,5 +14,13 @@
         android:dividerHeight="0.6dp"
         android:listSelector="@drawable/view_companycomment_list_row_selector"/>
 
+    <TextView
+        android:id="@+id/no_favourite"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/font_grey_white"
+        android:gravity="center"
+        android:visibility="gone"/>
+
 
 </LinearLayout>

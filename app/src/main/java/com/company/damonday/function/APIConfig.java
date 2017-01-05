@@ -17,6 +17,9 @@ public class APIConfig {
     // Server user register url
     public static String URL_REGISTER = "http://52.32.220.112/juz4fun/api/user/register/";
 
+    //Server user Forget password
+    public static String URL_FORGET_PASSWORD = "http://52.32.220.112/juz4fun/api/user/forget-password/";
+
     //facebook user info url
     public static String URL_FACEBOOK_USER = "http://52.32.220.112/juz4fun/api/user/fb-login/";
 
