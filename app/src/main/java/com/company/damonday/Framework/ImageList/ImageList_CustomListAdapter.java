@@ -62,7 +62,7 @@ public class ImageList_CustomListAdapter extends BaseAdapter {
 
         //set the height higher of first photo if home page
         if (isHomePage && position == 0) {
-            convertView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, 700));
+            convertView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, 800));
         } else {
             convertView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, 500));
             //convertView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT));
@@ -77,17 +77,15 @@ public class ImageList_CustomListAdapter extends BaseAdapter {
 
         // company image
 
-
+        companyImage.setDefaultImageResId(R.drawable.mascot_nopic);
+        companyImage.setErrorImageResId(R.drawable.mascot_die_pic);
         if (c.getUrl().length() > 0) {
             companyImage.setImageUrl(c.getUrl(), imageLoader);
-            companyImage.setDefaultImageResId(R.drawable.mascot_nopic);
-            companyImage.setErrorImageResId(R.drawable.mascot_die_pic);
+
             // title
             title.setText(c.getTitle());
             companyName.setText("@"+c.getCompany()+"//");
         }
-        companyImage.setDefaultImageResId(R.drawable.mascot_die_pic);
-        companyImage.setErrorImageResId(R.drawable.mascot_die_pic);
         ranking.setImageResource(c.getMoscotID());
 
 

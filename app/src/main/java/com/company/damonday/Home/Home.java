@@ -14,8 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
@@ -218,25 +224,23 @@ public class Home extends Fragment {
             }
         }, new Response.ErrorListener() {
             @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.d("error3", "error3");
-//                VolleyLog.d("volley", "Error: " + error.networkResponse.statusCode);
-//                Log.d("error4", error.getMessage());
-//                Log.d("error5","Error: " + error.getMessage());
-//                Toast.makeText(getActivity(),
-//                        error.getMessage(), Toast.LENGTH_SHORT).show();
-//                VolleyError error2;
-//
-//                //hidePDialog();
-//            }
-
             public void onErrorResponse(VolleyError error) {
-
-
-                //do stuff with the body...
+                String message = null;
+                if (error instanceof NetworkError) {
+                    message = getResources().getString(R.string.connection_fail_warning);
+                } else if (error instanceof ServerError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                } else if (error instanceof AuthFailureError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                } else if (error instanceof ParseError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                } else if (error instanceof NoConnectionError) {
+                    message = getResources().getString(R.string.connection_fail_warning);
+                } else if (error instanceof TimeoutError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                }
+                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
             }
-
-
         });
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);

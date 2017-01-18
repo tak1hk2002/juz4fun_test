@@ -12,8 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
@@ -133,11 +139,11 @@ public class Fragment_ViewCommentDetail extends Fragment {
                         equipmentScore.setText(commentInfo.getString("equipment"));
                         priceScore.setText(commentInfo.getString("worth"));
 
-                        if(Float.parseFloat(commentInfo.getString("average_score")) < 1.7)
+                        if(Float.parseFloat(commentInfo.getString("average_score")) < 2.1)
                             averagePic.setImageResource(R.drawable.mascot_send_comment);
-                        else if (Float.parseFloat(commentInfo.getString("average_score")) >= 1.7 && Float.parseFloat(commentInfo.getString("average_score")) <= 3.3)
+                        else if (Float.parseFloat(commentInfo.getString("average_score")) >= 2.1 && Float.parseFloat(commentInfo.getString("average_score")) <= 3.5)
                             averagePic.setImageResource(R.drawable.mascot_smile_comment);
-                        else if (Float.parseFloat(commentInfo.getString("average_score")) > 3.3)
+                        else if (Float.parseFloat(commentInfo.getString("average_score")) > 3.5)
                             averagePic.setImageResource(R.drawable.mascot_happy_comment);
 
                     } else if(status == 0) {
@@ -160,9 +166,21 @@ public class Fragment_ViewCommentDetail extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("error", "Error: " + error.getMessage());
-                Toast.makeText(getActivity(),
-                        R.string.connection_server_warning, Toast.LENGTH_SHORT).show();
+                String message = null;
+                if (error instanceof NetworkError) {
+                    message = getResources().getString(R.string.connection_fail_warning);
+                } else if (error instanceof ServerError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                } else if (error instanceof AuthFailureError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                } else if (error instanceof ParseError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                } else if (error instanceof NoConnectionError) {
+                    message = getResources().getString(R.string.connection_fail_warning);
+                } else if (error instanceof TimeoutError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                }
+                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                 hidepDialog();
             }
         });

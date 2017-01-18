@@ -93,11 +93,11 @@ public class CommentList_CustomListAdapter extends BaseAdapter {
             averagePic.setImageResource(R.drawable.mascot_send_comment);
             rating2.setVisibility(View.GONE);
         }
-        if (Float.parseFloat(m.getRating()) < 1.7)
+        if (Float.parseFloat(m.getRating()) < 2.1)
             averagePic.setImageResource(R.drawable.mascot_send_comment);
-        else if (Float.parseFloat(m.getRating()) >= 1.7 && Float.parseFloat(m.getRating()) <= 3.3)
+        else if (Float.parseFloat(m.getRating()) >= 2.1 && Float.parseFloat(m.getRating()) <= 3.5)
             averagePic.setImageResource(R.drawable.mascot_smile_comment);
-        else if (Float.parseFloat(m.getRating()) > 3.3)
+        else if (Float.parseFloat(m.getRating()) > 3.5)
             averagePic.setImageResource(R.drawable.mascot_happy_comment);
 
         //rating

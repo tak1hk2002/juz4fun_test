@@ -219,27 +219,26 @@ Log.d("tomtomtomtom","register");
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Registration Error: " + error.getMessage());
-                Toast.makeText(getActivity(),
-                        R.string.connection_server_warning, Toast.LENGTH_LONG).show();
-                //hideDialog();
                 NetworkResponse networkResponse = error.networkResponse;
                 if (networkResponse != null) {
                     Log.e("Volley", "Error. HTTP Status Code:"+networkResponse.statusCode);
                 }
 
-                if (error instanceof TimeoutError) {
-                    Log.e("Volley", "TimeoutError");
-                }else if(error instanceof NoConnectionError){
-                    Log.e("Volley", "NoConnectionError");
-                } else if (error instanceof AuthFailureError) {
-                    Log.e("Volley", "AuthFailureError");
+                String message = null;
+                if (error instanceof NetworkError) {
+                    message = getResources().getString(R.string.connection_fail_warning);
                 } else if (error instanceof ServerError) {
-                    Log.e("Volley", "ServerError");
-                } else if (error instanceof NetworkError) {
-                    Log.e("Volley", "NetworkError");
+                    message = getResources().getString(R.string.connection_server_warning);
+                } else if (error instanceof AuthFailureError) {
+                    message = getResources().getString(R.string.connection_server_warning);
                 } else if (error instanceof ParseError) {
-                    Log.e("Volley", "ParseError");
+                    message = getResources().getString(R.string.connection_server_warning);
+                } else if (error instanceof NoConnectionError) {
+                    message = getResources().getString(R.string.connection_fail_warning);
+                } else if (error instanceof TimeoutError) {
+                    message = getResources().getString(R.string.connection_server_warning);
                 }
+                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                 hideDialog();
             }
         }) {

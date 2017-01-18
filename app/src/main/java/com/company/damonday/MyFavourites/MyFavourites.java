@@ -10,10 +10,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.company.damonday.CompanyInfo.CompanySQLiteHandler;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
+import com.company.damonday.Framework.CompanyList.CompanyListObject;
+import com.company.damonday.Framework.CompanyList.CompanyListAdapter;
 import com.company.damonday.R;
 import com.company.damonday.TestActivity;
 
@@ -25,10 +26,10 @@ import java.util.List;
  */
 public class MyFavourites extends Fragment {
     private CompanySQLiteHandler db;
-    List<MyFavouritesObject> myFavouritesObjects = new ArrayList<>();
+    List<CompanyListObject> companyListObjects = new ArrayList<>();
 
     private ListView listView;
-    private MyFavourites_adapter adapter;
+    private CompanyListAdapter adapter;
     private FragmentTabs_try fragmentTabs_try;
 
     @Override
@@ -44,12 +45,12 @@ public class MyFavourites extends Fragment {
         getActivity().setTitle(R.string.myfavourite);
 
         db = new CompanySQLiteHandler(getActivity());
-        myFavouritesObjects = db.getAll();
+        companyListObjects = db.getAll();
 
 
         listView = (ListView) view.findViewById(R.id.list);
         TextView noFavourite = (TextView) view.findViewById(R.id.no_favourite);
-        if (myFavouritesObjects.size() > 0) {
+        if (companyListObjects.size() > 0) {
             noFavourite.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
         }
@@ -59,7 +60,7 @@ public class MyFavourites extends Fragment {
         }
 
         noFavourite.setText(R.string.my_favourite_list_no_favourite);
-        adapter = new MyFavourites_adapter(getActivity(), myFavouritesObjects, false);
+        adapter = new CompanyListAdapter(getActivity(), companyListObjects, false);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -74,7 +75,7 @@ public class MyFavourites extends Fragment {
 
                 //pass object to next fragment
                 Bundle bundle = new Bundle();
-                bundle.putString("ent_id", myFavouritesObjects.get(position).getEntId());
+                bundle.putString("ent_id", companyListObjects.get(position).getEntId());
                 fragmentTabs_try = new FragmentTabs_try();
                 fragmentTabs_try.setArguments(bundle);
 

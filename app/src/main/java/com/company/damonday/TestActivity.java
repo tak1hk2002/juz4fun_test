@@ -240,7 +240,7 @@ public class TestActivity extends FragmentActivity implements ConnectivityReceiv
     // Showing the status in Snackbar
     private void showSnack(boolean isConnected) {
         if (isConnected) {
-            Toast.makeText(this, R.string.connection_success_warning, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, R.string.connection_success_warning, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, R.string.connection_fail_warning, Toast.LENGTH_SHORT).show();
         }
@@ -543,9 +543,11 @@ public class TestActivity extends FragmentActivity implements ConnectivityReceiv
         getActionBar().setTitle(title);
         AdjustActiontitle(getActionBar().getTitle().toString());
 
-        if (getActionBar().getTitle() != null) {
-            tempTitle.add(title.toString());
+        if (getActionBar().getTitle() == null || getActionBar().getTitle() == "") {
+            tempTitle.add("no title");
         }
+        else
+            tempTitle.add(title.toString());
         System.out.println("temptitle0:"+tempTitle);
 
     }

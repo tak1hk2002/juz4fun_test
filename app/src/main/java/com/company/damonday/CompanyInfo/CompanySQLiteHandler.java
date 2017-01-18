@@ -9,7 +9,7 @@ import android.text.format.Time;
 import android.util.Log;
 
 import com.company.damonday.Login.LoginSQLiteHandler;
-import com.company.damonday.MyFavourites.MyFavouritesObject;
+import com.company.damonday.Framework.CompanyList.CompanyListObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +83,7 @@ public class CompanySQLiteHandler extends SQLiteOpenHelper {
     /**
      * Storing my favourite details in database
      * */
-    public void addMyFavourite(MyFavouritesObject myFavouritesObject){
+    public void addMyFavourite(CompanyListObject companyListObject){
         SQLiteDatabase db = this.getWritableDatabase();
 
         Time t = new Time(Time.getCurrentTimezone());
@@ -92,16 +92,16 @@ public class CompanySQLiteHandler extends SQLiteOpenHelper {
         Log.d("FAV_TIME",date);
 
         ContentValues values = new ContentValues();
-        values.put(KEY_ENT_ID, myFavouritesObject.getEntId()); // entID
-        values.put(KEY_PIC_URL, myFavouritesObject.getPicUrl()); // picUrl
-        values.put(KEY_ENT_NAME, myFavouritesObject.getTitle()); // title
-        values.put(KEY_COMPANY_NAME, myFavouritesObject.getCompanyName());
-        values.put(KEY_PRICE, myFavouritesObject.getPrice()); // price
-        values.put(KEY_LIKE, myFavouritesObject.getLike()); // like
-        values.put(KEY_FAIR, myFavouritesObject.getFair()); // fair
-        values.put(KEY_DISLIKE, myFavouritesObject.getDislike()); // dislike
-        values.put(KEY_AVERAGE_SCORE, myFavouritesObject.getAverageScore()); // averageScore
-        values.put(KEY_CATEGORIES, myFavouritesObject.getCategory()); // cat
+        values.put(KEY_ENT_ID, companyListObject.getEntId()); // entID
+        values.put(KEY_PIC_URL, companyListObject.getPicUrl()); // picUrl
+        values.put(KEY_ENT_NAME, companyListObject.getTitle()); // title
+        values.put(KEY_COMPANY_NAME, companyListObject.getCompanyName());
+        values.put(KEY_PRICE, companyListObject.getPrice()); // price
+        values.put(KEY_LIKE, companyListObject.getLike()); // like
+        values.put(KEY_FAIR, companyListObject.getFair()); // fair
+        values.put(KEY_DISLIKE, companyListObject.getDislike()); // dislike
+        values.put(KEY_AVERAGE_SCORE, companyListObject.getAverageScore()); // averageScore
+        values.put(KEY_CATEGORIES, companyListObject.getCategory()); // cat
         values.put(KEY_CREATE_DATE, date); // create date
 
         // Inserting Row
@@ -147,8 +147,8 @@ public class CompanySQLiteHandler extends SQLiteOpenHelper {
 //    }
 
 
-    public List<MyFavouritesObject> getAll() {
-        List<MyFavouritesObject> result = new ArrayList<>();
+    public List<CompanyListObject> getAll() {
+        List<CompanyListObject> result = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_MY_FAVOURITE;
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -164,7 +164,7 @@ public class CompanySQLiteHandler extends SQLiteOpenHelper {
     }
 
 
-    public MyFavouritesObject getRecord(Cursor cursor) {
+    public CompanyListObject getRecord(Cursor cursor) {
         // 準備回傳結果用的物件
         //MyFavouritesObject result;
 
@@ -181,7 +181,7 @@ public class CompanySQLiteHandler extends SQLiteOpenHelper {
         String categories=cursor.getString(10);
         //String create_date=cursor.getString(11);
 
-        MyFavouritesObject result = new MyFavouritesObject(ent_id,pic_url,ent_name, company_name,price,like,fair,dislike,average_score,categories);
+        CompanyListObject result = new CompanyListObject(ent_id,pic_url,ent_name, company_name,price,like,fair,dislike,average_score,categories);
 
         // 回傳結果
         return result;

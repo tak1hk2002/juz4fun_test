@@ -1,9 +1,7 @@
-package com.company.damonday.MyFavourites;
+package com.company.damonday.Framework.CompanyList;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,46 +10,41 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.company.damonday.CompanyInfo.CompanySQLiteHandler;
 import com.company.damonday.R;
-import com.company.damonday.Search.CompanyObject;
 import com.company.damonday.function.AppController;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
 /**
  * Created by tom on 25/10/15.
  */
-public class MyFavourites_adapter extends BaseAdapter {
-
+public class CompanyListAdapter extends BaseAdapter {
 
     private Activity activity;
     private LayoutInflater inflater;
-    private List<MyFavouritesObject> myFavouritesObjects;
+    private List<CompanyListObject> companyListObjects;
     private CompanySQLiteHandler myfavouriteDB;
     private boolean disableRight;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
-    public MyFavourites_adapter(Activity activity, List<MyFavouritesObject> myFavouritesObjects, boolean disableRight) {
+    public CompanyListAdapter(Activity activity, List<CompanyListObject> companyListObjects, boolean disableRight) {
         this.activity = activity;
-        this.myFavouritesObjects = myFavouritesObjects;
+        this.companyListObjects = companyListObjects;
         this.disableRight = disableRight;
     }
 
     @Override
     public int getCount() {
-        return myFavouritesObjects.size();
+        return companyListObjects.size();
     }
 
     @Override
     public Object getItem(int location) {
-        return myFavouritesObjects.get(location);
+        return companyListObjects.get(location);
     }
 
     @Override
@@ -91,7 +84,7 @@ public class MyFavourites_adapter extends BaseAdapter {
 
 
         // getting movie data for the row
-        MyFavouritesObject m = myFavouritesObjects.get(position);
+        CompanyListObject m = companyListObjects.get(position);
 
         // thumbnail image
         userIcon.setImageUrl(m.getPicUrl(), imageLoader);
@@ -109,14 +102,15 @@ public class MyFavourites_adapter extends BaseAdapter {
 
         Log.d("m.getAverageScore()", m.getAverageScore());
 
-        if (m.getAverageScore().equals(activity.getResources().getString(R.string.not_has_score_yet))) {
+        if (Float.valueOf(m.getAverageScore()) == 0.0) {
             scoreIcon.setImageResource(R.drawable.mascot_send_comment);
+            rating.setText(R.string.not_has_score_yet);
             rating2.setVisibility(View.GONE);
-        } else if (Float.valueOf(m.getAverageScore()) < 1.7)
+        } else if (Float.valueOf(m.getAverageScore()) < 2.1)
             scoreIcon.setImageResource(R.drawable.mascot_send_comment);
-        else if (Float.valueOf(m.getAverageScore()) >= 1.7 && Float.valueOf(m.getAverageScore()) <= 3.3)
+        else if (Float.valueOf(m.getAverageScore()) >= 2.1 && Float.valueOf(m.getAverageScore()) <= 3.5)
             scoreIcon.setImageResource(R.drawable.mascot_smile_comment);
-        else if (Float.valueOf(m.getAverageScore()) > 3.3)
+        else if (Float.valueOf(m.getAverageScore()) > 3.5)
             scoreIcon.setImageResource(R.drawable.mascot_happy_comment);
 
         //price_range

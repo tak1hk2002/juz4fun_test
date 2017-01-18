@@ -14,13 +14,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.company.damonday.CompanyInfo.FragmentTabs_try;
-import com.company.damonday.MyFavourites.MyFavouritesObject;
-import com.company.damonday.MyFavourites.MyFavourites_adapter;
+import com.company.damonday.Framework.CompanyList.CompanyListObject;
+import com.company.damonday.Framework.CompanyList.CompanyListAdapter;
 import com.company.damonday.R;
 import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
@@ -58,9 +64,9 @@ public class SearchResult extends Fragment {
     // Movies json url
     // private static final String url = "http://damonday.tk/api/comment/latest_comments/?page=1";
     private ProgressImage pDialog;
-    private List<MyFavouritesObject> companyObjects = new ArrayList<MyFavouritesObject>();
+    private List<CompanyListObject> companyObjects = new ArrayList<CompanyListObject>();
     private ListView listView;
-    private MyFavourites_adapter adapter;
+    private CompanyListAdapter adapter;
     private String geturl = "";
 
     @Override
@@ -120,7 +126,7 @@ public class SearchResult extends Fragment {
         listView = (ListView) view.findViewById(R.id.list);
         noResult = (TextView) view.findViewById(R.id.no_result);
         noResult.setText(R.string.search_no_result);
-        adapter = new MyFavourites_adapter(getActivity(), companyObjects, true);
+        adapter = new CompanyListAdapter(getActivity(), companyObjects, true);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -211,7 +217,7 @@ public class SearchResult extends Fragment {
                                     //title
 
 
-                                    MyFavouritesObject companyObject = new MyFavouritesObject();
+                                    CompanyListObject companyObject = new CompanyListObject();
                                     companyObject.setTitle(name);
                                     companyObject.setCompanyName(campanyName);
                                     companyObject.setCategory(category_name);
@@ -254,9 +260,22 @@ public class SearchResult extends Fragment {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("FeedBack", "Login Error: " + error.getMessage());
-                Toast.makeText(getActivity(),
-                        R.string.connection_server_warning, Toast.LENGTH_LONG).show();
+                Log.e("Advanced Search", error.getMessage());
+                String message = null;
+                if (error instanceof NetworkError) {
+                    message = getResources().getString(R.string.connection_fail_warning);
+                } else if (error instanceof ServerError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                } else if (error instanceof AuthFailureError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                } else if (error instanceof ParseError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                } else if (error instanceof NoConnectionError) {
+                    message = getResources().getString(R.string.connection_fail_warning);
+                } else if (error instanceof TimeoutError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                }
+                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                 hideDialog();
             }
         }) {

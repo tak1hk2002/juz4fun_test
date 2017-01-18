@@ -1,11 +1,11 @@
-package com.company.damonday.MyFavourites;
+package com.company.damonday.Framework.CompanyList;
 
 import java.util.ArrayList;
 
 /**
  * Created by lamtaklung on 25/10/2015.
  */
-public class MyFavouritesObject {
+public class CompanyListObject {
     String entId;
     String picUrl;
     String title;
@@ -107,10 +107,10 @@ public class MyFavouritesObject {
         this.companyName = companyName;
     }
 
-    public MyFavouritesObject() {
+    public CompanyListObject() {
     }
 
-    public MyFavouritesObject(String entId, String picUrl, String title, String companyName, String price, String like, String fair, String dislike, String averageScore, String cat) {
+    public CompanyListObject(String entId, String picUrl, String title, String companyName, String price, String like, String fair, String dislike, String averageScore, String cat) {
         this.entId = entId;
         this.picUrl = picUrl;
         this.title = title;

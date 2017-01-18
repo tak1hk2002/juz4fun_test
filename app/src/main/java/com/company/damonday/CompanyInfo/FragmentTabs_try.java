@@ -16,8 +16,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
@@ -31,7 +37,7 @@ import com.company.damonday.CompanyInfo.Fragment.ViewCompany.Fragment_ViewCompan
 import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_ViewWriteComment;
 import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_login_register;
 import com.company.damonday.Login.SessionManager;
-import com.company.damonday.MyFavourites.MyFavouritesObject;
+import com.company.damonday.Framework.CompanyList.CompanyListObject;
 import com.company.damonday.R;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
@@ -63,7 +69,7 @@ public class FragmentTabs_try extends Fragment{
     private ImageView ivMyFavourite, imgLike, imgOk, imgDislike;
     private CompanySQLiteHandler myfavouriteDB;
     private SessionManager session;
-    private MyFavouritesObject myFavouritesObject;
+    private CompanyListObject companyListObject;
     private int SCROLL_Y=0;
     private CustomScrollView scrollView;
     private int pageNum = 1;
@@ -145,7 +151,7 @@ public class FragmentTabs_try extends Fragment{
                 if(heartUnclicked[0]){
                     heartUnclicked[0] = false;
                     ivMyFavourite.setImageResource(R.drawable.btn_favourite_selected);
-                    myfavouriteDB.addMyFavourite(myFavouritesObject);
+                    myfavouriteDB.addMyFavourite(companyListObject);
                     Toast.makeText(getActivity(), R.string.heart_clicked, Toast.LENGTH_SHORT).show();
 
                 }
@@ -341,10 +347,24 @@ public class FragmentTabs_try extends Fragment{
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-                Toast.makeText(getActivity(),
-                        R.string.connection_server_warning, Toast.LENGTH_SHORT).show();
+                String message = null;
+                if (error instanceof NetworkError) {
+                    message = getResources().getString(R.string.connection_fail_warning);
+                } else if (error instanceof ServerError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                } else if (error instanceof AuthFailureError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                } else if (error instanceof ParseError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                } else if (error instanceof NoConnectionError) {
+                    message = getResources().getString(R.string.connection_fail_warning);
+                } else if (error instanceof TimeoutError) {
+                    message = getResources().getString(R.string.connection_server_warning);
+                }
+                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                 hidepDialog();
+
+                getActivity().setTitle("");
             }
         });
         // Adding request to request queue
@@ -379,7 +399,7 @@ public class FragmentTabs_try extends Fragment{
         tvFair.setText(fair);
         //tvCompanyTitle.setText(companyName);
 
-        if(!entName.equals(null));   //tomc 28/10/2015
+        if(!entName.equals(""))   //tomc 28/10/2015
             getActivity().setTitle(entName);
 
 
@@ -389,7 +409,7 @@ public class FragmentTabs_try extends Fragment{
         }else {
             coverPageUrl = "";
         }
-        myFavouritesObject = new MyFavouritesObject(entId, coverPageUrl, entName, companyName, price, like, fair, dislike, averageScore, categories);
+        companyListObject = new CompanyListObject(entId, coverPageUrl, entName, companyName, price, like, fair, dislike, averageScore, categories);
 
         if(videoUrl != null)
             listOfItems.add(videoUrl);
