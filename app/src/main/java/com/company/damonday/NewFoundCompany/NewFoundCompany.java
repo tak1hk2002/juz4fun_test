@@ -105,6 +105,7 @@ public class NewFoundCompany extends Fragment {
     private JsonObjectRequest jsonObjReq;
     private List<Integer> showDetailIndicator = Arrays.asList(1, 4, 5);
     private List<Integer> hideEditText = Arrays.asList();
+    private List<Integer> numericEditText = Arrays.asList();
     private List<Integer> warningIndex = Arrays.asList(0,1);
     private JSONObject priceJsonObject;
     private JSONArray categoryJsonArray;
@@ -157,7 +158,8 @@ public class NewFoundCompany extends Fragment {
         btnReset = (Button) view.findViewById(R.id.button_reset);
         btnSubmit = (Button) view.findViewById(R.id.button_submit);
 
-        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator, hideEditText, warning);
+        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator,
+                                                                                            hideEditText, numericEditText, warning);
 
 
         listView.setAdapter(customAdapter);
@@ -513,11 +515,11 @@ public class NewFoundCompany extends Fragment {
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                ((TestActivity) getActivity()).displayView(0);
 //                                Intent in = new Intent(view.getContext(), MainActivity.class);
 //                                view.getContext().startActivity(in);
 
-                                Home home_fragment = new Home();
+                                /*Home home_fragment = new Home();
 
                                 FragmentManager fragmentManager = getFragmentManager();
 
@@ -530,7 +532,7 @@ public class NewFoundCompany extends Fragment {
                                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("newfound"));
                                 fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack("main");
                                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                                fragmentTransaction.commit();
+                                fragmentTransaction.commit();*/
 
                                 // this.getActionBar().setDisplayHomeAsUpEnabled(false);
                                 // getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);      //tomc 31/1/2016  To disable the back button in home

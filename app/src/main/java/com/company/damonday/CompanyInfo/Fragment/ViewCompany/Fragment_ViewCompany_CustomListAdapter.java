@@ -2,6 +2,8 @@ package com.company.damonday.CompanyInfo.Fragment.ViewCompany;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.company.damonday.Framework.CommentList.CommentList;
+import com.company.damonday.Framework.FontTypeText;
 import com.company.damonday.R;
 import com.company.damonday.function.AppController;
 
@@ -59,8 +62,12 @@ public class Fragment_ViewCompany_CustomListAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.view_companyinfo_simpleadapter, parent, false);
 
-        TextView title = (TextView) convertView.findViewById(R.id.title);
-        TextView text = (TextView) convertView.findViewById(R.id.text);
+        //Typeface font = Typeface.createFromAsset(activity.getAssets(), "fonts/12.ttf");
+
+        FontTypeText title = (FontTypeText) convertView.findViewById(R.id.title);
+        FontTypeText text = (FontTypeText) convertView.findViewById(R.id.text);
+        //title.setTypeface(font);
+        //text.setTypeface(font);
         ImageView indicator = (ImageView) convertView.findViewById(R.id.indicator);
 
         if(InfoListItems.get(position) != null) {

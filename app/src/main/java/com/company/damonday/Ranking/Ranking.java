@@ -97,8 +97,8 @@ public class Ranking extends Fragment {
                 fragmentTabs_try = new FragmentTabs_try();
                 fragmentTabs_try.setArguments(bundle);
 
-                ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
-                ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
+                //((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                //((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                 FragmentManager fragmentManager = getFragmentManager();
                 // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

@@ -92,8 +92,8 @@ public class Home extends Fragment {
             public void onClick(View v) {
 
 
-                ((TestActivity) getActivity()).showBackButton();
-                ((TestActivity) getActivity()).hideMenuButton();
+                //((TestActivity) getActivity()).showBackButton();
+                //((TestActivity) getActivity()).hideMenuButton();
                 //getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
                 Fragment fragment_search_fast = new FastSearch();
                 FragmentManager fragmentManager = getFragmentManager();
@@ -123,7 +123,7 @@ public class Home extends Fragment {
                 /*Intent i = new Intent(Ranking.this, FragmentTabs.class);
                 i.putExtra("Ent_id", companyInfoItems.get(position).getEnt_id());
                 startActivity(i);*/
-                ((TestActivity) getActivity()).showBackButton();
+                //((TestActivity) getActivity()).showBackButton();
                 // getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
                 //pass object to next fragment
                 Bundle bundle = new Bundle();

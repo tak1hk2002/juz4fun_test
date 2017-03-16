@@ -20,6 +20,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.company.damonday.R;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 
@@ -32,10 +33,14 @@ import org.json.JSONObject;
 public class AboutUs extends Fragment {
     TextView textview;
     String data = "";
+    JsonObjectRequest jsonObjReq;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ((TestActivity) getActivity()).showBackButton();
+        ((TestActivity) getActivity()).hideMenuButton();
     }
 
 
@@ -52,7 +57,7 @@ public class AboutUs extends Fragment {
 
     private void makeJsonArrayRequest() {
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 APIConfig.URL_SETTING_ABOUT_US, null, new Response.Listener<JSONObject>() {
 
             public void onResponse(JSONObject response) {
@@ -129,6 +134,15 @@ public class AboutUs extends Fragment {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq);
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (jsonObjReq != null)  {
+            jsonObjReq.cancel();
+            Log.d("onStop", "About Us requests are all cancelled");
+        }
     }
 
 

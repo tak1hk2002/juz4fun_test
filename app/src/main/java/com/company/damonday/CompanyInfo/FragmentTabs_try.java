@@ -39,11 +39,13 @@ import com.company.damonday.CompanyInfo.Fragment.ViewWriteComment.Fragment_login
 import com.company.damonday.Login.SessionManager;
 import com.company.damonday.Framework.CompanyList.CompanyListObject;
 import com.company.damonday.R;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.company.damonday.function.ProgressImage;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
+import com.google.firebase.crash.FirebaseCrash;
 import com.viewpagerindicator.CirclePageIndicator;
 
 
@@ -89,9 +91,12 @@ public class FragmentTabs_try extends Fragment{
 
         session = new SessionManager(getActivity());
 
+        ((TestActivity) getActivity()).showBackButton();
+        ((TestActivity) getActivity()).hideMenuButton();
 
         pDialog = new ProgressImage(getActivity());
         pDialog.show();
+
         details = new APIConfig(entId);
 
         //intialise the Video player

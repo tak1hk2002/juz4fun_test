@@ -157,37 +157,13 @@ public class Fragment_Forget_Password extends Fragment {
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
-//                                Intent in = new Intent(view.getContext(), MainActivity.class);
-//                                view.getContext().startActivity(in);
-
-                                Home home_fragment = new Home();
-
-                                FragmentManager fragmentManager = getFragmentManager();
-
-
-                                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);  //tomc 31/1/2016  To disable the back button in home
-                                //  getActivity().getActionBar().setTitle(R.string.home);
-                                getActivity().setTitle(R.string.home);
-                                ((TestActivity) getActivity()).showMenuButton();
-                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("feedback"));
-                                fragmentTransaction.add(R.id.frame_container, home_fragment, "home").addToBackStack("main");
-                                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                                fragmentTransaction.commit();
-
-                                // this.getActionBar().setDisplayHomeAsUpEnabled(false);
-                                // getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);      //tomc 31/1/2016  To disable the back button in home
-
+                                redirectTo();
+//                             d
 
                             }
                         });
                         ab.create().show();
-                        try {
-                            redirectTo();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+
 
 
                     } else if (error == 0) {
@@ -244,13 +220,13 @@ public class Fragment_Forget_Password extends Fragment {
     }
 
     private void redirectTo(){
-        Fragment fragment = null;
+        /*Fragment fragment = null;
         fragment = new Home();
         //getActivity().getActionBar().show();
         // This method will be executed once the timer is over
         // Start your app main activity
-                                /*Intent i = new Intent(SplashActivity.this, TestActivity.class);
-                                startActivity(i);*/
+                                *//*Intent i = new Intent(SplashActivity.this, TestActivity.class);
+                                startActivity(i);*//*
         if (fragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
             //clear all of the fragment at the stack
@@ -260,7 +236,8 @@ public class Fragment_Forget_Password extends Fragment {
             fragmentTransaction.replace(R.id.frame_container, fragment, "home").addToBackStack("main");
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.commit();
-        }
+        }*/
+        ((TestActivity) getActivity()).displayView(0);
     }
 
     private void showDialog() {

@@ -76,14 +76,17 @@ public class MyComment extends Fragment {
 
         //get token
         session = new SessionManager(getActivity());
-        if (AccessToken.getCurrentAccessToken() != null) {
-            token = AccessToken.getCurrentAccessToken().toString();
-        } else if (session.isLoggedIn()) {
+        //if (AccessToken.getCurrentAccessToken() != null) {
+            //token = AccessToken.getCurrentAccessToken().toString();
+        //} else if (session.isLoggedIn()) {
             DB = new LoginSQLiteHandler(getActivity());
             HashMap<String, String> user = DB.getUserDetails();
             token = user.get("token");
-        }
+        //}
         System.out.println("Token: "+token);
+
+        ((TestActivity) getActivity()).showBackButton();
+        ((TestActivity) getActivity()).hideMenuButton();
 
         APIConfig = new APIConfig(token);
 
@@ -122,8 +125,8 @@ public class MyComment extends Fragment {
                 /*getFragmentManager().beginTransaction()
                         .add(R.id.frame_container, fragment_ViewCommentDetail)
                         .commit();*/
-                ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
-                ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
+                //((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                //((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));
@@ -140,7 +143,7 @@ public class MyComment extends Fragment {
     }
 
     // Append more data into the adapter
-    public void customLoadMoreDataFromApi(int offset) {
+    public void customLoadMoreDataFromApi(final int offset) {
         // This method probably sends out a network request and appends new data items to your adapter.
         // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
         // Deserialize API response and then construct new objects to append to the adapter
@@ -176,9 +179,9 @@ public class MyComment extends Fragment {
                                             CommentList.setId(oneObject.getString("id"));
                                             CommentList.setTitle(oneObject.getString("title"));
                                             CommentList.setProfilePic("");
-                                            CommentList.setRating("0");
-                                            CommentList.setEntName("Bubble Soccer");
-                                            CommentList.setCompanyName("ABC");
+                                            CommentList.setRating(oneObject.getString("average_score"));
+                                            CommentList.setEntName(oneObject.getString("ent_name"));
+                                            CommentList.setCompanyName(oneObject.getString("company_name"));
                                             CommentList.setPostedDate(oneObject.getString("days_before"));
                                             //latestcomment.setComment(oneObject.getString("comment"));
                                             // adding movie to movies array
@@ -195,8 +198,10 @@ public class MyComment extends Fragment {
                                     }
                                 }
                                 else{
-                                    noComment.setVisibility(View.VISIBLE);
-                                    listView.setVisibility(View.GONE);
+                                    if(offset <= 1) {
+                                        noComment.setVisibility(View.VISIBLE);
+                                        listView.setVisibility(View.GONE);
+                                    }
                                 }
                             }
                             else if (status == 0){

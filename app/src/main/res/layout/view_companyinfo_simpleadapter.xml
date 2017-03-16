@@ -8,7 +8,7 @@
     android:paddingTop="15dp"
     android:paddingBottom="15dp">
 
-    <TextView
+    <com.company.damonday.Framework.FontTypeText
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:textSize="15sp"
@@ -23,7 +23,7 @@
         android:layout_toRightOf="@+id/title"
         android:paddingRight="10dp"
         android:paddingLeft="10dp">
-        <TextView
+        <com.company.damonday.Framework.FontTypeText
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_alignParentRight="true"

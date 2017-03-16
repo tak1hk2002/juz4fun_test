@@ -27,6 +27,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.appyvet.rangebar.RangeBar;
 import com.company.damonday.R;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 import com.company.damonday.function.ProgressImage;
@@ -61,6 +62,9 @@ public class Fragment_ViewCommentDetail extends Fragment {
             e.printStackTrace();
             Toast.makeText(getActivity(), "No data loaded", Toast.LENGTH_LONG).show();
         }
+
+        ((TestActivity) getActivity()).showBackButton();
+        ((TestActivity) getActivity()).hideMenuButton();
 
 
         makeJsonArrayRequest();

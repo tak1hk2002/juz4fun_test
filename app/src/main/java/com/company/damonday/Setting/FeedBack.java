@@ -65,6 +65,7 @@ public class FeedBack extends Fragment {
     private List<SubmitForm> items = new ArrayList<SubmitForm>();
     private List<Integer> showDetailIndicator = Arrays.asList(2);
     private List<Integer> hideEditText = Arrays.asList(2);
+    private List<Integer> numericEditText = Arrays.asList();
     private String[] warning, title;
 
     private ProgressImage pDialog;
@@ -74,6 +75,9 @@ public class FeedBack extends Fragment {
         super.onCreate(savedInstanceState);
 
         getActivity().setTitle(R.string.feedback);
+
+        ((TestActivity) getActivity()).showBackButton();
+        ((TestActivity) getActivity()).hideMenuButton();
 
         //get the array list of newFound option
         title = getResources().getStringArray(R.array.feedback_title);
@@ -101,7 +105,8 @@ public class FeedBack extends Fragment {
         btnReset = (Button) view.findViewById(R.id.button_reset);
         btnSubmit = (Button) view.findViewById(R.id.button_submit);
 
-        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator, hideEditText, warning);
+        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator,
+                                                                                            hideEditText, numericEditText, warning);
 
 
         listView.setAdapter(customAdapter);
@@ -276,11 +281,13 @@ public class FeedBack extends Fragment {
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                //go to setting page
+                                ((TestActivity) getActivity()).displayView(6);
 
 //                                Intent in = new Intent(view.getContext(), MainActivity.class);
 //                                view.getContext().startActivity(in);
 
-                                Setting setting_fragment = new Setting();
+                                /*Setting setting_fragment = new Setting();
 
                                 FragmentManager fragmentManager = getFragmentManager();
 
@@ -293,7 +300,7 @@ public class FeedBack extends Fragment {
                                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag("feedback"));
                                 fragmentTransaction.add(R.id.frame_container, setting_fragment, "setting").addToBackStack("main");
                                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                                fragmentTransaction.commit();
+                                fragmentTransaction.commit();*/
 
                                 // this.getActionBar().setDisplayHomeAsUpEnabled(false);
                                 // getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);      //tomc 31/1/2016  To disable the back button in home

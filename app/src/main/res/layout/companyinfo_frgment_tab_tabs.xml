@@ -8,6 +8,6 @@
     android:padding="5dp"
     android:textSize="15sp"
     android:ellipsize="marquee"
-    android:singleLine="true"
+    android:maxLines="1"
     android:background="@drawable/companyinfo_fragment_tab_tabs_selector"
     android:textColor="@color/tab_textcolor"/>

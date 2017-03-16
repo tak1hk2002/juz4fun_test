@@ -95,8 +95,8 @@ public class LatestComment extends Fragment {
                 /*getFragmentManager().beginTransaction()
                         .add(R.id.frame_container, fragment_ViewCommentDetail)
                         .commit();*/
-                ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
-                ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
+                //((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                //((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.hide(getFragmentManager().findFragmentByTag(lastFragmentTag));

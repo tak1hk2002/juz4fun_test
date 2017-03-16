@@ -87,6 +87,7 @@ public class Fragment_ViewWriteComment extends Fragment {
     //內容，消費，整體評分，詳細評分 show indicator
     private List<Integer> showDetailIndicator = Arrays.asList(1,3,4);
     private List<Integer> showEditText = Arrays.asList();
+    private List<Integer> numericEditText = Arrays.asList(2);
     private String detailRatingDB[];
     private ScrollView doubleScroll = new ScrollView();
 
@@ -156,7 +157,8 @@ public class Fragment_ViewWriteComment extends Fragment {
         listView = (ListView) view.findViewById(R.id.listView);
         Button btnReset = (Button) view.findViewById(R.id.reset);
         Button btnSubmit = (Button) view.findViewById(R.id.submit);
-        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator, showEditText, warning);
+        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator,
+                                                                                            showEditText, numericEditText, warning);
         listView.setAdapter(customAdapter);
         doubleScroll.setListViewHeightBasedOnChildren2(listView);
 
@@ -203,13 +205,13 @@ public class Fragment_ViewWriteComment extends Fragment {
                 if (passChecking) {
                     //check facebook login or system login
                     session = new SessionManager(getActivity());
-                    if (AccessToken.getCurrentAccessToken() != null) {
-                        token = AccessToken.getCurrentAccessToken().toString();
-                    } else if (session.isLoggedIn()) {
-                        systemLogin = true;
+                    //if (AccessToken.getCurrentAccessToken() != null) {
+                        //token = AccessToken.getCurrentAccessToken().toString();
+                    //} else if (session.isLoggedIn()) {
+                        //systemLogin = true;
                         HashMap<String, String> user = DB.getUserDetails();
                         token = user.get("token");
-                    }
+                    //}
                     System.out.println(entId);
                     System.out.println(token);
                     System.out.println(submitVars[0]);
@@ -564,11 +566,13 @@ public class Fragment_ViewWriteComment extends Fragment {
                 System.out.println("entId: "+ entId);
                 System.out.println("comment: "+ content);
                 System.out.println("assess: "+ Integer.toString(overallRating));
+                System.out.println("price: "+ expense);
                 params.put("token", token);
                 params.put("title", title);
                 params.put("entId", entId);
                 params.put("comment", content);
                 params.put("assess", Integer.toString(overallRating));
+                params.put("price", expense);
                 for (int i = 0; i < detailRating.size(); i++){
                     params.put(detailRatingDB[i], detailRating.get(detailRatingDB[i]));
                     System.out.println(detailRatingDB[i]+": "+ detailRating.get(detailRatingDB[i]));

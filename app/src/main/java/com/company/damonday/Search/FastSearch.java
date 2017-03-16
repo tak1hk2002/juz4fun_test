@@ -43,7 +43,9 @@ import com.company.damonday.R;
 import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.Firebase.CreateLogEvent;
 import com.company.damonday.function.ProgressImage;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 
 public class FastSearch extends Fragment {
@@ -55,6 +57,8 @@ public class FastSearch extends Fragment {
     private ProgressImage pDialog;
     private FastSearchAdapter adapter;
     private StringRequest strReq;
+    private FirebaseAnalytics mFirebaseAnalytics;
+    private CreateLogEvent createLogEvent;
 
 
     //This arraylist will have data as pulled from server. This will keep cumulating.
@@ -66,6 +70,12 @@ public class FastSearch extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //pDialog = new ProgressImage(getActivity());
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
+        //set Create log event
+        createLogEvent = new CreateLogEvent(mFirebaseAnalytics);
+        createLogEvent.setItemName("FastSearch");
+        createLogEvent.setItemID("");
 
     }
 

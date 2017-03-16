@@ -65,6 +65,7 @@ public class Setting extends Fragment {
     private String[] title;
     private List<Integer> showDetailIndicator = Arrays.asList(0,1,2);
     private List<Integer> hideEditText = Arrays.asList(3);
+    private List<Integer> numericEditText = Arrays.asList();
     private String lastFragmentTag, api, token = null;
 
 
@@ -120,7 +121,8 @@ public class Setting extends Fragment {
         TextView txtEmail = (TextView) view.findViewById(R.id.email);
         ListView listView = (ListView) view.findViewById(R.id.listView);
 
-        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator, hideEditText, null);
+        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator,
+                                                                                            hideEditText, numericEditText, null);
         listView.setAdapter(customAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -138,8 +140,8 @@ public class Setting extends Fragment {
                             bundle.putString("last_fragment_tag", "my_comment");
                             myComment.setArguments(bundle);
                             //getActivity().setTitle(R.string.my_comment);
-                            ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
-                            ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
+                            //((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                            //((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                             fragmentManager = getFragmentManager();
                             // System.out.println(fragmentManager.getBackStackEntryCount());
                             fragmentTransaction = fragmentManager.beginTransaction();
@@ -155,8 +157,8 @@ public class Setting extends Fragment {
                             bundle.putString("last_fragment_tag", "login");
                             login.setArguments(bundle);
                             //getActivity().setTitle(R.string.my_comment);
-                            ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
-                            ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
+                            //((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                            //((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                             fragmentManager = getFragmentManager();
                             // System.out.println(fragmentManager.getBackStackEntryCount());
                             fragmentTransaction = fragmentManager.beginTransaction();
@@ -172,8 +174,8 @@ public class Setting extends Fragment {
                         //              fragmentTabs_try = new FragmentTabs_try();
 //                fragmentTabs_try.setArguments(bundle);
                         AboutUs about_us_fragment = new AboutUs();
-                        ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
-                        ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
+                        //((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                        //((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                         fragmentManager = getFragmentManager();
                         System.out.println(fragmentManager.getBackStackEntryCount());
                         fragmentTransaction = fragmentManager.beginTransaction();
@@ -188,8 +190,8 @@ public class Setting extends Fragment {
                         //              fragmentTabs_try = new FragmentTabs_try();
 //                fragmentTabs_try.setArguments(bundle);
                         FeedBack feedback_fragment = new FeedBack();
-                        ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
-                        ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
+                        //((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                        //((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                         fragmentManager = getFragmentManager();
                         System.out.println(fragmentManager.getBackStackEntryCount());
                         fragmentTransaction = fragmentManager.beginTransaction();
@@ -297,8 +299,8 @@ public class Setting extends Fragment {
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putString("lastFragment", "setting");
-                    ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
-                    ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
+                    //((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                    //((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                     Fragment_Login fragment_login = new Fragment_Login();
                     fragment_login.setArguments(bundle);
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -315,8 +317,8 @@ public class Setting extends Fragment {
             btnRegister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
-                    ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
+                    //((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                    //((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                     Fragment_Registration fragment_registration = new Fragment_Registration();
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

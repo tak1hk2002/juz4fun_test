@@ -17,6 +17,7 @@ import com.company.damonday.Framework.CompanyList.CompanyListObject;
 import com.company.damonday.Framework.CompanyList.CompanyListAdapter;
 import com.company.damonday.R;
 import com.company.damonday.TestActivity;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +33,25 @@ public class MyFavourites extends Fragment {
     private CompanyListAdapter adapter;
     private FragmentTabs_try fragmentTabs_try;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "1");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "My favourite");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        //Sets whether analytics collection is enabled for this app on this device.
+        mFirebaseAnalytics.setAnalyticsCollectionEnabled(true);
+        //Sets the user ID property.
+        mFirebaseAnalytics.setUserId(String.valueOf("29525478"));
+
+        //Sets a user property to a given value.
+        mFirebaseAnalytics.setUserProperty("HIHI", "Alan");
 
 
     }
@@ -79,8 +96,8 @@ public class MyFavourites extends Fragment {
                 fragmentTabs_try = new FragmentTabs_try();
                 fragmentTabs_try.setArguments(bundle);
 
-                ((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
-                ((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
+                //((TestActivity) getActivity()).showBackButton();        //tomc 7/8/2016 actionbar button
+                //((TestActivity) getActivity()).hideMenuButton();        //tomc 7/8/2016 actionbar button
                 FragmentManager fragmentManager = getFragmentManager();
                 // System.out.println(fragmentManager.getBackStackEntryCount());
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

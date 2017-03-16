@@ -25,8 +25,10 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.company.damonday.Home.Home;
 import com.company.damonday.R;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,13 +66,13 @@ public class LaunchPage extends Fragment {
 
                 @Override
                 public void run() {
-                    Fragment fragment = null;
+                    /*Fragment fragment = null;
                     fragment = new Home();
                     getActivity().getActionBar().show();
                     // This method will be executed once the timer is over
                     // Start your app main activity
-                /*Intent i = new Intent(SplashActivity.this, TestActivity.class);
-                startActivity(i);*/
+                *//*Intent i = new Intent(SplashActivity.this, TestActivity.class);
+                startActivity(i);*//*
                     if (fragment != null) {
                         FragmentManager fragmentManager = getFragmentManager();
                         //clear all of the fragment at the stack
@@ -81,7 +83,8 @@ public class LaunchPage extends Fragment {
                         fragmentTransaction.replace(R.id.frame_container, fragment, "home").addToBackStack("main");
                         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         fragmentTransaction.commit();
-                    }
+                    }*/
+                    ((TestActivity) getActivity()).displayView(0);
 
                 }
             }, SPLASH_TIME_OUT);

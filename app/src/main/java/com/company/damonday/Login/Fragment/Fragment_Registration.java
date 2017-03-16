@@ -30,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.company.damonday.Login.FragmentTabs;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.Login.LoginSQLiteHandler;
 import com.company.damonday.Login.SessionManager;
@@ -65,13 +66,18 @@ public class Fragment_Registration extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ((TestActivity) getActivity()).showBackButton();
+        ((TestActivity) getActivity()).hideMenuButton();
+
+        getActivity().setTitle(R.string.register);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 Log.d("tomtomtomtom","register");
-        getActivity().setTitle(R.string.register);
+
         // TODO Auto-generated method stub
         v = inflater.inflate(R.layout.login_register_tab, container, false);
         inputUsername = (EditText) v.findViewById(R.id.username);
@@ -87,9 +93,6 @@ Log.d("tomtomtomtom","register");
 
         // Session manager
         session = new SessionManager(getActivity());
-
-        // SQLite database handler
-        db = new LoginSQLiteHandler(getActivity());
 
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {

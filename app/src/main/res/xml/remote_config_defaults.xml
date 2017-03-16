@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>advanced_search</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>ranking</key>
+        <value>2</value>
+    </entry>
+    <entry>
+        <key>latest_comment</key>
+        <value>3</value>
+    </entry>
+    <entry>
+        <key>my_favourite</key>
+        <value>4</value>
+    </entry>
+    <entry>
+        <key>new_found</key>
+        <value>5</value>
+    </entry>
+    <entry>
+        <key>setting</key>
+        <value>6</value>
+    </entry>
+    <entry>
+        <key>launch_page</key>
+        <value>7</value>
+    </entry>
+    <entry>
+        <key>fast_search</key>
+        <value>8</value>
+    </entry>
+
+</defaultsMap>

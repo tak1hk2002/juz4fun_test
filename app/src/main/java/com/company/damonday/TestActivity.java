@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -25,6 +27,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.company.damonday.AccountVerified.AccountVerified;
 import com.company.damonday.Launch.LaunchPage;
 import com.company.damonday.Home.Home;
 import com.company.damonday.LatestComment.LatestComment;
@@ -35,15 +38,21 @@ import com.company.damonday.Login.SessionManager;
 import com.company.damonday.MyFavourites.MyFavourites;
 import com.company.damonday.NewFoundCompany.NewFoundCompany;
 import com.company.damonday.Ranking.Ranking;
+import com.company.damonday.ResetPassword.ResetPassword;
 import com.company.damonday.Search.AdvancedSearch;
 import com.company.damonday.Setting.Setting;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
+import com.company.damonday.function.DeepLink.DeepLinkSwitch;
+import com.company.damonday.function.Firebase.CreateLogEvent;
 import com.company.damonday.function.NetworkChecking.ConnectivityReceiver;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.ArrayList;
 
@@ -72,16 +81,54 @@ public class TestActivity extends FragmentActivity implements ConnectivityReceiv
     private LinearLayout linear_logout, linear_login, linear_register;
     private SessionManager session;         //tomc 10/4/2016        login
     private LoginSQLiteHandler db;           //tomc 10/4/2016       login
-    private Boolean HOME_FLAG;
+    private Boolean isDeepLink = false;
     private AccessTokenTracker accessTokenTracker;
-    private String tag = null;
+    private String tag = "";
+    private FirebaseAnalytics mFirebaseAnalytics;
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
+    private CreateLogEvent createLogEvent;
+    private Uri data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+        System.out.println("Advance_search:" + mFirebaseRemoteConfig.getValue("advanced_search"));
+        //set Create log event
+        createLogEvent = new CreateLogEvent(mFirebaseAnalytics);
+
+
+        //catch all the errors that cannot be detected
+        /*Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
+            @Override
+            public void uncaughtException(Thread thread, Throwable ex) {
+                FirebaseCrash.report(ex);
+            }
+        });*/
+
+        //get deep link info
+        data = this.getIntent().getData();
+        System.out.println("datadatadatadatadatadata: "+data);
+        if (data != null && data.isHierarchical()) {
+            String uri = this.getIntent().getDataString();
+            System.out.println("Parma1: " + data.getQueryParameter("param1"));
+            System.out.println("Parma2: " + data.getQueryParameter("param2"));
+            System.out.println(data.getHost());
+            Log.i("MyApp", "Deep link clicked " + uri);
+        }
+
+
+
         Log.d("onCreate", "onCreate");
         FacebookSdk.sdkInitialize(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer);
+
+        //set soft input mode
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         //check if the network is connected      Alan 14/5/2016
         checkConnection();
@@ -116,20 +163,16 @@ public class TestActivity extends FragmentActivity implements ConnectivityReceiv
         // Home
 
         //Special handel, as （Juz4fun and 主頁） tomc 26/1/2016
-        navDrawerItems.add(new NavDrawerItem("主頁", navMenuIcons.getResourceId(0, -1)));
+        for(int i = 0; i < navMenuIcons.length(); i++) {
+            navDrawerItems.add(new NavDrawerItem(navMenuTitles[i], navMenuIcons.getResourceId(i, -1)));
+        }
 
-        // Find People
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-        // PhotosgetResourceId
+        /*navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-        // Communities, Will add a counter here
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
-        // Pages
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-        // What's hot, We  will add a counter here
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
-
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));*/
 
 
         // Recycle the typed array
@@ -206,9 +249,14 @@ public class TestActivity extends FragmentActivity implements ConnectivityReceiv
 
         //mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null && data == null) {
             // on first time display view for first nav item
             displayView(7);
+        }
+        //go to deep link process
+        else if (data != null){
+            System.out.println("aaaaaaaaaaaaaaaa");
+            displayView(8);
         }
 
 
@@ -307,10 +355,13 @@ public class TestActivity extends FragmentActivity implements ConnectivityReceiv
                         LoginManager.getInstance().logOut();
                     }
                     db.deleteUsers();
-                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                    displayView(0);
+                    //mDrawerLayout.closeDrawer(Gravity.RIGHT);
+
                 }
 
             });
+
 
         } else {
             linear_logout.setVisibility(View.GONE);
@@ -424,13 +475,13 @@ public class TestActivity extends FragmentActivity implements ConnectivityReceiv
     /**
      * Diplaying fragment view for selected nav drawer list item
      */
-    private void displayView(int position) {
+    public void displayView(int position) {
         // update the main content by replacing fragments
         Fragment fragment = null;
         String api = null;
-        HOME_FLAG = false;
         //getActionBar().setDisplayHomeAsUpEnabled(true);     //make back button
         hideBackButton();
+        showMenuButton();
         //showBackButton();                                     //6/8/2016  tomc ,follow ios back button logic
         Log.d("POSITION", Integer.toString(position));
         switch (position) {
@@ -440,48 +491,95 @@ public class TestActivity extends FragmentActivity implements ConnectivityReceiv
                 //make back button
                 //hideBackButton();
                 fragment = new Home();
-                HOME_FLAG = true;
                 tag = "home";
+                getActionBar().show();
                 break;
             case 1:
                 //showBackButton();
                 //進階搜尋
                 fragment = new AdvancedSearch();
                 tag = "search";
+                createLogEvent.setContentType(tag);
+                createLogEvent.setItemID("1");
+                createLogEvent.setItemName(tag);
+                createLogEvent.send();
                 break;
             case 2:
                 //排行榜
                 fragment = new Ranking();
                 tag = "ranking";
+                createLogEvent.setContentType(tag);
+                createLogEvent.setItemID("2");
+                createLogEvent.setItemName(tag);
+                createLogEvent.send();
+                //Sets whether analytics collection is enabled for this app on this device.
+                mFirebaseAnalytics.setAnalyticsCollectionEnabled(true);
+                //Sets the user ID property.
+                mFirebaseAnalytics.setUserId(String.valueOf("64286830"));
+
+                //Sets a user property to a given value.
+                mFirebaseAnalytics.setUserProperty("HIHI", "Peter");
                 break;
             case 3:
                 //最新評論
                 fragment = new LatestComment();
                 api = APIConfig.URL_Latest_Comment;
-                tag = "latestcommentvolley";
+                tag = "latestcomment";
+                createLogEvent.setContentType(tag);
+                createLogEvent.setItemID("3");
+                createLogEvent.setItemName(tag);
+                createLogEvent.send();
                 break;
             case 4:
                 //我的最愛
                 fragment = new MyFavourites();
                 tag = "myfavourites";
+                createLogEvent.setContentType(tag);
+                createLogEvent.setItemID("4");
+                createLogEvent.setItemName(tag);
+                createLogEvent.send();
                 break;
             case 5:
                 //新發現
                 fragment = new NewFoundCompany();
                 tag = "newfound";
+                createLogEvent.setContentType(tag);
+                createLogEvent.setItemID("5");
+                createLogEvent.setItemName(tag);
+                createLogEvent.send();
                 break;
 
             case 6:
                 //設定
                 fragment = new Setting();
                 tag = "setting";
+                createLogEvent.setContentType(tag);
+                createLogEvent.setItemID("6");
+                createLogEvent.setItemName(tag);
+                createLogEvent.send();
                 api = "";
                 break;
             case 7:
                 //launch page
                 fragment = new LaunchPage();
                 tag = "launchpage";
+                createLogEvent.setContentType(tag);
+                createLogEvent.setItemID("7");
+                createLogEvent.setItemName(tag);
+                createLogEvent.send();
                 getActionBar().hide();
+                isDeepLink = false;
+                break;
+            case 8:
+                //Deep link
+                fragment = new AccountVerified();
+                //DeepLinkSwitch deepLinkSwitch = new DeepLinkSwitch(data);
+                //fragment = deepLinkSwitch.goToFragment();
+                hideMenuButton();
+                isDeepLink = true;
+                tag= "";
+                System.out.println("fragment: "+fragment);
+                break;
 
             default:
                 break;
@@ -599,11 +697,16 @@ public class TestActivity extends FragmentActivity implements ConnectivityReceiv
         else
             clickLoginOrRegister = false;
 
+        //deep link handling
+        //go back to launch page
+        if (isDeepLink){
+            displayView(7);
+        }
         /*
         * 因為launch page會有登入和註冊，click then back button會問係咪要離開，所以要加exception如果係launchpage and (登入or註冊)，
         * 可以back page
         * */
-        if (fragmentManager.getBackStackEntryCount() > 1 ||
+        else if (fragmentManager.getBackStackEntryCount() > 1 ||
                 (tag.equals("launchpage") && clickLoginOrRegister)) {
             //如果不是返主頁
             if (!tempTitle.isEmpty()) {

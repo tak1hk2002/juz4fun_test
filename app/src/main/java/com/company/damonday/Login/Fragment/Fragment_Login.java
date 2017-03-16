@@ -88,6 +88,9 @@ public class Fragment_Login extends Fragment {
             e.printStackTrace();
         }
 
+        ((TestActivity) getActivity()).showBackButton();
+        ((TestActivity) getActivity()).hideMenuButton();
+
         // SQLite database handler
         loginSQLiteHandler = new LoginSQLiteHandler(getActivity());
 
@@ -310,7 +313,9 @@ public class Fragment_Login extends Fragment {
 
                 //if the user login through setting
             } else if (getActivity().getSupportFragmentManager().findFragmentByTag("setting") != null) {
-                Setting setting = new Setting();
+                ((TestActivity) getActivity()).displayView(6);
+
+                /*Setting setting = new Setting();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 //clear all of the fragment at the stack
                 ((TestActivity) getActivity()).hideBackButton();        //tomc 7/8/2016 actionbar button
@@ -320,15 +325,17 @@ public class Fragment_Login extends Fragment {
                 fragmentTransaction.replace(R.id.frame_container, setting, "setting").addToBackStack(null);
 
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                fragmentTransaction.commit();
+                fragmentTransaction.commit();*/
             } else {
-                Fragment fragment = null;
+                //go to home page
+                ((TestActivity) getActivity()).displayView(0);
+                /*Fragment fragment = null;
                 fragment = new Home();
                 getActivity().getActionBar().show();
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                                /*Intent i = new Intent(SplashActivity.this, TestActivity.class);
-                                startActivity(i);*/
+                                *//*Intent i = new Intent(SplashActivity.this, TestActivity.class);
+                                startActivity(i);*//*
                 if (fragment != null) {
                     FragmentManager fragmentManager = getFragmentManager();
                     //clear all of the fragment at the stack
@@ -338,7 +345,7 @@ public class Fragment_Login extends Fragment {
                     fragmentTransaction.replace(R.id.frame_container, fragment, "home").addToBackStack("main");
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     fragmentTransaction.commit();
-                }
+                }*/
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -508,9 +515,11 @@ public class Fragment_Login extends Fragment {
                     JSONObject jObj = new JSONObject(response);
                     int status = jObj.getInt("status");
                     if (status == 1) {
+                        JSONObject userInfo = jObj.getJSONObject("data");
+                        String authKey = userInfo.getString("auth_key");
 
                         //add facebook info into SQLite
-                        loginSQLiteHandler.addUser(fbToken, email, fbUsername);
+                        loginSQLiteHandler.addUser(authKey, email, fbUsername);
                         Log.d("facebook", "success");
 
                         redirectToDetail();

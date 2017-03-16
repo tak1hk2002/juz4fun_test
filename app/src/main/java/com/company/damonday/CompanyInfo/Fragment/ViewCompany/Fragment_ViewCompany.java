@@ -37,6 +37,7 @@ import com.company.damonday.CompanyInfo.Fragment.ViewCompany.FeeDetail.Fee_Detai
 import com.company.damonday.Framework.ScrollView.ScrollView;
 import com.company.damonday.MapsActivity;
 import com.company.damonday.R;
+import com.company.damonday.TestActivity;
 import com.company.damonday.function.APIConfig;
 import com.company.damonday.function.AppController;
 
@@ -78,6 +79,7 @@ public class Fragment_ViewCompany extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+
         try {
             //get id from previous page
             entId = getArguments().getString("ent_id");
@@ -106,7 +108,6 @@ public class Fragment_ViewCompany extends Fragment {
         /*//pass entId to fragment
         Bundle bundle = new Bundle();
         bundle.putString("ent_Id", entId);*/
-
         //makeJsonArrayRequest();
         // TODO Auto-generated method stub
         v = inflater.inflate(R.layout.view_companyinfo, container, false);
@@ -152,7 +153,7 @@ public class Fragment_ViewCompany extends Fragment {
                             //finish();
                             //Log.i("Finished making a call...", "");
                         } catch (android.content.ActivityNotFoundException ex) {
-                            Toast.makeText(v.getContext(),
+                            Toast.makeText(getActivity(),
                                     "Call faild, please try again later.", Toast.LENGTH_SHORT).show();
                         }
                         break;
@@ -269,13 +270,13 @@ public class Fragment_ViewCompany extends Fragment {
                         }
                         info.add(cat);
                         info.add(companyInfo.getString("address"));
-                        info.add(companyTel);
 
+                        info.add(companyTel);
                         info.add(companyInfo.getString("price_range"));
                         info.add(companyInfo.getString("business_hour"));
                         info.add(companyInfo.getString("preferred_transport"));
 
-                        info.add("Dummy text");
+                        info.add(companyInfo.getString("company_email"));
                         info.add(companyInfo.getString("description"));
 
                     /*info.add(companyInfo.getString("ID"));
@@ -295,7 +296,6 @@ public class Fragment_ViewCompany extends Fragment {
                                 errorMsg,
                                 Toast.LENGTH_SHORT).show();
                     }
-
 
 
 

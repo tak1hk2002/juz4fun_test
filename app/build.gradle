@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.company.damonday"
@@ -39,10 +39,10 @@ dependencies {
     //compile 'com.felipecsl:gifimageview:2.0.0'
     //compile 'com.github.channguyen:rsv:1.0.1'
     //compile project(':facebook')
-    //compile 'com.google.android.gms:play-services:9.6.1'
+    compile 'com.google.android.gms:play-services:10.2.0'
     compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.google.android.gms:play-services-maps:9.8.0'
-    compile 'com.google.android.gms:play-services-location:9.8.0'
+    compile 'com.google.android.gms:play-services-maps:10.2.0'
+    compile 'com.google.android.gms:play-services-location:10.2.0'
     compile 'com.facebook.android:facebook-android-sdk:4.2.0'
     compile 'com.github.bumptech.glide:glide:3.6.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
@@ -51,6 +51,9 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.android.support:multidex:1.0.1'
     compile 'it.sephiroth.android.library.imagezoom:imagezoom:+'
+    compile 'com.google.firebase:firebase-core:10.2.0'
+    compile 'com.google.firebase:firebase-crash:10.2.0'
+    compile 'com.google.firebase:firebase-config:10.2.0'
 }
 
 
@@ -67,3 +70,8 @@ configurations {
 
 
 
+
+
+
+
+apply plugin: 'com.google.gms.google-services'

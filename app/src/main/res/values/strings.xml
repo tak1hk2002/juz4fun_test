@@ -64,6 +64,10 @@
     <string name="main_quit_negative">講笑姐;p</string>
     <string name="main_no_home">太多玩樂啦！比D時間我諗下介紹D咩比你地！</string>
 
+    <!-- Reset password-->
+    <string name="reset_password_title">重設密碼</string>
+
+
     <!-- companyInfo-->
     <string name="tab_company">概要</string>
     <string name="tab_comment">玩評</string>
@@ -102,7 +106,7 @@
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
-        <item>Juz4fun</item>
+        <item>主頁</item>
         <item>進階搜尋</item>
         <item>排行榜</item>
         <item>最新評論</item>
@@ -262,6 +266,10 @@
 
     <string name="setting_android_version">1.0</string>
 
+    <!--account verified-->
+    <string name="account_verified_success_msg">帳戶驗證成功!! 快D去LOGIN啦!!</string>
+    <string name="account_verified_failure_msg">帳戶驗證失敗!! 去提交意見同我地講返。</string>
+
 
     <!--title-->
     <string name="feedback">提交意見</string>
@@ -281,6 +289,8 @@
     <string name="forget_password">忘記密碼</string>
     <string name="my_comment">我的評論</string>
     <string name="launchpage">Launch</string>
+    <string name="reset_password">重設密碼</string>
+    <string name="account_verified">帳戶驗證</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -38,7 +38,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ent_name_company_name"
-            android:layout_above="@+id/posted_date"
             android:layout_below="@+id/title"
             android:text="Bubble soccer@Party Home"
             android:textColor="@color/font_grey_white"/>
@@ -49,7 +48,7 @@
             android:textSize="@dimen/year"
             android:textColor="@color/font_grey_white"
             android:text="2015-12-12 08:00:00"
-            android:layout_above="@+id/username"
+            android:layout_below="@id/ent_name_company_name"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
         <TextView
@@ -59,7 +58,7 @@
             android:textSize="@dimen/genre"
             android:textColor="@color/font_grey_white"
             android:text="Alan Lam"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@id/posted_date"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
     </RelativeLayout>

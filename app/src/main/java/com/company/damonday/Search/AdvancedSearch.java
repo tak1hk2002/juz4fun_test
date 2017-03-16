@@ -94,6 +94,8 @@ public class AdvancedSearch extends Fragment {
     private Map<String, Integer> mapExpense = new HashMap<String, Integer>();
     private String[] title, warning;
     private List<Integer> showDetailIndicator = Arrays.asList(0, 1, 2, 3);
+    private List<Integer> numericEditText = Arrays.asList();
+    private List<Integer> hideEditText = Arrays.asList();
     private JSONObject priceJsonObject;
     private JSONArray categoryJsonArray, districtJsonArray;
 
@@ -155,7 +157,8 @@ public class AdvancedSearch extends Fragment {
         button_search = (Button) view.findViewById(R.id.button_search);
         button_reset = (Button) view.findViewById(R.id.button_reset);
 
-        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator, null, warning);
+        final SubmitForm_CustomListAdapter customAdapter = new SubmitForm_CustomListAdapter(getActivity(), items, showDetailIndicator,
+                                                                                            hideEditText, numericEditText, warning);
 
         listView.setAdapter(customAdapter);
 

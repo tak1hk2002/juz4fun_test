@@ -84,33 +84,34 @@ public class CompanySQLiteHandler extends SQLiteOpenHelper {
      * Storing my favourite details in database
      * */
     public void addMyFavourite(CompanyListObject companyListObject){
-        SQLiteDatabase db = this.getWritableDatabase();
+        if(companyListObject != null) {
+            SQLiteDatabase db = this.getWritableDatabase();
 
-        Time t = new Time(Time.getCurrentTimezone());
-        t.setToNow();
-        String date = t.format("%Y/%m/%d");
-        Log.d("FAV_TIME",date);
+            Time t = new Time(Time.getCurrentTimezone());
+            t.setToNow();
+            String date = t.format("%Y/%m/%d");
+            Log.d("FAV_TIME", date);
 
-        ContentValues values = new ContentValues();
-        values.put(KEY_ENT_ID, companyListObject.getEntId()); // entID
-        values.put(KEY_PIC_URL, companyListObject.getPicUrl()); // picUrl
-        values.put(KEY_ENT_NAME, companyListObject.getTitle()); // title
-        values.put(KEY_COMPANY_NAME, companyListObject.getCompanyName());
-        values.put(KEY_PRICE, companyListObject.getPrice()); // price
-        values.put(KEY_LIKE, companyListObject.getLike()); // like
-        values.put(KEY_FAIR, companyListObject.getFair()); // fair
-        values.put(KEY_DISLIKE, companyListObject.getDislike()); // dislike
-        values.put(KEY_AVERAGE_SCORE, companyListObject.getAverageScore()); // averageScore
-        values.put(KEY_CATEGORIES, companyListObject.getCategory()); // cat
-        values.put(KEY_CREATE_DATE, date); // create date
+            ContentValues values = new ContentValues();
+            values.put(KEY_ENT_ID, companyListObject.getEntId()); // entID
+            values.put(KEY_PIC_URL, companyListObject.getPicUrl()); // picUrl
+            values.put(KEY_ENT_NAME, companyListObject.getTitle()); // title
+            values.put(KEY_COMPANY_NAME, companyListObject.getCompanyName());
+            values.put(KEY_PRICE, companyListObject.getPrice()); // price
+            values.put(KEY_LIKE, companyListObject.getLike()); // like
+            values.put(KEY_FAIR, companyListObject.getFair()); // fair
+            values.put(KEY_DISLIKE, companyListObject.getDislike()); // dislike
+            values.put(KEY_AVERAGE_SCORE, companyListObject.getAverageScore()); // averageScore
+            values.put(KEY_CATEGORIES, companyListObject.getCategory()); // cat
+            values.put(KEY_CREATE_DATE, date); // create date
 
-        // Inserting Row
+            // Inserting Row
 
 
-
-        System.out.println(values);
-        long id = db.insert(TABLE_MY_FAVOURITE, null, values);
-        db.close(); // Closing database connection
+            System.out.println(values);
+            long id = db.insert(TABLE_MY_FAVOURITE, null, values);
+            db.close(); // Closing database connection
+        }
     }
 
     /**

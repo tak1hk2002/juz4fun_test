@@ -2,7 +2,9 @@ package com.company.damonday.Framework.SubmitForm;
 
 import android.content.Context;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
+import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,14 +27,17 @@ public class SubmitForm_CustomListAdapter extends BaseAdapter {
     private List<SubmitForm> items;
     private List<Integer> showDetailIndicator;
     private List<Integer> hideEditText;
+    private List<Integer> numericEditText;
     private SubmitForm m;
 
     public SubmitForm_CustomListAdapter(Context context, List<SubmitForm> items,
-                                        List<Integer> showDetailIndicator, List<Integer> hideEditText, String warning[]){
+                                        List<Integer> showDetailIndicator, List<Integer> hideEditText,
+                                        List<Integer> numericEditText, String warning[]){
         this.context = context;
         this.items = items;
         this.showDetailIndicator = showDetailIndicator;
         this.hideEditText = hideEditText;
+        this.numericEditText = numericEditText;
         this.warning = warning;
     }
 
@@ -94,6 +99,12 @@ public class SubmitForm_CustomListAdapter extends BaseAdapter {
                 imgIndicator.setVisibility(View.GONE);
                 editInfo.setVisibility(View.VISIBLE);
                 txtInfo.setVisibility(View.GONE);
+            }
+
+            //set numeric format to the editText
+            if(numericEditText.contains(position)){
+                editInfo.setInputType(InputType.TYPE_CLASS_NUMBER);
+                editInfo.setKeyListener(DigitsKeyListener.getInstance("0123456789."));
             }
         }
 
